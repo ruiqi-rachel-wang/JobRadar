@@ -1,0 +1,5701 @@
+[
+  {
+    "name": "Accenture",
+    "categories": [
+      "Consulting",
+      "Tech",
+      "Information Technology",
+      "IT Consulting & Other Services",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://accenture.wd103.myworkdayjobs.com/accenturecareers",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "AcuityMD",
+    "categories": [
+      "Tech",
+      "Healthcare"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "acuitymd"
+    }
+  },
+  {
+    "name": "Adobe",
+    "categories": [
+      "Tech",
+      "Information Technology",
+      "Application Software",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://careers.adobe.com/us/en/search-results",
+      "prefix": "https://careers.adobe.com/us/en/job/",
+      "pagination": {
+        "type": "query_page",
+        "param": "from",
+        "start": 0,
+        "step": 10,
+        "max_pages": 20
+      },
+      "validate_prefix": false
+    }
+  },
+  {
+    "name": "Adyen",
+    "categories": [
+      "FinTech",
+      "Payments"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "adyen"
+    }
+  },
+  {
+    "name": "Affirm",
+    "categories": [
+      "FinTech"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "affirm"
+    }
+  },
+  {
+    "name": "Air Products",
+    "categories": [
+      "Materials",
+      "Industrial Gases",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://airproducts.wd5.myworkdayjobs.com/ap0001",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "Airbnb",
+    "categories": [
+      "Tech",
+      "Travel",
+      "Consumer Discretionary",
+      "Hotels, Resorts & Cruise Lines",
+      "S&P 500",
+      "Consumer",
+      "Travel, Leisure and Tourism",
+      "Marketplace",
+      "YC Top"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "airbnb"
+    }
+  },
+  {
+    "name": "Airbus",
+    "categories": [
+      "Aerospace",
+      "Defense"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://ag.wd3.myworkdayjobs.com/Airbus"
+    }
+  },
+  {
+    "name": "Airwallex",
+    "categories": [
+      "FinTech",
+      "Payments"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://careers.airwallex.com/jobs/?order=newest",
+      "prefix": "https://careers.airwallex.com/job/",
+      "sort": true
+    }
+  },
+  {
+    "name": "Akamai",
+    "categories": [
+      "Tech",
+      "Security"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://jobs.akamai.com/en/sites/CX_1/jobs?lastSelectedFacet=LOCATIONS&mode=location&selectedLocationsFacet=300000000469666",
+      "prefix": "https://jobs.akamai.com/en/sites/CX_1/job/",
+      "pagination": {
+        "type": "query_page",
+        "param": "page",
+        "start": 1,
+        "max_pages": 20
+      },
+      "validate_prefix": false
+    }
+  },
+  {
+    "name": "Akuna Capital",
+    "categories": [
+      "Finance",
+      "Quant"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "akunacapital"
+    }
+  },
+  {
+    "name": "Albemarle Corporation",
+    "categories": [
+      "Materials",
+      "Specialty Chemicals",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "bamboohr",
+      "bamboohr_slug": "albemarle"
+    }
+  },
+  {
+    "name": "Algolia",
+    "categories": [
+      "B2B",
+      "Engineering, Product and Design",
+      "Developer Tools",
+      "SaaS",
+      "B2B",
+      "YC Top"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "algolia"
+    }
+  },
+  {
+    "name": "Allegion",
+    "categories": [
+      "Industrials",
+      "Building Products",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://allegion.wd5.myworkdayjobs.com/careers",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "Alliant Energy",
+    "categories": [
+      "Utilities",
+      "Electric Utilities",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://alliantenergy.wd1.myworkdayjobs.com/alliant",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "Allstate",
+    "categories": [
+      "Financials",
+      "Property & Casualty Insurance",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://allstate.wd5.myworkdayjobs.com/allstate_careers",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "Amazon",
+    "categories": [
+      "Tech",
+      "Ecommerce",
+      "Logistics",
+      "Consumer Discretionary",
+      "Broadline Retail",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://www.amazon.jobs/en/search?offset=0&result_limit=10&sort=recent&country%5B%5D=USA",
+      "prefix": "https://www.amazon.jobs/en/jobs/",
+      "sort": true,
+      "pagination": {
+        "type": "query_page",
+        "param": "offset",
+        "start": 0,
+        "step": 10,
+        "max_pages": 20
+      }
+    }
+  },
+  {
+    "name": "Amcor",
+    "categories": [
+      "Materials",
+      "Paper & Plastic Packaging Products & Materials",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "icims",
+      "icims_slug": "amcor"
+    }
+  },
+  {
+    "name": "AMD",
+    "categories": [
+      "Tech",
+      "Semiconductors"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://careers.amd.com/jobs?sortBy=posted_date&page=1&country=United%20States&descending=true",
+      "prefix": "https://careers.amd.com/careers-home/jobs/",
+      "sort": true,
+      "pagination": {
+        "type": "query_page",
+        "param": "page",
+        "start": 1,
+        "max_pages": 20
+      }
+    }
+  },
+  {
+    "name": "Ameren",
+    "categories": [
+      "Utilities",
+      "Multi-Utilities",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://ameren.wd1.myworkdayjobs.com/external",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "American Express",
+    "categories": [
+      "Finance",
+      "Payments",
+      "Financials",
+      "Consumer Finance",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://careers.americanexpress.com/en/sites/CX_1/jobs?intlink=us-amex-career-en-us-search",
+      "prefix": "https://careers.americanexpress.com/en/sites/CX_1/jobs/preview/",
+      "sort": true
+    }
+  },
+  {
+    "name": "Amgen",
+    "categories": [
+      "Healthcare",
+      "Biotech",
+      "Health Care",
+      "Biotechnology",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://amgen.wd1.myworkdayjobs.com/careers",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "Amplitude",
+    "categories": [
+      "B2B",
+      "Analytics",
+      "Developer Tools",
+      "B2B",
+      "Analytics",
+      "Marketing",
+      "Data Visualization",
+      "YC Top"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "amplitude"
+    }
+  },
+  {
+    "name": "Analog Devices",
+    "categories": [
+      "Information Technology",
+      "Semiconductors",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://analogdevices.wd1.myworkdayjobs.com/external",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "Anduril",
+    "categories": [
+      "Defense",
+      "Tech",
+      "AI"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "andurilindustries"
+    }
+  },
+  {
+    "name": "Anthropic",
+    "categories": [
+      "AI",
+      "Tech"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "anthropic"
+    }
+  },
+  {
+    "name": "Aon",
+    "categories": [
+      "Finance",
+      "Consulting",
+      "Insurance",
+      "Financials",
+      "Insurance Brokers",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://jobs.aon.com/jobs?location=United%20States&woe=12&regionCode=US&stretchUnit=MILES&stretch=10&page=1&sortBy=posted_date&descending=true",
+      "prefix": "https://jobs.aon.com/jobs/",
+      "pagination": {
+        "type": "query_page",
+        "param": "page",
+        "start": 1,
+        "max_pages": 20
+      },
+      "sort": true
+    }
+  },
+  {
+    "name": "APA Corporation",
+    "categories": [
+      "Energy",
+      "Oil & Gas Exploration & Production",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://apa.wd105.myworkdayjobs.com/apa-careers",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "Apollo.io",
+    "categories": [
+      "Tech",
+      "SaaS"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "apolloio"
+    }
+  },
+  {
+    "name": "Apple",
+    "categories": [
+      "Tech",
+      "Information Technology",
+      "Technology Hardware, Storage & Peripherals",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://jobs.apple.com/en-us/search?sort=newest&location=united-states-USA",
+      "prefix": "https://jobs.apple.com/en-us/details/",
+      "scroll_rounds": 20,
+      "pagination": {
+        "type": "next_link",
+        "max_pages": 30
+      },
+      "sort": true
+    }
+  },
+  {
+    "name": "Applied Intuition",
+    "categories": [
+      "Tech",
+      "Autonomy",
+      "AI"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "appliedintuition"
+    }
+  },
+  {
+    "name": "AppLovin",
+    "categories": [
+      "Information Technology",
+      "Application Software",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "applovin"
+    }
+  },
+  {
+    "name": "Aptiv",
+    "categories": [
+      "Consumer Discretionary",
+      "Automotive Parts & Equipment",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://aptiv.wd5.myworkdayjobs.com/aptiv_careers",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "AQR",
+    "categories": [
+      "Finance",
+      "Quant",
+      "Asset Management"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "aqr"
+    }
+  },
+  {
+    "name": "Arista Networks",
+    "categories": [
+      "Tech",
+      "Networking",
+      "Information Technology",
+      "Communications Equipment",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://www.arista.com/en/careers",
+      "prefix": "https://www.arista.com/en/careers"
+    }
+  },
+  {
+    "name": "Asana",
+    "categories": [
+      "Tech",
+      "SaaS"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "asana"
+    }
+  },
+  {
+    "name": "ASML",
+    "categories": [
+      "Tech",
+      "Semiconductors"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://asml.wd3.myworkdayjobs.com/asmlext1",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "Assurant",
+    "categories": [
+      "Financials",
+      "Multi-line Insurance",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://assurant.wd1.myworkdayjobs.com/ismash_external_career_site",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "AT&T",
+    "categories": [
+      "Telecom",
+      "Communication Services",
+      "Integrated Telecommunication Services",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://att.wd1.myworkdayjobs.com/attgeneral",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "Atlassian",
+    "categories": [
+      "Tech",
+      "SaaS"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://www.atlassian.com/company/careers/all-jobs?team=&location=United%20States&search=",
+      "prefix": "https://www.atlassian.com/company/careers/detail/",
+      "try_load_more": true
+    }
+  },
+  {
+    "name": "Atmos Energy",
+    "categories": [
+      "Utilities",
+      "Gas Utilities",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://atmosenergy.wd5.myworkdayjobs.com/external_career_site",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "Attentive",
+    "categories": [
+      "Tech",
+      "Marketing",
+      "SaaS"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "attentive"
+    }
+  },
+  {
+    "name": "Audible",
+    "categories": [
+      "Tech",
+      "Entertainment"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://www.audiblecareers.com/search-jobs",
+      "prefix": "https://www.audiblecareers.com/job/",
+      "pagination": {
+        "type": "query_page",
+        "param": "pg",
+        "start": 1,
+        "max_pages": 20
+      },
+      "validate_prefix": false
+    }
+  },
+  {
+    "name": "Aurora",
+    "categories": [
+      "Tech",
+      "Autonomy",
+      "AI"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "aurorainnovation"
+    }
+  },
+  {
+    "name": "Autodesk",
+    "categories": [
+      "Tech",
+      "SaaS",
+      "Information Technology",
+      "Application Software",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://autodesk.wd1.myworkdayjobs.com/Ext"
+    }
+  },
+  {
+    "name": "Avalara",
+    "categories": [
+      "Tech",
+      "FinTech"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://app.careerpuck.com/job-board/avalara",
+      "prefix": "https://app.careerpuck.com/job-board/avalara/job/"
+    }
+  },
+  {
+    "name": "Axon",
+    "categories": [
+      "Tech",
+      "Defense",
+      "Security"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "axon"
+    }
+  },
+  {
+    "name": "Bain",
+    "categories": [
+      "Consulting"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://www.bain.com/careers/find-a-role/",
+      "prefix": "https://www.bain.com/careers/find-a-role/position/?jobid=",
+      "scroll_rounds": 15,
+      "validate_prefix": false
+    }
+  },
+  {
+    "name": "Baker Hughes",
+    "categories": [
+      "Energy",
+      "Oil & Gas Equipment & Services",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://bakerhughes.wd5.myworkdayjobs.com/bakerhughes",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "Balyasny Asset Management",
+    "categories": [
+      "Finance",
+      "Hedge Fund"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://bambusdev.my.site.com/s/",
+      "prefix": "https://bambusdev.my.site.com/s/details?jobReq="
+    }
+  },
+  {
+    "name": "Bank of America",
+    "categories": [
+      "Finance",
+      "Financials",
+      "Diversified Banks",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://careers.bankofamerica.com/en-us/job-search?sort=newest",
+      "prefix": "https://careers.bankofamerica.com/en-us/jobs/",
+      "sort": true,
+      "pagination": {
+        "type": "query_page",
+        "param": "pg",
+        "start": 1,
+        "max_pages": 20
+      }
+    }
+  },
+  {
+    "name": "Barclays",
+    "categories": [
+      "Finance"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://barclays.wd3.myworkdayjobs.com/external_career_site_barclays",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "Belvedere Trading",
+    "categories": [
+      "Finance",
+      "Quant"
+    ],
+    "scrape": {
+      "mode": "lever",
+      "lever_slug": "belvederetrading"
+    }
+  },
+  {
+    "name": "Benchling",
+    "categories": [
+      "Tech",
+      "Biotech",
+      "SaaS",
+      "B2B",
+      "YC Top"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "benchling"
+    }
+  },
+  {
+    "name": "BILL Holdings",
+    "categories": [
+      "FinTech",
+      "Payments"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "billcom"
+    }
+  },
+  {
+    "name": "Bio-Techne",
+    "categories": [
+      "Health Care",
+      "Life Sciences Tools & Services",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://biotechne.wd5.myworkdayjobs.com/biotechne",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "BlackRock",
+    "categories": [
+      "Finance",
+      "Asset Management",
+      "Financials",
+      "Asset Management & Custody Banks",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://blackrock.wd1.myworkdayjobs.com/en-US/BlackRock_Professional"
+    }
+  },
+  {
+    "name": "Blackstone",
+    "categories": [
+      "Finance",
+      "Asset Management",
+      "Financials",
+      "Asset Management & Custody Banks",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://blackstone.wd1.myworkdayjobs.com/blackstone_careers",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "Block, Inc.",
+    "categories": [
+      "Financials",
+      "Transaction & Payment Processing Services",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "block"
+    }
+  },
+  {
+    "name": "Bloomberg",
+    "categories": [
+      "Tech",
+      "Finance",
+      "Media"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://careers.bloomberg.com/job/search",
+      "prefix": "https://careers.bloomberg.com/job/detail/",
+      "pagination": {
+        "type": "query_page",
+        "param": "page",
+        "start": 1,
+        "max_pages": 20
+      }
+    }
+  },
+  {
+    "name": "Blue Origin",
+    "categories": [
+      "Aerospace"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://blueorigin.wd5.myworkdayjobs.com/en-US/BlueOrigin"
+    }
+  },
+  {
+    "name": "Boeing",
+    "categories": [
+      "Aerospace",
+      "Defense",
+      "Industrials",
+      "Aerospace & Defense",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://boeing.wd1.myworkdayjobs.com/en-US/EXTERNAL_CAREERS"
+    }
+  },
+  {
+    "name": "Booz Allen Hamilton",
+    "categories": [
+      "Consulting",
+      "Defense"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://careers.boozallen.com/jobs/SearchJobs",
+      "prefix": "https://careers.boozallen.com/jobs/JobProfile?",
+      "pagination": {
+        "type": "query_page",
+        "param": "page",
+        "start": 1,
+        "max_pages": 20
+      }
+    }
+  },
+  {
+    "name": "Boston Consulting Group (BCG)",
+    "categories": [
+      "Consulting"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://careers.bcg.com/global/en/search-results",
+      "prefix": "https://careers.bcg.com/global/en/job/",
+      "pagination": {
+        "type": "query_page",
+        "param": "page",
+        "start": 1,
+        "max_pages": 20
+      }
+    }
+  },
+  {
+    "name": "Box",
+    "categories": [
+      "Tech",
+      "SaaS"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "boxinc"
+    }
+  },
+  {
+    "name": "Braze",
+    "categories": [
+      "Tech",
+      "Marketing",
+      "SaaS"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "braze"
+    }
+  },
+  {
+    "name": "Brex",
+    "categories": [
+      "FinTech",
+      "Fintech",
+      "Banking and Exchange",
+      "YC Top"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "brex"
+    }
+  },
+  {
+    "name": "Bridgewater",
+    "categories": [
+      "Finance",
+      "Hedge Fund"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "bridgewater89"
+    }
+  },
+  {
+    "name": "Bristol Myers Squibb",
+    "categories": [
+      "Healthcare",
+      "Pharma",
+      "Health Care",
+      "Pharmaceuticals",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://bristolmyerssquibb.wd5.myworkdayjobs.com/bms",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "Broadcom",
+    "categories": [
+      "Tech",
+      "Semiconductors",
+      "Information Technology",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://broadcom.wd1.myworkdayjobs.com/external_career",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "C3 AI",
+    "categories": [
+      "AI",
+      "Tech"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "c3iot"
+    }
+  },
+  {
+    "name": "CACI",
+    "categories": [
+      "Defense",
+      "Consulting"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://caci.wd1.myworkdayjobs.com/external",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "Capital One",
+    "categories": [
+      "Finance",
+      "FinTech",
+      "Financials",
+      "Consumer Finance",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://capitalone.wd12.myworkdayjobs.com/capital_one",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "Cardinal Health",
+    "categories": [
+      "Health Care",
+      "Health Care Distributors",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://cardinalhealth.wd1.myworkdayjobs.com/ext",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "Carlyle Group",
+    "categories": [
+      "Finance",
+      "Asset Management"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://www.carlyle.com/careers/open-positions",
+      "prefix": "https://www.carlyle.com/careers/open-positions/"
+    }
+  },
+  {
+    "name": "Carvana",
+    "categories": [
+      "Consumer Discretionary",
+      "Automotive Retail",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "carvana"
+    }
+  },
+  {
+    "name": "Centene Corporation",
+    "categories": [
+      "Health Care",
+      "Managed Health Care",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://centene.wd5.myworkdayjobs.com/centene_external",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "CF Industries",
+    "categories": [
+      "Materials",
+      "Fertilizers & Agricultural Chemicals",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://cfindustries.wd1.myworkdayjobs.com/careers",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "Charles Schwab",
+    "categories": [
+      "Finance",
+      "Brokerage",
+      "Financials",
+      "Investment Banking & Brokerage",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://schwab.wd5.myworkdayjobs.com/en-US/Schwab",
+      "prefix": "https://schwab.wd5.myworkdayjobs.com/en-US/Schwab/job/",
+      "scroll_rounds": 20,
+      "validate_prefix": false,
+      "pagination": {
+        "type": "load_more",
+        "max_pages": 1
+      }
+    }
+  },
+  {
+    "name": "Checkr",
+    "categories": [
+      "B2B",
+      "Human Resources",
+      "Artificial Intelligence",
+      "Compliance",
+      "HR Tech",
+      "API",
+      "Enterprise Software",
+      "YC Top"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "checkr"
+    }
+  },
+  {
+    "name": "Chevron",
+    "categories": [
+      "Energy",
+      "Integrated Oil & Gas",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://chevron.wd5.myworkdayjobs.com/jobs",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "Chewy",
+    "categories": [
+      "Ecommerce",
+      "Retail"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://careers.chewy.com/us/en/search-results",
+      "prefix": "https://careers.chewy.com/us/en/job/",
+      "scroll_rounds": 15,
+      "validate_prefix": false
+    }
+  },
+  {
+    "name": "Chime",
+    "categories": [
+      "FinTech"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "chime"
+    }
+  },
+  {
+    "name": "Ciena",
+    "categories": [
+      "Information Technology",
+      "Communications Equipment",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://ciena.wd5.myworkdayjobs.com/careers",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "Cigna",
+    "categories": [
+      "Health Care",
+      "Health Care Services",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://cigna.wd5.myworkdayjobs.com/cignacareers",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "Cisco",
+    "categories": [
+      "Tech",
+      "Networking",
+      "Information Technology",
+      "Communications Equipment",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://cisco.wd5.myworkdayjobs.com/cisco_careers",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "Citadel",
+    "categories": [
+      "Finance",
+      "Quant",
+      "Hedge Fund"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://www.citadel.com/careers/open-opportunities/",
+      "prefix": "https://www.citadel.com/careers/details/"
+    }
+  },
+  {
+    "name": "Citadel Securities",
+    "categories": [
+      "Finance",
+      "Quant"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://www.citadelsecurities.com/careers/open-opportunities/",
+      "prefix": "https://www.citadelsecurities.com/careers/details/",
+      "scroll_rounds": 15,
+      "validate_prefix": false
+    }
+  },
+  {
+    "name": "Citi",
+    "categories": [
+      "Finance"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://citi.wd5.myworkdayjobs.com/en-US/2"
+    }
+  },
+  {
+    "name": "Clever",
+    "categories": [
+      "Education",
+      "Education",
+      "SaaS",
+      "YC Top"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "clever"
+    }
+  },
+  {
+    "name": "Clipboard",
+    "categories": [
+      "Consumer",
+      "Marketplace",
+      "Consumer Health Services",
+      "Health Tech",
+      "Healthcare",
+      "YC Top"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "clipboard"
+    }
+  },
+  {
+    "name": "Cloudflare",
+    "categories": [
+      "Tech",
+      "Security"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "cloudflare"
+    }
+  },
+  {
+    "name": "CME Group",
+    "categories": [
+      "Finance",
+      "Financials",
+      "Financial Exchanges & Data",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://cmegroup.wd1.myworkdayjobs.com/en-US/cme_careers"
+    }
+  },
+  {
+    "name": "Coherent Corp.",
+    "categories": [
+      "Information Technology",
+      "Electronic Components",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "bamboohr",
+      "bamboohr_slug": "coherent"
+    }
+  },
+  {
+    "name": "Coinbase",
+    "categories": [
+      "FinTech",
+      "Crypto",
+      "Financials",
+      "Financial Exchanges & Data",
+      "S&P 500",
+      "Fintech",
+      "Banking and Exchange",
+      "Crypto / Web3",
+      "YC Top"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "coinbase"
+    }
+  },
+  {
+    "name": "Comcast",
+    "categories": [
+      "Telecom",
+      "Media",
+      "Communication Services",
+      "Cable & Satellite",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://comcast.wd5.myworkdayjobs.com/comcast_careers",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "Comfort Systems USA",
+    "categories": [
+      "Industrials",
+      "Construction & Engineering",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://comfortsystemsusa.wd1.myworkdayjobs.com/eascareers",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "Conagra Brands",
+    "categories": [
+      "Consumer Staples",
+      "Packaged Foods & Meats",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://conagrabrands.wd1.myworkdayjobs.com/careers_us",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "Confluent",
+    "categories": [
+      "Tech",
+      "Data"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "confluent"
+    }
+  },
+  {
+    "name": "ConocoPhillips",
+    "categories": [
+      "Energy",
+      "Oil & Gas Exploration & Production",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://conocophillips.wd1.myworkdayjobs.com/External"
+    }
+  },
+  {
+    "name": "Copart",
+    "categories": [
+      "Industrials",
+      "Diversified Support Services",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://copart.wd12.myworkdayjobs.com/copart",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "CoreOS",
+    "categories": [
+      "B2B",
+      "Infrastructure",
+      "Open Source",
+      "DevOps",
+      "YC Top"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "http://coreos.com/careers",
+      "prefix": "http://coreos.com/",
+      "sort": true
+    }
+  },
+  {
+    "name": "Corpay",
+    "categories": [
+      "Financials",
+      "Transaction & Payment Processing Services",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://corpay.wd103.myworkdayjobs.com/ext_001",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "Corteva",
+    "categories": [
+      "Materials",
+      "Fertilizers & Agricultural Chemicals",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://corteva.wd5.myworkdayjobs.com/ctp",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "CoStar Group",
+    "categories": [
+      "Real Estate",
+      "Real Estate Services",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "costar"
+    }
+  },
+  {
+    "name": "Costco",
+    "categories": [
+      "Retail",
+      "Consumer Staples",
+      "Consumer Staples Merchandise Retail",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://costco.wd5.myworkdayjobs.com/en-US/Costco_Careers",
+      "prefix": "https://costco.wd5.myworkdayjobs.com/en-US/Costco_Careers/job/",
+      "scroll_rounds": 20,
+      "validate_prefix": false,
+      "pagination": {
+        "type": "load_more",
+        "max_pages": 1
+      }
+    }
+  },
+  {
+    "name": "Coursera",
+    "categories": [
+      "Tech",
+      "Education"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "coursera"
+    }
+  },
+  {
+    "name": "CrowdStrike",
+    "categories": [
+      "Tech",
+      "Security",
+      "Information Technology",
+      "Systems Software",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://crowdstrike.wd5.myworkdayjobs.com/crowdstrikecareers"
+    }
+  },
+  {
+    "name": "Crusoe",
+    "categories": [
+      "Tech",
+      "Energy",
+      "AI"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "Crusoe"
+    }
+  },
+  {
+    "name": "CVS Health",
+    "categories": [
+      "Healthcare",
+      "Retail",
+      "Health Care",
+      "Health Care Services",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://cvshealth.wd1.myworkdayjobs.com/cvs_health_careers",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "D. E. Shaw",
+    "categories": [
+      "Finance",
+      "Quant"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://www.deshaw.com/careers/choose-your-path",
+      "prefix": "https://www.deshaw.com/careers/",
+      "validate_prefix": false
+    }
+  },
+  {
+    "name": "Databricks",
+    "categories": [
+      "Tech",
+      "AI",
+      "Data"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "databricks"
+    }
+  },
+  {
+    "name": "Datadog",
+    "categories": [
+      "Tech",
+      "Infra",
+      "Information Technology",
+      "Application Software",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "datadog"
+    }
+  },
+  {
+    "name": "DaVita",
+    "categories": [
+      "Health Care",
+      "Health Care Services",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://davita.wd1.myworkdayjobs.com/dkc_external",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "Deel",
+    "categories": [
+      "B2B",
+      "Finance and Accounting",
+      "Fintech",
+      "SaaS",
+      "B2B",
+      "HR Tech",
+      "Payroll",
+      "YC Top"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "deel"
+    }
+  },
+  {
+    "name": "Dell",
+    "categories": [
+      "Tech"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://dell.wd1.myworkdayjobs.com/ExternalNonPublic"
+    }
+  },
+  {
+    "name": "Deloitte",
+    "categories": [
+      "Consulting"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://apply.deloitte.com/en_US/careers/SearchJobs?sort=relevancy",
+      "prefix": "https://apply.deloitte.com/en_US/careers/JobDetail/",
+      "pagination": {
+        "type": "query_page",
+        "param": "page",
+        "start": 1,
+        "max_pages": 20
+      }
+    }
+  },
+  {
+    "name": "Deutsche Bank",
+    "categories": [
+      "Finance"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://db.wd3.myworkdayjobs.com/en-US/DBWebsite"
+    }
+  },
+  {
+    "name": "DevRev",
+    "categories": [
+      "Tech",
+      "SaaS"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "devrev"
+    }
+  },
+  {
+    "name": "Dexcom",
+    "categories": [
+      "Health Care",
+      "Health Care Equipment",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://dexcom.wd1.myworkdayjobs.com/dexcom",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "DHL",
+    "categories": [
+      "Logistics"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://careers.dhl.com/global/en/search-results?keywords=&location=United+States",
+      "prefix": "https://careers.dhl.com/global/en/job/",
+      "pagination": {
+        "type": "query_page",
+        "param": "from",
+        "start": 0,
+        "step": 10,
+        "max_pages": 20
+      }
+    }
+  },
+  {
+    "name": "Discord",
+    "categories": [
+      "Tech",
+      "Gaming",
+      "Entertainment"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "discord"
+    }
+  },
+  {
+    "name": "Disney",
+    "categories": [
+      "Entertainment"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://disney.wd5.myworkdayjobs.com/disneycareer",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "Dollar Tree",
+    "categories": [
+      "Consumer Staples",
+      "Consumer Staples Merchandise Retail",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://dollartree.wd5.myworkdayjobs.com/dollartreeca",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "DoorDash",
+    "categories": [
+      "Tech",
+      "Logistics",
+      "Consumer Discretionary",
+      "Specialized Consumer Services",
+      "S&P 500",
+      "Consumer",
+      "Food and Beverage",
+      "Marketplace",
+      "E-commerce",
+      "YC Top"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "doordashusa"
+    }
+  },
+  {
+    "name": "Dow Inc.",
+    "categories": [
+      "Materials",
+      "Commodity Chemicals",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://dow.wd1.myworkdayjobs.com/externalcareers",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "Dropbox",
+    "categories": [
+      "B2B",
+      "Productivity",
+      "YC Top"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "dropbox"
+    }
+  },
+  {
+    "name": "DRW",
+    "categories": [
+      "Finance",
+      "Quant"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "drweng"
+    }
+  },
+  {
+    "name": "Duke Energy",
+    "categories": [
+      "Energy",
+      "Utilities",
+      "Electric Utilities",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://dukeenergy.wd1.myworkdayjobs.com/en-US/DukeEnergyCareers",
+      "prefix": "https://dukeenergy.wd1.myworkdayjobs.com/en-US/DukeEnergyCareers/job/",
+      "scroll_rounds": 20,
+      "validate_prefix": false,
+      "pagination": {
+        "type": "load_more",
+        "max_pages": 1
+      }
+    }
+  },
+  {
+    "name": "Duolingo",
+    "categories": [
+      "Tech",
+      "Education",
+      "AI"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "duolingo"
+    }
+  },
+  {
+    "name": "DuPont",
+    "categories": [
+      "Materials",
+      "Specialty Chemicals",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "bamboohr",
+      "bamboohr_slug": "dupont"
+    }
+  },
+  {
+    "name": "eBay",
+    "categories": [
+      "Tech",
+      "Ecommerce",
+      "Consumer Discretionary",
+      "Broadline Retail",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://ebay.wd5.myworkdayjobs.com/tcgplayer_external_career",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "Ecolab",
+    "categories": [
+      "Materials",
+      "Specialty Chemicals",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://ecolab.wd1.myworkdayjobs.com/ecolab_external",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "Elastic",
+    "categories": [
+      "Tech",
+      "Data"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "elastic"
+    }
+  },
+  {
+    "name": "Electronic Arts",
+    "categories": [
+      "Gaming",
+      "Entertainment",
+      "Communication Services",
+      "Interactive Home Entertainment",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://ea.com/careers/search",
+      "prefix": "https://ea.com/careers/",
+      "scroll_rounds": 15,
+      "validate_prefix": false
+    }
+  },
+  {
+    "name": "Elevance Health",
+    "categories": [
+      "Health Care",
+      "Managed Health Care",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://elevancehealth.wd1.myworkdayjobs.com/ant",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "Eli Lilly",
+    "categories": [
+      "Healthcare",
+      "Pharma"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://lilly.wd5.myworkdayjobs.com/en-US/LillyCareers",
+      "prefix": "https://lilly.wd5.myworkdayjobs.com/en-US/LillyCareers/job/",
+      "scroll_rounds": 20,
+      "validate_prefix": false,
+      "pagination": {
+        "type": "load_more",
+        "max_pages": 1
+      }
+    }
+  },
+  {
+    "name": "Equifax",
+    "categories": [
+      "Industrials",
+      "Research & Consulting Services",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://equifax.wd5.myworkdayjobs.com/external",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "Equinix",
+    "categories": [
+      "Real Estate",
+      "Data Center REITs",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://equinix.wd1.myworkdayjobs.com/external",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "EquipmentShare",
+    "categories": [
+      "Real Estate and Construction",
+      "Construction",
+      "Construction",
+      "YC Top"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://www.equipmentshare.com/careers",
+      "prefix": "https://www.equipmentshare.com/",
+      "sort": true
+    }
+  },
+  {
+    "name": "Ericsson",
+    "categories": [
+      "Telecom",
+      "Tech"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://jobs.ericsson.com/careers",
+      "prefix": "https://jobs.ericsson.com/careers/",
+      "scroll_rounds": 15,
+      "validate_prefix": false
+    }
+  },
+  {
+    "name": "Etsy",
+    "categories": [
+      "Ecommerce",
+      "Tech"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://careers.etsy.com/global/en/",
+      "prefix": "https://careers.etsy.com/global/en/job/",
+      "scroll_rounds": 20,
+      "validate_prefix": false
+    }
+  },
+  {
+    "name": "ExxonMobil",
+    "categories": [
+      "Energy",
+      "Integrated Oil & Gas",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://jobs.exxonmobil.com/ExxonMobil/jobs",
+      "prefix": "https://jobs.exxonmobil.com/ExxonMobil/job/",
+      "scroll_rounds": 15,
+      "validate_prefix": false
+    }
+  },
+  {
+    "name": "EY",
+    "categories": [
+      "Consulting"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://careers.ey.com/ey/search/",
+      "prefix": "https://careers.ey.com/ey/job/",
+      "scroll_rounds": 15,
+      "validate_prefix": false
+    }
+  },
+  {
+    "name": "Faire",
+    "categories": [
+      "Tech",
+      "Ecommerce",
+      "B2B",
+      "Retail",
+      "Marketplace",
+      "YC Top"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "faire"
+    }
+  },
+  {
+    "name": "FedEx",
+    "categories": [
+      "Logistics",
+      "Industrials",
+      "Air Freight & Logistics",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://careers.fedex.com/fedex/jobs",
+      "prefix": "https://careers.fedex.com/fedex/jobs/",
+      "scroll_rounds": 15,
+      "validate_prefix": false
+    }
+  },
+  {
+    "name": "Fidelity",
+    "categories": [
+      "Finance",
+      "Asset Management"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://jobs.fidelity.com/SearchJobs/",
+      "prefix": "https://jobs.fidelity.com/ShowJob/",
+      "scroll_rounds": 15,
+      "validate_prefix": false
+    }
+  },
+  {
+    "name": "Fiserv",
+    "categories": [
+      "Financials",
+      "Transaction & Payment Processing Services",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://fiserv.wd5.myworkdayjobs.com/ext",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "Five Rings",
+    "categories": [
+      "Finance",
+      "Quant"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "fiveringsllc"
+    }
+  },
+  {
+    "name": "Fivetran",
+    "categories": [
+      "B2B",
+      "Infrastructure",
+      "SaaS",
+      "B2B",
+      "Analytics",
+      "Data Engineering",
+      "YC Top"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "fivetran"
+    }
+  },
+  {
+    "name": "Flexport",
+    "categories": [
+      "Tech",
+      "Logistics",
+      "B2B",
+      "Supply Chain and Logistics",
+      "SaaS",
+      "Supply Chain",
+      "YC Top"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "flexport"
+    }
+  },
+  {
+    "name": "Flow Traders",
+    "categories": [
+      "Finance",
+      "Quant"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "flowtraders"
+    }
+  },
+  {
+    "name": "Ford",
+    "categories": [
+      "Automotive"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://ford.wd12.myworkdayjobs.com/en-US/Ford_Careers",
+      "prefix": "https://ford.wd12.myworkdayjobs.com/en-US/Ford_Careers/job/",
+      "scroll_rounds": 20,
+      "validate_prefix": false,
+      "pagination": {
+        "type": "load_more",
+        "max_pages": 1
+      }
+    }
+  },
+  {
+    "name": "Fortinet",
+    "categories": [
+      "Tech",
+      "Security",
+      "Information Technology",
+      "Systems Software",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://www.fortinet.com/corporate/careers",
+      "prefix": "https://www.fortinet.com/corporate/careers/",
+      "scroll_rounds": 15,
+      "validate_prefix": false
+    }
+  },
+  {
+    "name": "Fox Corporation (Class A)",
+    "categories": [
+      "Communication Services",
+      "Broadcasting",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://fox.wd1.myworkdayjobs.com/domestic",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "Freshworks",
+    "categories": [
+      "Tech",
+      "SaaS"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://www.freshworks.com/company/careers/jobs/",
+      "prefix": "https://www.freshworks.com/company/careers/jobs/",
+      "scroll_rounds": 15,
+      "validate_prefix": false
+    }
+  },
+  {
+    "name": "Garmin",
+    "categories": [
+      "Tech",
+      "Consumer",
+      "Consumer Discretionary",
+      "Consumer Electronics",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://careers.garmin.com/en-US/careers/",
+      "prefix": "https://careers.garmin.com/en-US/careers/job/",
+      "scroll_rounds": 15,
+      "validate_prefix": false
+    }
+  },
+  {
+    "name": "Gartner",
+    "categories": [
+      "Information Technology",
+      "IT Consulting & Other Services",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://gartner.wd5.myworkdayjobs.com/ext",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "GE Aerospace",
+    "categories": [
+      "Industrials",
+      "Aerospace & Defense",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://geaerospace.wd5.myworkdayjobs.com/ge_externalsite",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "GE Healthcare",
+    "categories": [
+      "Healthcare",
+      "Tech",
+      "Health Care",
+      "Health Care Equipment",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://careers.gehealthcare.com/global/en/search-results",
+      "prefix": "https://careers.gehealthcare.com/global/en/job/",
+      "scroll_rounds": 15,
+      "validate_prefix": false
+    }
+  },
+  {
+    "name": "GE Vernova",
+    "categories": [
+      "Industrials",
+      "Heavy Electrical Equipment",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://gevernova.wd5.myworkdayjobs.com/vernova_externalsite",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "Generac",
+    "categories": [
+      "Industrials",
+      "Electrical Components & Equipment",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://generac.wd5.myworkdayjobs.com/externalcareers",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "General Dynamics",
+    "categories": [
+      "Defense",
+      "Aerospace",
+      "Industrials",
+      "Aerospace & Defense",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "icims",
+      "icims_slug": "generaldynamics"
+    }
+  },
+  {
+    "name": "General Motors",
+    "categories": [
+      "Automotive",
+      "Consumer Discretionary",
+      "Automobile Manufacturers",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://generalmotors.wd5.myworkdayjobs.com/careers_gm",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "Genesis Molecular AI",
+    "categories": [
+      "Tech",
+      "Biotech",
+      "AI"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "genesis-molecular-ai"
+    }
+  },
+  {
+    "name": "Ginkgo Bioworks",
+    "categories": [
+      "Healthcare",
+      "Industrial Bio",
+      "Synthetic Biology",
+      "Diagnostics",
+      "Automation",
+      "YC Top"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "ginkgobioworks"
+    }
+  },
+  {
+    "name": "GitLab",
+    "categories": [
+      "B2B",
+      "Engineering, Product and Design",
+      "Developer Tools",
+      "DevSecOps",
+      "Open Source",
+      "YC Top"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "gitlab"
+    }
+  },
+  {
+    "name": "Globe Life",
+    "categories": [
+      "Financials",
+      "Life & Health Insurance",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://globelife.wd5.myworkdayjobs.com/globe-life-careers",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "GOAT Group",
+    "categories": [
+      "Consumer",
+      "Apparel and Cosmetics",
+      "Marketplace",
+      "YC Top"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "goatgroup"
+    }
+  },
+  {
+    "name": "GoDaddy",
+    "categories": [
+      "Tech",
+      "Information Technology",
+      "Internet Services & Infrastructure",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "godaddy"
+    }
+  },
+  {
+    "name": "Goldman Sachs",
+    "categories": [
+      "Finance",
+      "Financials",
+      "Investment Banking & Brokerage",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://higher.gs.com/results?EXPERIENCE_LEVEL=Analyst|Associate&sort=POSTED_DATE",
+      "prefix": "https://higher.gs.com/roles/",
+      "sort": true,
+      "pagination": {
+        "type": "query_page",
+        "param": "page",
+        "start": 1,
+        "max_pages": 20
+      }
+    }
+  },
+  {
+    "name": "Google",
+    "categories": [
+      "Tech"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://careers.google.com/jobs/results/?location=United+States&sort_by=date",
+      "prefix": "https://careers.google.com/jobs/results/",
+      "scroll_rounds": 20,
+      "try_load_more": true,
+      "pagination": {
+        "type": "query_page",
+        "param": "page",
+        "start": 1,
+        "max_pages": 50
+      },
+      "sort": true,
+      "validate_prefix": false
+    }
+  },
+  {
+    "name": "Grammarly",
+    "categories": [
+      "Tech",
+      "AI",
+      "SaaS"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://superhuman.com/company/careers/jobs",
+      "prefix": "https://superhuman.com/company/careers/jobs/",
+      "scroll_rounds": 10,
+      "validate_prefix": false
+    }
+  },
+  {
+    "name": "Groww",
+    "categories": [
+      "Fintech",
+      "Asset Management",
+      "India",
+      "Investing",
+      "YC Top"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "groww"
+    }
+  },
+  {
+    "name": "GSK",
+    "categories": [
+      "Healthcare",
+      "Pharma"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://gsk.wd5.myworkdayjobs.com/GSKCareers"
+    }
+  },
+  {
+    "name": "Gusto",
+    "categories": [
+      "Tech",
+      "FinTech",
+      "SaaS",
+      "B2B",
+      "Human Resources",
+      "Payroll",
+      "Health Insurance",
+      "YC Top"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "gusto"
+    }
+  },
+  {
+    "name": "Harness",
+    "categories": [
+      "Tech",
+      "SaaS",
+      "Infra"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "harnessinc"
+    }
+  },
+  {
+    "name": "Helion Energy",
+    "categories": [
+      "Energy",
+      "Tech"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "helion"
+    }
+  },
+  {
+    "name": "Henry Schein",
+    "categories": [
+      "Health Care",
+      "Health Care Distributors",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://henryschein.wd1.myworkdayjobs.com/external_careers",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "Highspot",
+    "categories": [
+      "Tech",
+      "SaaS"
+    ],
+    "scrape": {
+      "mode": "lever",
+      "lever_slug": "highspot"
+    }
+  },
+  {
+    "name": "Home Depot (The)",
+    "categories": [
+      "Consumer Discretionary",
+      "Home Improvement Retail",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://homedepot.wd5.myworkdayjobs.com/careerdepot",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "Honeywell",
+    "categories": [
+      "Industrial",
+      "Tech",
+      "Industrials",
+      "Industrial Conglomerates",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://honeywell.wd5.myworkdayjobs.com/en-US/Honeywell_External_Career_Site",
+      "prefix": "https://honeywell.wd5.myworkdayjobs.com/en-US/Honeywell_External_Career_Site/job/",
+      "scroll_rounds": 20,
+      "validate_prefix": false,
+      "pagination": {
+        "type": "load_more",
+        "max_pages": 1
+      }
+    }
+  },
+  {
+    "name": "HP",
+    "categories": [
+      "Tech",
+      "Information Technology",
+      "Technology Hardware, Storage & Peripherals",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://hp.wd5.myworkdayjobs.com/ExternalCareerSite"
+    }
+  },
+  {
+    "name": "HPE",
+    "categories": [
+      "Tech"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://hpe.wd5.myworkdayjobs.com/acjobsite",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "HSBC",
+    "categories": [
+      "Finance"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://mycareer.hsbc.com/en_GB/external/SearchJobs/",
+      "prefix": "https://mycareer.hsbc.com/en_GB/external/",
+      "scroll_rounds": 15,
+      "validate_prefix": false
+    }
+  },
+  {
+    "name": "HubSpot",
+    "categories": [
+      "Tech",
+      "Marketing",
+      "SaaS"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://www.hubspot.com/careers/jobs?page=1",
+      "prefix": "https://www.hubspot.com/careers/jobs/",
+      "scroll_rounds": 20,
+      "validate_prefix": false,
+      "pagination": {
+        "type": "query_page",
+        "param": "page",
+        "start": 1,
+        "max_pages": 16
+      }
+    }
+  },
+  {
+    "name": "Hudson River Trading",
+    "categories": [
+      "Finance",
+      "Quant"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://www.hudsonrivertrading.com/careers/",
+      "prefix": "https://www.hudsonrivertrading.com/careers/",
+      "scroll_rounds": 15,
+      "validate_prefix": false
+    }
+  },
+  {
+    "name": "Hugging Face",
+    "categories": [
+      "AI",
+      "Tech"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://apply.workable.com/huggingface/",
+      "prefix": "https://apply.workable.com/huggingface/j/",
+      "scroll_rounds": 15,
+      "validate_prefix": false
+    }
+  },
+  {
+    "name": "Hulu",
+    "categories": [
+      "Tech",
+      "Entertainment"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://www.disneycareers.com/en/search-jobs?keyword=Hulu",
+      "prefix": "https://www.disneycareers.com/en/job/",
+      "scroll_rounds": 20,
+      "try_load_more": true,
+      "validate_prefix": false,
+      "text_include": "Hulu"
+    }
+  },
+  {
+    "name": "Humana",
+    "categories": [
+      "Health Care",
+      "Managed Health Care",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://humana.wd5.myworkdayjobs.com/humana_external_career_site",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "IBM",
+    "categories": [
+      "Tech",
+      "Information Technology",
+      "IT Consulting & Other Services",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://www.ibm.com/us-en/employment/",
+      "prefix": "https://careers.ibm.com/job/",
+      "pagination": {
+        "type": "query_page",
+        "param": "page",
+        "start": 1,
+        "max_pages": 20
+      }
+    }
+  },
+  {
+    "name": "IMC",
+    "categories": [
+      "Finance",
+      "Quant"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "imc"
+    }
+  },
+  {
+    "name": "Informatica",
+    "categories": [
+      "Tech",
+      "Data"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://www.informatica.com/about-us/careers/job-search.html",
+      "prefix": "https://www.informatica.com/about-us/careers/",
+      "scroll_rounds": 15,
+      "validate_prefix": false
+    }
+  },
+  {
+    "name": "instabase",
+    "categories": [
+      "AI",
+      "Tech"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "instabase"
+    }
+  },
+  {
+    "name": "Instacart",
+    "categories": [
+      "Tech",
+      "Ecommerce",
+      "Logistics",
+      "Consumer",
+      "Food and Beverage",
+      "Grocery",
+      "Delivery",
+      "E-commerce",
+      "YC Top"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "instacart"
+    }
+  },
+  {
+    "name": "Insulet Corporation",
+    "categories": [
+      "Health Care",
+      "Health Care Equipment",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://insulet.wd5.myworkdayjobs.com/insuletcareers",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "Intel",
+    "categories": [
+      "Tech",
+      "Semiconductors",
+      "Information Technology",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://intel.wd1.myworkdayjobs.com/External"
+    }
+  },
+  {
+    "name": "Intuit",
+    "categories": [
+      "Tech",
+      "FinTech",
+      "Information Technology",
+      "Application Software",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://jobs.intuit.com/search-jobs",
+      "prefix": "https://jobs.intuit.com/job/",
+      "pagination": {
+        "type": "query_page",
+        "param": "pg",
+        "start": 1,
+        "max_pages": 20
+      }
+    }
+  },
+  {
+    "name": "Invesco",
+    "categories": [
+      "Financials",
+      "Asset Management & Custody Banks",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://invesco.wd1.myworkdayjobs.com/ivzearlycareers",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "IQVIA",
+    "categories": [
+      "Health Care",
+      "Life Sciences Tools & Services",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://iqvia.wd1.myworkdayjobs.com/iqvia",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "IXL Learning",
+    "categories": [
+      "Tech",
+      "Education"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "ixllearning"
+    }
+  },
+  {
+    "name": "Jabil",
+    "categories": [
+      "Information Technology",
+      "Electronic Manufacturing Services",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://jabil.wd5.myworkdayjobs.com/jabil_careers",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "Jane Street",
+    "categories": [
+      "Finance",
+      "Quant"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "janestreet"
+    }
+  },
+  {
+    "name": "JP Morgan",
+    "categories": [
+      "Finance"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://jpmc.fa.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1001/jobs?selectedPostingDatesFacet=30&sortBy=POSTING_DATES_DESC",
+      "prefix": "https://jpmc.fa.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1001/job/",
+      "sort": true,
+      "pagination": {
+        "type": "query_page",
+        "param": "page",
+        "start": 1,
+        "max_pages": 20
+      }
+    }
+  },
+  {
+    "name": "Jump Trading",
+    "categories": [
+      "Finance",
+      "Quant"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "jumptrading"
+    }
+  },
+  {
+    "name": "KeyBank",
+    "categories": [
+      "Finance"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://keybank.wd5.myworkdayjobs.com/en-US/External_Career_Site"
+    }
+  },
+  {
+    "name": "KLA",
+    "categories": [
+      "Tech",
+      "Semiconductors",
+      "Information Technology",
+      "Semiconductor Materials & Equipment",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://kla.wd1.myworkdayjobs.com/Search"
+    }
+  },
+  {
+    "name": "KPMG",
+    "categories": [
+      "Consulting"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://www.kpmguscareers.com/job-search/?order=posted",
+      "prefix": "https://www.kpmguscareers.com/jobdetails/",
+      "pagination": {
+        "type": "query_page",
+        "param": "pg",
+        "start": 1,
+        "max_pages": 20
+      },
+      "sort": true
+    }
+  },
+  {
+    "name": "Labcorp",
+    "categories": [
+      "Health Care",
+      "Health Care Services",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://labcorp.wd1.myworkdayjobs.com/external",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "Leidos",
+    "categories": [
+      "Industrials",
+      "Diversified Support Services",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://leidos.wd5.myworkdayjobs.com/external",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "Lennar",
+    "categories": [
+      "Consumer Discretionary",
+      "Homebuilding",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://lennar.wd1.myworkdayjobs.com/lennar_jobs",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "Liftoff",
+    "categories": [
+      "Tech",
+      "Marketing"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "liftoff"
+    }
+  },
+  {
+    "name": "Lila Sciences",
+    "categories": [
+      "Tech",
+      "Biotech",
+      "AI"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "lilasciences"
+    }
+  },
+  {
+    "name": "Lilly (Eli)",
+    "categories": [
+      "Health Care",
+      "Pharmaceuticals",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://lilly.wd5.myworkdayjobs.com/cmp",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "Lowe's",
+    "categories": [
+      "Retail",
+      "Consumer Discretionary",
+      "Home Improvement Retail",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://talent.lowes.com/us/en/search-results",
+      "prefix": "https://talent.lowes.com/us/en/job/",
+      "pagination": {
+        "type": "query_page",
+        "param": "page",
+        "start": 1,
+        "max_pages": 20
+      }
+    }
+  },
+  {
+    "name": "Lucid",
+    "categories": [
+      "Tech",
+      "EV",
+      "Automotive"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "lucidmotors"
+    }
+  },
+  {
+    "name": "Lumentum",
+    "categories": [
+      "Information Technology",
+      "Communications Equipment",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://lumentum.wd5.myworkdayjobs.com/lite",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "Lyft",
+    "categories": [
+      "Tech",
+      "Mobility"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "lyft"
+    }
+  },
+  {
+    "name": "Man Group",
+    "categories": [
+      "Finance",
+      "Hedge Fund",
+      "Quant"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "mangroup"
+    }
+  },
+  {
+    "name": "Mapbox",
+    "categories": [
+      "Tech",
+      "Data"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "mapbox"
+    }
+  },
+  {
+    "name": "Masco",
+    "categories": [
+      "Industrials",
+      "Building Products",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://masco.wd1.myworkdayjobs.com/behr",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "Mastercard",
+    "categories": [
+      "Finance",
+      "Payments",
+      "Financials",
+      "Transaction & Payment Processing Services",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://mastercard.wd1.myworkdayjobs.com/en-US/CorporateCareers"
+    }
+  },
+  {
+    "name": "Match Group / Tinder",
+    "categories": [
+      "Tech"
+    ],
+    "scrape": {
+      "mode": "lever",
+      "lever_slug": "matchgroup"
+    }
+  },
+  {
+    "name": "McKesson Corporation",
+    "categories": [
+      "Health Care",
+      "Health Care Distributors",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://mckesson.wd3.myworkdayjobs.com/external_careers",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "McKinsey",
+    "categories": [
+      "Consulting"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://www.mckinsey.com/careers/search-jobs?countries=United%20States",
+      "prefix": "https://www.mckinsey.com/careers/search-jobs/overview/",
+      "validate_prefix": false
+    }
+  },
+  {
+    "name": "Medtronic",
+    "categories": [
+      "Health Care",
+      "Health Care Equipment",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://medtronic.wd1.myworkdayjobs.com/medtroniccareers",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "Meesho",
+    "categories": [
+      "B2B",
+      "Retail",
+      "E-commerce",
+      "Retail",
+      "YC Top"
+    ],
+    "scrape": {
+      "mode": "lever",
+      "lever_slug": "meesho"
+    }
+  },
+  {
+    "name": "Meta",
+    "categories": [
+      "Tech"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://www.metacareers.com/jobs?sort_by_new=true",
+      "prefix": "https://www.metacareers.com/jobs/",
+      "sort": true,
+      "try_load_more": true
+    }
+  },
+  {
+    "name": "MetLife",
+    "categories": [
+      "Financials",
+      "Life & Health Insurance",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "lever",
+      "lever_slug": "metlife"
+    }
+  },
+  {
+    "name": "MGM Resorts",
+    "categories": [
+      "Consumer Discretionary",
+      "Casinos & Gaming",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://mgmresorts.wd5.myworkdayjobs.com/mgmcareers",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "Microsoft",
+    "categories": [
+      "Tech",
+      "Information Technology",
+      "Systems Software",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://jobs.careers.microsoft.com/global/en/search?l=en_us&exp=0&rt=professional&sorted-by=Date",
+      "prefix": "https://jobs.careers.microsoft.com/global/en/job/",
+      "scroll_rounds": 20,
+      "try_load_more": true,
+      "pagination": {
+        "type": "next_link",
+        "max_pages": 40
+      },
+      "validate_prefix": false
+    }
+  },
+  {
+    "name": "Millennium",
+    "categories": [
+      "Finance",
+      "Quant",
+      "Hedge Fund"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://mlp.com/careers/",
+      "prefix": "https://mlp.com/careers/"
+    }
+  },
+  {
+    "name": "Miro",
+    "categories": [
+      "Tech",
+      "SaaS"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://miro.com/careers/",
+      "prefix": "https://miro.com/careers/",
+      "scroll_rounds": 15,
+      "validate_prefix": false
+    }
+  },
+  {
+    "name": "Mixpanel",
+    "categories": [
+      "Tech",
+      "Data",
+      "SaaS",
+      "B2B",
+      "Analytics",
+      "Data Visualization",
+      "Cloud Computing",
+      "Databases",
+      "YC Top"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "mixpanel"
+    }
+  },
+  {
+    "name": "Moderna",
+    "categories": [
+      "Healthcare",
+      "Biotech",
+      "Health Care",
+      "Biotechnology",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://modernatx.wd1.myworkdayjobs.com/M_tx"
+    }
+  },
+  {
+    "name": "Moloco",
+    "categories": [
+      "Tech",
+      "AI",
+      "Marketing"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "moloco"
+    }
+  },
+  {
+    "name": "Momentus",
+    "categories": [
+      "Industrials",
+      "Aviation and Space",
+      "Commercial Space Launch",
+      "Solar Power",
+      "Space Exploration",
+      "YC Top"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "momentus"
+    }
+  },
+  {
+    "name": "MongoDB",
+    "categories": [
+      "Tech",
+      "Data"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "mongodb"
+    }
+  },
+  {
+    "name": "Morgan Stanley",
+    "categories": [
+      "Finance",
+      "Financials",
+      "Investment Banking & Brokerage",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://ms.wd5.myworkdayjobs.com/en-US/External"
+    }
+  },
+  {
+    "name": "Mosaic Company (The)",
+    "categories": [
+      "Materials",
+      "Fertilizers & Agricultural Chemicals",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "mosaic"
+    }
+  },
+  {
+    "name": "Motorola Solutions",
+    "categories": [
+      "Information Technology",
+      "Communications Equipment",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://motorolasolutions.wd5.myworkdayjobs.com/careers",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "Moveworks",
+    "categories": [
+      "Tech",
+      "AI",
+      "SaaS"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "moveworks"
+    }
+  },
+  {
+    "name": "MSCI Inc.",
+    "categories": [
+      "Financials",
+      "Financial Exchanges & Data",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "icims",
+      "icims_slug": "msci"
+    }
+  },
+  {
+    "name": "Nasdaq, Inc.",
+    "categories": [
+      "Financials",
+      "Financial Exchanges & Data",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://nasdaq.wd1.myworkdayjobs.com/us_external_career_site",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "Navan",
+    "categories": [
+      "Tech",
+      "SaaS",
+      "Travel"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://navan.com/careers",
+      "prefix": "https://navan.com/careers/",
+      "scroll_rounds": 15,
+      "validate_prefix": false
+    }
+  },
+  {
+    "name": "NetApp",
+    "categories": [
+      "Tech",
+      "Data",
+      "Infra",
+      "Information Technology",
+      "Technology Hardware, Storage & Peripherals",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://netapp.wd1.myworkdayjobs.com/en-US/Careers",
+      "prefix": "https://netapp.wd1.myworkdayjobs.com/en-US/Careers/job/",
+      "scroll_rounds": 20,
+      "validate_prefix": false,
+      "pagination": {
+        "type": "load_more",
+        "max_pages": 1
+      }
+    }
+  },
+  {
+    "name": "Netflix",
+    "categories": [
+      "Tech",
+      "Entertainment",
+      "Communication Services",
+      "Movies & Entertainment",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://explore.jobs.netflix.net/careers?sort_by=new",
+      "prefix": "https://explore.jobs.netflix.net/careers/jobs/",
+      "sort": true,
+      "try_load_more": true
+    }
+  },
+  {
+    "name": "Netskope",
+    "categories": [
+      "Tech",
+      "Security"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "netskope"
+    }
+  },
+  {
+    "name": "Newfront",
+    "categories": [
+      "Fintech",
+      "Insurance",
+      "Fintech",
+      "Insurance",
+      "YC Top"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "newfront"
+    }
+  },
+  {
+    "name": "Nextdoor",
+    "categories": [
+      "Tech",
+      "SaaS"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "nextdoor"
+    }
+  },
+  {
+    "name": "NextEra Energy",
+    "categories": [
+      "Energy",
+      "Utilities",
+      "Multi-Utilities",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://nexteraenergy.wd5.myworkdayjobs.com/en-US/NextEraEnergy",
+      "prefix": "https://nexteraenergy.wd5.myworkdayjobs.com/en-US/NextEraEnergy/job/",
+      "scroll_rounds": 20,
+      "validate_prefix": false,
+      "pagination": {
+        "type": "load_more",
+        "max_pages": 1
+      }
+    }
+  },
+  {
+    "name": "Niantic",
+    "categories": [
+      "Tech",
+      "Gaming"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://nianticlabs.com/jobs/",
+      "prefix": "https://nianticlabs.com/jobs/",
+      "scroll_rounds": 15,
+      "validate_prefix": false
+    }
+  },
+  {
+    "name": "Nike",
+    "categories": [
+      "Retail",
+      "Consumer",
+      "Consumer Discretionary",
+      "Apparel, Accessories & Luxury Goods",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://nike.wd1.myworkdayjobs.com/nke",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "NiSource",
+    "categories": [
+      "Utilities",
+      "Multi-Utilities",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://nisource.wd1.myworkdayjobs.com/nisource",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "Nokia",
+    "categories": [
+      "Telecom",
+      "Tech"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://jobs.nokia.com/en/sites/CX_1/jobs",
+      "prefix": "https://jobs.nokia.com/en/sites/CX_1/job/",
+      "scroll_rounds": 20,
+      "validate_prefix": false,
+      "pagination": {
+        "type": "load_more",
+        "max_pages": 1
+      }
+    }
+  },
+  {
+    "name": "Northrop Grumman",
+    "categories": [
+      "Defense",
+      "Aerospace",
+      "Industrials",
+      "Aerospace & Defense",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://ngc.wd1.myworkdayjobs.com/en-US/NGC",
+      "prefix": "https://ngc.wd1.myworkdayjobs.com/en-US/NGC/job/",
+      "scroll_rounds": 20,
+      "validate_prefix": false,
+      "pagination": {
+        "type": "load_more",
+        "max_pages": 1
+      }
+    }
+  },
+  {
+    "name": "Notion",
+    "categories": [
+      "Tech",
+      "SaaS"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "notion"
+    }
+  },
+  {
+    "name": "Nowports",
+    "categories": [
+      "B2B",
+      "Supply Chain and Logistics",
+      "YC Top"
+    ],
+    "scrape": {
+      "mode": "bamboohr",
+      "bamboohr_slug": "nowports"
+    }
+  },
+  {
+    "name": "Nuro",
+    "categories": [
+      "Tech",
+      "Autonomy"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "nuro"
+    }
+  },
+  {
+    "name": "Nutanix",
+    "categories": [
+      "Tech",
+      "Infra"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://www.nutanix.com/company/careers",
+      "prefix": "https://www.nutanix.com/careers/",
+      "scroll_rounds": 15,
+      "validate_prefix": false
+    }
+  },
+  {
+    "name": "NVIDIA",
+    "categories": [
+      "Tech",
+      "Semiconductors",
+      "AI",
+      "Information Technology",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite"
+    }
+  },
+  {
+    "name": "Odeko",
+    "categories": [
+      "B2B",
+      "B2B",
+      "Logistics",
+      "YC Top"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "odeko"
+    }
+  },
+  {
+    "name": "Oklo",
+    "categories": [
+      "Industrials",
+      "Energy",
+      "Small Modular Reactors",
+      "Climate",
+      "YC Top"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "oklo"
+    }
+  },
+  {
+    "name": "Okta",
+    "categories": [
+      "Tech",
+      "Security"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "okta"
+    }
+  },
+  {
+    "name": "Old Mission Capital",
+    "categories": [
+      "Finance",
+      "Quant"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "oldmissioncapital"
+    }
+  },
+  {
+    "name": "OpenAI",
+    "categories": [
+      "AI",
+      "Tech"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "openai"
+    }
+  },
+  {
+    "name": "Opendoor",
+    "categories": [
+      "Tech",
+      "Real Estate"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "opendoor"
+    }
+  },
+  {
+    "name": "Optiver",
+    "categories": [
+      "Finance",
+      "Quant"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://optiver.com/working-at-optiver/career-opportunities/?orderby=date&order=DESC",
+      "prefix": "https://optiver.com/working-at-optiver/career-opportunities/",
+      "sort": true,
+      "pagination": {
+        "type": "query_page",
+        "param": "paged",
+        "start": 1,
+        "max_pages": 20
+      }
+    }
+  },
+  {
+    "name": "Oracle",
+    "categories": [
+      "Tech",
+      "Information Technology",
+      "Application Software",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://eeho.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/jobsearch/jobs",
+      "prefix": "https://eeho.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/jobsearch/job/",
+      "pagination": {
+        "type": "query_page",
+        "param": "page",
+        "start": 1,
+        "max_pages": 20
+      }
+    }
+  },
+  {
+    "name": "PagerDuty",
+    "categories": [
+      "B2B",
+      "Engineering, Product and Design",
+      "DevOps",
+      "Monitoring",
+      "YC Top"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "pagerduty"
+    }
+  },
+  {
+    "name": "Palantir",
+    "categories": [
+      "Tech",
+      "Defense"
+    ],
+    "scrape": {
+      "mode": "lever",
+      "lever_slug": "palantir"
+    }
+  },
+  {
+    "name": "Palo Alto Networks",
+    "categories": [
+      "Tech",
+      "Security",
+      "Information Technology",
+      "Systems Software",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://jobs.paloaltonetworks.com/en/jobs/",
+      "prefix": "https://jobs.paloaltonetworks.com/en/jobs/",
+      "scroll_rounds": 15,
+      "validate_prefix": false
+    }
+  },
+  {
+    "name": "Paradromics",
+    "categories": [
+      "Tech",
+      "Biotech"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://paradromicsinc.applytojob.com/apply",
+      "prefix": "https://paradromicsinc.applytojob.com/apply/"
+    }
+  },
+  {
+    "name": "Patreon",
+    "categories": [
+      "Tech",
+      "Creative"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "patreon"
+    }
+  },
+  {
+    "name": "PayPal",
+    "categories": [
+      "FinTech",
+      "Payments",
+      "Financials",
+      "Transaction & Payment Processing Services",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://paypal.wd1.myworkdayjobs.com/jobs",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "Paystack",
+    "categories": [
+      "Fintech",
+      "Payments",
+      "Fintech",
+      "YC Top"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "paystack"
+    }
+  },
+  {
+    "name": "PDT Partners",
+    "categories": [
+      "Finance",
+      "Quant"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "pdtpartners"
+    }
+  },
+  {
+    "name": "Peak6",
+    "categories": [
+      "Finance",
+      "Quant"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://www.peak6.com/careers/",
+      "prefix": "https://jobs.lever.co/peak6/"
+    }
+  },
+  {
+    "name": "Peloton",
+    "categories": [
+      "Tech",
+      "Consumer"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "peloton"
+    }
+  },
+  {
+    "name": "Pentair",
+    "categories": [
+      "Industrials",
+      "Industrial Machinery & Supplies & Components",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://pentair.wd5.myworkdayjobs.com/pentair_careers",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "Peregrine",
+    "categories": [
+      "Tech"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "peregrinetechnologies"
+    }
+  },
+  {
+    "name": "Pfizer",
+    "categories": [
+      "Healthcare",
+      "Pharma",
+      "Health Care",
+      "Pharmaceuticals",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://pfizer.wd1.myworkdayjobs.com/PfizerCareers"
+    }
+  },
+  {
+    "name": "Pinterest",
+    "categories": [
+      "Tech"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "pinterest"
+    }
+  },
+  {
+    "name": "Point72",
+    "categories": [
+      "Finance",
+      "Quant",
+      "Hedge Fund"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "point72"
+    }
+  },
+  {
+    "name": "Poshmark",
+    "categories": [
+      "Tech",
+      "Ecommerce"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "poshmark"
+    }
+  },
+  {
+    "name": "Precision Neuroscience",
+    "categories": [
+      "Tech",
+      "Biotech"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://careers.kula.ai/precision-neuroscience",
+      "prefix": "https://careers.kula.ai/precision-neuroscience/"
+    }
+  },
+  {
+    "name": "Prologis",
+    "categories": [
+      "Real Estate",
+      "Industrial REITs",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://prologis.wd5.myworkdayjobs.com/prologis_external_careers",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "PTC Inc.",
+    "categories": [
+      "Information Technology",
+      "Application Software",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://ptc.wd1.myworkdayjobs.com/ptc",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "PulteGroup",
+    "categories": [
+      "Consumer Discretionary",
+      "Homebuilding",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://pultegroup.wd1.myworkdayjobs.com/pgi",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "Pure Storage",
+    "categories": [
+      "Tech",
+      "Infra"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "purestorage"
+    }
+  },
+  {
+    "name": "Qualcomm",
+    "categories": [
+      "Tech",
+      "Semiconductors",
+      "Information Technology",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://qualcomm.wd5.myworkdayjobs.com/en-US/External",
+      "prefix": "https://qualcomm.wd5.myworkdayjobs.com/en-US/External/job/",
+      "scroll_rounds": 20,
+      "validate_prefix": false,
+      "pagination": {
+        "type": "load_more",
+        "max_pages": 1
+      }
+    }
+  },
+  {
+    "name": "Quora",
+    "categories": [
+      "Tech"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "quora"
+    }
+  },
+  {
+    "name": "Raytheon (RTX)",
+    "categories": [
+      "Defense",
+      "Aerospace"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://careers.rtx.com/global/en/search-results",
+      "prefix": "https://careers.rtx.com/global/en/job/",
+      "pagination": {
+        "type": "query_page",
+        "param": "from",
+        "start": 0,
+        "step": 10,
+        "max_pages": 20
+      }
+    }
+  },
+  {
+    "name": "Red Ventures",
+    "categories": [
+      "Tech",
+      "Media"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "redventures"
+    }
+  },
+  {
+    "name": "Reddit",
+    "categories": [
+      "Tech",
+      "Consumer",
+      "Content",
+      "Community",
+      "Social Media",
+      "Social",
+      "Social Network",
+      "YC Top"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "reddit"
+    }
+  },
+  {
+    "name": "Remitly",
+    "categories": [
+      "FinTech",
+      "Payments"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://remitly.wd5.myworkdayjobs.com/remitly_careers",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "Renaissance Technologies",
+    "categories": [
+      "Finance",
+      "Quant"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://www.rentec.com/Careers.action?jobs=true",
+      "prefix": "https://www.rentec.com/Careers.action?jobs=true&selectedPosition="
+    }
+  },
+  {
+    "name": "ResMed",
+    "categories": [
+      "Health Care",
+      "Health Care Equipment",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://resmed.wd3.myworkdayjobs.com/resmed_external_careers",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "Rigetti Computing",
+    "categories": [
+      "Industrials",
+      "Manufacturing and Robotics",
+      "Quantum Computing",
+      "YC Top"
+    ],
+    "scrape": {
+      "mode": "lever",
+      "lever_slug": "rigetti"
+    }
+  },
+  {
+    "name": "Riot Games",
+    "categories": [
+      "Gaming",
+      "Tech"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "riotgames"
+    }
+  },
+  {
+    "name": "Ripple",
+    "categories": [
+      "FinTech",
+      "Crypto"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "ripple"
+    }
+  },
+  {
+    "name": "Rippling",
+    "categories": [
+      "Tech",
+      "SaaS",
+      "HR",
+      "B2B",
+      "Human Resources",
+      "HR Tech",
+      "YC Top"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://www.rippling.com/en-US/careers",
+      "prefix": "https://www.rippling.com/",
+      "scroll_rounds": 15,
+      "validate_prefix": false
+    }
+  },
+  {
+    "name": "Rivian",
+    "categories": [
+      "Automotive",
+      "EV",
+      "Tech"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://rivian.com/careers",
+      "prefix": "https://rivian.com/careers/",
+      "scroll_rounds": 15,
+      "validate_prefix": false
+    }
+  },
+  {
+    "name": "Robinhood",
+    "categories": [
+      "FinTech",
+      "Finance"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "robinhood"
+    }
+  },
+  {
+    "name": "Roblox",
+    "categories": [
+      "Gaming",
+      "Tech"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "roblox"
+    }
+  },
+  {
+    "name": "Roche",
+    "categories": [
+      "Healthcare",
+      "Pharma"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://roche.wd3.myworkdayjobs.com/roche-ext",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "Rocket Lab",
+    "categories": [
+      "Aerospace"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "rocketlab"
+    }
+  },
+  {
+    "name": "Roku",
+    "categories": [
+      "Tech",
+      "Entertainment"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "roku"
+    }
+  },
+  {
+    "name": "Rubrik",
+    "categories": [
+      "Tech",
+      "Security"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "rubrik"
+    }
+  },
+  {
+    "name": "S&P Global",
+    "categories": [
+      "Financials",
+      "Financial Exchanges & Data",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "bamboohr",
+      "bamboohr_slug": "andglobal"
+    }
+  },
+  {
+    "name": "Salesforce",
+    "categories": [
+      "Tech",
+      "SaaS",
+      "Information Technology",
+      "Application Software",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://careers.salesforce.com/en/jobs/?country=United%20States%20of%20America&pagesize=20",
+      "prefix": "https://careers.salesforce.com/en/jobs/",
+      "pagination": {
+        "type": "query_page",
+        "param": "page",
+        "start": 1,
+        "max_pages": 20
+      }
+    }
+  },
+  {
+    "name": "Samsara",
+    "categories": [
+      "Tech",
+      "IoT",
+      "SaaS"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "samsara"
+    }
+  },
+  {
+    "name": "Samsung",
+    "categories": [
+      "Tech",
+      "Semiconductors"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://sec.wd3.myworkdayjobs.com/Samsung_Careers"
+    }
+  },
+  {
+    "name": "SAP",
+    "categories": [
+      "Tech",
+      "SaaS"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://jobs.sap.com/search/?createNewAlert=false&q=&locationsearch=&optionsFacetsDD_department=&optionsFacetsDD_customfield3=&optionsFacetsDD_country=US",
+      "prefix": "https://jobs.sap.com/job/",
+      "pagination": {
+        "type": "query_page",
+        "param": "page",
+        "start": 1,
+        "max_pages": 20
+      }
+    }
+  },
+  {
+    "name": "Scale AI",
+    "categories": [
+      "AI",
+      "Tech",
+      "B2B",
+      "Engineering, Product and Design",
+      "Artificial Intelligence",
+      "Machine Learning",
+      "YC Top"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "scaleai"
+    }
+  },
+  {
+    "name": "Schonfeld",
+    "categories": [
+      "Finance",
+      "Hedge Fund"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "schonfeld"
+    }
+  },
+  {
+    "name": "Sentry",
+    "categories": [
+      "Tech",
+      "SaaS",
+      "Infra"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "sentry"
+    }
+  },
+  {
+    "name": "ServiceNow",
+    "categories": [
+      "Tech",
+      "SaaS",
+      "Information Technology",
+      "Systems Software",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://careers.servicenow.com/careers/",
+      "prefix": "https://careers.servicenow.com/careers/",
+      "scroll_rounds": 15,
+      "validate_prefix": false
+    }
+  },
+  {
+    "name": "Shell",
+    "categories": [
+      "Energy"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://shell.wd3.myworkdayjobs.com/ShellCareers"
+    }
+  },
+  {
+    "name": "ShipBob",
+    "categories": [
+      "B2B",
+      "Supply Chain and Logistics",
+      "Logistics",
+      "E-commerce",
+      "YC Top"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "http://shipbob.com/careers",
+      "prefix": "http://shipbob.com/",
+      "sort": true
+    }
+  },
+  {
+    "name": "Shopify",
+    "categories": [
+      "Tech",
+      "Ecommerce"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://www.shopify.com/careers/search",
+      "prefix": "https://www.shopify.com/careers/",
+      "scroll_rounds": 15,
+      "validate_prefix": false
+    }
+  },
+  {
+    "name": "Siemens",
+    "categories": [
+      "Industrial",
+      "Tech"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://jobs.siemens.com/careers?query=&location=United+States",
+      "prefix": "https://jobs.siemens.com/careers/job/",
+      "pagination": {
+        "type": "query_page",
+        "param": "page",
+        "start": 1,
+        "max_pages": 20
+      }
+    }
+  },
+  {
+    "name": "SIG",
+    "categories": [
+      "Finance",
+      "Quant"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://careers.sig.com/search-results",
+      "prefix": "https://careers.sig.com/job/",
+      "pagination": {
+        "type": "query_page",
+        "param": "page",
+        "start": 1,
+        "max_pages": 20
+      },
+      "validate_prefix": false
+    }
+  },
+  {
+    "name": "SmartAsset",
+    "categories": [
+      "Fintech",
+      "Consumer Finance",
+      "Fintech",
+      "Marketplace",
+      "YC Top"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "smartasset"
+    }
+  },
+  {
+    "name": "Smartsheet",
+    "categories": [
+      "Tech",
+      "SaaS"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "smartsheet"
+    }
+  },
+  {
+    "name": "Snap",
+    "categories": [
+      "Tech"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://snap.com/en-US/jobs",
+      "prefix": "https://snap.com/en-US/jobs/",
+      "scroll_rounds": 15,
+      "validate_prefix": false
+    }
+  },
+  {
+    "name": "Snap-on",
+    "categories": [
+      "Industrials",
+      "Industrial Machinery & Supplies & Components",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "icims",
+      "icims_slug": "snapon"
+    }
+  },
+  {
+    "name": "Snowflake",
+    "categories": [
+      "Tech",
+      "Data"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "snowflake"
+    }
+  },
+  {
+    "name": "SoFi",
+    "categories": [
+      "FinTech"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "sofi"
+    }
+  },
+  {
+    "name": "SpaceX",
+    "categories": [
+      "Aerospace",
+      "Defense"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "spacex"
+    }
+  },
+  {
+    "name": "Spectrum",
+    "categories": [
+      "Telecom"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://jobs.spectrum.com/search-jobs",
+      "prefix": "https://jobs.spectrum.com/job/",
+      "pagination": {
+        "type": "query_page",
+        "param": "page",
+        "start": 1,
+        "max_pages": 20
+      },
+      "validate_prefix": false
+    }
+  },
+  {
+    "name": "Spotify",
+    "categories": [
+      "Tech",
+      "Entertainment"
+    ],
+    "scrape": {
+      "mode": "lever",
+      "lever_slug": "spotify"
+    }
+  },
+  {
+    "name": "Sprinklr",
+    "categories": [
+      "Tech",
+      "Marketing",
+      "SaaS"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://www.sprinklr.com/company/careers/",
+      "prefix": "https://www.sprinklr.com/company/careers/",
+      "scroll_rounds": 15,
+      "validate_prefix": false
+    }
+  },
+  {
+    "name": "Square (Block)",
+    "categories": [
+      "FinTech",
+      "Payments"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://block.xyz/careers/jobs",
+      "prefix": "https://block.xyz/careers/jobs/",
+      "try_load_more": true
+    }
+  },
+  {
+    "name": "Squarepoint Capital",
+    "categories": [
+      "Finance",
+      "Quant"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "squarepointcapital"
+    }
+  },
+  {
+    "name": "Squarespace",
+    "categories": [
+      "Tech",
+      "SaaS"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "squarespace"
+    }
+  },
+  {
+    "name": "Starbucks",
+    "categories": [
+      "Retail",
+      "Consumer",
+      "Consumer Discretionary",
+      "Restaurants",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://apply.starbucks.com/careers?domain=starbucks.com&hl=en&start=0&sort_by=timestamp",
+      "prefix": "https://apply.starbucks.com/careers?domain=starbucks.com&hl=en&",
+      "try_load_more": true,
+      "sort": true
+    }
+  },
+  {
+    "name": "State Street",
+    "categories": [
+      "Finance",
+      "Asset Management",
+      "Financials",
+      "Asset Management & Custody Banks",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://statestreet.wd1.myworkdayjobs.com/en-US/Global"
+    }
+  },
+  {
+    "name": "Steel Dynamics",
+    "categories": [
+      "Materials",
+      "Steel",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "icims",
+      "icims_slug": "steeldynamics"
+    }
+  },
+  {
+    "name": "Stripe",
+    "categories": [
+      "Fintech",
+      "Banking as a Service",
+      "Fintech",
+      "SaaS",
+      "YC Top"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "stripe"
+    }
+  },
+  {
+    "name": "Stryker Corporation",
+    "categories": [
+      "Health Care",
+      "Health Care Equipment",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://stryker.wd1.myworkdayjobs.com/strykercareers",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "Synchrony Financial",
+    "categories": [
+      "Financials",
+      "Consumer Finance",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://synchronyfinancial.wd5.myworkdayjobs.com/careers",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "Synechron",
+    "categories": [
+      "Tech",
+      "Finance"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://synechron.wd1.myworkdayjobs.com/en-US/SynechronCareers"
+    }
+  },
+  {
+    "name": "Synopsys",
+    "categories": [
+      "Tech",
+      "Semiconductors",
+      "EDA",
+      "Information Technology",
+      "Application Software",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://synopsys.wd1.myworkdayjobs.com/en-US/Synopsys",
+      "prefix": "https://synopsys.wd1.myworkdayjobs.com/en-US/Synopsys/job/",
+      "scroll_rounds": 20,
+      "validate_prefix": false,
+      "pagination": {
+        "type": "load_more",
+        "max_pages": 1
+      }
+    }
+  },
+  {
+    "name": "Sysco",
+    "categories": [
+      "Consumer Staples",
+      "Food Distributors",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://sysco.wd5.myworkdayjobs.com/syscocareers",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "T-Mobile",
+    "categories": [
+      "Telecom"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://tmobile.wd1.myworkdayjobs.com/External"
+    }
+  },
+  {
+    "name": "Tanium",
+    "categories": [
+      "Tech",
+      "Security"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "tanium"
+    }
+  },
+  {
+    "name": "Target",
+    "categories": [
+      "Retail",
+      "Consumer Staples",
+      "Consumer Staples Merchandise Retail",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://target.wd5.myworkdayjobs.com/targetcareers",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "Tekion",
+    "categories": [
+      "Tech",
+      "SaaS",
+      "Automotive"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "tekion"
+    }
+  },
+  {
+    "name": "Tesla",
+    "categories": [
+      "Automotive",
+      "EV",
+      "Tech",
+      "Consumer Discretionary",
+      "Automobile Manufacturers",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://www.tesla.com/careers/search#/?country=US",
+      "prefix": "https://www.tesla.com/careers/search/job/",
+      "pagination": {
+        "type": "query_page",
+        "param": "page",
+        "start": 1,
+        "max_pages": 20
+      }
+    }
+  },
+  {
+    "name": "Texas Instruments",
+    "categories": [
+      "Tech",
+      "Semiconductors",
+      "Information Technology",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://careers.ti.com/search-jobs/",
+      "prefix": "https://careers.ti.com/job/",
+      "pagination": {
+        "type": "query_page",
+        "param": "page",
+        "start": 1,
+        "max_pages": 20
+      }
+    }
+  },
+  {
+    "name": "The Athletic",
+    "categories": [
+      "Consumer",
+      "Content",
+      "Media",
+      "YC Top"
+    ],
+    "scrape": {
+      "mode": "lever",
+      "lever_slug": "theathletic"
+    }
+  },
+  {
+    "name": "The Trade Desk",
+    "categories": [
+      "Tech",
+      "Marketing",
+      "AdTech",
+      "Communication Services",
+      "Advertising",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "thetradedesk"
+    }
+  },
+  {
+    "name": "ThousandEyes",
+    "categories": [
+      "Tech",
+      "Networking"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://careers.cisco.com/global/en/search-results?keywords=ThousandEyes",
+      "prefix": "https://careers.cisco.com/global/en/job/",
+      "pagination": {
+        "type": "query_page",
+        "param": "from",
+        "start": 0,
+        "step": 10,
+        "max_pages": 3
+      },
+      "scroll_rounds": 15,
+      "validate_prefix": false
+    }
+  },
+  {
+    "name": "TikTok",
+    "categories": [
+      "Tech",
+      "Entertainment"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://www.tiktok.com/careers/en/search?location=United%20States",
+      "prefix": "https://www.tiktok.com/careers/en/",
+      "pagination": {
+        "type": "query_page",
+        "param": "page",
+        "start": 1,
+        "max_pages": 20
+      }
+    }
+  },
+  {
+    "name": "Toast",
+    "categories": [
+      "Tech",
+      "SaaS"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "toast"
+    }
+  },
+  {
+    "name": "Tower Research",
+    "categories": [
+      "Finance",
+      "Quant"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://tower-research.com/open-positions/",
+      "prefix": "https://tower-research.com/open-positions/"
+    }
+  },
+  {
+    "name": "Trimble Inc.",
+    "categories": [
+      "Information Technology",
+      "Application Software",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://trimble.wd1.myworkdayjobs.com/trimblecareers",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "Tripadvisor",
+    "categories": [
+      "Tech",
+      "Travel"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "tripadvisor"
+    }
+  },
+  {
+    "name": "Truebill",
+    "categories": [
+      "Fintech",
+      "Consumer Finance",
+      "Fintech",
+      "YC Top"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "truebill"
+    }
+  },
+  {
+    "name": "Turo",
+    "categories": [
+      "Tech",
+      "Mobility"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://turo.com/en-us/careers",
+      "prefix": "https://turo.com/en-us/careers/",
+      "scroll_rounds": 15,
+      "validate_prefix": false
+    }
+  },
+  {
+    "name": "Twilio",
+    "categories": [
+      "Tech",
+      "SaaS"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "twilio"
+    }
+  },
+  {
+    "name": "Twitch",
+    "categories": [
+      "Tech",
+      "Gaming",
+      "Entertainment",
+      "Consumer",
+      "Content",
+      "Community",
+      "Social Media",
+      "Video",
+      "Social Network",
+      "YC Top"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "twitch"
+    }
+  },
+  {
+    "name": "Two Sigma",
+    "categories": [
+      "Finance",
+      "Quant"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://careers.twosigma.com/careers/OpenRoles",
+      "prefix": "https://careers.twosigma.com/careers/OpenRoles/"
+    }
+  },
+  {
+    "name": "Tyson Foods",
+    "categories": [
+      "Consumer Staples",
+      "Packaged Foods & Meats",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://tysonfoods.wd5.myworkdayjobs.com/cvt",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "Uber",
+    "categories": [
+      "Tech",
+      "Mobility",
+      "Industrials",
+      "Passenger Ground Transportation",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://www.uber.com/us/en/careers/list/",
+      "prefix": "https://www.uber.com/global/en/careers/list/",
+      "pagination": {
+        "type": "query_page",
+        "param": "page",
+        "start": 1,
+        "max_pages": 20
+      }
+    }
+  },
+  {
+    "name": "UiPath",
+    "categories": [
+      "Tech",
+      "AI",
+      "SaaS"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "uipath"
+    }
+  },
+  {
+    "name": "UKG",
+    "categories": [
+      "Tech",
+      "SaaS",
+      "HR"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://ukg.wd5.myworkdayjobs.com/en-US/UKG_Professional",
+      "prefix": "https://ukg.wd5.myworkdayjobs.com/en-US/UKG_Professional/job/",
+      "scroll_rounds": 20,
+      "validate_prefix": false,
+      "pagination": {
+        "type": "load_more",
+        "max_pages": 1
+      }
+    }
+  },
+  {
+    "name": "UnitedHealth Group",
+    "categories": [
+      "Healthcare",
+      "Insurance",
+      "Health Care",
+      "Managed Health Care",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://careers.unitedhealthgroup.com/search-jobs",
+      "prefix": "https://careers.unitedhealthgroup.com/job/",
+      "pagination": {
+        "type": "query_page",
+        "param": "page",
+        "start": 1,
+        "max_pages": 20
+      }
+    }
+  },
+  {
+    "name": "Unity",
+    "categories": [
+      "Tech",
+      "Gaming"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "unity3d"
+    }
+  },
+  {
+    "name": "Universal Health Services",
+    "categories": [
+      "Health Care",
+      "Health Care Facilities",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "icims",
+      "icims_slug": "universalhealthservices"
+    }
+  },
+  {
+    "name": "UPS",
+    "categories": [
+      "Logistics"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://www.jobs-ups.com/search-jobs",
+      "prefix": "https://www.jobs-ups.com/job/",
+      "pagination": {
+        "type": "query_page",
+        "param": "page",
+        "start": 1,
+        "max_pages": 20
+      }
+    }
+  },
+  {
+    "name": "Upstart",
+    "categories": [
+      "FinTech",
+      "AI"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "upstart"
+    }
+  },
+  {
+    "name": "USAA",
+    "categories": [
+      "Finance",
+      "Insurance"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://usaa.wd1.myworkdayjobs.com/usaajobswd",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "Vanguard",
+    "categories": [
+      "Finance",
+      "Asset Management"
+    ],
+    "scrape": {
+      "mode": "icims",
+      "icims_slug": "vanguard"
+    }
+  },
+  {
+    "name": "Veeva Systems",
+    "categories": [
+      "Tech",
+      "Healthcare",
+      "SaaS"
+    ],
+    "scrape": {
+      "mode": "lever",
+      "lever_slug": "veeva"
+    }
+  },
+  {
+    "name": "Veralto",
+    "categories": [
+      "Industrials",
+      "Environmental & Facilities Services",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://veralto.wd1.myworkdayjobs.com/hachjobs",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "Verisign",
+    "categories": [
+      "Information Technology",
+      "Internet Services & Infrastructure",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "verisign"
+    }
+  },
+  {
+    "name": "Verizon",
+    "categories": [
+      "Telecom",
+      "Communication Services",
+      "Integrated Telecommunication Services",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://verizon.wd12.myworkdayjobs.com/verizon-careers",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "Verkada",
+    "categories": [
+      "Tech",
+      "Security"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "verkada"
+    }
+  },
+  {
+    "name": "Viatris",
+    "categories": [
+      "Health Care",
+      "Pharmaceuticals",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://viatris.wd5.myworkdayjobs.com/external",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "Vimeo",
+    "categories": [
+      "Tech",
+      "Entertainment"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://vimeo.com/jobs",
+      "prefix": "https://vimeo.com/jobs/",
+      "scroll_rounds": 15,
+      "validate_prefix": false
+    }
+  },
+  {
+    "name": "Virtu",
+    "categories": [
+      "Finance",
+      "Quant"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "virtu"
+    }
+  },
+  {
+    "name": "Visa",
+    "categories": [
+      "Finance",
+      "Payments",
+      "Financials",
+      "Transaction & Payment Processing Services",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://jobs.smartrecruiters.com/Visa/",
+      "prefix": "https://jobs.smartrecruiters.com/Visa/",
+      "pagination": {
+        "type": "query_page",
+        "param": "page",
+        "start": 1,
+        "max_pages": 20
+      }
+    }
+  },
+  {
+    "name": "Voleon",
+    "categories": [
+      "Finance",
+      "Quant"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "voleon"
+    }
+  },
+  {
+    "name": "Walmart",
+    "categories": [
+      "Retail",
+      "Consumer Staples",
+      "Consumer Staples Merchandise Retail",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://walmart.wd5.myworkdayjobs.com/WalmartExternal"
+    }
+  },
+  {
+    "name": "Waters Corporation",
+    "categories": [
+      "Health Care",
+      "Life Sciences Tools & Services",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "icims",
+      "icims_slug": "waters"
+    }
+  },
+  {
+    "name": "Wayfair",
+    "categories": [
+      "Ecommerce",
+      "Tech"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://www.aboutwayfair.com/careers",
+      "prefix": "https://www.aboutwayfair.com/careers/",
+      "scroll_rounds": 15,
+      "validate_prefix": false
+    }
+  },
+  {
+    "name": "Waymo",
+    "categories": [
+      "Tech",
+      "Autonomy"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "waymo"
+    }
+  },
+  {
+    "name": "Waystar",
+    "categories": [
+      "Tech",
+      "Healthcare"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://waystar.wd1.myworkdayjobs.com/waystar",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "Weave",
+    "categories": [
+      "B2B",
+      "Office Management",
+      "SaaS",
+      "YC Top"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "weave"
+    }
+  },
+  {
+    "name": "Webflow",
+    "categories": [
+      "B2B",
+      "Marketing",
+      "SaaS",
+      "Design",
+      "Marketing",
+      "YC Top"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "webflow"
+    }
+  },
+  {
+    "name": "Wells Fargo",
+    "categories": [
+      "Finance",
+      "Financials",
+      "Diversified Banks",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://wellsfargo.wd5.myworkdayjobs.com/en-US/WFJobsExt",
+      "prefix": "https://wellsfargo.wd5.myworkdayjobs.com/en-US/WFJobsExt/job/",
+      "scroll_rounds": 20,
+      "validate_prefix": false,
+      "pagination": {
+        "type": "load_more",
+        "max_pages": 1
+      }
+    }
+  },
+  {
+    "name": "Western Digital",
+    "categories": [
+      "Tech",
+      "Semiconductors",
+      "Information Technology",
+      "Technology Hardware, Storage & Peripherals",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://westerndigital.wd1.myworkdayjobs.com/en-US/External",
+      "prefix": "https://westerndigital.wd1.myworkdayjobs.com/en-US/External/job/",
+      "scroll_rounds": 20,
+      "validate_prefix": false,
+      "pagination": {
+        "type": "load_more",
+        "max_pages": 1
+      }
+    }
+  },
+  {
+    "name": "Whatnot",
+    "categories": [
+      "Tech",
+      "Ecommerce",
+      "Consumer",
+      "Marketplace",
+      "E-commerce",
+      "YC Top"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "whatnot"
+    }
+  },
+  {
+    "name": "WHOOP",
+    "categories": [
+      "Tech",
+      "Consumer"
+    ],
+    "scrape": {
+      "mode": "lever",
+      "lever_slug": "whoop"
+    }
+  },
+  {
+    "name": "Wise",
+    "categories": [
+      "FinTech",
+      "Payments"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://wise.jobs/",
+      "prefix": "https://wise.jobs/",
+      "scroll_rounds": 15,
+      "validate_prefix": false
+    }
+  },
+  {
+    "name": "Wix",
+    "categories": [
+      "Tech",
+      "SaaS"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://www.wix.com/jobs",
+      "prefix": "https://www.wix.com/jobs/",
+      "scroll_rounds": 15,
+      "validate_prefix": false
+    }
+  },
+  {
+    "name": "Wolverine Trading",
+    "categories": [
+      "Finance",
+      "Quant"
+    ],
+    "scrape": {
+      "mode": "pinpoint",
+      "list_url": "https://careers.wolve.com/postings.json",
+      "public_host": "https://careers.wolve.com"
+    }
+  },
+  {
+    "name": "Workday",
+    "categories": [
+      "Tech",
+      "SaaS",
+      "HR",
+      "Information Technology",
+      "Application Software",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://workday.wd5.myworkdayjobs.com/Workday"
+    }
+  },
+  {
+    "name": "WorldQuant",
+    "categories": [
+      "Finance",
+      "Quant"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "worldquant"
+    }
+  },
+  {
+    "name": "xAI",
+    "categories": [
+      "AI",
+      "Tech"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "xai"
+    }
+  },
+  {
+    "name": "Xcel Energy",
+    "categories": [
+      "Utilities",
+      "Multi-Utilities",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://xcelenergy.wd1.myworkdayjobs.com/external",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "XR Trading",
+    "categories": [
+      "Finance",
+      "Quant"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://recruiting.paylocity.com/recruiting/jobs/All/5c109104-7c4d-415c-9ee4-54e3af55f9e7/XR-Trading-LLC",
+      "prefix": "https://recruiting.paylocity.com/recruiting/jobs/"
+    }
+  },
+  {
+    "name": "Xylem Inc.",
+    "categories": [
+      "Industrials",
+      "Industrial Machinery & Supplies & Components",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://xylem.wd5.myworkdayjobs.com/xylem-careers",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "Yext",
+    "categories": [
+      "Tech",
+      "SaaS"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "yext"
+    }
+  },
+  {
+    "name": "Zapier",
+    "categories": [
+      "B2B",
+      "Productivity",
+      "SaaS",
+      "B2B",
+      "Automation",
+      "YC Top"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "zapier"
+    }
+  },
+  {
+    "name": "Zendesk",
+    "categories": [
+      "Tech",
+      "SaaS"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://www.zendesk.com/jobs/",
+      "prefix": "https://www.zendesk.com/jobs/",
+      "scroll_rounds": 15,
+      "validate_prefix": false
+    }
+  },
+  {
+    "name": "Zillow",
+    "categories": [
+      "Tech",
+      "Real Estate"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://www.zillow.com/jobs/",
+      "prefix": "https://www.zillow.com/jobs/",
+      "scroll_rounds": 15,
+      "validate_prefix": false
+    }
+  },
+  {
+    "name": "Zip (ZipHQ)",
+    "categories": [
+      "Tech",
+      "FinTech"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "zip"
+    }
+  },
+  {
+    "name": "ZipRecruiter",
+    "categories": [
+      "Tech",
+      "HR"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "ziprecruiter"
+    }
+  },
+  {
+    "name": "Zoetis",
+    "categories": [
+      "Health Care",
+      "Pharmaceuticals",
+      "S&P 500"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://zoetis.wd5.myworkdayjobs.com/broadbean_external",
+      "max_pages": 30
+    }
+  },
+  {
+    "name": "Zoox",
+    "categories": [
+      "Tech",
+      "Autonomy"
+    ],
+    "scrape": {
+      "mode": "lever",
+      "lever_slug": "zoox"
+    }
+  },
+  {
+    "name": "Zscaler",
+    "categories": [
+      "Tech",
+      "Security"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "zscaler"
+    }
+  },
+  {
+    "name": "Zynga",
+    "categories": [
+      "Gaming",
+      "Tech"
+    ],
+    "scrape": {
+      "mode": "playwright",
+      "list_url": "https://www.zynga.com/careers/positions",
+      "prefix": "https://www.zynga.com/careers/positions/",
+      "scroll_rounds": 15,
+      "validate_prefix": false
+    }
+  }
+]

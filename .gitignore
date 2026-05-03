@@ -1,0 +1,6 @@
+app/__pycache__/
+app/*.pyc
+app/data/jobs.db
+app/data/seen_jobs.json
+app/data/scan_summary.json
+.DS_Store
