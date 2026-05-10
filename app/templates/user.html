@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JobRadar — Jobs</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 14px; background: #f0f2f5; color: #1a1a1a;
+  height: 100vh; display: flex; flex-direction: column; overflow: hidden;
+}
+.topbar {
+  background: #1c2b4a; color: white; padding: 0 20px; height: 48px;
+  display: flex; align-items: center; gap: 16px; flex-shrink: 0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+.topbar-dot { width: 7px; height: 7px; border-radius: 50%; background: #5bc8a8;
+              animation: pulse 2s ease-in-out infinite; flex-shrink: 0; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+.topbar-logo { font-size: 17px; font-weight: 700; letter-spacing: -0.3px; color: white; }
+.topbar-logo span { color: #5bc8a8; }
+.nav-pill { font-size: 12px; padding: 4px 10px; border-radius: 5px; color: rgba(255,255,255,.7);
+            border: none; background: transparent; cursor: pointer; text-decoration: none;
+            display: inline-block; transition: background .12s; }
+.nav-pill:hover { background: rgba(255,255,255,.1); color: white; }
+.nav-pill.active { background: rgba(91,200,168,.2); color: #5bc8a8; }
+.topbar-stats { margin-left: auto; font-size: 12px; color: rgba(255,255,255,0.6); }
+.topbar-stats strong { color: #5bc8a8; }
+.shell { display: flex; flex: 1; overflow: hidden; }
+.sidebar { width: 280px; background: white; border-right: 1px solid #dde1e7;
+           display: flex; flex-direction: column; overflow: hidden; flex-shrink: 0; }
+.sidebar-search-wrap { padding: 12px 12px 8px; border-bottom: 1px solid #eee; flex-shrink: 0; }
+.sidebar-search { width: 100%; padding: 7px 10px; border: 1px solid #dde1e7; border-radius: 6px;
+                  font-size: 13px; outline: none; background: #f7f8fa; }
+.sidebar-search:focus { border-color: #1c2b4a; background: white; }
+.cat-wrap { padding: 8px 10px 6px; border-bottom: 1px solid #eee; display: flex;
+            flex-wrap: wrap; gap: 4px; max-height: 150px; overflow-y: auto; flex-shrink: 0; }
+.cat-wrap::-webkit-scrollbar { width: 4px; }
+.cat-wrap::-webkit-scrollbar-thumb { background: #dde1e7; border-radius: 2px; }
+.cat-btn { padding: 3px 10px; border-radius: 12px; border: 1px solid #dde1e7;
+           background: white; font-size: 11px; color: #555; cursor: pointer;
+           transition: all 0.1s; white-space: nowrap; }
+.cat-btn:hover { border-color: #1c2b4a; color: #1c2b4a; }
+.cat-btn.active { background: #1c2b4a; border-color: #1c2b4a; color: white; }
+.company-list { flex: 1; min-height: 0; overflow-y: auto; padding: 4px 6px; }
+.company-list::-webkit-scrollbar { width: 4px; }
+.company-list::-webkit-scrollbar-thumb { background: #dde1e7; border-radius: 2px; }
+.co-item { display: flex; align-items: center; gap: 8px; padding: 7px 8px;
+           border-radius: 6px; cursor: pointer; transition: background 0.1s;
+           border: 1px solid transparent; }
+.co-item:hover { background: #f0f2f5; }
+.co-item.selected { background: #e8f4ef; border-color: #5bc8a8; }
+.co-item.hidden { display: none; }
+.co-check { width: 15px; height: 15px; border: 1.5px solid #ccc; border-radius: 3px;
+            display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+            font-size: 9px; color: transparent; transition: all 0.1s; }
+.co-item.selected .co-check { background: #1c2b4a; border-color: #1c2b4a; color: white; }
+.co-name { font-size: 13px; color: #1a1a1a; flex: 1;
+           white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.co-mode { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+.co-mode.greenhouse{background:#22c55e}.co-mode.lever{background:#3b82f6}
+.co-mode.ashby{background:#a855f7}.co-mode.workday{background:#f59e0b}
+.co-mode.bamboohr{background:#14b8a6}.co-mode.icims{background:#6366f1}
+.co-mode.apple{background:#6b7280}.co-mode.google{background:#ef4444}
+.co-mode.microsoft{background:#0ea5e9}.co-mode.pinpoint{background:#ec4899}
+.co-mode.html{background:#9ca3af}.co-mode.playwright{background:#d97706}
+.sidebar-foot { padding: 10px 12px; border-top: 1px solid #eee; background: #fafafa;
+                flex-shrink: 0; }
+.sel-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px;
+           font-size: 12px; color: #666; }
+.sel-num { font-weight: 700; color: #1c2b4a; font-size: 15px; }
+.sel-link { color: #888; text-decoration: underline; cursor: pointer; font-size: 11px; }
+.sel-link:hover { color: #1c2b4a; }
+.btn-row { display: flex; gap: 6px; }
+.btn { flex: 1; padding: 8px; border-radius: 6px; border: none; cursor: pointer;
+       font-size: 12px; font-weight: 600; transition: all 0.12s; }
+.btn-show { background: #1c2b4a; color: white; }
+.btn-show:hover { background: #243660; }
+.btn-show:disabled { background: #9ca3af; cursor: not-allowed; }
+.main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+.filters-bar { background: white; border-bottom: 1px solid #dde1e7; padding: 12px 20px;
+               display: flex; align-items: center; gap: 10px; flex-shrink: 0; flex-wrap: wrap; }
+.filter-group { display: flex; flex-direction: column; gap: 3px; }
+.filter-label { font-size: 10px; font-weight: 600; color: #888;
+                text-transform: uppercase; letter-spacing: 0.05em; }
+.filter-input { padding: 7px 10px; border: 1px solid #dde1e7; border-radius: 6px;
+                font-size: 13px; outline: none; background: #f7f8fa;
+                transition: border-color 0.15s; }
+.filter-input:focus { border-color: #1c2b4a; background: white; }
+#f-keyword { width: 220px; } #f-location { width: 160px; } #f-begin { width: 140px; }
+.filter-divider { width: 1px; height: 40px; background: #eee; flex-shrink: 0; }
+.scan-go { align-self: flex-end; padding: 8px 20px; background: #5bc8a8; color: white;
+           font-size: 13px; font-weight: 700; border: none; border-radius: 6px;
+           cursor: pointer; transition: background 0.12s; white-space: nowrap; }
+.scan-go:hover { background: #44b595; }
+#filter-btn { background: #1c2b4a; } #filter-btn:hover { background: #243660; }
+.result-counts { font-size: 12px; color: #888; margin-left: auto; }
+.result-counts strong { color: #5bc8a8; font-size: 15px; }
+.results-area { flex: 1; overflow-y: auto; padding: 16px 20px; }
+.results-area::-webkit-scrollbar { width: 5px; }
+.results-area::-webkit-scrollbar-thumb { background: #dde1e7; border-radius: 3px; }
+.empty-state { display: flex; flex-direction: column; align-items: center;
+               justify-content: center; height: 100%; color: #aaa; text-align: center; }
+.empty-state .icon { font-size: 40px; margin-bottom: 12px; }
+.empty-state h3 { font-size: 16px; color: #666; margin-bottom: 6px; }
+.empty-state p { font-size: 13px; line-height: 1.6; max-width: 360px; }
+.legend { display: flex; gap: 16px; margin-top: 16px; font-size: 11px; color: #aaa; flex-wrap: wrap; justify-content: center; }
+.legend-item { display: flex; align-items: center; gap: 5px; }
+.ldot { width: 7px; height: 7px; border-radius: 50%; }
+.section-head { display: flex; align-items: center; gap: 8px; padding: 6px 0 8px;
+                border-bottom: 2px solid #1c2b4a; margin-bottom: 10px; }
+.section-title { font-size: 13px; font-weight: 700; color: #1c2b4a; }
+.new-badge { background: #5bc8a8; color: white; font-size: 9px; font-weight: 700;
+             padding: 2px 7px; border-radius: 10px; text-transform: uppercase; }
+.section-count { margin-left: auto; font-size: 11px; color: #999; }
+.results-section { margin-bottom: 28px; }
+.job-table { width: 100%; border-collapse: collapse; }
+.job-table th { text-align: left; font-size: 10px; font-weight: 600; color: #999;
+                text-transform: uppercase; letter-spacing: 0.05em; padding: 6px 10px;
+                border-bottom: 1px solid #eee; background: #fafafa; }
+.job-row { border-bottom: 1px solid #f0f2f5; transition: background 0.1s;
+           animation: rowIn 0.2s ease both; }
+.job-row:hover { background: #f7f8fa; }
+.job-row.filtered-out { display: none; }
+@keyframes rowIn { from{opacity:0;transform:translateX(-4px)} to{opacity:1;transform:translateX(0)} }
+.job-row td { padding: 9px 10px; vertical-align: middle; }
+.td-new { width: 36px; }
+.new-dot { width: 7px; height: 7px; border-radius: 50%; background: #5bc8a8; margin: 0 auto; }
+.clicked-dot { width: 7px; height: 7px; border-radius: 50%; background: #5bc8a8; margin: 0 auto; opacity: .5; }
+.td-title { max-width: 340px; }
+.job-title-link { color: #1c2b4a; text-decoration: none; font-weight: 500;
+                  font-size: 13px; line-height: 1.35; }
+.job-title-link:hover { text-decoration: underline; color: #243660; }
+.job-co { font-size: 11px; color: #888; margin-top: 2px; }
+.td-loc { width: 160px; font-size: 12px; color: #666; }
+.td-src { width: 100px; }
+.src-tag { display: inline-block; font-size: 10px; padding: 2px 7px; border-radius: 10px;
+           border: 1px solid; text-transform: uppercase; letter-spacing: 0.04em; }
+.src-tag.greenhouse{border-color:#bbf7d0;color:#15803d;background:#f0fdf4}
+.src-tag.lever{border-color:#bfdbfe;color:#1d4ed8;background:#eff6ff}
+.src-tag.ashby{border-color:#e9d5ff;color:#7c3aed;background:#faf5ff}
+.src-tag.workday{border-color:#fde68a;color:#b45309;background:#fffbeb}
+.src-tag.apple{border-color:#e5e7eb;color:#374151;background:#f9fafb}
+.src-tag.google{border-color:#fecaca;color:#b91c1c;background:#fef2f2}
+.src-tag.microsoft{border-color:#bae6fd;color:#0369a1;background:#f0f9ff}
+.src-tag.html{border-color:#e5e7eb;color:#6b7280;background:#f9fafb}
+.src-tag.playwright{border-color:#fed7aa;color:#c2410c;background:#fff7ed}
+.src-tag.bamboohr{border-color:#99f6e4;color:#0f766e;background:#f0fdfa}
+.src-tag.icims{border-color:#c7d2fe;color:#4338ca;background:#eef2ff}
+.src-tag.pinpoint{border-color:#fce7f3;color:#be185d;background:#fdf2f8}
+.td-date { width: 120px; font-size: 11px; color: #aaa; white-space: nowrap; }
+.td-date.has-posted { color: #1c2b4a; font-weight: 500; }
+.no-match { text-align: center; padding: 40px 0; color: #aaa; font-size: 13px; display: none; }
+.old-toggle-btn { display: block; width: 100%; padding: 10px; margin: 12px 0 4px;
+                  background: #f7f8fa; border: 1px dashed #dde1e7; border-radius: 6px;
+                  color: #999; cursor: pointer; font-size: 12px; font-weight: 500;
+                  text-align: center; transition: all 0.1s; }
+.old-toggle-btn:hover { background: #eef0f3; color: #555; border-color: #bbb; }
+.page-controls { display: flex; align-items: center; justify-content: center;
+                 gap: 10px; margin: 16px 0 12px; }
+.page-btn { padding: 7px 12px; border-radius: 6px; border: 1px solid #dde1e7;
+            background: white; color: #1c2b4a; font-size: 12px; font-weight: 700; cursor: pointer; }
+.page-btn:disabled { color: #aaa; cursor: not-allowed; background: #f7f8fa; }
+.page-info { font-size: 12px; color: #777; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-dot"></div>
+  <div class="topbar-logo">Job<span>Radar</span></div>
+  <span class="nav-pill active">Jobs</span>
+  <a href="/admin" class="nav-pill">Scan Board</a>
+  <div class="topbar-stats">
+    <strong id="hdr-sel">0</strong> selected &nbsp;·&nbsp;
+    <strong id="hdr-total">{{ companies|length }}</strong> companies
+  </div>
+</div>
+
+<div class="shell">
+  <aside class="sidebar">
+    <div class="sidebar-search-wrap">
+      <input class="sidebar-search" id="sidebar-search" placeholder="Search companies..." oninput="filterSidebar()">
+    </div>
+    <div class="cat-wrap" id="cat-wrap"></div>
+    <div class="company-list" id="company-list"></div>
+    <div class="sidebar-foot">
+      <div class="sel-row">
+        <span class="sel-num" id="sel-count">0</span>
+        <span style="color:#666">selected</span>
+        <span class="sel-link" onclick="selectAllVisible()">all</span>
+        <span class="sel-link" onclick="deselectAll()">none</span>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-show" id="btn-show" onclick="showJobs()" disabled>Show Jobs</button>
+      </div>
+    </div>
+  </aside>
+
+  <div class="main">
+    <div class="filters-bar">
+      <div class="filter-group">
+        <div class="filter-label">Keyword (job title)</div>
+        <input class="filter-input" id="f-keyword" type="text" placeholder="e.g. software engineer">
+      </div>
+      <div class="filter-divider"></div>
+      <div class="filter-group">
+        <div class="filter-label">Location</div>
+        <input class="filter-input" id="f-location" type="text" placeholder="e.g. New York">
+      </div>
+      <div class="filter-divider"></div>
+      <div class="filter-group">
+        <div class="filter-label">Posted / seen after</div>
+        <input class="filter-input" id="f-begin" type="date">
+      </div>
+      <button class="scan-go" id="filter-btn" onclick="applyFilters(null,1)">⌕ Filter</button>
+      <div class="result-counts" id="result-counts" style="display:none">
+        <strong id="stat-new">—</strong> new &nbsp;·&nbsp;
+        <strong id="stat-clicked" style="color:#5bc8a8">—</strong> opened &nbsp;/&nbsp;
+        <strong id="stat-total" style="color:#1c2b4a">—</strong> total
+      </div>
+    </div>
+
+    <div class="results-area" id="results-area">
+      <div class="empty-state" id="empty-state">
+        <div class="icon">📋</div>
+        <h3>Select companies, then click Show Jobs</h3>
+        <p>Pick one or more companies from the sidebar to browse their stored jobs.<br>
+        Use the filters above to narrow by keyword, location, or date.</p>
+        <div class="legend">
+          <div class="legend-item"><div class="ldot" style="background:#22c55e"></div>Greenhouse</div>
+          <div class="legend-item"><div class="ldot" style="background:#3b82f6"></div>Lever</div>
+          <div class="legend-item"><div class="ldot" style="background:#a855f7"></div>Ashby</div>
+          <div class="legend-item"><div class="ldot" style="background:#f59e0b"></div>Workday</div>
+          <div class="legend-item"><div class="ldot" style="background:#d97706"></div>Playwright</div>
+          <div class="legend-item"><div class="ldot" style="background:#9ca3af"></div>Other</div>
+        </div>
+      </div>
+      <div id="results-container" style="display:none">
+        <div id="new-section"></div>
+        <button id="old-toggle" onclick="toggleOldJobs()" style="display:none" class="old-toggle-btn"></button>
+        <div id="old-section"></div>
+        <div id="page-controls"></div>
+        <button id="clicked-toggle" onclick="toggleClickedJobs()" style="display:none" class="old-toggle-btn"></button>
+        <div id="clicked-section"></div>
+        <div class="no-match" id="no-match">No jobs match your filter.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const COMPANIES   = {{ companies|tojson }};
+const RECENT_DAYS = 7;
+const CLICKED_KEY = 'jobradar_clicked';
+let selected         = new Set();
+let activeSidebarCat = 'All';
+let allResults       = [];
+let currentPage  = 1;
+let currentTotal = 0;
+let currentLimit = 100;
+
+function getClicked() {
+  try { return new Set(JSON.parse(localStorage.getItem(CLICKED_KEY)||'[]')); } catch { return new Set(); }
+}
+function markClicked(id) {
+  const s = getClicked(); s.add(id);
+  localStorage.setItem(CLICKED_KEY, JSON.stringify([...s]));
+}
+function isRecent(fs) {
+  if (!fs) return true;
+  const cut = new Date(); cut.setDate(cut.getDate() - RECENT_DAYS);
+  return new Date(fs.slice(0,10)) >= cut;
+}
+function onJobClick(id) {
+  markClicked(id);
+  const area = document.getElementById('results-area');
+  const top  = area.scrollTop;
+  setTimeout(() => { renderResults(allResults); area.scrollTop = top; }, 80);
+}
+
+// ── Sidebar ───────────────────────────────────────────────────────────────────
+const allCats = ['All', ...new Set(COMPANIES.flatMap(c => c.categories||[]))].sort(
+  (a,b) => a==='All' ? -1 : b==='All' ? 1 : a.localeCompare(b)
+);
+
+function buildSidebar() {
+  const cw = document.getElementById('cat-wrap');
+  allCats.forEach(cat => {
+    const b = document.createElement('button');
+    b.className = 'cat-btn' + (cat==='All' ? ' active' : '');
+    b.textContent = cat;
+    b.onclick = () => {
+      activeSidebarCat = cat;
+      document.querySelectorAll('.cat-btn').forEach(x => x.classList.remove('active'));
+      b.classList.add('active');
+      filterSidebar();
+      if (resultsVisible()) applyFilters(null, 1);
+    };
+    cw.appendChild(b);
+  });
+  const list = document.getElementById('company-list');
+  COMPANIES.forEach((c, i) => {
+    const mode = (c.scrape||{}).mode || 'html';
+    const div = document.createElement('div');
+    div.className = 'co-item'; div.dataset.idx = i;
+    div.innerHTML = `<div class="co-check">✓</div>
+      <div class="co-name">${esc2(c.name)}</div>
+      <div class="co-mode ${mode}"></div>`;
+    div.onclick = () => toggleCo(i, div);
+    list.appendChild(div);
+  });
+}
+
+function toggleCo(idx, el) {
+  if (selected.has(idx)) { selected.delete(idx); el.classList.remove('selected'); }
+  else { selected.add(idx); el.classList.add('selected'); }
+  updateCounts();
+}
+function filterSidebar() {
+  const q = document.getElementById('sidebar-search').value.toLowerCase();
+  document.querySelectorAll('.co-item').forEach(el => {
+    const c = COMPANIES[el.dataset.idx];
+    const matchCat = activeSidebarCat==='All' || (c.categories||[]).includes(activeSidebarCat);
+    const matchQ   = !q || c.name.toLowerCase().includes(q);
+    el.classList.toggle('hidden', !(matchCat && matchQ));
+  });
+}
+function resultsVisible() { return document.getElementById('results-container').style.display !== 'none'; }
+function selectAllVisible() {
+  document.querySelectorAll('.co-item:not(.hidden)').forEach(el => { selected.add(+el.dataset.idx); el.classList.add('selected'); });
+  updateCounts();
+}
+function deselectAll() {
+  selected.clear();
+  document.querySelectorAll('.co-item').forEach(el => el.classList.remove('selected'));
+  updateCounts();
+}
+function updateCounts() {
+  const n = selected.size;
+  document.getElementById('sel-count').textContent = n;
+  document.getElementById('hdr-sel').textContent   = n;
+  document.getElementById('btn-show').disabled = n === 0;
+}
+
+// ── Load jobs ─────────────────────────────────────────────────────────────────
+function selectedCompanyNames() { return [...selected].map(i => COMPANIES[i].name); }
+
+function showEmptyMessage(msg) {
+  allResults = []; currentTotal = 0;
+  document.getElementById('empty-state').style.display = 'none';
+  document.getElementById('result-counts').style.display = 'none';
+  document.getElementById('results-container').style.display = 'block';
+  ['clicked-section','new-section','old-section','page-controls'].forEach(id =>
+    document.getElementById(id).innerHTML = '');
+  document.getElementById('old-toggle').style.display = 'none';
+  document.getElementById('clicked-toggle').style.display = 'none';
+  const nm = document.getElementById('no-match');
+  nm.textContent = msg; nm.style.display = 'block';
+}
+
+async function applyFilters(companyNames, page) {
+  page = page || 1;
+  const names = companyNames || selectedCompanyNames();
+  if (!names.length) { showEmptyMessage('Select at least one company, then click Show Jobs.'); return; }
+  const kw  = (document.getElementById('f-keyword').value  || '').trim();
+  const loc = (document.getElementById('f-location').value || '').trim();
+  const dt  = (document.getElementById('f-begin').value    || '').trim();
+  const params = new URLSearchParams();
+  params.set('limit', '100');
+  params.set('page', String(page));
+  if (kw)  params.set('keyword', kw);
+  if (loc) params.set('location', loc);
+  if (dt)  params.set('since', dt);
+  if (activeSidebarCat !== 'All') params.set('category', activeSidebarCat);
+  names.forEach(name => params.append('company', name));
+  try {
+    const resp = await fetch('/api/jobs?' + params);
+    if (!resp.ok) return;
+    const payload = await resp.json();
+    const jobs = Array.isArray(payload) ? payload : (payload.jobs || []);
+    if (!Array.isArray(jobs)) return;
+    allResults   = jobs;
+    currentPage  = Number(payload.page  || page);
+    currentLimit = Number(payload.limit || 100);
+    currentTotal = Number(payload.total ?? jobs.length);
+    renderResults(jobs);
+  } catch(e) { console.error('Failed to load jobs:', e); }
+}
+
+function filterDOM() {
+  if (!resultsVisible()) return;
+  const kw  = (document.getElementById('f-keyword').value  || '').toLowerCase().trim();
+  const loc = (document.getElementById('f-location').value || '').toLowerCase().trim();
+  let vis = 0;
+  document.querySelectorAll('.job-row').forEach(row => {
+    const rowCats  = JSON.parse(row.dataset.cats || '[]');
+    const matchCat = activeSidebarCat==='All' || rowCats.includes(activeSidebarCat);
+    const matchKw  = !kw  || row.dataset.title.includes(kw) || row.dataset.co.includes(kw);
+    const matchLoc = !loc || row.dataset.loc.includes(loc);
+    const show = matchCat && matchKw && matchLoc;
+    row.classList.toggle('filtered-out', !show);
+    if (show) vis++;
+  });
+  document.getElementById('no-match').style.display = vis===0 ? 'block' : 'none';
+}
+
+async function showJobs() {
+  const names = selectedCompanyNames();
+  if (!names.length) return;
+  await applyFilters(names, 1);
+}
+
+// ── Render ────────────────────────────────────────────────────────────────────
+function renderResults(jobs) {
+  const clicked   = getClicked();
+  const clickedJs = jobs.filter(j => clicked.has(j.id));
+  const freshJobs = jobs.filter(j => !clicked.has(j.id) && isRecent(j.first_seen));
+  const oldJobs   = jobs.filter(j => !clicked.has(j.id) && !isRecent(j.first_seen));
+  const totalPages = Math.max(1, Math.ceil(currentTotal / currentLimit));
+  const startRow   = currentTotal ? (currentPage-1)*currentLimit+1 : 0;
+  const endRow     = Math.min(currentPage*currentLimit, currentTotal);
+
+  document.getElementById('empty-state').style.display  = 'none';
+  document.getElementById('result-counts').style.display = '';
+  document.getElementById('stat-new').textContent     = freshJobs.length;
+  document.getElementById('stat-clicked').textContent = clickedJs.length;
+  document.getElementById('stat-total').textContent   = currentTotal;
+
+  if (!jobs.length) {
+    ['clicked-section','new-section','old-section','page-controls'].forEach(id =>
+      document.getElementById(id).innerHTML = '');
+    document.getElementById('results-container').style.display = 'block';
+    document.getElementById('no-match').textContent = 'No jobs match your filter.';
+    document.getElementById('no-match').style.display = 'block';
+    document.getElementById('old-toggle').style.display = 'none';
+    document.getElementById('clicked-toggle').style.display = 'none';
+    return;
+  }
+  document.getElementById('no-match').style.display = 'none';
+  document.getElementById('results-container').style.display = 'block';
+
+  renderSection('new-section',     freshJobs, '🆕 New — not opened yet', true,  'new');
+  renderSection('old-section',     oldJobs,   'Older jobs',              false, 'old');
+  renderPagination(startRow, endRow, totalPages);
+  renderSection('clicked-section', clickedJs, '✓ Applied / Opened',     false, 'clicked');
+
+  const oldToggle = document.getElementById('old-toggle');
+  if (oldJobs.length > 0) {
+    oldToggle.textContent = `▼ Show ${oldJobs.length} older jobs`;
+    oldToggle.style.display = 'block';
+    document.getElementById('old-section').style.display = 'none';
+  } else { oldToggle.style.display = 'none'; }
+
+  const clickedToggle = document.getElementById('clicked-toggle');
+  if (clickedJs.length > 0) {
+    clickedToggle.textContent = `▼ Show ${clickedJs.length} opened / applied jobs`;
+    clickedToggle.style.display = 'block';
+    document.getElementById('clicked-section').style.display = 'none';
+  } else {
+    clickedToggle.style.display = 'none';
+    document.getElementById('clicked-section').style.display = 'none';
+  }
+}
+
+function renderPagination(startRow, endRow, totalPages) {
+  const el = document.getElementById('page-controls');
+  if (!currentTotal) { el.innerHTML = ''; return; }
+  el.innerHTML = `<div class="page-controls">
+    <button class="page-btn" onclick="goPage(${currentPage-1})" ${currentPage<=1?'disabled':''}>Prev</button>
+    <span class="page-info">Page ${currentPage} / ${totalPages} · ${startRow}–${endRow} of ${currentTotal}</span>
+    <button class="page-btn" onclick="goPage(${currentPage+1})" ${currentPage>=totalPages?'disabled':''}>Next</button>
+  </div>`;
+}
+async function goPage(page) {
+  const totalPages = Math.max(1, Math.ceil(currentTotal / currentLimit));
+  if (page < 1 || page > totalPages) return;
+  await applyFilters(null, page);
+  document.getElementById('results-area').scrollTop = 0;
+}
+
+function toggleOldJobs() {
+  const sec = document.getElementById('old-section');
+  const btn = document.getElementById('old-toggle');
+  const show = sec.style.display === 'none';
+  sec.style.display = show ? 'block' : 'none';
+  const n = sec.querySelectorAll('.job-row').length;
+  btn.textContent = show ? `▲ Hide ${n} older jobs` : `▼ Show ${n} older jobs`;
+}
+function toggleClickedJobs() {
+  const sec = document.getElementById('clicked-section');
+  const btn = document.getElementById('clicked-toggle');
+  const show = sec.style.display === 'none';
+  sec.style.display = show ? 'block' : 'none';
+  const n = sec.querySelectorAll('.job-row').length;
+  btn.textContent = show ? `▲ Hide ${n} opened / applied jobs` : `▼ Show ${n} opened / applied jobs`;
+}
+
+function renderSection(id, jobs, title, isNew, bucket) {
+  const el = document.getElementById(id);
+  if (!jobs.length) { el.innerHTML = ''; return; }
+  const rows = jobs.map((j, idx) => {
+    const loc      = j.location || '—';
+    const hasPosted = j.posted && j.posted.length >= 8;
+    const dateVal   = hasPosted ? j.posted : '—';
+    const dateLabel = hasPosted ? 'Posted' : '';
+    const dateCls   = hasPosted ? 'td-date has-posted' : 'td-date';
+    const source   = j.source || 'html';
+    const dotCell  = bucket==='new' ? '<div class="new-dot"></div>'
+                   : bucket==='clicked' ? '<div class="clicked-dot"></div>' : '';
+    const titleHtml = j.url
+      ? `<a class="job-title-link" href="${escAttr(j.url)}" target="_blank" rel="noopener"
+           onclick="onJobClick('${j.id}')">${esc2(j.title)}</a>`
+      : `<span class="job-title-link">${esc2(j.title)}</span>`;
+    return `<tr class="job-row" data-title="${esc(j.title)}" data-co="${esc(j.company)}"
+              data-loc="${esc(j.location||'')}" data-seen="${(j.first_seen||'').slice(0,10)}"
+              data-cats='${JSON.stringify(j.categories||[])}' style="animation-delay:${idx*6}ms">
+      <td class="td-new">${dotCell}</td>
+      <td class="td-title">${titleHtml}<div class="job-co">${esc2(j.company)}</div></td>
+      <td class="td-loc">${esc2(loc)}</td>
+      <td class="td-src"><span class="src-tag ${source}">${source}</span></td>
+      <td class="${dateCls}">${hasPosted ? 'Posted: ' + dateVal : dateVal}</td>
+    </tr>`;
+  }).join('');
+  el.innerHTML = `<div class="results-section">
+    <div class="section-head">
+      <span class="section-title">${title}</span>
+      ${isNew ? '<span class="new-badge">NEW</span>' : ''}
+      <span class="section-count">${jobs.length} listings</span>
+    </div>
+    <table class="job-table">
+      <thead><tr><th></th><th>Title / Company</th><th>Location</th><th>Source</th><th>Posted</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+  </div>`;
+}
+
+function esc(s)    { return (s||'').toLowerCase(); }
+function escAttr(s){ return (s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function esc2(s)   { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+buildSidebar();
+updateCounts();
+
+document.addEventListener('DOMContentLoaded', () => {
+  ['f-keyword','f-location'].forEach(id =>
+    document.getElementById(id).addEventListener('input', filterDOM));
+  document.getElementById('f-begin').addEventListener('change', () => {
+    if (resultsVisible()) applyFilters(null, 1);
+  });
+});
+</script>
+</body>
+</html>

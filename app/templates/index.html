@@ -519,6 +519,25 @@ body {
   transition: all 0.1s;
 }
 .old-toggle-btn:hover { background: #eef0f3; color: #555; border-color: #bbb; }
+.page-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 16px 0 12px;
+}
+.page-btn {
+  padding: 7px 12px;
+  border-radius: 6px;
+  border: 1px solid #dde1e7;
+  background: white;
+  color: #1c2b4a;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.page-btn:disabled { color: #aaa; cursor: not-allowed; background: #f7f8fa; }
+.page-info { font-size: 12px; color: #777; }
 .clicked-dot {
   width: 7px; height: 7px;
   border-radius: 50%;
@@ -624,10 +643,12 @@ body {
         </div>
       </div>
       <div id="results-container" style="display:none">
-        <div id="clicked-section"></div>
         <div id="new-section"></div>
         <button id="old-toggle" onclick="toggleOldJobs()" style="display:none" class="old-toggle-btn"></button>
         <div id="old-section"></div>
+        <div id="page-controls"></div>
+        <button id="clicked-toggle" onclick="toggleClickedJobs()" style="display:none" class="old-toggle-btn"></button>
+        <div id="clicked-section"></div>
         <div class="no-match" id="no-match">No jobs match your filter.</div>
       </div>
     </div>
@@ -643,6 +664,9 @@ let selected         = new Set();
 let activeSidebarCat = 'All';
 let scanInterval     = null;
 let allResults       = [];
+let currentPage      = 1;
+let currentTotal     = 0;
+let currentLimit     = 100;
 
 // ── Click tracking (localStorage) ────────────────────────────────────────────
 function getClicked() {
@@ -682,7 +706,7 @@ function buildSidebar() {
       document.querySelectorAll('.cat-btn').forEach(x => x.classList.remove('active'));
       b.classList.add('active');
       filterSidebar();
-      if (document.getElementById('results-container').style.display !== 'none') applyFilters();
+      if (resultsVisible()) applyFilters(null, 1);
     };
     catWrap.appendChild(b);
   });
@@ -719,6 +743,10 @@ function filterSidebar() {
   });
 }
 
+function resultsVisible() {
+  return document.getElementById('results-container').style.display !== 'none';
+}
+
 function selectAllVisible() {
   document.querySelectorAll('.co-item:not(.hidden)').forEach(el => {
     selected.add(+el.dataset.idx);
@@ -740,23 +768,55 @@ function updateCounts() {
 }
 
 // ── Browse jobs from DB ───────────────────────────────────────────────────────
-async function applyFilters() {
+function selectedCompanyNames() {
+  return [...selected].map(i => COMPANIES[i].name);
+}
+
+function showEmptyMessage(message) {
+  allResults = [];
+  currentTotal = 0;
+  document.getElementById('empty-state').style.display = 'none';
+  document.getElementById('result-counts').style.display = 'none';
+  document.getElementById('results-container').style.display = 'block';
+  ['clicked-section','new-section','old-section','page-controls'].forEach(id =>
+    document.getElementById(id).innerHTML = '');
+  document.getElementById('old-toggle').style.display = 'none';
+  document.getElementById('clicked-toggle').style.display = 'none';
+  const noMatch = document.getElementById('no-match');
+  noMatch.textContent = message;
+  noMatch.style.display = 'block';
+}
+
+async function applyFilters(companyNames = null, page = 1) {
+  const names = companyNames || selectedCompanyNames();
+  if (!names.length) {
+    showEmptyMessage('Select at least one company, then click Show Jobs.');
+    return;
+  }
+
   const kw  = (document.getElementById('f-keyword').value  || '').trim();
   const loc = (document.getElementById('f-location').value || '').trim();
   const dt  = (document.getElementById('f-begin').value    || '').trim();
 
   const params = new URLSearchParams();
+  params.set('limit', '100');
+  params.set('page', String(page));
   if (kw)  params.set('keyword', kw);
   if (loc) params.set('location', loc);
   if (dt)  params.set('since', dt);
   if (activeSidebarCat !== 'All') params.set('category', activeSidebarCat);
+  names.forEach(name => params.append('company', name));
 
   try {
     const resp = await fetch('/api/jobs?' + params);
     if (!resp.ok) return;
-    const jobs = await resp.json();
+    const payload = await resp.json();
+    const jobs = Array.isArray(payload) ? payload : (payload.jobs || []);
     if (!Array.isArray(jobs)) return;
     allResults = jobs;
+    currentPage = Number(payload.page || page);
+    currentLimit = Number(payload.limit || 100);
+    currentTotal = Number(payload.total ?? jobs.length);
     renderResults(jobs);
   } catch(e) {
     console.error('Failed to load jobs:', e);
@@ -765,7 +825,7 @@ async function applyFilters() {
 
 // Fast in-DOM filter while user types keyword/location (no network round-trip)
 function filterDOM() {
-  if (document.getElementById('results-container').style.display === 'none') return;
+  if (!resultsVisible()) return;
   const kw  = (document.getElementById('f-keyword').value  || '').toLowerCase().trim();
   const loc = (document.getElementById('f-location').value || '').toLowerCase().trim();
   // Note: date filter always goes to the DB API; DOM filter handles kw+loc only
@@ -783,12 +843,11 @@ function filterDOM() {
 }
 
 async function showJobs() {
+  const names = selectedCompanyNames();
   document.getElementById('f-keyword').value  = '';
   document.getElementById('f-location').value = '';
   document.getElementById('f-begin').value    = '';
-  activeSidebarCat = 'All';
-  document.querySelectorAll('.cat-btn').forEach(b => b.classList.toggle('active', b.textContent === 'All'));
-  await applyFilters();
+  await applyFilters(names, 1);
 }
 
 // ── Scan ─────────────────────────────────────────────────────────────────────
@@ -871,7 +930,7 @@ async function pollProgress() {
     scanBtn.disabled    = false;
     scanBtn.textContent = '▶ Scan';
     // Reload from DB so posted dates and normalized locations are reflected
-    await applyFilters();
+    await applyFilters(null, 1);
   }
 }
 
@@ -881,27 +940,34 @@ function renderResults(jobs) {
   const clickedJs  = jobs.filter(j => clicked.has(j.id));
   const freshJobs  = jobs.filter(j => !clicked.has(j.id) && isRecent(j.first_seen));
   const oldJobs    = jobs.filter(j => !clicked.has(j.id) && !isRecent(j.first_seen));
+  const totalPages = Math.max(1, Math.ceil(currentTotal / currentLimit));
+  const startRow   = currentTotal ? ((currentPage - 1) * currentLimit) + 1 : 0;
+  const endRow     = Math.min(currentPage * currentLimit, currentTotal);
 
   document.getElementById('empty-state').style.display = 'none';
   document.getElementById('result-counts').style.display = '';
   document.getElementById('stat-new').textContent     = freshJobs.length;
   document.getElementById('stat-clicked').textContent = clickedJs.length;
-  document.getElementById('stat-total').textContent   = jobs.length;
+  document.getElementById('stat-total').textContent   = currentTotal;
 
   if (!jobs.length) {
-    ['clicked-section','new-section','old-section'].forEach(id =>
+    ['clicked-section','new-section','old-section','page-controls'].forEach(id =>
       document.getElementById(id).innerHTML = '');
     document.getElementById('results-container').style.display = 'block';
+    document.getElementById('no-match').textContent = 'No jobs match your filter.';
     document.getElementById('no-match').style.display = 'block';
     document.getElementById('old-toggle').style.display = 'none';
+    document.getElementById('clicked-toggle').style.display = 'none';
     return;
   }
+  document.getElementById('no-match').textContent = 'No jobs match your filter.';
   document.getElementById('no-match').style.display = 'none';
   document.getElementById('results-container').style.display = 'block';
 
-  renderSection('clicked-section', clickedJs, '✓ Applied / Opened',  false, 'clicked');
   renderSection('new-section',     freshJobs, '🆕 New — not opened yet', true,  'new');
   renderSection('old-section',     oldJobs,   'Older jobs',           false, 'old');
+  renderPagination(startRow, endRow, totalPages);
+  renderSection('clicked-section', clickedJs, '✓ Applied / Opened',  false, 'clicked');
 
   const oldToggle = document.getElementById('old-toggle');
   if (oldJobs.length > 0) {
@@ -911,6 +977,34 @@ function renderResults(jobs) {
   } else {
     oldToggle.style.display = 'none';
   }
+
+  const clickedToggle = document.getElementById('clicked-toggle');
+  if (clickedJs.length > 0) {
+    clickedToggle.textContent = `▼ Show ${clickedJs.length} opened / applied jobs`;
+    clickedToggle.style.display = 'block';
+    document.getElementById('clicked-section').style.display = 'none';
+  } else {
+    clickedToggle.style.display = 'none';
+    document.getElementById('clicked-section').style.display = 'none';
+  }
+}
+
+function renderPagination(startRow, endRow, totalPages) {
+  const el = document.getElementById('page-controls');
+  if (!currentTotal) { el.innerHTML = ''; return; }
+  el.innerHTML = `
+    <div class="page-controls">
+      <button class="page-btn" onclick="goPage(${currentPage - 1})" ${currentPage <= 1 ? 'disabled' : ''}>Prev</button>
+      <span class="page-info">Page ${currentPage} / ${totalPages} · ${startRow}-${endRow} of ${currentTotal}</span>
+      <button class="page-btn" onclick="goPage(${currentPage + 1})" ${currentPage >= totalPages ? 'disabled' : ''}>Next</button>
+    </div>`;
+}
+
+async function goPage(page) {
+  const totalPages = Math.max(1, Math.ceil(currentTotal / currentLimit));
+  if (page < 1 || page > totalPages) return;
+  await applyFilters(null, page);
+  document.getElementById('results-area').scrollTop = 0;
 }
 
 function toggleOldJobs() {
@@ -922,6 +1016,15 @@ function toggleOldJobs() {
   btn.textContent = show ? `▲ Hide ${n} older jobs` : `▼ Show ${n} older jobs`;
 }
 
+function toggleClickedJobs() {
+  const sec  = document.getElementById('clicked-section');
+  const btn  = document.getElementById('clicked-toggle');
+  const show = sec.style.display === 'none';
+  sec.style.display = show ? 'block' : 'none';
+  const n = sec.querySelectorAll('.job-row').length;
+  btn.textContent = show ? `▲ Hide ${n} opened / applied jobs` : `▼ Show ${n} opened / applied jobs`;
+}
+
 function renderSection(id, jobs, title, isNew, bucket) {
   const el = document.getElementById(id);
   if (!jobs.length) { el.innerHTML = ''; return; }
@@ -929,8 +1032,8 @@ function renderSection(id, jobs, title, isNew, bucket) {
   const rows = jobs.map((j, idx) => {
     const loc      = j.location || '—';
     const hasPosted = j.posted && j.posted.length >= 8;
-    const dateVal  = hasPosted ? j.posted : (j.first_seen || '').slice(0,10);
-    const dateLabel = hasPosted ? 'Posted' : 'Seen';
+    const dateVal  = hasPosted ? j.posted : '';
+    const dateLabel = hasPosted ? 'Posted' : '';
     const dateCls  = hasPosted ? 'td-date has-posted' : 'td-date';
     const source   = j.source || 'html';
     const dotCell = bucket === 'new'
@@ -955,7 +1058,7 @@ function renderSection(id, jobs, title, isNew, bucket) {
       </td>
       <td class="td-loc">${esc2(loc)}</td>
       <td class="td-src"><span class="src-tag ${source}">${source}</span></td>
-      <td class="${dateCls}">${dateLabel}: ${dateVal || '—'}</td>
+      <td class="${dateCls}">${hasPosted ? dateLabel + ': ' + dateVal : '—'}</td>
     </tr>`;
   }).join('');
 
@@ -997,7 +1100,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   );
   // Date picker: re-query DB on change
   document.getElementById('f-begin').addEventListener('change', () => {
-    if (document.getElementById('results-container').style.display !== 'none') applyFilters();
+    if (resultsVisible()) applyFilters(null, 1);
   });
   // Check if a scan is already running (e.g., page reload mid-scan)
   const state = await fetch('/api/progress').then(r => r.json()).catch(() => null);
@@ -1010,7 +1113,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     scanInterval = setInterval(pollProgress, 700);
   } else {
     // Auto-load stored jobs from DB
-    await applyFilters();
+    await applyFilters(null, 1);
   }
 });
 </script>

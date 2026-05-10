@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JobRadar — Scan Board</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 14px; background: #f0f2f5; color: #1a1a1a;
+  height: 100vh; display: flex; flex-direction: column; overflow: hidden;
+}
+.topbar {
+  background: #1c2b4a; color: white; padding: 0 20px; height: 48px;
+  display: flex; align-items: center; gap: 16px; flex-shrink: 0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+.topbar-dot { width: 7px; height: 7px; border-radius: 50%; background: #5bc8a8;
+              animation: pulse 2s ease-in-out infinite; flex-shrink: 0; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+.topbar-logo { font-size: 17px; font-weight: 700; letter-spacing: -0.3px; color: white; }
+.topbar-logo span { color: #5bc8a8; }
+.nav-pill { font-size: 12px; padding: 4px 10px; border-radius: 5px; color: rgba(255,255,255,.7);
+            border: none; background: transparent; cursor: pointer; text-decoration: none;
+            display: inline-block; transition: background .12s; }
+.nav-pill:hover { background: rgba(255,255,255,.1); color: white; }
+.nav-pill.active { background: rgba(91,200,168,.2); color: #5bc8a8; }
+.topbar-stats { margin-left: auto; font-size: 12px; color: rgba(255,255,255,0.6); }
+.topbar-stats strong { color: #5bc8a8; }
+.shell { display: flex; flex: 1; overflow: hidden; position: relative; }
+
+/* ── Sidebar (identical to user.html) ── */
+.sidebar { width: 280px; background: white; border-right: 1px solid #dde1e7;
+           display: flex; flex-direction: column; overflow: hidden; flex-shrink: 0; }
+.sidebar-search-wrap { padding: 12px 12px 8px; border-bottom: 1px solid #eee; flex-shrink: 0; }
+.sidebar-search { width: 100%; padding: 7px 10px; border: 1px solid #dde1e7; border-radius: 6px;
+                  font-size: 13px; outline: none; background: #f7f8fa; }
+.sidebar-search:focus { border-color: #1c2b4a; background: white; }
+.cat-wrap { padding: 8px 10px 6px; border-bottom: 1px solid #eee; display: flex;
+            flex-wrap: wrap; gap: 4px; max-height: 150px; overflow-y: auto; flex-shrink: 0; }
+.cat-wrap::-webkit-scrollbar { width: 4px; }
+.cat-wrap::-webkit-scrollbar-thumb { background: #dde1e7; border-radius: 2px; }
+.cat-btn { padding: 3px 10px; border-radius: 12px; border: 1px solid #dde1e7;
+           background: white; font-size: 11px; color: #555; cursor: pointer;
+           transition: all 0.1s; white-space: nowrap; }
+.cat-btn:hover { border-color: #1c2b4a; color: #1c2b4a; }
+.cat-btn.active { background: #1c2b4a; border-color: #1c2b4a; color: white; }
+.company-list { flex: 1; min-height: 0; overflow-y: auto; padding: 4px 6px; }
+.company-list::-webkit-scrollbar { width: 4px; }
+.company-list::-webkit-scrollbar-thumb { background: #dde1e7; border-radius: 2px; }
+.co-item { display: flex; align-items: center; gap: 8px; padding: 7px 8px;
+           border-radius: 6px; cursor: pointer; transition: background 0.1s;
+           border: 1px solid transparent; }
+.co-item:hover { background: #f0f2f5; }
+.co-item.selected { background: #e8f4ef; border-color: #5bc8a8; }
+.co-item.hidden { display: none; }
+.co-check { width: 15px; height: 15px; border: 1.5px solid #ccc; border-radius: 3px;
+            display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+            font-size: 9px; color: transparent; transition: all 0.1s; }
+.co-item.selected .co-check { background: #1c2b4a; border-color: #1c2b4a; color: white; }
+.co-name { font-size: 13px; color: #1a1a1a; flex: 1;
+           white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.co-mode { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+.co-mode.greenhouse{background:#22c55e}.co-mode.lever{background:#3b82f6}
+.co-mode.ashby{background:#a855f7}.co-mode.workday{background:#f59e0b}
+.co-mode.bamboohr{background:#14b8a6}.co-mode.icims{background:#6366f1}
+.co-mode.apple{background:#6b7280}.co-mode.google{background:#ef4444}
+.co-mode.microsoft{background:#0ea5e9}.co-mode.pinpoint{background:#ec4899}
+.co-mode.html{background:#9ca3af}.co-mode.playwright{background:#d97706}
+.sidebar-foot { padding: 10px 12px; border-top: 1px solid #eee; background: #fafafa; flex-shrink: 0; }
+.sel-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px;
+           font-size: 12px; color: #666; }
+.sel-num { font-weight: 700; color: #1c2b4a; font-size: 15px; }
+.sel-link { color: #888; text-decoration: underline; cursor: pointer; font-size: 11px; }
+.sel-link:hover { color: #1c2b4a; }
+.btn-row { display: flex; gap: 6px; }
+.btn { flex: 1; padding: 8px; border-radius: 6px; border: none; cursor: pointer;
+       font-size: 12px; font-weight: 600; transition: all 0.12s; }
+.btn-scan { background: #1c2b4a; color: white; }
+.btn-scan:hover { background: #243660; }
+.btn-scan:disabled { background: #9ca3af; cursor: not-allowed; }
+.btn-stop { background: #dc2626; color: white; flex: 0 0 auto; padding: 8px 12px; }
+.btn-stop:hover { background: #b91c1c; }
+.reset-link { display: block; margin-top: 8px; text-align: center; font-size: 11px;
+              color: #aaa; cursor: pointer; text-decoration: underline; }
+.reset-link:hover { color: #c0392b; }
+
+/* ── Main ── */
+.main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+
+/* Progress */
+.progress-bar-wrap { padding: 10px 20px; background: white; border-bottom: 1px solid #eee;
+                     display: none; flex-shrink: 0; max-height: 200px; overflow: hidden; }
+.progress-bar-wrap.visible { display: block; }
+.progress-track { height: 3px; background: #eee; border-radius: 2px; overflow: hidden; margin-bottom: 6px; }
+.progress-fill  { height: 100%; background: #5bc8a8; transition: width 0.3s; border-radius: 2px; }
+.progress-text  { font-size: 11px; color: #888; display: flex; align-items: center; gap: 6px; }
+.spinner { width: 11px; height: 11px; border: 2px solid #ddd; border-top-color: #5bc8a8;
+           border-radius: 50%; animation: spin 0.6s linear infinite; flex-shrink: 0; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.company-chips { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px;
+                 max-height: 118px; overflow-y: auto; padding-right: 4px; }
+.company-chips::-webkit-scrollbar { width: 4px; }
+.company-chips::-webkit-scrollbar-thumb { background: #dde1e7; border-radius: 2px; }
+.chip { font-size: 10px; padding: 2px 7px; border-radius: 10px; border: 1px solid #eee;
+        color: #888; white-space: nowrap; }
+.chip.ok      { border-color: #bbf7d0; color: #15803d; background: #f0fdf4; }
+.chip.err     { border-color: #fecaca; color: #dc2626; background: #fef2f2; }
+.chip.scanning{ border-color: #5bc8a8; color: #0d9488; animation: blink 1s infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.5} }
+
+/* Summary area */
+.summary-area { flex: 1; overflow-y: auto; padding: 20px; }
+.summary-area::-webkit-scrollbar { width: 5px; }
+.summary-area::-webkit-scrollbar-thumb { background: #dde1e7; border-radius: 3px; }
+
+/* Empty state */
+.empty-state { display: flex; flex-direction: column; align-items: center;
+               justify-content: center; height: 100%; color: #aaa; text-align: center; }
+.empty-state .icon { font-size: 40px; margin-bottom: 12px; }
+.empty-state h3 { font-size: 16px; color: #666; margin-bottom: 6px; }
+.empty-state p { font-size: 13px; line-height: 1.6; max-width: 360px; }
+
+/* Stats row */
+.stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px; }
+.stat-card { background: white; border: 1px solid #dde1e7; border-radius: 8px; padding: 14px 16px; }
+.stat-card.hi { background: #1c2b4a; border-color: #1c2b4a; color: white; }
+.stat-val { font-size: 24px; font-weight: 700; letter-spacing: -0.03em;
+            font-variant-numeric: tabular-nums; line-height: 1; }
+.stat-card.hi .stat-val { color: #5bc8a8; }
+.stat-lbl { font-size: 10px; font-weight: 600; color: #888; text-transform: uppercase;
+            letter-spacing: 0.06em; margin-top: 4px; }
+.stat-card.hi .stat-lbl { color: rgba(255,255,255,.6); }
+.stat-sub { font-size: 11.5px; color: #aaa; margin-top: 3px; }
+.stat-card.hi .stat-sub { color: rgba(255,255,255,.4); }
+
+/* Summary section header */
+.section-head { display: flex; align-items: center; gap: 8px; padding: 6px 0 8px;
+                border-bottom: 2px solid #1c2b4a; margin-bottom: 10px; }
+.section-title { font-size: 13px; font-weight: 700; color: #1c2b4a; }
+.section-count { margin-left: auto; font-size: 11px; color: #999; }
+
+/* Summary table */
+.sum-table { width: 100%; border-collapse: collapse; background: white;
+             border: 1px solid #dde1e7; border-radius: 8px; overflow: hidden; }
+.sum-table th { text-align: left; font-size: 10px; font-weight: 600; color: #999;
+                text-transform: uppercase; letter-spacing: 0.05em; padding: 8px 12px;
+                border-bottom: 1px solid #eee; background: #fafafa; }
+.sum-table td { padding: 9px 12px; font-size: 13px; border-bottom: 1px solid #f0f2f5;
+                vertical-align: middle; }
+.sum-table tr:last-child td { border-bottom: none; }
+.sum-table tr:hover td { background: #f7f8fa; }
+.co-dot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; margin-right: 6px; }
+.td-company { font-weight: 500; }
+.td-count  { font-variant-numeric: tabular-nums; font-size: 13px; font-weight: 600; color: #1c2b4a; }
+.td-new    { font-variant-numeric: tabular-nums; font-size: 13px; font-weight: 600; color: #5bc8a8; }
+.td-new.zero { color: #ccc; font-weight: 400; }
+.td-dur    { font-size: 11px; color: #aaa; }
+.status-ok      { font-size: 11px; color: #16a34a; }
+.status-error   { font-size: 11px; color: #dc2626; }
+.status-pending { font-size: 11px; color: #9ca3af; }
+.status-scanning{ font-size: 11px; color: #0d9488; }
+.err-detail { font-size: 10.5px; color: #dc2626; max-width: 220px;
+              white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.last-scan-info { font-size: 11px; color: #888; margin-bottom: 14px; }
+.last-scan-info strong { color: #1c2b4a; }
+
+/* ── Detect ATS panel ── */
+.detect-overlay {
+  position: absolute; inset: 0; background: rgba(0,0,0,0.35);
+  display: none; z-index: 100; align-items: flex-start; justify-content: center;
+  padding-top: 60px;
+}
+.detect-overlay.open { display: flex; }
+.detect-panel {
+  background: white; border-radius: 10px; width: 560px; max-width: 94vw;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18); overflow: hidden;
+  display: flex; flex-direction: column; max-height: 80vh;
+}
+.detect-head {
+  display: flex; align-items: center; padding: 14px 18px;
+  border-bottom: 1px solid #eee; gap: 10px;
+}
+.detect-head-title { font-size: 15px; font-weight: 700; color: #1c2b4a; flex: 1; }
+.detect-close { font-size: 18px; color: #aaa; cursor: pointer; border: none;
+                background: none; padding: 0 4px; line-height: 1; }
+.detect-close:hover { color: #333; }
+.detect-body { padding: 18px; overflow-y: auto; flex: 1; }
+.detect-body label { font-size: 12px; font-weight: 600; color: #555; display: block; margin-bottom: 5px; }
+.detect-input {
+  width: 100%; padding: 9px 11px; border: 1px solid #dde1e7; border-radius: 6px;
+  font-size: 13px; outline: none; font-family: inherit;
+}
+.detect-input:focus { border-color: #1c2b4a; }
+.detect-row { display: flex; gap: 8px; margin-top: 12px; }
+.btn-detect { padding: 8px 18px; background: #1c2b4a; color: white; border: none;
+              border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; }
+.btn-detect:hover { background: #243660; }
+.btn-detect:disabled { background: #9ca3af; cursor: not-allowed; }
+.detect-results { margin-top: 16px; }
+.detect-candidate {
+  border: 1px solid #dde1e7; border-radius: 8px; padding: 14px 16px; margin-bottom: 10px;
+}
+.detect-candidate.verified { border-color: #5bc8a8; background: #f0fdf8; }
+.detect-candidate.failed   { border-color: #fecaca; background: #fef9f9; }
+.dc-head { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.dc-mode { font-size: 13px; font-weight: 700; color: #1c2b4a; }
+.dc-badge {
+  font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 10px;
+  background: #dcfce7; color: #15803d;
+}
+.dc-badge.warn { background: #fef3c7; color: #92400e; }
+.dc-badge.fail { background: #fee2e2; color: #dc2626; }
+.dc-source { margin-left: auto; font-size: 10px; color: #aaa; }
+.dc-jobs { font-size: 12px; color: #555; margin-bottom: 8px; }
+.dc-err  { font-size: 11px; color: #dc2626; margin-bottom: 8px; }
+.dc-json {
+  background: #f4f6f8; border-radius: 5px; padding: 10px 12px;
+  font-family: "SF Mono", "Fira Code", monospace; font-size: 11.5px; color: #1a1a1a;
+  white-space: pre; overflow-x: auto; margin-bottom: 8px;
+}
+.btn-copy-cfg { padding: 5px 12px; background: #1c2b4a; color: white; border: none;
+                border-radius: 5px; font-size: 11px; cursor: pointer; }
+.btn-copy-cfg:hover { background: #243660; }
+.detect-spinner { display: none; font-size: 12px; color: #888; margin-top: 8px; }
+.detect-spinner.visible { display: block; }
+.detect-empty { font-size: 13px; color: #aaa; margin-top: 12px; text-align: center; padding: 20px 0; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-dot"></div>
+  <div class="topbar-logo">Job<span>Radar</span></div>
+  <a href="/" class="nav-pill">Jobs</a>
+  <span class="nav-pill active">Scan Board</span>
+  <button class="nav-pill" onclick="openDetect()" style="cursor:pointer">+ Detect ATS</button>
+  <div class="topbar-stats">
+    <strong id="hdr-sel">0</strong> selected &nbsp;·&nbsp;
+    <strong id="hdr-total">{{ companies|length }}</strong> companies
+  </div>
+</div>
+
+<div class="shell">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-search-wrap">
+      <input class="sidebar-search" id="sidebar-search" placeholder="Search companies..." oninput="filterSidebar()">
+    </div>
+    <div class="cat-wrap" id="cat-wrap"></div>
+    <div class="company-list" id="company-list"></div>
+    <div class="sidebar-foot">
+      <div class="sel-row">
+        <span class="sel-num" id="sel-count">0</span>
+        <span style="color:#666">selected</span>
+        <span class="sel-link" onclick="selectAllVisible()">all</span>
+        <span class="sel-link" onclick="deselectAll()">none</span>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-scan" id="btn-scan" onclick="startScan()" disabled>▶ Scan</button>
+        <button class="btn btn-stop" id="btn-stop" onclick="forceStop()" style="display:none">⏹ Stop</button>
+      </div>
+      <span class="reset-link" onclick="resetSeen()">↺ Reset "new" tracking</span>
+      <span class="reset-link" style="color:#dc2626" onclick="clearAllData()">🗑 Clear all job data</span>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <div class="main">
+    <!-- Progress bar -->
+    <div class="progress-bar-wrap" id="progress-wrap">
+      <div class="progress-track">
+        <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+      </div>
+      <div class="progress-text">
+        <div class="spinner"></div>
+        <span id="progress-text">Scanning...</span>
+      </div>
+      <div class="company-chips" id="company-chips"></div>
+    </div>
+
+    <!-- Summary area -->
+    <div class="summary-area" id="summary-area">
+      <div class="empty-state" id="empty-state">
+        <div class="icon">🔍</div>
+        <h3>Select companies, then scan</h3>
+        <p>Choose companies from the sidebar and click Scan.<br>
+        Results will appear here with per-company stats.</p>
+      </div>
+
+      <div id="summary-content" style="display:none">
+        <div class="stats-row">
+          <div class="stat-card">
+            <div class="stat-val" id="stat-cos">—</div>
+            <div class="stat-lbl">Companies</div>
+            <div class="stat-sub" id="stat-cos-sub">scanned</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-val" id="stat-jobs">—</div>
+            <div class="stat-lbl">Total Jobs</div>
+            <div class="stat-sub">found this scan</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-val" id="stat-new">—</div>
+            <div class="stat-lbl">New Jobs</div>
+            <div class="stat-sub">added to database</div>
+          </div>
+          <div class="stat-card hi">
+            <div class="stat-val" id="stat-errors">—</div>
+            <div class="stat-lbl">Errors</div>
+            <div class="stat-sub" id="stat-errors-sub">companies failed</div>
+          </div>
+        </div>
+
+        <div id="last-scan-info" class="last-scan-info" style="display:none"></div>
+
+        <div class="section-head">
+          <span class="section-title" id="results-title">Scan results</span>
+          <span class="section-count" id="results-count"></span>
+        </div>
+
+        <table class="sum-table" id="sum-table">
+          <thead>
+            <tr>
+              <th style="width:220px">Company</th>
+              <th style="width:100px">Source</th>
+              <th style="width:80px;text-align:right">Jobs</th>
+              <th style="width:80px;text-align:right">New</th>
+              <th style="width:80px;text-align:right">Duration</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="sum-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <!-- Detect ATS overlay -->
+  <div class="detect-overlay" id="detect-overlay" onclick="closeDetectIfBg(event)">
+    <div class="detect-panel">
+      <div class="detect-head">
+        <div class="detect-head-title">Detect ATS</div>
+        <button class="detect-close" onclick="closeDetect()">✕</button>
+      </div>
+      <div class="detect-body">
+        <label>Company Name</label>
+        <input class="detect-input" id="detect-company" type="text"
+               placeholder="Company name">
+        <label>Careers URL</label>
+        <input class="detect-input" id="detect-url" type="url"
+               placeholder="https://company.com/careers"
+               onkeydown="if(event.key==='Enter')runDetect()">
+        <div class="detect-row">
+          <button class="btn-detect" id="btn-detect" onclick="runDetect()">Detect</button>
+        </div>
+        <div class="detect-spinner" id="detect-spinner">Probing ATS APIs…</div>
+        <div class="detect-results" id="detect-results"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const COMPANIES   = {{ companies|tojson }};
+const MODE_COLORS = {
+  greenhouse:'#22c55e', lever:'#3b82f6', ashby:'#a855f7', workday:'#f59e0b',
+  playwright:'#d97706', apple:'#6b7280', google:'#ef4444', microsoft:'#0ea5e9',
+  bamboohr:'#14b8a6', icims:'#6366f1', pinpoint:'#ec4899', html:'#9ca3af'
+};
+
+let selected         = new Set();
+let activeSidebarCat = 'All';
+let scanInterval     = null;
+
+// ── Sidebar ───────────────────────────────────────────────────────────────────
+const allCats = ['All', ...new Set(COMPANIES.flatMap(c => c.categories||[]))].sort(
+  (a,b) => a==='All' ? -1 : b==='All' ? 1 : a.localeCompare(b)
+);
+
+function buildSidebar() {
+  const cw = document.getElementById('cat-wrap');
+  allCats.forEach(cat => {
+    const b = document.createElement('button');
+    b.className = 'cat-btn' + (cat==='All' ? ' active' : '');
+    b.textContent = cat;
+    b.onclick = () => {
+      activeSidebarCat = cat;
+      document.querySelectorAll('.cat-btn').forEach(x => x.classList.remove('active'));
+      b.classList.add('active');
+      filterSidebar();
+    };
+    cw.appendChild(b);
+  });
+  const list = document.getElementById('company-list');
+  COMPANIES.forEach((c, i) => {
+    const mode = (c.scrape||{}).mode || 'html';
+    const div = document.createElement('div');
+    div.className = 'co-item'; div.dataset.idx = i;
+    div.innerHTML = `<div class="co-check">✓</div>
+      <div class="co-name">${esc2(c.name)}</div>
+      <div class="co-mode ${mode}"></div>`;
+    div.onclick = () => toggleCo(i, div);
+    list.appendChild(div);
+  });
+}
+
+function toggleCo(idx, el) {
+  if (selected.has(idx)) { selected.delete(idx); el.classList.remove('selected'); }
+  else { selected.add(idx); el.classList.add('selected'); }
+  updateCounts();
+}
+function filterSidebar() {
+  const q = document.getElementById('sidebar-search').value.toLowerCase();
+  document.querySelectorAll('.co-item').forEach(el => {
+    const c = COMPANIES[el.dataset.idx];
+    const matchCat = activeSidebarCat==='All' || (c.categories||[]).includes(activeSidebarCat);
+    const matchQ   = !q || c.name.toLowerCase().includes(q);
+    el.classList.toggle('hidden', !(matchCat && matchQ));
+  });
+}
+function selectAllVisible() {
+  document.querySelectorAll('.co-item:not(.hidden)').forEach(el => { selected.add(+el.dataset.idx); el.classList.add('selected'); });
+  updateCounts();
+}
+function deselectAll() {
+  selected.clear();
+  document.querySelectorAll('.co-item').forEach(el => el.classList.remove('selected'));
+  updateCounts();
+}
+function updateCounts() {
+  const n = selected.size;
+  document.getElementById('sel-count').textContent = n;
+  document.getElementById('hdr-sel').textContent   = n;
+  document.getElementById('btn-scan').disabled = n === 0;
+}
+
+// ── Scan ─────────────────────────────────────────────────────────────────────
+function setScanningUI(scanning) {
+  const scanBtn = document.getElementById('btn-scan');
+  const stopBtn = document.getElementById('btn-stop');
+  scanBtn.disabled    = scanning || selected.size === 0;
+  scanBtn.textContent = scanning ? '⏳ Scanning...' : '▶ Scan';
+  stopBtn.style.display = scanning ? '' : 'none';
+  document.getElementById('progress-wrap').classList.toggle('visible', scanning);
+}
+
+async function startScan() {
+  if (selected.size === 0) return;
+  const names = [...selected].map(i => COMPANIES[i].name);
+  setScanningUI(true);
+  document.getElementById('company-chips').innerHTML = '';
+  document.getElementById('progress-fill').style.width = '0%';
+
+  try {
+    const resp = await fetch('/api/scan', {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ companies: names })
+    });
+    if (!resp.ok) {
+      const d = await resp.json().catch(()=>({}));
+      if (!d.already_running) {
+        setScanningUI(false);
+        alert(`Failed to start scan: ${d.error || resp.status}`);
+        return;
+      }
+    }
+  } catch(e) {
+    setScanningUI(false);
+    alert(`Could not reach server: ${e.message}`);
+    return;
+  }
+  if (scanInterval) clearInterval(scanInterval);
+  scanInterval = setInterval(pollProgress, 700);
+  pollProgress();
+}
+
+async function forceStop() {
+  if (!confirm('Force stop the running scan? In-progress company results will be lost.')) return;
+  clearInterval(scanInterval);
+  await fetch('/api/reset_scan', { method: 'POST' });
+  setScanningUI(false);
+  // Mark any still-pending/scanning rows as cancelled in the table
+  document.querySelectorAll('#sum-tbody tr').forEach(row => {
+    const statusCell = row.querySelector('td:last-child');
+    if (statusCell && (statusCell.textContent.includes('scanning') || statusCell.textContent.includes('pending'))) {
+      statusCell.innerHTML = '<span style="font-size:11px;color:#d97706">● stopped</span>';
+    }
+  });
+}
+
+async function pollProgress() {
+  const data     = await fetch('/api/progress').then(r => r.json()).catch(()=>null);
+  if (!data) return;
+  const progress = data.progress || [];
+  const total    = selected.size;
+  const done     = progress.filter(p => p.status !== 'scanning' && p.status !== 'pending').length;
+
+  document.getElementById('progress-fill').style.width = `${total ? Math.round(done/total*100) : 0}%`;
+  document.getElementById('progress-text').textContent  = `Scanning ${done}/${total} companies…`;
+  document.getElementById('company-chips').innerHTML = progress.map(p => {
+    const cls = p.status==='done' ? 'ok' : p.status==='error' ? 'err' : 'scanning';
+    const suf = p.status==='done' ? ` (${p.count})` : p.status==='error' ? ' ✗' : '…';
+    return `<span class="chip ${cls}">${esc2(p.company)}${suf}</span>`;
+  }).join('');
+
+  // Update live summary table
+  if (progress.length > 0) showSummary(progress, false);
+
+  if (data.done) {
+    clearInterval(scanInterval);
+    setScanningUI(false);
+    showSummary(progress, true);
+  }
+}
+
+function showSummary(progress, isFinal) {
+  document.getElementById('empty-state').style.display   = 'none';
+  document.getElementById('summary-content').style.display = '';
+
+  const done    = progress.filter(p => p.status === 'done');
+  const errors  = progress.filter(p => p.status === 'error');
+  const totalJobs = done.reduce((a, p) => a + (p.count||0), 0);
+  const totalNew  = done.reduce((a, p) => a + (p.new||0), 0);
+
+  document.getElementById('stat-cos').textContent       = progress.length;
+  document.getElementById('stat-cos-sub').textContent   = isFinal ? `${done.length} ok · ${errors.length} err` : 'in progress…';
+  document.getElementById('stat-jobs').textContent      = totalJobs;
+  document.getElementById('stat-new').textContent       = totalNew;
+  document.getElementById('stat-errors').textContent    = errors.length;
+  document.getElementById('stat-errors-sub').textContent= errors.length === 0 ? 'none — clean run' : 'companies failed';
+  document.getElementById('results-title').textContent  = isFinal ? 'Scan results' : 'Live scan progress';
+  document.getElementById('results-count').textContent  = `${progress.length} companies`;
+
+  const tbody = document.getElementById('sum-tbody');
+  tbody.innerHTML = progress.map(p => {
+    const mode  = COMPANIES.find(c => c.name === p.company)?.scrape?.mode || 'html';
+    const color = MODE_COLORS[mode] || '#9ca3af';
+    const statusHtml =
+      p.status === 'done'     ? `<span class="status-ok">● done</span>` :
+      p.status === 'error'    ? `<span class="status-error">● error</span>${p.error ? `<div class="err-detail" title="${esc2(p.error||'')}">${esc2((p.error||'').slice(0,80))}</div>` : ''}` :
+      p.status === 'scanning' ? `<span class="status-scanning">● scanning…</span>` :
+                                `<span class="status-pending">○ pending</span>`;
+    const newCls = (p.new||0) > 0 ? 'td-new' : 'td-new zero';
+    const dur = p.duration_s != null ? `${p.duration_s}s` : '—';
+    return `<tr>
+      <td class="td-company">
+        <span class="co-dot" style="background:${color}"></span>${esc2(p.company)}
+      </td>
+      <td style="font-size:11px;color:#888">${mode}</td>
+      <td class="td-count" style="text-align:right">${p.status==='done' ? (p.count||0) : '—'}</td>
+      <td class="${newCls}" style="text-align:right">${p.status==='done' ? (p.new||0) : '—'}</td>
+      <td class="td-dur" style="text-align:right">${dur}</td>
+      <td>${statusHtml}</td>
+    </tr>`;
+  }).join('');
+}
+
+async function resetSeen() {
+  if (!confirm('Clear all "seen" tracking? Everything will show as NEW on next scan.')) return;
+  await fetch('/api/reset_seen', { method: 'POST' });
+  alert('Done — next scan marks everything as new.');
+}
+
+async function clearAllData() {
+  if (!confirm('Delete ALL stored jobs, seen tracking, and scan history?\nThis cannot be undone.')) return;
+  const r = await fetch('/api/clear_data', { method: 'POST' });
+  if (r.ok) {
+    document.getElementById('empty-state').style.display   = '';
+    document.getElementById('summary-content').style.display = 'none';
+    alert('All job data cleared. Run a scan to rebuild.');
+  } else {
+    alert('Failed to clear data.');
+  }
+}
+
+function esc2(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+// ── Detect ATS ───────────────────────────────────────────────────────────────
+function openDetect() {
+  document.getElementById('detect-overlay').classList.add('open');
+  document.getElementById('detect-url').focus();
+}
+function closeDetect() {
+  document.getElementById('detect-overlay').classList.remove('open');
+}
+function closeDetectIfBg(e) {
+  if (e.target === document.getElementById('detect-overlay')) closeDetect();
+}
+
+async function runDetect() {
+  const url = document.getElementById('detect-url').value.trim();
+  const company = document.getElementById('detect-company').value.trim();
+  if (!url) return;
+  const btn = document.getElementById('btn-detect');
+  const spinner = document.getElementById('detect-spinner');
+  const results = document.getElementById('detect-results');
+  btn.disabled = true;
+  spinner.classList.add('visible');
+  results.innerHTML = '';
+  try {
+    const resp = await fetch('/api/detect_ats', {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ careers_url: url })
+    });
+    const data = await resp.json();
+    if (data.error) { results.innerHTML = `<div class="detect-empty">${esc2(data.error)}</div>`; return; }
+    const items = data.results || [];
+    if (!items.length) {
+      results.innerHTML = '<div class="detect-empty">No ATS detected. Try the careers page URL directly, or use <code>playwright</code> mode with the URL as <code>list_url</code>.</div>';
+      return;
+    }
+    results.innerHTML = items.map(item => {
+      const cls = item.verified ? 'verified' : item.error ? 'failed' : '';
+      const badge = item.verified
+        ? `<span class="dc-badge">${item.job_count >= 0 ? item.job_count + ' jobs' : 'verified'}</span>`
+        : item.error
+          ? `<span class="dc-badge fail">failed</span>`
+          : `<span class="dc-badge warn">unverified</span>`;
+      const jobLine = item.job_count > 0
+        ? `<div class="dc-jobs">${item.job_count} open jobs found</div>`
+        : item.job_count === -1
+          ? `<div class="dc-jobs">HTML-scraped mode — job count requires full scan</div>`
+          : '';
+      const errLine = item.error ? `<div class="dc-err">${esc2(item.error)}</div>` : '';
+      const cfg = JSON.stringify(item.config, null, 2);
+      const fullEntry = JSON.stringify({ "name": company || "Company Name", "categories": ["Detected"], "scrape": item.config }, null, 2);
+      const payload = JSON.stringify({ name: company, careers_url: url, config: item.config });
+      return `<div class="detect-candidate ${cls}">
+        <div class="dc-head">
+          <div class="dc-mode">${esc2(item.mode)}</div>
+          ${badge}
+          <div class="dc-source">via ${esc2(item.source)}</div>
+        </div>
+        ${jobLine}${errLine}
+        <div class="dc-json">${esc2(fullEntry)}</div>
+        <button class="btn-copy-cfg" onclick="copyText(${JSON.stringify(fullEntry)}, this)">Copy config</button>
+        <button class="btn-copy-cfg" onclick='addDetectedCompany(${payload}, this)' ${company ? '' : 'disabled'}>Add company</button>
+      </div>`;
+    }).join('');
+  } catch(e) {
+    results.innerHTML = `<div class="detect-empty">Request failed: ${esc2(e.message)}</div>`;
+  } finally {
+    btn.disabled = false;
+    spinner.classList.remove('visible');
+  }
+}
+
+async function addDetectedCompany(payload, btn) {
+  if (!payload.name) {
+    alert('Company name is required.');
+    return;
+  }
+  const orig = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = 'Testing…';
+  try {
+    const resp = await fetch('/api/add_detected_company', {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify(payload)
+    });
+    const data = await resp.json();
+    if (!resp.ok || data.error) {
+      btn.textContent = 'Failed';
+      alert(`${data.error || 'Failed to add company'}${data.detail ? ': ' + data.detail : ''}`);
+      return;
+    }
+    btn.textContent = data.updated ? `Updated (${data.job_count})` : `Added (${data.job_count})`;
+  } catch(e) {
+    btn.textContent = 'Failed';
+    alert(`Request failed: ${e.message}`);
+  } finally {
+    setTimeout(() => { btn.textContent = orig; btn.disabled = false; }, 2500);
+  }
+}
+
+function copyText(text, btn) {
+  navigator.clipboard.writeText(text).then(() => {
+    const orig = btn.textContent;
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = orig, 1500);
+  });
+}
+
+buildSidebar();
+updateCounts();
+
+// On load: reconnect if scan running, or show last scan summary
+document.addEventListener('DOMContentLoaded', async () => {
+  const state = await fetch('/api/progress').then(r => r.json()).catch(()=>null);
+  if (state && state.running) {
+    setScanningUI(true);
+    // Restore selection from in-progress scan
+    const inProgress = new Set((state.progress||[]).map(p => p.company));
+    document.querySelectorAll('.co-item').forEach(el => {
+      if (inProgress.has(COMPANIES[el.dataset.idx]?.name)) {
+        selected.add(+el.dataset.idx); el.classList.add('selected');
+      }
+    });
+    updateCounts();
+    if (state.progress?.length) showSummary(state.progress, false);
+    scanInterval = setInterval(pollProgress, 700);
+  } else {
+    // If a stopped scan still has progress in memory, show it first
+    if (state && state.progress?.length) {
+      showSummary(state.progress, true);
+      const stopped = state.progress.filter(p => p.status === 'pending' || p.status === 'scanning');
+      if (stopped.length) {
+        document.getElementById('last-scan-info').style.display = '';
+        document.getElementById('last-scan-info').innerHTML =
+          `Scan stopped early — ${stopped.length} companies did not finish. Jobs found before stop are saved.`;
+      }
+    } else {
+      // Fall back to last complete scan summary on disk
+      try {
+        const sr = await fetch('/api/summary');
+        if (sr.ok) {
+          const s = await sr.json();
+          if (s.per_company && s.per_company.length > 0) {
+            const progress = s.per_company.map(p => ({
+              company:    p.company,
+              status:     p.status === 'done' ? 'done' : 'error',
+              count:      p.count || 0,
+              new:        p.new   || 0,
+              duration_s: p.duration_s,
+              error:      p.error || null,
+            }));
+            showSummary(progress, true);
+            document.getElementById('last-scan-info').style.display = '';
+            document.getElementById('last-scan-info').innerHTML =
+              `Last scan: <strong>${s.scan_time}</strong> &nbsp;·&nbsp; ${s.duration_seconds}s total`;
+          }
+        }
+      } catch {}
+    }
+  }
+});
+</script>
+</body>
+</html>
