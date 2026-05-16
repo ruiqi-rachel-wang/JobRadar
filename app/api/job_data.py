@@ -1,13 +1,17 @@
 import json
 import shutil
-import sqlite3
 from collections import Counter
+from datetime import datetime
 
-from .common import COMPANIES_FILE, DB_FILE, DEFAULT_COMPANIES_FILE, SEEN_FILE
-from .utils import make_id, normalize_location, _parse_posted
+from .common import COMPANIES_FILE, DEFAULT_COMPANIES_FILE
+from .database import IS_POSTGRES, add_column_if_missing, connect_db, initialize_postgres_schema, placeholders
+from .utils import extract_experience, location_matches, make_id, normalize_location, _parse_posted
 
 def init_db():
-    with sqlite3.connect(DB_FILE) as conn:
+    with connect_db() as conn:
+        if IS_POSTGRES:
+            initialize_postgres_schema(conn)
+            return
         conn.execute("""
             CREATE TABLE IF NOT EXISTS jobs (
                 id         TEXT PRIMARY KEY,
@@ -18,48 +22,136 @@ def init_db():
                 source     TEXT DEFAULT '',
                 categories TEXT DEFAULT '[]',
                 first_seen TEXT NOT NULL,
-                posted     TEXT DEFAULT ''
+                posted     TEXT DEFAULT '',
+                last_seen_at TEXT DEFAULT '',
+                is_open    INTEGER DEFAULT 1,
+                exp_min    INTEGER,
+                exp_max    INTEGER,
+                exp_label  TEXT DEFAULT '',
+                exp_source TEXT DEFAULT ''
             )
         """)
-        # Migrate existing DBs that don't have the posted column
-        try:
-            conn.execute("ALTER TABLE jobs ADD COLUMN posted TEXT DEFAULT ''")
-        except sqlite3.OperationalError:
-            pass
-        conn.commit()
+        conn.execute("""
+            CREATE TABLE IF NOT EXISTS app_state (
+                key   TEXT PRIMARY KEY,
+                value TEXT NOT NULL
+            )
+        """)
+        conn.execute("""
+            CREATE TABLE IF NOT EXISTS scan_runs (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                scan_type TEXT NOT NULL,
+                status TEXT NOT NULL DEFAULT 'running',
+                started_at TEXT DEFAULT '',
+                finished_at TEXT DEFAULT '',
+                total_companies INTEGER DEFAULT 0,
+                companies_scanned INTEGER DEFAULT 0,
+                total_jobs_found INTEGER DEFAULT 0,
+                new_jobs_found INTEGER DEFAULT 0,
+                updated_jobs_found INTEGER DEFAULT 0,
+                failed_companies INTEGER DEFAULT 0,
+                error_message TEXT
+            )
+        """)
+        conn.execute("""
+            CREATE TABLE IF NOT EXISTS scan_company_status (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                scan_run_id INTEGER,
+                company_name TEXT NOT NULL,
+                status TEXT NOT NULL DEFAULT 'pending',
+                jobs_found INTEGER DEFAULT 0,
+                new_jobs_found INTEGER DEFAULT 0,
+                started_at TEXT DEFAULT '',
+                finished_at TEXT DEFAULT '',
+                error_message TEXT
+            )
+        """)
+        for column_sql in (
+            "posted TEXT DEFAULT ''",
+            "last_seen_at TEXT DEFAULT ''",
+            "is_open INTEGER DEFAULT 1",
+            "exp_min INTEGER",
+            "exp_max INTEGER",
+            "exp_label TEXT DEFAULT ''",
+            "exp_source TEXT DEFAULT ''",
+        ):
+            add_column_if_missing(conn, "jobs", column_sql)
+        conn.execute("CREATE INDEX IF NOT EXISTS idx_jobs_open ON jobs(is_open)")
+        conn.execute("CREATE INDEX IF NOT EXISTS idx_jobs_company_open ON jobs(company, is_open)")
+        conn.execute("""
+            CREATE INDEX IF NOT EXISTS idx_jobs_open_sort_date
+            ON jobs(is_open, COALESCE(NULLIF(posted,''), substr(first_seen,1,10)) DESC)
+        """)
+        conn.execute("""
+            CREATE INDEX IF NOT EXISTS idx_jobs_company_open_sort_date
+            ON jobs(company, is_open, COALESCE(NULLIF(posted,''), substr(first_seen,1,10)) DESC)
+        """)
+        conn.execute("""
+            CREATE INDEX IF NOT EXISTS idx_jobs_open_posted_sort
+            ON jobs(is_open, CASE WHEN posted != '' THEN 0 ELSE 1 END, posted DESC, substr(first_seen,1,10) DESC)
+        """)
+        conn.execute("""
+            CREATE INDEX IF NOT EXISTS idx_jobs_company_open_posted_sort
+            ON jobs(company, is_open, CASE WHEN posted != '' THEN 0 ELSE 1 END, posted DESC, substr(first_seen,1,10) DESC)
+        """)
 
 init_db()
 
 def upsert_jobs(job_list):
     if not job_list:
         return
-    with sqlite3.connect(DB_FILE) as conn:
+    now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    with connect_db() as conn:
         conn.executemany(
             "INSERT INTO jobs "
-            "(id, title, url, company, location, source, categories, first_seen, posted) "
-            "VALUES (?,?,?,?,?,?,?,?,?) "
+            "(id, title, url, company, location, source, categories, first_seen, posted, last_seen_at, is_open, exp_min, exp_max, exp_label, exp_source) "
+            "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) "
             "ON CONFLICT(id) DO UPDATE SET "
             "title=excluded.title, "
             "location=CASE WHEN excluded.location != '' THEN excluded.location ELSE jobs.location END, "
             "source=excluded.source, "
             "categories=excluded.categories, "
             # first_seen intentionally excluded — never overwrite the original discovery date
-            "posted=CASE WHEN excluded.posted != '' THEN excluded.posted ELSE jobs.posted END",
+            "posted=CASE WHEN excluded.posted != '' THEN excluded.posted ELSE jobs.posted END, "
+            "last_seen_at=excluded.last_seen_at, "
+            "is_open=excluded.is_open, "
+            "exp_min=CASE WHEN excluded.exp_min IS NOT NULL THEN excluded.exp_min ELSE jobs.exp_min END, "
+            "exp_max=CASE WHEN excluded.exp_max IS NOT NULL THEN excluded.exp_max ELSE jobs.exp_max END, "
+            "exp_label=CASE WHEN excluded.exp_label != '' THEN excluded.exp_label ELSE jobs.exp_label END, "
+            "exp_source=CASE WHEN excluded.exp_source != '' THEN excluded.exp_source ELSE jobs.exp_source END",
             [(j["id"], j["title"], j.get("url",""), j["company"],
               j.get("location",""), j.get("source",""),
               json.dumps(j.get("categories",[])), j["first_seen"],
-              j.get("posted",""))
+              j.get("posted",""), now_str, True, j.get("exp_min"), j.get("exp_max"),
+              j.get("exp_label",""), j.get("exp_source",""))
              for j in job_list],
         )
 
+def get_app_state(key, default=""):
+    with connect_db() as conn:
+        row = conn.execute("SELECT value FROM app_state WHERE key=?", (key,)).fetchone()
+    return row[0] if row else default
+
+def set_app_state(key, value):
+    with connect_db() as conn:
+        conn.execute(
+            "INSERT INTO app_state (key, value) VALUES (?, ?) "
+            "ON CONFLICT(key) DO UPDATE SET value=excluded.value",
+            (key, value),
+        )
+
+def delete_app_state(key):
+    with connect_db() as conn:
+        conn.execute("DELETE FROM app_state WHERE key=?", (key,))
+
 def delete_expired_jobs(company_name, current_ids):
-    """Remove DB entries for a company that didn't appear in the latest scan.
+    """Mark jobs closed when they do not appear in a company's latest scan.
     Only runs when the scan returned results — empty scan means error, not expiry.
     Uses a diff approach to avoid SQLite's 999 bind-variable limit."""
     if not current_ids:
         return
     current_set = set(current_ids)
-    with sqlite3.connect(DB_FILE) as conn:
+    with connect_db() as conn:
         existing = {row[0] for row in conn.execute(
             "SELECT id FROM jobs WHERE company=?", (company_name,)
         )}
@@ -70,7 +162,7 @@ def delete_expired_jobs(company_name, current_ids):
         for i in range(0, len(to_delete), 500):
             batch = to_delete[i:i + 500]
             conn.execute(
-                f"DELETE FROM jobs WHERE id IN ({','.join('?' * len(batch))})",
+                f"UPDATE jobs SET is_open=0 WHERE id IN ({placeholders(len(batch))})",
                 batch,
             )
 # ── Companies ─────────────────────────────────────────────────────────────────
@@ -123,17 +215,15 @@ def add_or_update_company(name, scrape, categories=None):
     current_companies()
     return updated
 
-# ── Seen-jobs store ───────────────────────────────────────────────────────────
-
-def rebuild_seen_from_db():
-    """Rebuild seen_jobs.json from the DB so IDs stay in sync with any URL/title changes."""
+def load_seen():
+    """Return known open jobs keyed by stable job id. The database is the source of truth."""
     try:
-        with sqlite3.connect(DB_FILE) as conn:
-            conn.row_factory = sqlite3.Row
+        with connect_db(rows=True) as conn:
             rows = conn.execute(
-                "SELECT company, url, title, location, source, first_seen, posted FROM jobs"
+                "SELECT company, url, title, location, source, first_seen, posted, "
+                "exp_min, exp_max, exp_label, exp_source FROM jobs WHERE is_open = 1"
             ).fetchall()
-        seen = {
+        return {
             make_id(r["company"], r["url"], r["title"]): {
                 "first_seen": r["first_seen"],
                 "company":    r["company"],
@@ -142,34 +232,21 @@ def rebuild_seen_from_db():
                 "location":   r["location"] or "",
                 "source":     r["source"] or "",
                 "posted":     r["posted"] or "",
+                "exp_min":    r["exp_min"],
+                "exp_max":    r["exp_max"],
+                "exp_label":  r["exp_label"] or "",
+                "exp_source": r["exp_source"] or "",
             }
             for r in rows
         }
-        SEEN_FILE.write_text(json.dumps(seen, indent=2, ensure_ascii=False))
-        return seen
     except Exception as e:
-        print(f"⚠  rebuild_seen_from_db failed: {e}")
-        return load_seen_raw()
-
-def load_seen_raw():
-    if SEEN_FILE.exists():
-        try:   return json.loads(SEEN_FILE.read_text(encoding="utf-8"))
-        except: return {}
-    return {}
-
-def load_seen():
-    """Always rebuild from DB to keep IDs consistent with current data."""
-    return rebuild_seen_from_db()
-
-def save_seen(seen):
-    # seen_jobs.json is rebuilt from DB after every scan via rebuild_seen_from_db()
-    pass
+        print(f"⚠  load_seen failed: {e}")
+        return {}
 
 def normalize_existing_data():
     """Clean rows/files written before location/date normalization was consistent."""
     try:
-        with sqlite3.connect(DB_FILE) as conn:
-            conn.row_factory = sqlite3.Row
+        with connect_db(rows=True) as conn:
             rows = conn.execute("SELECT id, location, posted FROM jobs").fetchall()
             updates = []
             for row in rows:
@@ -179,33 +256,80 @@ def normalize_existing_data():
                     updates.append((loc, posted, row["id"]))
             if updates:
                 conn.executemany("UPDATE jobs SET location=?, posted=? WHERE id=?", updates)
-                conn.commit()
     except Exception:
         pass
 
-    try:
-        seen = load_seen()
-        changed = False
-        for item in seen.values():
-            if not isinstance(item, dict):
-                continue
-            loc = normalize_location(item.get("location", ""))
-            posted = _parse_posted(item.get("posted", ""))
-            if loc != item.get("location", ""):
-                item["location"] = loc
-                changed = True
-            if posted != item.get("posted", ""):
-                item["posted"] = posted
-                changed = True
-        if changed:
-            save_seen(seen)
-    except Exception:
-        pass
-
-# Do not run this automatically on import. With a large jobs DB / seen file it
-# makes local startup and Render cold starts feel broken. New scan results are
-# normalized before save; run normalize_existing_data() manually only after
-# changing normalization rules.
+# Do not run this automatically on import. With a large jobs DB it makes local
+# startup and Render cold starts feel broken. New scan results are normalized
+# before save; run normalize_existing_data() manually only after changing
+# normalization rules.
 
 def company_categories_map():
     return {c.get("name"): c.get("categories", []) for c in current_companies()}
+
+def jobs_from_seen_fallback(keyword, location, since, category, companies, limit, offset, today):
+    """Fallback job query from the in-memory seen dict when the DB returns nothing."""
+    cats_by_company = company_categories_map()
+    company_set = set(companies or [])
+    jobs = []
+    for jid, item in load_seen().items():
+        if not isinstance(item, dict):
+            continue
+        if item.get("is_open") is False:
+            continue
+        title      = item.get("title", "")
+        company    = item.get("company", "")
+        first_seen = item.get("first_seen", "")
+        posted     = item.get("posted", "")
+        cats       = cats_by_company.get(company, [])
+        if company_set and company not in company_set:
+            continue
+        loc = item.get("location", "")
+        if keyword and keyword not in f"{title} {company}".lower():
+            continue
+        if location and not location_matches(location, loc):
+            continue
+        if since and (posted or first_seen) < since:
+            continue
+        if category and category not in cats:
+            continue
+        fs = first_seen[:10]
+        jobs.append({
+            "id":         jid,
+            "title":      title,
+            "url":        item.get("url", ""),
+            "company":    company,
+            "location":   loc,
+            "source":     item.get("source", "seen"),
+            "categories": cats,
+            "first_seen": first_seen,
+            "posted":     _parse_posted(posted),
+            "exp_min":    item.get("exp_min"),
+            "exp_max":    item.get("exp_max"),
+            "exp_label":  item.get("exp_label", ""),
+            "exp_source": item.get("exp_source", ""),
+            "is_new":     fs == today,
+        })
+    jobs.sort(key=lambda j: j.get("first_seen", ""), reverse=True)
+    return jobs[offset:offset + limit], len(jobs)
+
+def backfill_experience_from_titles():
+    """Fill missing experience estimates from titles for existing DB rows."""
+    try:
+        with connect_db(rows=True) as conn:
+            rows = conn.execute(
+                "SELECT id, title FROM jobs WHERE exp_min IS NULL AND exp_max IS NULL"
+            ).fetchall()
+            updates = []
+            for row in rows:
+                exp = extract_experience(row["title"] or "")
+                if exp.get("label"):
+                    updates.append((exp["min"], exp["max"], exp["label"], exp["source"], row["id"]))
+            if updates:
+                conn.executemany(
+                    "UPDATE jobs SET exp_min=?, exp_max=?, exp_label=?, exp_source=? WHERE id=?",
+                    updates,
+                )
+            return len(updates)
+    except Exception:
+        return 0

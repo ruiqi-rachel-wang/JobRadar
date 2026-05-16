@@ -275,6 +275,7 @@ body {
 .filter-input:focus { border-color: #1c2b4a; background: white; }
 #f-keyword { width: 220px; }
 #f-location { width: 160px; }
+#f-exp { width: 92px; }
 #f-begin { width: 140px; }
 
 .scan-go {
@@ -471,6 +472,7 @@ body {
   color: #888;
   margin-top: 2px;
 }
+.interview-tag { color: #0f766e; font-weight: 600; }
 
 .td-loc { width: 160px; font-size: 12px; color: #666; }
 .td-src { width: 100px; }
@@ -603,12 +605,16 @@ body {
       </div>
       <div class="filter-divider"></div>
       <div class="filter-group">
-        <div class="filter-label">First seen after</div>
+        <div class="filter-label">Experience</div>
+        <input class="filter-input" id="f-exp" type="number" min="0" step="1" placeholder="yrs">
+      </div>
+      <div class="filter-divider"></div>
+      <div class="filter-group">
+        <div class="filter-label">Posted / seen after</div>
         <input class="filter-input" id="f-begin" type="date">
       </div>
       <button class="scan-go" id="filter-btn" onclick="applyFilters()">⌕ Filter</button>
       <div class="result-counts" id="result-counts" style="display:none">
-        <strong id="stat-new">—</strong> new &nbsp;·&nbsp;
         <strong id="stat-clicked" style="color:#5bc8a8">—</strong> opened &nbsp;/&nbsp;
         <strong id="stat-total" style="color:#1c2b4a">—</strong> total
       </div>
@@ -769,7 +775,10 @@ function updateCounts() {
 
 // ── Browse jobs from DB ───────────────────────────────────────────────────────
 function selectedCompanyNames() {
-  return [...selected].map(i => COMPANIES[i].name);
+  return [...selected]
+    .map(i => COMPANIES[i])
+    .filter(c => c && c.scan_enabled !== false)
+    .map(c => c.name);
 }
 
 function showEmptyMessage(message) {
@@ -796,6 +805,7 @@ async function applyFilters(companyNames = null, page = 1) {
 
   const kw  = (document.getElementById('f-keyword').value  || '').trim();
   const loc = (document.getElementById('f-location').value || '').trim();
+  const exp = (document.getElementById('f-exp').value      || '').trim();
   const dt  = (document.getElementById('f-begin').value    || '').trim();
 
   const params = new URLSearchParams();
@@ -803,6 +813,7 @@ async function applyFilters(companyNames = null, page = 1) {
   params.set('page', String(page));
   if (kw)  params.set('keyword', kw);
   if (loc) params.set('location', loc);
+  if (exp) params.set('experience', exp);
   if (dt)  params.set('since', dt);
   if (activeSidebarCat !== 'All') params.set('category', activeSidebarCat);
   names.forEach(name => params.append('company', name));
@@ -818,6 +829,7 @@ async function applyFilters(companyNames = null, page = 1) {
     currentLimit = Number(payload.limit || 100);
     currentTotal = Number(payload.total ?? jobs.length);
     renderResults(jobs);
+    filterDOM();
   } catch(e) {
     console.error('Failed to load jobs:', e);
   }
@@ -833,8 +845,8 @@ function filterDOM() {
   document.querySelectorAll('.job-row').forEach(row => {
     const rowCats  = JSON.parse(row.dataset.cats || '[]');
     const matchCat = activeSidebarCat === 'All' || rowCats.includes(activeSidebarCat);
-    const matchKw  = !kw  || row.dataset.title.includes(kw) || row.dataset.co.includes(kw);
-    const matchLoc = !loc || row.dataset.loc.includes(loc);
+    const matchKw  = !kw  || keywordMatches(`${row.dataset.title} ${row.dataset.co}`, kw);
+    const matchLoc = !loc || new RegExp('(?:^|[^a-z])' + loc.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '(?:[^a-z]|$)').test(row.dataset.loc.toLowerCase());
     const show = matchCat && matchKw && matchLoc;
     row.classList.toggle('filtered-out', !show);
     if (show) vis++;
@@ -842,10 +854,100 @@ function filterDOM() {
   document.getElementById('no-match').style.display = vis === 0 ? 'block' : 'none';
 }
 
+function keywordMatches(text, query) {
+  const groups = keywordGroups(query);
+  if (!groups.length) return true;
+  const hay = ` ${String(text || '').toLowerCase()} `;
+  return groups.every(group => group.some(term => {
+    if (term.length <= 2 && /^[a-z0-9]+$/.test(term)) {
+      return new RegExp(`(^|[^a-z0-9])${term}([^a-z0-9]|$)`).test(hay);
+    }
+    return hay.includes(term);
+  }));
+}
+
+function keywordGroups(query) {
+  const stop = new Set(['a','an','and','at','for','in','of','on','or','the','to']);
+  const aliases = {
+    admin: ['administrative','administrator'],
+    administrative: ['admin','administrator'],
+    administrator: ['admin','administrative'],
+    analysis: ['analyst','analytics','analy'],
+    analyst: ['analysis','analytics','analy'],
+    analytics: ['analysis','analyst','analy'],
+    business: ['biz'],
+    customer: ['client','cx'],
+    client: ['customer'],
+    data: ['analytics','analyst'],
+    design: ['designer','ux','ui'],
+    designer: ['design','ux','ui'],
+    dev: ['develop','developer','development','developement','engineering','engineer'],
+    developer: ['dev','develop','development','developement','engineering','engineer'],
+    development: ['dev','develop','developer','developement','engineering','engineer'],
+    developement: ['dev','develop','developer','development','engineering','engineer'],
+    engineer: ['engineer','engineering','developer','development','developement','sde'],
+    engineering: ['engineer','engineering','developer','development','developement','sde'],
+    finance: ['financial'],
+    financial: ['finance'],
+    frontend: ['front','ui'],
+    front: ['frontend'],
+    backend: ['back','server'],
+    marketing: ['market'],
+    market: ['marketing'],
+    software: ['software','swe','sde'],
+    machine: ['machine','ml'],
+    learning: ['learning','ml'],
+    manager: ['manage','management','mgr'],
+    management: ['manage','manager','mgr'],
+    mgr: ['manager','management'],
+    operation: ['operations','ops'],
+    operations: ['operation','ops'],
+    ops: ['operation','operations'],
+    people: ['hr','human resources'],
+    pm: ['product','program','project','manager','management'],
+    product: ['product','pm'],
+    program: ['program','project','pm'],
+    project: ['project','program','pm'],
+    recruiter: ['recruiting','talent'],
+    recruiting: ['recruiter','talent'],
+    sales: ['account'],
+    security: ['cybersecurity','cyber'],
+    sde: ['software','engineer','engineering','developer','development'],
+    swe: ['software','engineer','engineering','developer','development'],
+    talent: ['recruiter','recruiting']
+  };
+  const seen = new Set();
+  const tokens = (String(query || '').toLowerCase().match(/[a-z0-9+#.]+/g) || []).filter(t => !stop.has(t));
+  return tokens
+    .map(t => keywordVariants(t, aliases))
+    .filter(group => {
+      const key = group.join('|');
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+}
+
+function keywordVariants(token, aliases) {
+  const out = new Set([token, ...(aliases[token] || [])]);
+  if (token.length > 3) out.add(token.replace(/s$/, ''));
+  if (token.endsWith('ies') && token.length > 4) out.add(token.slice(0, -3) + 'y');
+  if (token.endsWith('ing') && token.length > 6) {
+    const root = token.slice(0, -3);
+    out.add(root); out.add(root + 'e');
+  }
+  if ((token.endsWith('er') || token.endsWith('or')) && token.length > 5) out.add(token.slice(0, -2));
+  if (token.endsWith('ment') && token.length > 7) out.add(token.slice(0, -4));
+  if (token.endsWith('tion') && token.length > 7) out.add(token.slice(0, -4));
+  if (token.length >= 6) out.add(token.slice(0, 5));
+  return [...out].filter(Boolean).sort();
+}
+
 async function showJobs() {
   const names = selectedCompanyNames();
   document.getElementById('f-keyword').value  = '';
   document.getElementById('f-location').value = '';
+  document.getElementById('f-exp').value      = '';
   document.getElementById('f-begin').value    = '';
   await applyFilters(names, 1);
 }
@@ -938,15 +1040,13 @@ async function pollProgress() {
 function renderResults(jobs) {
   const clicked    = getClicked();
   const clickedJs  = jobs.filter(j => clicked.has(j.id));
-  const freshJobs  = jobs.filter(j => !clicked.has(j.id) && isRecent(j.first_seen));
-  const oldJobs    = jobs.filter(j => !clicked.has(j.id) && !isRecent(j.first_seen));
+  const visibleJobs = jobs.filter(j => !clicked.has(j.id));
   const totalPages = Math.max(1, Math.ceil(currentTotal / currentLimit));
   const startRow   = currentTotal ? ((currentPage - 1) * currentLimit) + 1 : 0;
   const endRow     = Math.min(currentPage * currentLimit, currentTotal);
 
   document.getElementById('empty-state').style.display = 'none';
   document.getElementById('result-counts').style.display = '';
-  document.getElementById('stat-new').textContent     = freshJobs.length;
   document.getElementById('stat-clicked').textContent = clickedJs.length;
   document.getElementById('stat-total').textContent   = currentTotal;
 
@@ -964,19 +1064,14 @@ function renderResults(jobs) {
   document.getElementById('no-match').style.display = 'none';
   document.getElementById('results-container').style.display = 'block';
 
-  renderSection('new-section',     freshJobs, '🆕 New — not opened yet', true,  'new');
-  renderSection('old-section',     oldJobs,   'Older jobs',           false, 'old');
+  document.getElementById('new-section').innerHTML = '';
+  renderSection('old-section',     visibleJobs, 'Jobs by posted date', false, 'old');
   renderPagination(startRow, endRow, totalPages);
   renderSection('clicked-section', clickedJs, '✓ Applied / Opened',  false, 'clicked');
 
   const oldToggle = document.getElementById('old-toggle');
-  if (oldJobs.length > 0) {
-    oldToggle.textContent   = `▼ Show ${oldJobs.length} older jobs`;
-    oldToggle.style.display = 'block';
-    document.getElementById('old-section').style.display = 'none';
-  } else {
-    oldToggle.style.display = 'none';
-  }
+  oldToggle.style.display = 'none';
+  document.getElementById('old-section').style.display = 'block';
 
   const clickedToggle = document.getElementById('clicked-toggle');
   if (clickedJs.length > 0) {
@@ -1032,10 +1127,17 @@ function renderSection(id, jobs, title, isNew, bucket) {
   const rows = jobs.map((j, idx) => {
     const loc      = j.location || '—';
     const hasPosted = j.posted && j.posted.length >= 8;
-    const dateVal  = hasPosted ? j.posted : '';
-    const dateLabel = hasPosted ? 'Posted' : '';
-    const dateCls  = hasPosted ? 'td-date has-posted' : 'td-date';
+    const seenDate = (j.first_seen || '').slice(0, 10);
+    const hasSeen = !hasPosted && seenDate.length >= 8;
+    const dateVal  = hasPosted ? j.posted : (hasSeen ? seenDate : '');
+    const dateLabel = hasPosted ? 'Posted' : (hasSeen ? 'Seen' : '');
+    const dateCls  = (hasPosted || hasSeen) ? 'td-date has-posted' : 'td-date';
     const source   = j.source || 'html';
+    const expLabel = j.exp_label ? ` · ${esc2(j.exp_label)}` : '';
+    const interview = j.interview || null;
+    const interviewLabel = interview
+      ? ` · <span class="interview-tag" title="${escAttr(interview.process || '')}">No whiteboard</span>`
+      : '';
     const dotCell = bucket === 'new'
       ? '<div class="new-dot"></div>'
       : bucket === 'clicked' ? '<div class="clicked-dot"></div>' : '';
@@ -1054,11 +1156,11 @@ function renderSection(id, jobs, title, isNew, bucket) {
       <td class="td-new">${dotCell}</td>
       <td class="td-title">
         ${titleHtml}
-        <div class="job-co">${esc2(j.company)}</div>
+        <div class="job-co">${esc2(j.company)}${expLabel}${interviewLabel}</div>
       </td>
       <td class="td-loc">${esc2(loc)}</td>
       <td class="td-src"><span class="src-tag ${source}">${source}</span></td>
-      <td class="${dateCls}">${hasPosted ? dateLabel + ': ' + dateVal : '—'}</td>
+      <td class="${dateCls}">${dateLabel ? dateLabel + ': ' + dateVal : '—'}</td>
     </tr>`;
   }).join('');
 
@@ -1094,12 +1196,18 @@ buildSidebar();
 updateCounts();
 
 document.addEventListener('DOMContentLoaded', async () => {
-  // Live DOM filter while typing (fast, no network)
-  ['f-keyword','f-location'].forEach(id =>
-    document.getElementById(id).addEventListener('input', filterDOM)
-  );
+  // Live DOM filter while typing (fast, no network); Enter re-queries DB
+  ['f-keyword','f-location','f-exp'].forEach(id => {
+    document.getElementById(id).addEventListener('input', filterDOM);
+    document.getElementById(id).addEventListener('keydown', e => {
+      if (e.key === 'Enter') applyFilters(null, 1);
+    });
+  });
   // Date picker: re-query DB on change
   document.getElementById('f-begin').addEventListener('change', () => {
+    if (resultsVisible()) applyFilters(null, 1);
+  });
+  document.getElementById('f-exp').addEventListener('change', () => {
     if (resultsVisible()) applyFilters(null, 1);
   });
   // Check if a scan is already running (e.g., page reload mid-scan)

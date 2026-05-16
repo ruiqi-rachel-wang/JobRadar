@@ -448,7 +448,10 @@ function setScanningUI(scanning) {
 
 async function startScan() {
   if (selected.size === 0) return;
-  const names = [...selected].map(i => COMPANIES[i].name);
+  const names = [...selected]
+    .map(i => COMPANIES[i])
+    .filter(c => c && c.scan_enabled !== false)
+    .map(c => c.name);
   setScanningUI(true);
   document.getElementById('company-chips').innerHTML = '';
   document.getElementById('progress-fill').style.width = '0%';

@@ -1,10 +1,20 @@
 # scrapers/playwright_scraper.py
 from __future__ import annotations
-import hashlib
+import concurrent.futures
 import json
 import re
 import urllib.request
 from urllib.parse import urljoin, urlparse, parse_qs, unquote, urlencode, urlunparse
+
+try:
+    from ..utils import _parse_posted
+except ImportError:
+    from api.utils import _parse_posted
+
+try:
+    from job_identity import make_job_id
+except ModuleNotFoundError:
+    from ...job_identity import make_job_id
 
 UA = (
     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
@@ -16,7 +26,7 @@ def norm(s: str) -> str:
     return " ".join((s or "").split())
 
 def _make_id(company: str, url: str, title: str) -> str:
-    return hashlib.sha256(f"{company}|{url}|{title}".encode()).hexdigest()[:20]
+    return make_job_id(company, url, title)
 
 def _origin(url: str) -> str:
     p = urlparse(url)
@@ -41,6 +51,51 @@ def _parse_id_from_url(url: str) -> str:
 def _url_has_id(url: str) -> bool:
     """Return True if url contains an ID-like token (3+ digits somewhere in path or query)."""
     return bool(re.search(r'(?:[=/_-])([A-Za-z]{0,6}\d{3,}|\d{3,}[A-Za-z]{0,6})(?:[&/?#]|$)', url))
+
+_JOB_PATH_RE = re.compile(
+    r'/(?:job|jobs|careers?|career-opportunities|openings?|positions?|roles?|requisition|apply)(?:/|[-_?#=]|$)',
+    re.I,
+)
+
+_BAD_TITLE_RE = re.compile(
+    r'^(?:about|account|all jobs|benefits|blog|business areas|candidate home|company|'
+    r'contact|contacts|customer stories|downloads|events|financial calendar|home|'
+    r'investor relations?|learn more|legal|locations?|login|media|news|privacy|'
+    r'reasons to invest|saved jobs|search|search jobs|service|sign in|sitemap|'
+    r'terms|view all jobs|webinars)$',
+    re.I,
+)
+
+def _looks_like_job_url(url: str) -> bool:
+    """Keep browser fallback links tied to jobs, not ordinary site navigation."""
+    try:
+        p = urlparse(url)
+    except Exception:
+        return False
+    path = p.path or ""
+    if _JOB_PATH_RE.search(path):
+        return True
+    qs = parse_qs(p.query)
+    return any(k in qs and qs[k] for k in ("id", "jobId", "jobID", "reqId", "requisitionId", "gh_jid"))
+
+def _clean_title(title: str) -> str:
+    title = norm(title)
+    if not title:
+        return ""
+    # Some card text arrives as "TitleLocation·Country·Level"; keep the title-ish
+    # first segment instead of rendering the whole concatenated card.
+    if "·" in title:
+        title = title.split("·", 1)[0].strip()
+    title = re.sub(r'\s+(?:Apply|Save Job|Posted|Posting Date)\b.*$', '', title, flags=re.I).strip()
+    return norm(title)
+
+def _is_bad_title(title: str) -> bool:
+    title_l = norm(title).strip().lower()
+    if not title_l or len(title_l) < 4:
+        return True
+    if _BAD_TITLE_RE.match(title_l):
+        return True
+    return False
 
 def _title_from_url_or_text(url: str, text: str) -> str:
     bad_texts = {
@@ -463,7 +518,7 @@ def fetch_playwright(scrape: dict, seen: dict, company: str):
     validate_prefix = bool(scrape.get("validate_prefix", True))
     do_sort          = bool(scrape.get("sort", False))
     stop_on_seen     = bool(scrape.get("stop_on_seen", False))
-    fetch_posted_details = bool(scrape.get("fetch_posted_details", True))
+    fetch_posted_details = bool(scrape.get("fetch_posted_details", False))
     posted_detail_limit = int(scrape.get("max_posted_details", 100000))
     url_exclude      = [s.lower() for s in (scrape.get("url_exclude") or [])]
 
@@ -518,6 +573,9 @@ def fetch_playwright(scrape: dict, seen: dict, company: str):
             if url_exclude and any(ex in u.lower() for ex in url_exclude):
                 continue
 
+            if not _looks_like_job_url(u):
+                continue
+
             # ID filter: if include ends with = or /, the part after it must contain digits
             if needs_id:
                 idx = u.lower().find(include_l)
@@ -535,10 +593,18 @@ def fetch_playwright(scrape: dict, seen: dict, company: str):
             title = norm(title)
             if not title or len(title) < 4:
                 title = norm(_title_from_context(c.get("ctx", "")) or _title_from_url_or_text(u, "")) or "Unknown Title"
+            title = _clean_title(title)
+            title_regex = scrape.get("title_regex")
+            if title_regex:
+                m = re.search(title_regex, title)
+                if m:
+                    title = norm(m.group(1))
+            if _is_bad_title(title):
+                continue
 
-            # FIX 1: extract location from surrounding card text
-            location = _extract_location(c.get("ctx", ""))
-
+            # Use anchor text + card context for location; fall back to title itself
+            _loc_combined = " ".join(filter(None, [c.get("text", ""), c.get("ctx", "")]))
+            location = _extract_location(_loc_combined) or _extract_location(title)
             posted = _extract_posted(c.get("ctx", ""))
             jobs_out.append({"title": title, "url": u, "location": location, "source": "playwright", "posted": posted})
             new_added += 1
@@ -558,7 +624,16 @@ def fetch_playwright(scrape: dict, seen: dict, company: str):
                     seen_job_urls.add(u)
                     title    = _title_from_url_or_text(u, c.get("text", ""))
                     title    = norm(title or _title_from_context(c.get("ctx", ""))) or "Unknown Title"
-                    location = _extract_location(c.get("ctx", ""))
+                    title    = _clean_title(title)
+                    title_regex = scrape.get("title_regex")
+                    if title_regex:
+                        m = re.search(title_regex, title)
+                        if m:
+                            title = norm(m.group(1))
+                    if _is_bad_title(title):
+                        continue
+                    _loc_combined = " ".join(filter(None, [c.get("text", ""), c.get("ctx", "")]))
+                    location = _extract_location(_loc_combined) or _extract_location(title)
                     posted   = _extract_posted(c.get("ctx", ""))
                     jobs_out.append({"title": title, "url": u, "location": location, "source": "playwright", "posted": posted})
                     new_added += 1
@@ -607,6 +682,27 @@ def fetch_playwright(scrape: dict, seen: dict, company: str):
                     if empty_streak >= 2:
                         break
 
+            elif pg_type == "path_page":
+                # URL path pagination: base/page/2/, base/page/3/, etc.
+                segment = (pg.get("segment") or "page").strip()
+                start   = int(pg.get("start", 1))
+                step    = int(pg.get("step", 1))
+                base    = list_url.rstrip("/")
+                for i in range(max_pages):
+                    val  = start + i * step
+                    purl = f"{base}/{segment}/{val}/" if i > 0 else list_url
+                    page.goto(purl, wait_until="commit", timeout=15_000)
+                    page.wait_for_timeout(1200)
+                    added, hit_seen = process_one_page(page)
+                    if added == 0:
+                        empty_streak += 1
+                    else:
+                        empty_streak = 0
+                    if hit_seen:
+                        break
+                    if empty_streak >= 2:
+                        break
+
             elif pg_type == "next_link":
                 page.goto(list_url, wait_until="commit", timeout=15_000)
                 page.wait_for_timeout(1200)
@@ -636,14 +732,24 @@ def fetch_playwright(scrape: dict, seen: dict, company: str):
 
             browser.close()
             if fetch_posted_details and jobs_out:
-                checked = 0
+                targets = []
                 for job in jobs_out:
-                    if job.get("posted") or checked >= posted_detail_limit:
-                        continue
-                    posted = _posted_from_detail_html(job.get("url") or "")
-                    if posted:
-                        job["posted"] = posted
-                    checked += 1
+                    if not job.get("posted") and isinstance(seen, dict):
+                        existing = seen.get(_make_id(company, job.get("url") or "", job.get("title") or ""))
+                        if isinstance(existing, dict):
+                            job["posted"] = _parse_posted(existing.get("posted") or "")
+                    if not job.get("posted") and len(targets) < posted_detail_limit:
+                        targets.append(job)
+
+                def _fetch_posted(job):
+                    return job, _posted_from_detail_html(job.get("url") or "")
+
+                if targets:
+                    detail_workers = int(scrape.get("detail_workers", 6))
+                    with concurrent.futures.ThreadPoolExecutor(max_workers=max(1, detail_workers)) as ex:
+                        for job, posted in ex.map(_fetch_posted, targets):
+                            if posted:
+                                job["posted"] = posted
             return jobs_out, None
 
     except Exception as e:

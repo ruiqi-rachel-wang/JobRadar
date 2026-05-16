@@ -46,6 +46,9 @@ def _workday_location(posting):
         for bullet in bullets:
             if not bullet:
                 continue
+            raw_bullet = norm(str(bullet))
+            if re.fullmatch(r'(?:ATCI[-\w]*|(?:REQ|JR|WD|EB|R|S)[-_]?\d[\w-]*|\d{5,})', raw_bullet, re.I):
+                continue
             loc = normalize_location(norm(str(bullet)))
             if loc:
                 parts = [bullet]
@@ -102,26 +105,34 @@ def _workday_detail_location(info):
 
 def _fetch_workday_detail(base_url, tenant, board, path):
     if not path:
-        return {"posted": "", "location": ""}
+        return {"posted": "", "location": "", "description": ""}
     detail_url = f"{base_url}/wday/cxs/{tenant}/{board}{path}"
     try:
-        r = requests.get(
-            detail_url,
-            headers={**HEADERS, "Accept": "application/json"},
-            timeout=20,
-        )
+        r = None
+        for attempt in range(3):
+            r = requests.get(
+                detail_url,
+                headers={**HEADERS, "Accept": "application/json"},
+                timeout=20,
+            )
+            if r.status_code not in (403, 429):
+                break
+            time.sleep(1.5 * (attempt + 1))
         r.raise_for_status()
         data = r.json()
     except Exception:
-        return {"posted": "", "location": ""}
+        return {"posted": "", "location": "", "description": ""}
 
     info = data.get("jobPostingInfo") if isinstance(data, dict) else {}
     loc = _workday_detail_location(info)
+    desc = ""
+    if isinstance(info, dict):
+        desc = norm(BeautifulSoup(info.get("jobDescription") or "", "lxml").get_text(" ", strip=True))
     if isinstance(info, dict):
         posted = _parse_posted(info.get("postedOn") or info.get("postedDate") or info.get("startDate") or "")
         if posted:
-            return {"posted": posted, "location": loc}
-    return {"posted": _posted_from_json(data), "location": loc}
+            return {"posted": posted, "location": loc, "description": desc}
+    return {"posted": _posted_from_json(data), "location": loc, "description": desc}
 
 def fetch_workday(scrape, seen, company):
     """
@@ -185,20 +196,27 @@ def fetch_workday(scrape, seen, company):
     jobs            = []
     total           = None
     consec_all_seen = 0
-    fetch_details   = bool(scrape.get("fetch_posted_details", True))
+    fetch_details   = bool(scrape.get("fetch_posted_details", False))
+    fetch_exp_detail = bool(scrape.get("fetch_experience_details", True))
     detail_limit    = int(scrape.get("max_posted_details", 1000000))
     detail_delay    = float(scrape.get("posted_detail_delay", 0.05))
+    detail_workers  = int(scrape.get("detail_workers", 3))
     detail_count    = 0
 
     for idx in range(max_pages):
         offset = idx * limit
         try:
-            r = requests.post(
-                api_url,
-                json={"appliedFacets":{},"limit":limit,"offset":offset,"searchText":""},
-                headers={**HEADERS, "Content-Type":"application/json", "Accept":"application/json"},
-                timeout=25,
-            )
+            r = None
+            for attempt in range(3):
+                r = requests.post(
+                    api_url,
+                    json={"appliedFacets":{},"limit":limit,"offset":offset,"searchText":""},
+                    headers={**HEADERS, "Content-Type":"application/json", "Accept":"application/json"},
+                    timeout=25,
+                )
+                if r.status_code not in (403, 429):
+                    break
+                time.sleep(2.0 * (attempt + 1))
             r.raise_for_status()
             data = r.json()
         except Exception as e:
@@ -224,19 +242,44 @@ def fetch_workday(scrape, seen, company):
                 existing = seen.get(jid) if isinstance(seen, dict) else None
                 if not posted and isinstance(existing, dict):
                     posted = _parse_posted(existing.get("posted") or "")
-                needs_detail = (not posted) or loc == "Multiple Locations"
+                existing_exp = isinstance(existing, dict) and bool(existing.get("exp_label"))
+                needs_detail = (fetch_exp_detail and not existing_exp) or (not posted) or loc == "Multiple Locations"
                 if needs_detail and fetch_details and detail_count < detail_limit:
                     page_had_missing_posted = True
-                    detail = _fetch_workday_detail(base_url, tenant, board, path)
-                    posted = posted or detail.get("posted", "")
-                    if detail.get("location"):
-                        loc = detail["location"]
-                    detail_count += 1
-                    if detail_delay:
-                        time.sleep(detail_delay)
                 elif not posted:
                     page_had_missing_posted = True
-                page_jobs.append({"title":title,"url":jurl,"location":loc,"source":"workday","posted":posted})
+                page_jobs.append({
+                    "title": title,
+                    "url": jurl,
+                    "location": loc,
+                    "source": "workday",
+                    "posted": posted,
+                    "description": "",
+                    "_detail_path": path if needs_detail and fetch_details else "",
+                })
+
+        detail_targets = [
+            (pos, job) for pos, job in enumerate(page_jobs)
+            if job.get("_detail_path") and detail_count + pos < detail_limit
+        ]
+        if detail_targets:
+            def _fetch_target(item):
+                pos, job = item
+                detail = _fetch_workday_detail(base_url, tenant, board, job["_detail_path"])
+                return pos, detail
+
+            with concurrent.futures.ThreadPoolExecutor(max_workers=max(1, detail_workers)) as ex:
+                for pos, detail in ex.map(_fetch_target, detail_targets):
+                    job = page_jobs[pos]
+                    job["posted"] = job.get("posted") or detail.get("posted", "")
+                    if detail.get("location"):
+                        job["location"] = detail["location"]
+                    job["description"] = detail.get("description", "")
+            detail_count += len(detail_targets)
+            if detail_delay:
+                time.sleep(detail_delay)
+        for job in page_jobs:
+            job.pop("_detail_path", None)
         jobs.extend(page_jobs)
 
         if bool(scrape.get("stop_on_seen", False) or scrape.get("sort", False)) and seen and page_jobs:

@@ -1,4 +1,3 @@
-import hashlib
 import json
 import re
 from datetime import datetime, timedelta
@@ -6,11 +5,126 @@ from urllib.parse import parse_qs, unquote, urlencode, urlparse, urlunparse
 
 from bs4 import BeautifulSoup
 
+try:
+    from job_identity import make_job_id
+except ModuleNotFoundError:
+    from ..job_identity import make_job_id
+
 def make_id(company, url, title):
-    return hashlib.sha256(f"{company}|{url}|{title}".encode()).hexdigest()[:20]
+    return make_job_id(company, url, title)
 
 def norm(s):
     return " ".join((s or "").split())
+
+def extract_experience(title="", text=""):
+    """Return an estimated experience range from requirements text or title."""
+    title = norm(title)
+    text = norm(text)
+
+    def result(lo, hi, label, source):
+        lo = int(lo) if lo is not None else None
+        hi = int(hi) if hi is not None else None
+        if hi is not None and lo is not None and hi < lo:
+            hi = lo
+        return {"min": lo, "max": hi, "label": label, "source": source}
+
+    word_years = {
+        "zero": "0", "one": "1", "two": "2", "three": "3", "four": "4",
+        "five": "5", "six": "6", "seven": "7", "eight": "8",
+        "nine": "9", "ten": "10", "eleven": "11", "twelve": "12",
+        "thirteen": "13", "fourteen": "14", "fifteen": "15",
+        "sixteen": "16", "seventeen": "17", "eighteen": "18",
+        "nineteen": "19", "twenty": "20",
+    }
+    requirement = text.lower().replace("’", "'")
+    for word, value in word_years.items():
+        requirement = re.sub(rf"\b{word}\b", value, requirement)
+    def text_matches(section):
+        range_pattern = re.compile(
+            r'(\d{1,2})\s*(?:-\s*|to\s+)(\d{1,2})\s*(?:years?|yrs?)'
+            r'(?:\s+[^.;:]{0,100}?\bexperience\b)?'
+        )
+        minimum_patterns = [
+            re.compile(
+                r'(\d{1,2})\s*\+\s*(?:years?|yrs?)'
+                r'(?:\s+[^.;:]{0,100}?\bexperience\b)?'
+            ),
+            re.compile(
+                r'(?:minimum|min\.?|at least|more than)\s+(\d{1,2})\s*(?:years?|yrs?)'
+                r'(?:\s+[^.;:]{0,100}?\bexperience\b)?'
+            ),
+            re.compile(
+                r'(\d{1,2})\s*(?:or more|plus)\s*(?:years?|yrs?)'
+                r'(?:\s+[^.;:]{0,100}?\bexperience\b)?'
+            ),
+            re.compile(
+                r'(?<![-\d])(\d{1,2})\s*(?:years?|yrs?)\s+[^.;:]{0,100}?\bexperience\b'
+            ),
+        ]
+        matches = []
+        range_spans = []
+        for m in range_pattern.finditer(section):
+            lo, hi = int(m.group(1)), int(m.group(2))
+            matches.append(result(lo, hi, f"{lo}-{hi} years", "text"))
+            range_spans.append(m.span())
+        for pattern in minimum_patterns:
+            for m in pattern.finditer(section):
+                if any(start <= m.start() < end for start, end in range_spans):
+                    continue
+                lo = int(m.group(1))
+                matches.append(result(lo, None, f"{lo}+ years", "text"))
+        return matches
+
+    baseline = re.split(r'\b(?:preferred qualifications?|desired skills?|nice to have)\b', requirement, maxsplit=1)[0]
+    matches = text_matches(baseline) or text_matches(requirement)
+    if matches:
+        # Multiple baseline requirements are common. Keep the strongest floor;
+        # range requirements beat weaker side requirements by their lower bound.
+        return max(matches, key=lambda x: (x["min"] or -1, x["max"] or -1))
+
+    # Title fallback. These are deliberately broad estimates; exact years from
+    # requirements text always wins above.
+    title_l = title.lower()
+    title_rules = [
+        (r'\b(?:intern|internship|co-?op|graduate|new grad|entry level|early career|apprentice)\b', 0, 1, "0-1 years"),
+        (r'\b(?:junior|jr\.?|associate|analyst i|engineer i|developer i)\b', 0, 3, "0-3 years"),
+        (r'\b(?:mid(?:-|\s)?level|engineer ii|developer ii|analyst ii|l3)\b', 2, 5, "2-5 years"),
+        (r'\b(?:senior|sr\.?|engineer iii|developer iii|analyst iii|l4|l5)\b', 4, 8, "4-8 years"),
+        (r'\b(?:staff|principal|lead|architect|l6|l7)\b', 6, None, "6+ years"),
+        (r'\b(?:director|head of|vp|vice president|executive)\b', 8, None, "8+ years"),
+    ]
+    title_matches = [
+        result(lo, hi, label, "title")
+        for pattern, lo, hi, label in title_rules
+        if re.search(pattern, title_l)
+    ]
+    if title_matches:
+        return max(title_matches, key=lambda x: (x["min"] or -1, x["max"] or 10_000))
+    return {"min": None, "max": None, "label": "", "source": ""}
+
+def experience_match_score(user_years, exp_min, exp_max):
+    """Higher is better. Negative means a known requirement is too high."""
+    if user_years is None:
+        return 0
+    try:
+        y = float(user_years)
+    except (TypeError, ValueError):
+        return 0
+    if exp_min is None and exp_max is None:
+        return 0
+    lo = float(exp_min) if exp_min is not None else 0.0
+    hi = float(exp_max) if exp_max is not None else None
+    if lo > y + 1:
+        return -100
+    if hi is not None and lo <= y <= hi:
+        return 100
+    if hi is None and y >= lo:
+        return 90
+    if hi is not None and y < lo:
+        return max(0, 70 - int((lo - y) * 20))
+    if hi is not None and y > hi:
+        return max(10, 60 - int((y - hi) * 10))
+    return 20
 
 _US_STATES = {
     'AL','AK','AZ','AR','CA','CO','CT','DE','FL','GA','HI','ID','IL','IN','IA',
@@ -80,6 +194,10 @@ _CITY_DEFAULTS = {
     'pune': ('Pune','','India'), 'pune city': ('Pune','','India'), 'bengaluru': ('Bengaluru','','India'),
     'bangalore': ('Bengaluru','','India'), 'hyderabad': ('Hyderabad','','India'), 'mumbai': ('Mumbai','','India'),
     'gurugram': ('Gurugram','','India'), 'gurgaon': ('Gurugram','','India'), 'chennai': ('Chennai','','India'),
+    'salt lake city': ('Salt Lake City','UT','US'), 'richardson': ('Richardson','TX','US'),
+    'albany': ('Albany','NY','US'), 'warsaw': ('Warsaw','','Poland'),
+    'the hague': ('The Hague','','Netherlands'), 'stockholm': ('Stockholm','','Sweden'),
+    'sydney': ('Sydney','','Australia'), 'shenzhen': ('Shenzhen','','China'),
 }
 
 _LOCATION_NOISE = re.compile(
@@ -89,7 +207,8 @@ _LOCATION_NOISE = re.compile(
 
 _JOB_TITLE_LOCATION_NOISE = re.compile(
     r'\b(software|engineer|developer|architect|manager|director|analyst|'
-    r'specialist|consultant|product|program|project|pricing|incentives|'
+    r'specialist|consultant|associate|banking|wealth|infrastructure|industrials|'
+    r'product|program|project|pricing|incentives|'
     r'membership|consumer|senior|staff|principal|lead|intern)\b',
     re.I,
 )
@@ -130,6 +249,11 @@ def normalize_location(loc):
     if not loc:
         return ''
 
+    # ATS requisition IDs and internal tracking IDs are common false positives
+    # from Workday/Playwright cards. They should never be shown as locations.
+    if re.fullmatch(r'(?:[A-Z]{2,6}-[A-Z]\d[\w-]*|ATCI[-\w]*|(?:REQ|JR|WD|EB|R|S)[-_]?\d[\w-]*|\d{5,})', loc, re.I):
+        return ''
+
     # Reject title fragments that generic HTML/Playwright extractors sometimes
     # mistake for locations, e.g. "Software Engineer, Consumer Pricing".
     first_piece = lower.split(",", 1)[0].strip()
@@ -138,7 +262,7 @@ def normalize_location(loc):
         first_piece in _CITY_DEFAULTS
         or last_piece in _COUNTRY_ALIASES
         or last_piece in _US_STATE_NAMES
-        or bool(re.search(r'\b[A-Z]{2}\b', loc))
+        or any(code in _US_STATES or code in _COUNTRY_CODES for code in re.findall(r'\b[A-Z]{2}\b', loc))
         or lower in ('remote', 'multiple locations', 'various locations')
     )
     if _JOB_TITLE_LOCATION_NOISE.search(loc) and not has_geo_signal:
@@ -213,6 +337,8 @@ def normalize_location(loc):
     area = lower.replace('greater ', '').removesuffix(' area').strip()
     if area in _CITY_DEFAULTS:
         city, state, country = _CITY_DEFAULTS[area]
+        if city.lower() == country.lower():
+            return country
         return ", ".join(x for x in (city, state, country) if x)
 
     # Strip US country suffix and re-add normalized ", US"
@@ -264,6 +390,8 @@ def normalize_location(loc):
 
     if lower in _CITY_DEFAULTS:
         city, state, country = _CITY_DEFAULTS[lower]
+        if city.lower() == country.lower():
+            return country
         return ", ".join(x for x in (city, state, country) if x)
 
     country = _country_code(loc)
@@ -294,7 +422,12 @@ def extract_location_from_text(text):
         if _LOCATION_NOISE.search(part):
             continue
         normalized = normalize_location(part)
-        if normalized != part or normalized in ("Remote", "Multiple Locations"):
+        if normalized and (normalized != part or normalized in ("Remote", "Multiple Locations")):
+            # Reject if the city portion (before first comma) is more than 3 words —
+            # that usually means non-location text leaked in (e.g. "New York Research Early Careers, NY, US")
+            city_part = normalized.split(",")[0].strip() if "," in normalized else normalized
+            if len(city_part.split()) > 2:
+                continue
             return normalized
 
     # Require 2-letter state code to avoid matching job title words as city names
@@ -318,7 +451,9 @@ def extract_location_from_text(text):
             return normalize_location(candidate)
 
     for city in sorted(_CITY_DEFAULTS, key=len, reverse=True):
-        if re.search(rf'\b{re.escape(city)}\b', compact, re.I):
+        # Use \b at word start; allow end-of-word boundary OR uppercase continuation
+        # so "DallasDallas" (location concatenated in title) still matches "Dallas".
+        if re.search(rf'\b{re.escape(city)}(?:\b|(?=[A-Z]))', compact, re.I):
             return normalize_location(city)
 
     return ''
@@ -333,7 +468,8 @@ def location_matches(query, loc):
         aliases.update([" us", ", us", "us"])
     if q in ("uk", "u.k.", "united kingdom", "england", "scotland", "wales"):
         aliases.update([" uk", ", uk", "united kingdom", "england", "scotland", "wales"])
-    return any(a in hay for a in aliases)
+    padded = f" {hay.replace(', ', ' ')} "
+    return any(f" {a} " in padded for a in aliases)
 
 def _parse_posted(raw):
     """Parse a date string to ISO YYYY-MM-DD; return '' on failure."""
@@ -342,14 +478,22 @@ def _parse_posted(raw):
     raw = str(raw).strip()
     if not raw:
         return ''
+    today = datetime.now().date()   # local time — matches what the user sees
+
+    def _not_future(value):
+        try:
+            parsed = datetime.strptime(value, "%Y-%m-%d").date()
+        except ValueError:
+            return ''
+        return value if parsed <= today else ''
+
     m = re.search(r'(\d{4})-(\d{2})-(\d{2})', raw)
     if m:
-        return f"{m.group(1)}-{m.group(2)}-{m.group(3)}"
+        return _not_future(f"{m.group(1)}-{m.group(2)}-{m.group(3)}")
     m = re.search(r'(\d{1,2})/(\d{1,2})/(\d{4})', raw)
     if m:
-        return f"{m.group(3)}-{int(m.group(1)):02d}-{int(m.group(2)):02d}"
+        return _not_future(f"{m.group(3)}-{int(m.group(1)):02d}-{int(m.group(2)):02d}")
     lower = raw.lower()
-    today = datetime.now().date()   # local time — matches what the user sees
     if lower in ("today", "posted today"):
         return today.isoformat()
     if lower in ("yesterday", "posted yesterday"):
@@ -365,7 +509,7 @@ def _parse_posted(raw):
         return today.isoformat()
     for fmt in ("%B %d, %Y", "%b %d, %Y", "%B %d %Y", "%b %d %Y"):
         try:
-            return datetime.strptime(raw, fmt).date().isoformat()
+            return _not_future(datetime.strptime(raw, fmt).date().isoformat())
         except ValueError:
             pass
     return ''

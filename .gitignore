@@ -1,5 +1,6 @@
-app/__pycache__/
-app/*.pyc
+__pycache__/
+*.py[cod]
+.env
 app/data/jobs.db
 app/data/seen_jobs.json
 app/data/scan_summary.json

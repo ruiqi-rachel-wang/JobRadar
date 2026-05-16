@@ -21,8 +21,9 @@ def fetch_greenhouse(scrape, seen, company):
                 jurl   = j.get("absolute_url") or ""
                 loc    = normalize_location(norm((j.get("location") or {}).get("name") or ""))
                 posted = _parse_posted(j.get("first_published") or j.get("published_at") or j.get("updated_at") or "")
+                desc   = norm(BeautifulSoup(j.get("content") or "", "lxml").get_text(" ", strip=True))
                 if title and jurl:
-                    jobs.append({"title":title,"url":jurl,"location":loc,"source":"greenhouse","posted":posted})
+                    jobs.append({"title":title,"url":jurl,"location":loc,"source":"greenhouse","posted":posted,"description":desc})
             return jobs, None
         except Exception as e:
             last_err = str(e)
@@ -31,4 +32,3 @@ def fetch_greenhouse(scrape, seen, company):
         from .playwright import _fetch_playwright_with_source
         return _fetch_playwright_with_source(scrape, seen, company, "greenhouse")
     return [], last_err
-
