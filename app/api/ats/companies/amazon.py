@@ -57,6 +57,9 @@ def fetch_amazon(scrape, seen, company):
 
             loc    = normalize_location(norm(loc_raw))
             posted = _parse_posted(j.get("posted_date") or j.get("updated_time") or "")
+            desc = norm(BeautifulSoup(" ".join(str(j.get(k) or "") for k in (
+                "basic_qualifications", "preferred_qualifications", "description",
+            )), "lxml").get_text(" ", strip=True))
 
             if title and jurl:
                 jid = make_id(company, jurl, title)
@@ -64,7 +67,7 @@ def fetch_amazon(scrape, seen, company):
                     stop = True
                     break
                 jobs.append({"title": title, "url": jurl, "location": loc,
-                             "source": "amazon", "posted": posted})
+                             "source": "amazon", "posted": posted, "description": desc})
 
         if stop:
             break

@@ -1,6 +1,6 @@
 """Fetcher registry and dispatch for JobRadar ATS sources."""
 
-from .utils import _parse_posted, normalize_location
+from .utils import _parse_posted, extract_experience, make_id, normalize_location
 
 from .ats.greenhouse import fetch_greenhouse
 from .ats.lever import fetch_lever
@@ -30,6 +30,7 @@ from .ats.playwright import (
 )
 from .ats.html import fetch_html
 from .ats.jobsapi import fetch_jobsapi
+from .ats.tiktok import fetch_tiktok
 from .ats.companies.amazon import fetch_amazon
 from .ats.companies.americanexpress import fetch_americanexpress
 from .ats.companies.bain import fetch_bain
@@ -37,9 +38,13 @@ from .ats.companies.boozallen import fetch_boozallen
 from .ats.companies.dhl import fetch_dhl
 from .ats.companies.dominos import fetch_dominos
 from .ats.companies.etsy import fetch_etsy
+from .ats.companies.johnsoncontrols import fetch_johnsoncontrols
+from .ats.companies.kpmg import fetch_kpmg
+from .ats.companies.nike import fetch_nike
 from .ats.companies.starbucks import fetch_starbucks
 from .ats.companies.unitedhealth import fetch_unitedhealth
 from .ats.companies.vimeo import fetch_vimeo
+from .ats.companies.adobe import fetch_adobe
 
 FETCHERS = {
     "greenhouse": fetch_greenhouse,
@@ -83,10 +88,15 @@ FETCHERS = {
     "dhl": fetch_dhl,
     "dominos": fetch_dominos,
     "etsy": fetch_etsy,
+    "johnsoncontrols": fetch_johnsoncontrols,
+    "kpmg": fetch_kpmg,
+    "nike": fetch_nike,
     "starbucks": fetch_starbucks,
     "unitedhealth": fetch_unitedhealth,
     "vimeo": fetch_vimeo,
+    "adobe": fetch_adobe,
     "jobsapi": fetch_jobsapi,
+    "tiktok": fetch_tiktok,
     "playwright": fetch_playwright,
     "html": fetch_html,
 }
@@ -107,6 +117,20 @@ def fetch_jobs(company, seen):
     for j in jobs or []:
         j["location"] = normalize_location(j.get("location", ""))
         j["posted"] = _parse_posted(j.get("posted", ""))
+        existing = None
+        if isinstance(seen, dict):
+            existing = seen.get(make_id(company["name"], j.get("url", ""), j.get("title", "")))
+        if not j.get("description") and isinstance(existing, dict) and existing.get("exp_label"):
+            j["exp_min"] = existing.get("exp_min")
+            j["exp_max"] = existing.get("exp_max")
+            j["exp_label"] = existing.get("exp_label", "")
+            j["exp_source"] = existing.get("exp_source", "")
+        else:
+            exp = extract_experience(j.get("title", ""), j.get("description", ""))
+            j["exp_min"] = exp.get("min")
+            j["exp_max"] = exp.get("max")
+            j["exp_label"] = exp.get("label", "")
+            j["exp_source"] = exp.get("source", "")
     include_text = scrape.get("text_include")
     if include_text and jobs:
         needles = include_text if isinstance(include_text, list) else [include_text]

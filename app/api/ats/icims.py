@@ -202,23 +202,34 @@ def fetch_icims(scrape, seen, company):
                                      "source": "icims", "posted": posted})
 
                 if jobs:
-                    # Enrich locations from detail pages in parallel
-                    max_workers = min(6, len(jobs))
+                    # Enrich missing locations from detail pages. Reuse saved
+                    # detail data so repeat scans do not refetch every job.
+                    targets = []
+                    for j in jobs:
+                        existing = seen.get(make_id(company, j["url"], j["title"])) if isinstance(seen, dict) else None
+                        if isinstance(existing, dict):
+                            j["location"] = j.get("location") or existing.get("location", "")
+                            j["posted"] = j.get("posted") or _parse_posted(existing.get("posted") or "")
+                        if not j.get("location") or not j.get("posted"):
+                            targets.append(j)
+
+                    max_workers = min(6, len(targets))
                     timeout_per = int(scrape.get("detail_timeout", 12))
 
                     def _enrich(j):
                         loc, posted_detail = _icims_location_from_detail(j["url"], timeout=timeout_per)
                         return j["url"], loc, posted_detail
 
-                    with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as ex:
-                        for jurl, loc, posted_detail in ex.map(_enrich, jobs):
-                            for j in jobs:
-                                if j["url"] == jurl:
+                    if targets:
+                        with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as ex:
+                            by_url = {j["url"]: j for j in jobs}
+                            for jurl, loc, posted_detail in ex.map(_enrich, targets):
+                                j = by_url.get(jurl)
+                                if j:
                                     if loc:
                                         j["location"] = loc
                                     if posted_detail and not j["posted"]:
                                         j["posted"] = posted_detail
-                                    break
                     return jobs, None
 
             elif r.status_code not in (403, 404):
@@ -242,19 +253,28 @@ def fetch_icims(scrape, seen, company):
                 r.raise_for_status()
                 jobs = _icims_jobs_from_html(r.text, r.url)
                 if jobs:
-                    # Enrich location for all jobs from their detail pages.
+                    # Enrich missing detail fields only.
                     all_jobs = list(jobs.values())
-                    with concurrent.futures.ThreadPoolExecutor(max_workers=min(6, len(all_jobs))) as ex:
-                        for jurl, loc, posted_detail in ex.map(
-                            lambda j: (j["url"], *_icims_location_from_detail(j["url"])),
-                            all_jobs,
-                        ):
-                            j = jobs.get(jurl)
-                            if j:
-                                if loc:
-                                    j["location"] = loc
-                                if posted_detail and not j.get("posted"):
-                                    j["posted"] = posted_detail
+                    targets = []
+                    for j in all_jobs:
+                        existing = seen.get(make_id(company, j["url"], j["title"])) if isinstance(seen, dict) else None
+                        if isinstance(existing, dict):
+                            j["location"] = j.get("location") or existing.get("location", "")
+                            j["posted"] = j.get("posted") or _parse_posted(existing.get("posted") or "")
+                        if not j.get("location") or not j.get("posted"):
+                            targets.append(j)
+                    if targets:
+                        with concurrent.futures.ThreadPoolExecutor(max_workers=min(6, len(targets))) as ex:
+                            for jurl, loc, posted_detail in ex.map(
+                                lambda j: (j["url"], *_icims_location_from_detail(j["url"])),
+                                targets,
+                            ):
+                                j = jobs.get(jurl)
+                                if j:
+                                    if loc:
+                                        j["location"] = loc
+                                    if posted_detail and not j.get("posted"):
+                                        j["posted"] = posted_detail
                     return list(jobs.values()), None
             except Exception as e:
                 if not first_err:

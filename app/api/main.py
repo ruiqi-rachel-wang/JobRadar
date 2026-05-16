@@ -1,21 +1,30 @@
-import concurrent.futures
 import json
 import os
 import secrets
-import sqlite3
 import threading
 import time
 from datetime import datetime
 
 from flask import Flask, jsonify, redirect, render_template, request, session, url_for
 
-from .common import DB_FILE, SEEN_FILE, SUMMARY_FILE
+from .database import connect_db, placeholders
+try:
+    from scanner_service import run_scan
+    from scan_store import latest_scan as latest_scan_record, scan_companies as scan_company_records
+except ModuleNotFoundError:
+    from ..scanner_service import run_scan
+    from ..scan_store import latest_scan as latest_scan_record, scan_companies as scan_company_records
+
 from .job_data import (
-    add_or_update_company, company_categories_map, current_companies, init_db, load_seen,
-    rebuild_seen_from_db, upsert_jobs, delete_expired_jobs,
+    add_or_update_company, current_companies, init_db, jobs_from_seen_fallback,
+    set_app_state,
 )
-from .apis import _API_MODES, fetch_jobs
-from .utils import _parse_posted, location_matches, make_id
+from .apis import fetch_jobs
+from .utils import experience_match_score
+from .search import (
+    display_location, display_title,
+    experience_score_sql, keyword_groups, keyword_relevance_sql, keyword_where,
+)
 
 app = Flask(__name__, template_folder="../templates")
 app.secret_key = os.environ.get("SECRET_KEY") or os.environ.get("JOBRADAR_SECRET_KEY") or secrets.token_hex(32)
@@ -33,6 +42,10 @@ def _wants_json():
     return request.path.startswith("/api/") or "application/json" in (request.headers.get("Accept") or "")
 
 def _admin_required():
+    # Local development should not get stuck on a stale Flask session after
+    # server restarts. Production/non-loopback requests still require admin.
+    if request.remote_addr in {"127.0.0.1", "::1"}:
+        return None
     if not _admin_configured():
         return None  # no password set → local mode, allow through
     if _is_admin():
@@ -69,161 +82,48 @@ def protect_admin_routes():
 scan_state = {
     "running":False, "done":False, "started_at":0,
     "progress":[], "results":[], "new_count":0,
+    "scan_run_id": None,
 }
-_seen_lock = threading.Lock()
+
+def _recover_stale_scans():
+    """On startup, mark any scan_runs stuck in 'running' as abandoned."""
+    try:
+        with connect_db() as conn:
+            conn.execute(
+                "UPDATE scan_runs SET status='abandoned', finished_at=? WHERE status='running'",
+                (datetime.now().strftime("%Y-%m-%d %H:%M:%S"),),
+            )
+    except Exception:
+        pass
+
+_recover_stale_scans()
 
 def scan_runner(selected_names):
     try:
         do_scan(selected_names)
     except Exception as e:
-        scan_state.update(
-            running=False,
-            done=True,
-            results=[],
-            new_count=0,
-        )
+        scan_state.update(running=False, done=True, results=[], new_count=0)
         for p in scan_state.get("progress", []):
             if p.get("status") in {"pending", "scanning"}:
                 p.update(status="error", error=str(e), count=0, new=0)
 
 def do_scan(selected_names):
-    seen    = load_seen()
-    now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    results = []
-    t_scan  = time.monotonic()
-
-    scan_state.update(running=True, done=False, started_at=time.time(), progress=[], results=[], new_count=0)
+    scan_state.update(running=True, done=False, started_at=time.time(), progress=[], results=[], new_count=0, scan_run_id=None)
     companies = current_companies()
     target = [c for c in companies if c["name"] in selected_names]
-
-    # Pre-populate progress list so the frontend sees all companies immediately
-    progress = [
+    scan_state["progress"] = [
         {"company": c["name"],
          "mode":    (c.get("scrape") or {}).get("mode", "html"),
          "status":  "pending", "count": 0, "new": 0}
         for c in target
     ]
-    scan_state["progress"] = progress
-    all_summaries = []
-
-    def _commit(i, company, raw, err, duration):
-        name     = company["name"]
-        cats     = company.get("categories", [])
-        new_this = 0
-        with _seen_lock:
-            for j in raw:
-                jid    = make_id(name, j["url"], j["title"])
-                is_new = jid not in seen
-                if is_new:
-                    seen[jid] = {
-                        "first_seen": now_str,
-                        "company": name,
-                        "title": j["title"],
-                        "url": j.get("url", ""),
-                        "location": j.get("location", ""),
-                        "source": j.get("source", ""),
-                        "posted": j.get("posted", ""),
-                    }
-                    new_this += 1
-                else:
-                    # Update mutable fields — never touch first_seen
-                    if j.get("location"):
-                        seen[jid]["location"] = j.get("location", "")
-                    if j.get("posted"):
-                        seen[jid]["posted"] = j.get("posted", "")
-                    if j.get("source"):
-                        seen[jid]["source"] = j.get("source", "")
-                results.append({
-                    **j,
-                    "id":         jid,
-                    "company":    name,
-                    "categories": cats,
-                    "is_new":     is_new,
-                    # first_seen is always the original discovery date, never the current scan
-                    "first_seen": seen[jid]["first_seen"],
-                    # posted: prefer what the scan just found; fall back to what we already know
-                    "posted":     j.get("posted") or seen[jid].get("posted", ""),
-                })
-        # Flush this company's jobs to DB immediately so a mid-scan stop
-        # doesn't lose work that already finished.
-        company_rows = [r for r in results if r["company"] == name]
-        if company_rows:
-            upsert_jobs(company_rows)
-            # Delete jobs that no longer appear in the scan (filled/expired).
-            # Guard: only if scan returned results — empty means error, not expiry.
-            if raw:
-                delete_expired_jobs(name, [r["id"] for r in company_rows])
-        entry = {
-            "company":    name,
-            "mode":       progress[i]["mode"],
-            "status":     "done" if not err else "error",
-            "count":      len(raw),
-            "new":        new_this,
-            "duration_s": duration,
-        }
-        if err:
-            entry["error"] = err
-        progress[i].update(entry)
-        all_summaries.append(dict(entry))
-
-    def _run_one(i, company):
-        progress[i]["status"] = "scanning"
-        t0 = time.monotonic()
-        try:
-            raw, err = fetch_jobs(company, seen)
-            return i, company, raw or [], err, round(time.monotonic() - t0, 1)
-        except Exception as e:
-            return i, company, [], str(e), round(time.monotonic() - t0, 1)
-
-    api_cos = [(i, c) for i, c in enumerate(target)
-               if (c.get("scrape") or {}).get("mode", "html") in _API_MODES]
-    pw_cos  = [(i, c) for i, c in enumerate(target)
-               if (c.get("scrape") or {}).get("mode", "html") not in _API_MODES]
-
-    # Both lanes start simultaneously:
-    #   API lane  — up to 8 concurrent HTTP workers
-    #   Browser lane — up to 2 concurrent Playwright/HTML workers (browsers are heavy)
-    with concurrent.futures.ThreadPoolExecutor(max_workers=8) as api_ex, \
-         concurrent.futures.ThreadPoolExecutor(max_workers=2) as pw_ex:
-        all_futs = (
-            [api_ex.submit(_run_one, i, c) for i, c in api_cos] +
-            [pw_ex.submit(_run_one, i, c)  for i, c in pw_cos]
-        )
-        for fut in concurrent.futures.as_completed(all_futs):
-            _commit(*fut.result())
-
-    upsert_jobs(results)
-    rebuild_seen_from_db()   # always sync seen_jobs.json from DB after scan
-
-    # Write scan summary to disk — merge with existing data so a partial scan
-    # only updates the companies that were actually scanned.
-    elapsed = round(time.monotonic() - t_scan, 1)
-    try:
-        existing = json.loads(SUMMARY_FILE.read_text())
-        per_company_map = {e["company"]: e for e in existing.get("per_company", [])}
-    except Exception:
-        per_company_map = {}
-    for s in all_summaries:
-        per_company_map[s["company"]] = s
-    merged = sorted(per_company_map.values(), key=lambda x: x["company"])
-    failed  = [s for s in merged if s["status"] == "error"]
-    zero    = [s for s in merged if s["status"] == "done" and s["count"] == 0]
-    SUMMARY_FILE.write_text(json.dumps({
-        "scan_time":        now_str,
-        "duration_seconds": elapsed,
-        "total_companies":  len(merged),
-        "success":          len(merged) - len(failed),
-        "failed_count":     len(failed),
-        "zero_jobs_count":  len(zero),
-        "failed":  [{"company": s["company"], "mode": s.get("mode"), "error": s.get("error")} for s in failed],
-        "zero_jobs": [{"company": s["company"], "mode": s.get("mode")} for s in zero],
-        "per_company": merged,
-    }, indent=2, ensure_ascii=False))
-
-    results.sort(key=lambda j: (0 if j["is_new"] else 1, j["company"]))
+    result = run_scan(target, scan_type="manual", progress=scan_state["progress"])
     scan_state.update(
-        running=False, done=True, results=results,
-        new_count=sum(1 for j in results if j["is_new"]),
+        running=False,
+        done=True,
+        results=result["results"],
+        new_count=result["new_count"],
+        scan_run_id=result.get("scan_run_id"),
     )
 
 
@@ -259,6 +159,17 @@ def legacy():
 def start_scan():
     if scan_state["running"] and time.time() - float(scan_state.get("started_at") or 0) > 6 * 60 * 60:
         scan_state.update(running=False, done=True)
+    if not scan_state["running"]:
+        # Also guard against another process that started a scan (Postgres multi-worker)
+        try:
+            with connect_db(rows=True) as conn:
+                row = conn.execute(
+                    "SELECT id FROM scan_runs WHERE status='running' ORDER BY id DESC LIMIT 1"
+                ).fetchone()
+            if row:
+                return jsonify({"ok": True, "already_running": True})
+        except Exception:
+            pass
     if scan_state["running"]:
         return jsonify({"ok":True, "already_running":True})
     data     = request.get_json(silent=True) or {}
@@ -270,7 +181,6 @@ def start_scan():
 
 @app.route("/api/reset_scan", methods=["POST"])
 def reset_scan():
-    rebuild_seen_from_db()
     # Keep progress/results so the panel still shows what was found before stop.
     # Only clear the running flag so polling stops.
     scan_state.update(running=False, done=True, started_at=0)
@@ -279,16 +189,17 @@ def reset_scan():
 @app.route("/api/progress")
 def get_progress():
     return jsonify({
-        "running":   scan_state["running"],
-        "done":      scan_state["done"],
-        "progress":  scan_state["progress"],
-        "results":   scan_state["results"],
-        "new_count": scan_state["new_count"],
+        "running":     scan_state["running"],
+        "done":        scan_state["done"],
+        "progress":    scan_state["progress"],
+        "results":     scan_state["results"],
+        "new_count":   scan_state["new_count"],
+        "scan_run_id": scan_state.get("scan_run_id"),
     })
 
 @app.route("/api/reset_seen", methods=["POST"])
 def reset_seen():
-    if SEEN_FILE.exists(): SEEN_FILE.unlink()
+    set_app_state("force_all_new_once", "1")
     scan_state["results"] = []
     return jsonify({"ok":True})
 
@@ -296,13 +207,12 @@ def reset_seen():
 def clear_data():
     if scan_state.get("running"):
         return jsonify({"error": "Cannot clear data while a scan is running"}), 409
-    for f in (SEEN_FILE, SUMMARY_FILE):
-        if f.exists(): f.unlink()
-    if DB_FILE.exists():
-        with sqlite3.connect(DB_FILE) as conn:
-            conn.execute("DELETE FROM jobs")
-            conn.commit()
-    scan_state.update(results=[], new_count=0, done=False)
+    with connect_db() as conn:
+        conn.execute("DELETE FROM jobs")
+        conn.execute("DELETE FROM app_state")
+        conn.execute("DELETE FROM scan_runs")
+        conn.execute("DELETE FROM scan_company_status")
+    scan_state.update(results=[], new_count=0, done=False, scan_run_id=None)
     return jsonify({"ok": True})
 
 @app.route("/api/detect_ats", methods=["POST"])
@@ -373,28 +283,91 @@ def api_companies():
 
 @app.route("/api/summary")
 def api_summary():
-    if SUMMARY_FILE.exists():
-        return jsonify(json.loads(SUMMARY_FILE.read_text()))
-    return jsonify({"error": "No scan summary yet"}), 404
+    run = latest_scan_record()
+    if not run:
+        return jsonify({"error": "No scan summary yet"}), 404
+    run = dict(run)
+    companies = current_companies()
+    mode_by_name = {c["name"]: (c.get("scrape") or {}).get("mode", "html") for c in companies}
+    scan_run_id = run["id"]
+    company_rows = scan_company_records(scan_run_id)
+    per_company = []
+    failed = []
+    zero = []
+    for row in company_rows:
+        row = dict(row)
+        name = row["company_name"]
+        status = "done" if row["status"] == "success" else ("error" if row["status"] == "failed" else row["status"])
+        entry = {
+            "company":   name,
+            "mode":      mode_by_name.get(name, ""),
+            "status":    status,
+            "count":     row.get("jobs_found", 0) or 0,
+            "new":       row.get("new_jobs_found", 0) or 0,
+        }
+        if row.get("error_message"):
+            entry["error"] = row["error_message"]
+        per_company.append(entry)
+        if status == "error":
+            failed.append({"company": name, "mode": entry["mode"], "error": entry.get("error")})
+        if status == "done" and entry["count"] == 0:
+            zero.append({"company": name, "mode": entry["mode"]})
+    return jsonify({
+        "scan_time":        run.get("started_at", ""),
+        "duration_seconds": None,
+        "total_companies":  run.get("total_companies", len(per_company)),
+        "success":          run.get("total_companies", len(per_company)) - len(failed),
+        "failed_count":     len(failed),
+        "zero_jobs_count":  len(zero),
+        "failed":           failed,
+        "zero_jobs":        zero,
+        "per_company":      per_company,
+    })
+
+@app.route("/api/scans/latest")
+def api_latest_scan():
+    row = latest_scan_record()
+    return jsonify(dict(row) if row else None)
+
+@app.route("/api/scans/<int:scan_run_id>/companies")
+def api_scan_companies(scan_run_id):
+    rows = scan_company_records(scan_run_id)
+    return jsonify([dict(row) for row in rows])
 
 @app.route("/api/jobs")
 def api_jobs():
     keyword  = (request.args.get("keyword")  or "").strip().lower()
     location = (request.args.get("location") or "").strip().lower()
     since    = (request.args.get("since")    or "").strip()
+    exp_years_raw = (request.args.get("experience") or request.args.get("years") or "").strip()
+    exp_years = None
+    if exp_years_raw:
+        try:
+            exp_years = max(0.0, float(exp_years_raw))
+        except ValueError:
+            exp_years = None
     category = (request.args.get("category") or "").strip()
     companies = [c.strip() for c in request.args.getlist("company") if c.strip()]
     if not companies:
         raw_companies = (request.args.get("companies") or "").strip()
         companies = [c.strip() for c in raw_companies.split(",") if c.strip()]
+    active_company_names = {
+        company.get("name")
+        for company in current_companies()
+        if company.get("scan_enabled", True) is not False
+    }
+    if companies:
+        companies = [name for name in companies if name in active_company_names]
     limit    = min(int(request.args.get("limit", 100) or 100), 5000)
     page     = max(int(request.args.get("page", 1) or 1), 1)
     offset   = (page - 1) * limit
 
-    clauses, params = [], []
+    clauses, params = ["is_open = TRUE"], []
+    kw_groups = keyword_groups(keyword)
     if keyword:
-        clauses.append("(LOWER(title) LIKE ? OR LOWER(company) LIKE ?)")
-        params += [f"%{keyword}%", f"%{keyword}%"]
+        keyword_clauses, keyword_params = keyword_where(kw_groups)
+        clauses.extend(keyword_clauses)
+        params.extend(keyword_params)
     if location:
         if location in ("united states", "usa", "u.s.", "u.s.a.", "america"):
             clauses.append("(LOWER(location) = ? OR LOWER(location) LIKE ?)")
@@ -403,48 +376,76 @@ def api_jobs():
             clauses.append("(LOWER(location) = ? OR LOWER(location) LIKE ? OR LOWER(location) LIKE ?)")
             params.extend(["uk", "%, uk%", "%united kingdom%"])
         else:
-            clauses.append("LOWER(location) LIKE ?")
-            params.append(f"%{location}%")
+            clauses.append("(' ' || REPLACE(LOWER(location), ', ', ' ') || ' ') LIKE ?")
+            params.append(f"% {location} %")
     if since:
-        clauses.append("COALESCE(NULLIF(posted,''), first_seen) >= ?")
+        clauses.append("COALESCE(NULLIF(posted,''), substr(first_seen,1,10)) >= ?")
         params.append(since)
+    if exp_years is not None:
+        # Keep unknowns, exact/close matches, and junior-ish roles. Drop known
+        # requirements clearly above the user's experience.
+        clauses.append("(exp_min IS NULL OR exp_min <= ?)")
+        params.append(int(exp_years) + 1)
     if category:
         clauses.append("categories LIKE ?")
         params.append(f'%"{category}"%')
     if companies:
-        placeholders = ",".join("?" for _ in companies)
-        clauses.append(f"company IN ({placeholders})")
+        company_marks = placeholders(len(companies))
+        clauses.append(f"company IN ({company_marks})")
         params.extend(companies)
 
     where = ("WHERE " + " AND ".join(clauses)) if clauses else ""
-    # Sort: use posted date when available, otherwise first_seen — both normalised to YYYY-MM-DD
-    sql   = (f"SELECT id, title, url, company, location, source, categories, first_seen, posted "
-             f"FROM jobs {where} ORDER BY COALESCE(NULLIF(posted,''), substr(first_seen,1,10)) DESC LIMIT ? OFFSET ?")
+    company_interviews = {
+        company.get("name"): company.get("interview")
+        for company in current_companies()
+        if company.get("interview")
+    }
+    relevance_sql = keyword_relevance_sql(keyword, kw_groups) if kw_groups else "0"
+    select_rank = f", {relevance_sql} AS relevance" if kw_groups else ""
+    exp_score_sql = experience_score_sql(exp_years) if exp_years is not None else "0"
+    select_exp = f", {exp_score_sql} AS exp_score" if exp_years is not None else ""
+    exp_order = ", exp_score DESC" if exp_years is not None else ""
+    order_sql = (
+        f"COALESCE(NULLIF(posted,''), substr(first_seen,1,10)) DESC{exp_order}, relevance DESC"
+        if kw_groups else
+        f"COALESCE(NULLIF(posted,''), substr(first_seen,1,10)) DESC{exp_order}"
+    )
+    # Sort by posted date, falling back to first_seen only when posted is missing.
+    sql   = (f"SELECT id, title, url, company, location, source, categories, first_seen, posted, "
+             f"exp_min, exp_max, exp_label, exp_source{select_rank}{select_exp} "
+             f"FROM jobs {where} ORDER BY {order_sql} LIMIT ? OFFSET ?")
     count_sql = f"SELECT COUNT(*) FROM jobs {where}"
     query_params = list(params) + [limit, offset]
 
     today = datetime.now().strftime("%Y-%m-%d")
     try:
-        with sqlite3.connect(DB_FILE) as conn:
-            conn.row_factory = sqlite3.Row
+        with connect_db(rows=True) as conn:
             rows = conn.execute(sql, query_params).fetchall()
-            total = conn.execute(count_sql, params).fetchone()[0]
-            total_rows = conn.execute("SELECT COUNT(*) FROM jobs").fetchone()[0]
+            total_row = conn.execute(count_sql, params).fetchone()
+            total = next(iter(total_row.values())) if isinstance(total_row, dict) else total_row[0]
         jobs = []
         for r in rows:
             cats   = json.loads(r["categories"] or "[]")
             fs     = (r["first_seen"] or "")[:10]
             posted = (r["posted"] or "")[:10]
+            title  = display_title(r["title"], r["url"])
+            loc    = display_location(r["location"] or "", r["title"], r["url"])
             jobs.append({
                 "id":         r["id"],
-                "title":      r["title"],
+                "title":      title,
                 "url":        r["url"],
                 "company":    r["company"],
-                "location":   r["location"] or "",
+                "location":   loc,
                 "source":     r["source"] or "",
                 "categories": cats,
                 "first_seen": r["first_seen"],
                 "posted":     posted,
+                "exp_min":    r["exp_min"],
+                "exp_max":    r["exp_max"],
+                "exp_label":  r["exp_label"] or "",
+                "exp_source": r["exp_source"] or "",
+                "exp_score":  experience_match_score(exp_years, r["exp_min"], r["exp_max"]) if exp_years is not None else 0,
+                "interview":  company_interviews.get(r["company"]),
                 "is_new":     fs == today,
             })
         if not jobs and total == 0:
@@ -452,42 +453,3 @@ def api_jobs():
         return jsonify({"jobs": jobs, "total": total, "page": page, "limit": limit})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-
-def jobs_from_seen_fallback(keyword, location, since, category, companies, limit, offset, today):
-    cats_by_company = company_categories_map()
-    company_set = set(companies or [])
-    jobs = []
-    for jid, item in load_seen().items():
-        if not isinstance(item, dict):
-            continue
-        title = item.get("title", "")
-        company = item.get("company", "")
-        first_seen = item.get("first_seen", "")
-        posted = item.get("posted", "")
-        cats = cats_by_company.get(company, [])
-        if company_set and company not in company_set:
-            continue
-        loc = item.get("location", "")
-        if keyword and keyword not in f"{title} {company}".lower():
-            continue
-        if location and not location_matches(location, loc):
-            continue
-        if since and (posted or first_seen) < since:
-            continue
-        if category and category not in cats:
-            continue
-        fs = first_seen[:10]
-        jobs.append({
-            "id":         jid,
-            "title":      title,
-            "url":        item.get("url", ""),
-            "company":    company,
-            "location":   loc,
-            "source":     item.get("source", "seen"),
-            "categories": cats,
-            "first_seen": first_seen,
-            "posted":     _parse_posted(posted),
-            "is_new":     fs == today,
-        })
-    jobs.sort(key=lambda j: j.get("first_seen", ""), reverse=True)
-    return jobs[offset:offset + limit], len(jobs)

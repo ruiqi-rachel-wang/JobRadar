@@ -8,11 +8,18 @@ def fetch_microsoft(scrape, seen, company):
     jobs, page, ps = [], 1, 20
     for _ in range(max_pages):
         try:
-            r = requests.get(
-                "https://gcsservices.careers.microsoft.com/search/api/v1/search",
-                params={"l":"en_us","pg":page,"pgSz":ps,"o":"Recent","flt":"true"},
-                headers={**HEADERS,"Referer":"https://jobs.careers.microsoft.com/"},
-                timeout=20)
+            try:
+                r = requests.get(
+                    "https://gcsservices.careers.microsoft.com/search/api/v1/search",
+                    params={"l":"en_us","pg":page,"pgSz":ps,"o":"Recent","flt":"true"},
+                    headers={**HEADERS,"Referer":"https://jobs.careers.microsoft.com/"},
+                    timeout=20)
+            except requests.exceptions.SSLError:
+                r = requests.get(
+                    "https://gcsservices.careers.microsoft.com/search/api/v1/search",
+                    params={"l":"en_us","pg":page,"pgSz":ps,"o":"Recent","flt":"true"},
+                    headers={**HEADERS,"Referer":"https://jobs.careers.microsoft.com/"},
+                    timeout=20, verify=False)
             r.raise_for_status()
             data = r.json()
         except Exception as e:

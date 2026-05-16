@@ -9,15 +9,17 @@ def fetch_avature(scrape, seen, company):
         return [], "no list_url"
     max_pages = int(scrape.get("hard_max_pages") or 10000)
     page_size = int(scrape.get("page_size", 12))
-    fetch_details = bool(scrape.get("fetch_posted_details", True))
+    fetch_details = bool(scrape.get("fetch_posted_details", False))
     detail_limit = int(scrape.get("max_posted_details", 1000000))
+    offset_param = scrape.get("offset_param", "jobOffset")
+    size_param   = scrape.get("size_param",   "jobRecordsPerPage")
     jobs = {}
 
     for page in range(max_pages):
         purl = list_url
         if page:
-            purl = make_paged_url(list_url, {"param": "jobRecordsPerPage", "start": page_size}, 0)
-            purl = make_paged_url(purl, {"param": "jobOffset", "start": page * page_size}, 0)
+            purl = make_paged_url(list_url, {"param": size_param, "start": page_size}, 0)
+            purl = make_paged_url(purl, {"param": offset_param, "start": page * page_size}, 0)
         try:
             r = requests.get(purl, headers=HEADERS, timeout=25)
             r.raise_for_status()
@@ -34,11 +36,22 @@ def fetch_avature(scrape, seen, company):
             article = a.find_parent("article") or a.find_parent("li") or a.find_parent("div")
             title = norm(a.get_text(" ", strip=True))
             parent_text = norm(article.get_text(" ", strip=True)) if article else title
-            if not title or title.lower() in ("apply", "save", "view job"):
+            generic_link = title.lower() in (
+                "apply", "save", "view job", "view role", "learn more", "more information",
+            )
+            if generic_link and jurl in jobs:
+                continue
+            if not title or generic_link:
                 heading = article.find(["h2", "h3", "h4"]) if article else None
                 title = norm(heading.get_text(" ", strip=True)) if heading else ""
+                if not title:
+                    m = re.search(r"/JobDetail/([^/?#]+)/?", jurl)
+                    if m:
+                        title = norm(re.sub(r"[-_]+", " ", unquote(m.group(1))).strip().title())
             parent_text = re.sub(r"\b(Apply|Save|Bookmark|Share|View Job)\b", " ", parent_text, flags=re.I)
             loc_text = parent_text.replace(title, "", 1).strip()
+            # Avature listing format: "City, Region, Country • Job ID: 123 • Field" — strip metadata
+            loc_text = re.sub(r'\s*•\s*Job\s+ID\b.*', '', loc_text, flags=re.I).strip()
             loc = normalize_location(loc_text) if loc_text.count(",") >= 2 else ""
             loc = loc or extract_location_from_text(loc_text) or normalize_location(loc_text)
             # Strip any title-word fragments that leaked into the location
@@ -57,17 +70,27 @@ def fetch_avature(scrape, seen, company):
         from .playwright import _fetch_playwright_with_source
         return _fetch_playwright_with_source(scrape, seen, company, "avature")
     if fetch_details:
-        checked = 0
+        targets = []
         for job in jobs.values():
-            if job.get("posted") or checked >= detail_limit:
-                continue
+            jid = make_id(company, job["url"], job["title"])
+            existing = seen.get(jid) if isinstance(seen, dict) else None
+            if not job.get("posted") and isinstance(existing, dict):
+                job["posted"] = _parse_posted(existing.get("posted") or "")
+            if not job.get("posted") and len(targets) < detail_limit:
+                targets.append(job)
+
+        def _fetch_posted(job):
             try:
                 rr = requests.get(job["url"], headers=HEADERS, timeout=20)
                 rr.raise_for_status()
-                job["posted"] = extract_posted_from_html(rr.text)
+                return job, extract_posted_from_html(rr.text)
             except Exception:
-                pass
-            checked += 1
-            time.sleep(0.05)
-    return list(jobs.values()), None
+                return job, ""
 
+        if targets:
+            detail_workers = int(scrape.get("detail_workers", 6))
+            with concurrent.futures.ThreadPoolExecutor(max_workers=max(1, detail_workers)) as ex:
+                for job, posted in ex.map(_fetch_posted, targets):
+                    if posted:
+                        job["posted"] = posted
+    return list(jobs.values()), None

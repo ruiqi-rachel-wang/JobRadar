@@ -31,6 +31,35 @@ def _oraclecloud_discover_backend(custom_host, site, timeout=12):
             pass
     return None
 
+def _oraclecloud_detail_text(api_host, req_id, vanity_domain="", timeout=20):
+    if not req_id:
+        return ""
+    hdrs = {**HEADERS, "Accept": "application/json"}
+    if vanity_domain:
+        hdrs["ora-irc-vanity-domain"] = vanity_domain
+    try:
+        r = None
+        for attempt in range(3):
+            r = requests.get(
+                f"https://{api_host}/hcmRestApi/resources/latest/recruitingCEJobRequisitionDetails/{req_id}",
+                headers=hdrs,
+                timeout=timeout,
+            )
+            if r.status_code not in (403, 429):
+                break
+            time.sleep(1.5 * (attempt + 1))
+        r.raise_for_status()
+        data = r.json()
+    except Exception:
+        return ""
+    parts = [
+        data.get("ExternalQualificationsStr") or "",
+        data.get("ExternalResponsibilitiesStr") or "",
+        data.get("ExternalDescriptionStr") or "",
+        data.get("ShortDescriptionStr") or "",
+    ]
+    return norm(BeautifulSoup(" ".join(parts), "lxml").get_text(" ", strip=True))
+
 def fetch_oraclecloud(scrape, seen, company):
     """Oracle Cloud Candidate Experience public API."""
     list_url = scrape.get("list_url", "")
@@ -47,19 +76,28 @@ def fetch_oraclecloud(scrape, seen, company):
     max_pages = int(scrape.get("hard_max_pages") or 10000)
     limit = int(scrape.get("limit", 100))
     sort_by = scrape.get("sort_by", "POSTING_DATES_DESC")
+    fetch_exp_detail = bool(scrape.get("fetch_experience_details", True))
+    detail_workers = int(scrape.get("detail_workers", 3))
     jobs = []
-    api_host = host  # may be replaced by real backend if custom domain blocks REST API
+    api_host     = host  # may be replaced by real backend if custom domain blocks REST API
+    vanity_domain = scrape.get("vanity_domain") or ""
     page = 0
     while page < max_pages:
         offset = page * limit
         finder = f"findReqs;siteNumber={site},limit={limit},offset={offset},sortBy={sort_by}"
+        # Pass finder inline to avoid requests URL-encoding the semicolons (Oracle rejects %3B)
+        api_url = (f"https://{api_host}/hcmRestApi/resources/latest/recruitingCEJobRequisitions"
+                   f"?finder={finder}&expand=requisitionList")
+        hdrs = {**HEADERS, "Accept": "application/json"}
+        if vanity_domain:
+            hdrs["ora-irc-vanity-domain"] = vanity_domain
         try:
-            r = requests.get(
-                f"https://{api_host}/hcmRestApi/resources/latest/recruitingCEJobRequisitions",
-                params={"finder": finder, "expand": "requisitionList"},
-                headers={**HEADERS, "Accept": "application/json"},
-                timeout=25,
-            )
+            r = None
+            for attempt in range(3):
+                r = requests.get(api_url, headers=hdrs, timeout=25)
+                if r.status_code not in (403, 429):
+                    break
+                time.sleep(2.0 * (attempt + 1))
             # Custom domains often redirect the REST API to a 404 page.
             # Detect this and fall back to discovering the real backend hostname.
             # Use continue WITHOUT incrementing page so we retry page 0 with the real host.
@@ -85,6 +123,29 @@ def fetch_oraclecloud(scrape, seen, company):
             break
 
         job_url_prefix = scrape.get("job_url_prefix", "").rstrip("/")
+        descriptions = {}
+        if fetch_exp_detail:
+            ids = []
+            for j in requisitions:
+                jid = str(j.get("Id") or "").strip()
+                title = norm(j.get("Title") or "")
+                if not jid or not title:
+                    continue
+                if job_url_prefix:
+                    jurl = f"{job_url_prefix}/{jid}"
+                else:
+                    jurl = f"https://{host}/hcmUI/CandidateExperience/en/sites/{site}/job/{jid}"
+                existing = seen.get(make_id(company, jurl, title)) if isinstance(seen, dict) else None
+                if not (isinstance(existing, dict) and existing.get("exp_label")):
+                    ids.append(jid)
+
+            def _fetch_desc(req_id):
+                return req_id, _oraclecloud_detail_text(api_host, req_id, vanity_domain)
+
+            with concurrent.futures.ThreadPoolExecutor(max_workers=max(1, detail_workers)) as ex:
+                for req_id, desc in ex.map(_fetch_desc, ids):
+                    descriptions[req_id] = desc
+
         for j in requisitions:
             title = norm(j.get("Title") or "")
             jid = str(j.get("Id") or "").strip()
@@ -95,7 +156,8 @@ def fetch_oraclecloud(scrape, seen, company):
             loc = normalize_location(norm(j.get("PrimaryLocation") or j.get("PrimaryLocationCountry") or ""))
             posted = _parse_posted(j.get("PostedDate") or "")
             if title and jurl:
-                jobs.append({"title": title, "url": jurl, "location": loc, "source": "oraclecloud", "posted": posted})
+                desc = descriptions.get(jid, "")
+                jobs.append({"title": title, "url": jurl, "location": loc, "source": "oraclecloud", "posted": posted, "description": desc})
 
         if total and offset + limit >= total:
             break
@@ -110,4 +172,3 @@ def fetch_oracle(scrape, seen, company):
         return fetch_oraclecloud(scrape, seen, company)
     from .playwright import _fetch_playwright_with_source
     return _fetch_playwright_with_source(scrape, seen, company, "oracle")
-

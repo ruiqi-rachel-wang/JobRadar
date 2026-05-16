@@ -21,7 +21,11 @@ def fetch_lever(scrape, seen, company):
         loc        = normalize_location(norm((j.get("categories") or {}).get("location") or ""))
         created_ms = j.get("createdAt") or 0
         posted     = datetime.fromtimestamp(created_ms/1000).strftime("%Y-%m-%d") if created_ms else ""
+        desc_parts  = [j.get("descriptionPlain") or j.get("description") or ""]
+        for list_item in j.get("lists") or []:
+            desc_parts.append(list_item.get("text") or "")
+            desc_parts.extend(list_item.get("content") or [])
+        desc = norm(" ".join(str(x) for x in desc_parts if x))
         if title and jurl:
-            jobs.append({"title":title,"url":jurl,"location":loc,"source":"lever","posted":posted})
+            jobs.append({"title":title,"url":jurl,"location":loc,"source":"lever","posted":posted,"description":desc})
     return jobs, None
-

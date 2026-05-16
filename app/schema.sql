@@ -1,0 +1,90 @@
+CREATE TABLE IF NOT EXISTS companies (
+    id BIGSERIAL PRIMARY KEY,
+    name TEXT NOT NULL UNIQUE,
+    career_url TEXT,
+    ats_source TEXT,
+    category TEXT,
+    is_active BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- JobRadar already uses a stable text hash as jobs.id throughout the app.
+-- Keep that primary key during the Postgres migration so scan dedupe and
+-- existing API payloads continue to work unchanged.
+CREATE TABLE IF NOT EXISTS jobs (
+    id TEXT PRIMARY KEY,
+    company_id BIGINT REFERENCES companies(id) ON DELETE SET NULL,
+
+    title TEXT NOT NULL,
+    url TEXT DEFAULT '',
+    company TEXT NOT NULL,
+    location TEXT DEFAULT '',
+    source TEXT DEFAULT '',
+    categories TEXT DEFAULT '[]',
+
+    first_seen TEXT NOT NULL,
+    posted TEXT DEFAULT '',
+    last_seen_at TIMESTAMPTZ DEFAULT NOW(),
+    is_open BOOLEAN DEFAULT TRUE,
+
+    exp_min INTEGER,
+    exp_max INTEGER,
+    exp_label TEXT DEFAULT '',
+    exp_source TEXT DEFAULT '',
+
+    raw_data JSONB,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_jobs_company ON jobs(company);
+CREATE INDEX IF NOT EXISTS idx_jobs_first_seen ON jobs(first_seen DESC);
+CREATE INDEX IF NOT EXISTS idx_jobs_posted ON jobs(posted DESC);
+CREATE INDEX IF NOT EXISTS idx_jobs_is_open ON jobs(is_open);
+CREATE INDEX IF NOT EXISTS idx_jobs_source ON jobs(source);
+CREATE INDEX IF NOT EXISTS idx_jobs_location ON jobs(location);
+
+CREATE TABLE IF NOT EXISTS scan_runs (
+    id BIGSERIAL PRIMARY KEY,
+    scan_type TEXT NOT NULL,
+    status TEXT NOT NULL DEFAULT 'running',
+    started_at TIMESTAMPTZ DEFAULT NOW(),
+    finished_at TIMESTAMPTZ,
+    total_companies INTEGER DEFAULT 0,
+    companies_scanned INTEGER DEFAULT 0,
+    total_jobs_found INTEGER DEFAULT 0,
+    new_jobs_found INTEGER DEFAULT 0,
+    updated_jobs_found INTEGER DEFAULT 0,
+    failed_companies INTEGER DEFAULT 0,
+    error_message TEXT
+);
+
+CREATE TABLE IF NOT EXISTS scan_company_status (
+    id BIGSERIAL PRIMARY KEY,
+    scan_run_id BIGINT REFERENCES scan_runs(id) ON DELETE CASCADE,
+    company_name TEXT NOT NULL,
+    status TEXT NOT NULL DEFAULT 'pending',
+    jobs_found INTEGER DEFAULT 0,
+    new_jobs_found INTEGER DEFAULT 0,
+    started_at TIMESTAMPTZ,
+    finished_at TIMESTAMPTZ,
+    error_message TEXT
+);
+
+CREATE INDEX IF NOT EXISTS idx_scan_company_status_run ON scan_company_status(scan_run_id);
+CREATE INDEX IF NOT EXISTS idx_scan_company_status_company ON scan_company_status(company_name);
+
+CREATE TABLE IF NOT EXISTS user_job_status (
+    id BIGSERIAL PRIMARY KEY,
+    user_id TEXT NOT NULL DEFAULT 'default_user',
+    job_id TEXT REFERENCES jobs(id) ON DELETE CASCADE,
+    status TEXT NOT NULL,
+    updated_at TIMESTAMPTZ DEFAULT NOW(),
+    UNIQUE(user_id, job_id)
+);
+
+CREATE TABLE IF NOT EXISTS app_state (
+    key TEXT PRIMARY KEY,
+    value TEXT NOT NULL
+);

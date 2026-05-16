@@ -9,6 +9,7 @@ def fetch_html(scrape, seen, company):
     title_param = scrape.get("title_param","")
     stop_on_seen = bool(scrape.get("stop_on_seen", False))
     use_reader  = bool(scrape.get("reader", False))
+    verify_ssl  = bool(scrape.get("verify_ssl", True))
     pg_cfg      = scrape.get("pagination") or {"type":"none"}
     pg_type     = pg_cfg.get("type","none")
     max_pages   = int(pg_cfg.get("hard_max_pages") or scrape.get("hard_max_pages") or 100)
@@ -21,7 +22,7 @@ def fetch_html(scrape, seen, company):
     def scrape_one(page_url):
         try:
             fetch_url = "https://r.jina.ai/" + page_url if use_reader else page_url
-            r = requests.get(fetch_url, headers=HEADERS, timeout=25)
+            r = requests.get(fetch_url, headers=HEADERS, timeout=25, verify=verify_ssl)
             r.raise_for_status()
         except Exception as e:
             return {}, str(e), None, False
@@ -54,7 +55,9 @@ def fetch_html(scrape, seen, company):
                     found[abs_url] = {
                         "title": title,
                         "url": abs_url,
-                        "location": extract_location_from_text(nearby_clean) or extract_location_from_text(nearby),
+                        "location": (extract_location_from_text(nearby_clean)
+                                     or extract_location_from_text(nearby)
+                                     or extract_location_from_text(title)),
                         "source": "html",
                         "posted": extract_posted_from_text(nearby),
                     }
@@ -133,15 +136,24 @@ def fetch_html(scrape, seen, company):
                     if len(t) < 600:
                         break
 
-            # When parent_text is very large (multi-card container), skip it and use
-            # the anchor-embedded location instead.
-            loc_candidate = "" if len(parent_text) > 500 else extract_location_from_text(parent_text)
+            # Try parent text first (skip if huge multi-card container).
+            # Also try the raw anchor text and the cleaned title for embedded locations.
+            loc_candidate = (
+                (extract_location_from_text(parent_text) if len(parent_text) <= 500 else "")
+                or extract_location_from_text(raw_anchor)
+                or extract_location_from_text(title)
+            )
             # Don't use the job title itself as the location
             if loc_candidate and loc_candidate.lower() == title.lower():
                 loc_candidate = ""
             # Prefer location extracted from the anchor tag (Freshteam-style embeds)
             if not loc_candidate and _loc_in_anchor:
                 loc_candidate = _loc_in_anchor
+            # Last resort: first 300 chars of large parent text
+            if not loc_candidate and len(parent_text) > 500:
+                loc_candidate = extract_location_from_text(parent_text[:300])
+                if loc_candidate and loc_candidate.lower() == title.lower():
+                    loc_candidate = ""
             found[abs_url] = {
                 "title": title,
                 "url": abs_url,

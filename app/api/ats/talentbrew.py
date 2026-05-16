@@ -7,9 +7,10 @@ def fetch_talentbrew(scrape, seen, company):
     if not list_url:
         return [], "no list_url"
     max_pages = int(scrape.get("hard_max_pages") or 10000)
+    page_param = scrape.get("page_param", "pg")
     jobs = {}
     for page in range(max_pages):
-        purl = list_url if page == 0 else make_paged_url(list_url, {"param": "pg", "start": page + 1}, 0)
+        purl = list_url if page == 0 else make_paged_url(list_url, {"param": page_param, "start": page + 1}, 0)
         try:
             r = requests.get(purl, headers=HEADERS, timeout=25)
             r.raise_for_status()

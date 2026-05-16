@@ -36,8 +36,8 @@ def fetch_workable(scrape, seen, company):
         else:
             loc = normalize_location(norm(loc_data))
         posted = _parse_posted(j.get("published") or j.get("published_on") or j.get("created_at") or "")
+        desc = norm(BeautifulSoup(" ".join(str(j.get(k) or "") for k in ("description", "requirements", "benefits")), "lxml").get_text(" ", strip=True))
         if title and jurl:
-            jobs.append({"title": title, "url": jurl, "location": loc, "source": "workable", "posted": posted})
+            jobs.append({"title": title, "url": jurl, "location": loc, "source": "workable", "posted": posted, "description": desc})
     return jobs, None
-
 
