@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JobDrop — Log in / Sign up</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@1,9..144,500&family=Inter+Tight:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: "Inter Tight", -apple-system, sans-serif;
+  font-size: 13.5px;
+  background: #eee9dd;
+  color: #1c272d;
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  -webkit-font-smoothing: antialiased;
+}
+.logo {
+  font-family: "Fraunces", Georgia, serif;
+  font-size: 28px; font-style: italic; font-weight: 500;
+  letter-spacing: -0.025em; color: #1f3530;
+  margin-bottom: 20px; text-align: center;
+}
+.logo em { color: #5e8a5e; }
+.box {
+  width: min(420px, calc(100vw - 32px));
+  background: white;
+  border: 1px solid #d8d0b8; border-radius: 14px;
+  box-shadow: 0 1px 3px rgba(45,58,63,.05), 0 8px 32px rgba(45,58,63,.08);
+  overflow: hidden;
+}
+/* Tab switcher */
+.tabs {
+  display: flex; border-bottom: 1px solid #e1d9c0;
+}
+.tab-btn {
+  flex: 1; padding: 14px;
+  font-family: inherit; font-size: 13.5px; font-weight: 600;
+  color: #97a0aa; background: #f8f5ee;
+  border: none; cursor: pointer; transition: all .12s;
+  border-bottom: 2px solid transparent;
+}
+.tab-btn.active { color: #1f3530; background: white; border-bottom-color: #5e8a5e; }
+.tab-btn:not(.active):hover { color: #6a7680; background: #f3eedf; }
+/* Form area */
+.form-area { padding: 24px 28px 20px; }
+label {
+  display: block;
+  font-size: 11px; font-weight: 700; color: #6a7680;
+  text-transform: uppercase; letter-spacing: .07em;
+  margin-bottom: 5px;
+}
+input {
+  width: 100%; padding: 10px 12px;
+  border: 1px solid #d8d0b8; border-radius: 9px;
+  font-size: 13.5px; font-family: inherit;
+  outline: none; margin-bottom: 14px;
+  transition: border-color .12s;
+  background: #fff; color: #1c272d;
+}
+input:focus { border-color: #5e8a5e; box-shadow: 0 0 0 3px #e9f1e3; }
+.hint { font-size: 11.5px; color: #b8ad8e; margin-top: -10px; margin-bottom: 14px; }
+.err {
+  color: #b3392a;
+  background: color-mix(in oklab, #b3392a 8%, white);
+  border: 1px solid color-mix(in oklab, #b3392a 25%, white);
+  border-radius: 8px; padding: 10px 12px; font-size: 12.5px;
+  margin-bottom: 16px;
+}
+.btn-primary {
+  width: 100%; padding: 11px;
+  border: none; border-radius: 9px;
+  background: #1f3530; color: white;
+  font-family: inherit; font-size: 13.5px; font-weight: 600;
+  cursor: pointer; transition: background .12s;
+}
+.btn-primary:hover { background: #2a4640; }
+.back {
+  display: block; text-align: center;
+  padding: 14px 0 16px; font-size: 12px; color: #97a0aa;
+  text-decoration: none; border-top: 1px solid #f0ebe0;
+}
+.back:hover { color: #1f3530; }
+.panel { display: none; }
+.panel.active { display: block; }
+</style>
+</head>
+<body>
+
+<div class="logo">Job<em>Drop</em></div>
+
+<div class="box">
+  <div class="tabs">
+    <button class="tab-btn {% if mode == 'login' %}active{% endif %}" onclick="switchTab('login')">Log in</button>
+    <button class="tab-btn {% if mode == 'signup' %}active{% endif %}" onclick="switchTab('signup')">Sign up</button>
+  </div>
+
+  <!-- Sign up panel -->
+  <div class="panel {% if mode == 'signup' %}active{% endif %}" id="panel-signup">
+    <div class="form-area">
+      {% if mode == 'signup' and error %}<div class="err">{{ error }}</div>{% endif %}
+      <form method="post" action="/signup" id="form-signup">
+        <input type="hidden" name="next" value="{{ next or '' }}">
+        <label>Username</label>
+        <input name="username" type="text" autofocus autocomplete="username"
+               value="{{ request.form.get('username', '') if mode == 'signup' else '' }}">
+        <div class="hint">3–30 characters, letters / numbers / . _ -</div>
+        <label>Email <span style="color:#b8ad8e;font-weight:400;text-transform:none">(optional)</span></label>
+        <input name="email" type="email" autocomplete="email"
+               value="{{ request.form.get('email', '') if mode == 'signup' else '' }}">
+        <label>Password</label>
+        <input name="password" type="password" placeholder="At least 6 characters" autocomplete="new-password">
+        <label>Confirm password</label>
+        <input name="confirm" type="password" autocomplete="new-password">
+        <button class="btn-primary" type="submit">Create account →</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Log in panel -->
+  <div class="panel {% if mode != 'signup' %}active{% endif %}" id="panel-login">
+    <div class="form-area">
+      {% if mode == 'login' and error %}<div class="err">{{ error }}</div>{% endif %}
+      <form method="post" action="/login{% if next %}?next={{ next }}{% endif %}" id="form-login">
+        <label>Username</label>
+        <input name="username" type="text" autocomplete="username">
+        <label>Password</label>
+        <input name="password" type="password" autocomplete="current-password">
+        <button class="btn-primary" type="submit">Log in →</button>
+      </form>
+    </div>
+  </div>
+
+  <a class="back" href="/">Browse without signing in →</a>
+</div>
+
+<script>
+function switchTab(tab) {
+  document.querySelectorAll('.tab-btn').forEach((b,i) =>
+    b.classList.toggle('active', (i===0) === (tab==='login')));
+  document.getElementById('panel-login').classList.toggle('active',  tab === 'login');
+  document.getElementById('panel-signup').classList.toggle('active', tab === 'signup');
+  document.querySelector(`#form-${tab} input`).focus();
+}
+</script>
+</body>
+</html>

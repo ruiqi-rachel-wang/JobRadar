@@ -32,6 +32,9 @@ CREATE TABLE IF NOT EXISTS jobs (
     exp_max INTEGER,
     exp_label TEXT DEFAULT '',
     exp_source TEXT DEFAULT '',
+    description TEXT DEFAULT '',
+    skills TEXT DEFAULT '[]',
+    employment_type TEXT DEFAULT '',
 
     raw_data JSONB,
     created_at TIMESTAMPTZ DEFAULT NOW(),
@@ -88,3 +91,54 @@ CREATE TABLE IF NOT EXISTS app_state (
     key TEXT PRIMARY KEY,
     value TEXT NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS feedback (
+    id BIGSERIAL PRIMARY KEY,
+    type TEXT NOT NULL DEFAULT 'other',
+    message TEXT NOT NULL,
+    url TEXT DEFAULT '',
+    submitted_at TIMESTAMPTZ DEFAULT NOW(),
+    status TEXT DEFAULT 'new'
+);
+
+CREATE INDEX IF NOT EXISTS idx_feedback_status ON feedback(status);
+
+CREATE TABLE IF NOT EXISTS users (
+    id BIGSERIAL PRIMARY KEY,
+    username TEXT NOT NULL UNIQUE,
+    email TEXT DEFAULT '',
+    password_hash TEXT NOT NULL,
+    role TEXT DEFAULT 'user',
+    created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS user_apply_list (
+    id BIGSERIAL PRIMARY KEY,
+    user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    job_id TEXT NOT NULL,
+    stage TEXT DEFAULT 'to-apply',
+    added_at TIMESTAMPTZ DEFAULT NOW(),
+    job_title TEXT DEFAULT '',
+    job_company TEXT DEFAULT '',
+    job_location TEXT DEFAULT '',
+    job_url TEXT DEFAULT '',
+    job_exp_label TEXT DEFAULT '',
+    job_posted TEXT DEFAULT '',
+    UNIQUE(user_id, job_id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_apply_user ON user_apply_list(user_id);
+
+CREATE TABLE IF NOT EXISTS user_saved_searches (
+    id BIGSERIAL PRIMARY KEY,
+    user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    name TEXT NOT NULL,
+    kw TEXT DEFAULT '',
+    loc TEXT DEFAULT '',
+    exp_yrs TEXT DEFAULT '',
+    since TEXT DEFAULT 'any',
+    category TEXT DEFAULT 'All',
+    created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_searches_user ON user_saved_searches(user_id);
