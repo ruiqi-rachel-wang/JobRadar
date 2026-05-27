@@ -1,0 +1,21 @@
+[Unit]
+Description=JobDrop web app
+After=network.target
+
+[Service]
+User=ubuntu
+WorkingDirectory=/home/ubuntu/jobdrop
+EnvironmentFile=/home/ubuntu/jobdrop/.env
+ExecStart=/home/ubuntu/jobdrop/venv/bin/gunicorn \
+    --chdir app app:app \
+    --bind 127.0.0.1:8080 \
+    --workers 1 \
+    --threads 8 \
+    --timeout 600 \
+    --access-logfile - \
+    --error-logfile -
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
