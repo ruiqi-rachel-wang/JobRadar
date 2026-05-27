@@ -1,0 +1,13 @@
+[Unit]
+Description=JobDrop scanner (one-shot)
+After=network.target
+
+[Service]
+Type=oneshot
+User=ubuntu
+WorkingDirectory=/home/ubuntu/jobdrop
+EnvironmentFile=/home/ubuntu/jobdrop/.env
+ExecStart=/home/ubuntu/jobdrop/venv/bin/python deploy/run_scanner.py --selected --full
+TimeoutStartSec=3600
+StandardOutput=journal
+StandardError=journal
