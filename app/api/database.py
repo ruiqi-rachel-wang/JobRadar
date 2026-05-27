@@ -44,7 +44,9 @@ def connect_db(rows=False):
     if IS_POSTGRES:
         raw = psycopg.connect(DATABASE_URL, row_factory=dict_row if rows else None)
     else:
-        raw = sqlite3.connect(DB_FILE)
+        raw = sqlite3.connect(DB_FILE, timeout=30)
+        raw.execute("PRAGMA busy_timeout=30000")
+        raw.execute("PRAGMA journal_mode=WAL")
         if rows:
             raw.row_factory = sqlite3.Row
     conn = _Connection(raw)

@@ -3,559 +3,23 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>JobRadar</title>
-<style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  font-size: 14px;
-  background: #f0f2f5;
-  color: #1a1a1a;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-/* ── Top bar ── */
-.topbar {
-  background: #1c2b4a;
-  color: white;
-  padding: 0 20px;
-  height: 48px;
-  display: flex;
-  align-items: center;
-  gap: 24px;
-  flex-shrink: 0;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-}
-.topbar-logo {
-  font-size: 17px;
-  font-weight: 700;
-  letter-spacing: -0.3px;
-  color: white;
-}
-.topbar-logo span { color: #5bc8a8; }
-.topbar-dot {
-  width: 7px; height: 7px; border-radius: 50%;
-  background: #5bc8a8;
-  animation: pulse 2s ease-in-out infinite;
-  flex-shrink: 0;
-}
-@keyframes pulse {
-  0%,100% { opacity: 1; }
-  50% { opacity: 0.4; }
-}
-.topbar-stats {
-  margin-left: auto;
-  font-size: 12px;
-  color: rgba(255,255,255,0.6);
-}
-.topbar-stats strong { color: #5bc8a8; }
-
-/* ── Main layout ── */
-.shell {
-  display: flex;
-  flex: 1;
-  overflow: hidden;
-}
-
-/* ── Sidebar ── */
-.sidebar {
-  width: 280px;
-  background: white;
-  border-right: 1px solid #dde1e7;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  flex-shrink: 0;
-}
-
-.sidebar-search-wrap {
-  padding: 12px 12px 8px;
-  border-bottom: 1px solid #eee;
-  flex-shrink: 0;
-}
-.sidebar-search {
-  width: 100%;
-  padding: 7px 10px;
-  border: 1px solid #dde1e7;
-  border-radius: 6px;
-  font-size: 13px;
-  outline: none;
-  background: #f7f8fa;
-}
-.sidebar-search:focus { border-color: #1c2b4a; background: white; }
-
-/* Category pills */
-.cat-wrap {
-  padding: 8px 10px 6px;
-  border-bottom: 1px solid #eee;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px;
-  max-height: 150px;
-  overflow-y: auto;
-  flex-shrink: 0;
-}
-.cat-wrap::-webkit-scrollbar { width: 4px; }
-.cat-wrap::-webkit-scrollbar-thumb { background: #dde1e7; border-radius: 2px; }
-.cat-btn {
-  padding: 3px 10px;
-  border-radius: 12px;
-  border: 1px solid #dde1e7;
-  background: white;
-  font-size: 11px;
-  color: #555;
-  cursor: pointer;
-  transition: all 0.1s;
-  white-space: nowrap;
-}
-.cat-btn:hover { border-color: #1c2b4a; color: #1c2b4a; }
-.cat-btn.active { background: #1c2b4a; border-color: #1c2b4a; color: white; }
-
-/* Company list */
-.company-list {
-  flex: 1;
-  min-height: 0;
-  overflow-y: auto;
-  padding: 4px 6px;
-}
-.company-list::-webkit-scrollbar { width: 4px; }
-.company-list::-webkit-scrollbar-thumb { background: #dde1e7; border-radius: 2px; }
-
-.co-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 7px 8px;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background 0.1s;
-  border: 1px solid transparent;
-}
-.co-item:hover { background: #f0f2f5; }
-.co-item.selected { background: #e8f4ef; border-color: #5bc8a8; }
-.co-item.hidden { display: none; }
-
-.co-check {
-  width: 15px; height: 15px;
-  border: 1.5px solid #ccc;
-  border-radius: 3px;
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
-  font-size: 9px;
-  color: transparent;
-  transition: all 0.1s;
-}
-.co-item.selected .co-check {
-  background: #1c2b4a;
-  border-color: #1c2b4a;
-  color: white;
-}
-.co-name {
-  font-size: 13px;
-  color: #1a1a1a;
-  flex: 1;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.co-mode {
-  width: 6px; height: 6px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-.co-mode.greenhouse { background: #22c55e; }
-.co-mode.lever      { background: #3b82f6; }
-.co-mode.ashby      { background: #a855f7; }
-.co-mode.workday    { background: #f59e0b; }
-.co-mode.bamboohr   { background: #14b8a6; }
-.co-mode.icims      { background: #6366f1; }
-.co-mode.apple      { background: #6b7280; }
-.co-mode.google     { background: #ef4444; }
-.co-mode.microsoft  { background: #0ea5e9; }
-.co-mode.pinpoint   { background: #ec4899; }
-.co-mode.html       { background: #9ca3af; }
-.co-mode.playwright { background: #d97706; }
-
-/* Sidebar footer */
-.sidebar-foot {
-  padding: 10px 12px;
-  border-top: 1px solid #eee;
-  background: #fafafa;
-  flex-shrink: 0;
-  position: sticky;
-  bottom: 0;
-  z-index: 2;
-}
-.sel-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 8px;
-  font-size: 12px;
-  color: #666;
-}
-.sel-num { font-weight: 700; color: #1c2b4a; font-size: 15px; }
-.sel-link {
-  color: #888;
-  text-decoration: underline;
-  cursor: pointer;
-  font-size: 11px;
-}
-.sel-link:hover { color: #1c2b4a; }
-.btn-row { display: flex; gap: 6px; }
-.btn {
-  flex: 1;
-  padding: 8px;
-  border-radius: 6px;
-  border: none;
-  cursor: pointer;
-  font-size: 12px;
-  font-weight: 600;
-  transition: all 0.12s;
-}
-.btn-scan { background: #1c2b4a; color: white; }
-.btn-scan:hover { background: #243660; }
-.btn-scan:disabled { background: #9ca3af; cursor: not-allowed; }
-.btn-clear { background: white; color: #666; border: 1px solid #dde1e7; }
-.btn-clear:hover { border-color: #999; color: #333; }
-.reset-link {
-  display: block;
-  margin-top: 8px;
-  text-align: center;
-  font-size: 11px;
-  color: #aaa;
-  cursor: pointer;
-  text-decoration: underline;
-}
-.reset-link:hover { color: #c0392b; }
-
-/* ── Main content ── */
-.main {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-/* Filters row */
-.filters-bar {
-  background: white;
-  border-bottom: 1px solid #dde1e7;
-  padding: 12px 20px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-shrink: 0;
-  flex-wrap: wrap;
-}
-.filter-group {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-}
-.filter-label {
-  font-size: 10px;
-  font-weight: 600;
-  color: #888;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-.filter-input {
-  padding: 7px 10px;
-  border: 1px solid #dde1e7;
-  border-radius: 6px;
-  font-size: 13px;
-  outline: none;
-  background: #f7f8fa;
-  transition: border-color 0.15s;
-}
-.filter-input:focus { border-color: #1c2b4a; background: white; }
-#f-keyword { width: 220px; }
-#f-location { width: 160px; }
-#f-exp { width: 92px; }
-#f-begin { width: 140px; }
-
-.scan-go {
-  align-self: flex-end;
-  padding: 8px 20px;
-  background: #5bc8a8;
-  color: white;
-  font-size: 13px;
-  font-weight: 700;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background 0.12s;
-  white-space: nowrap;
-}
-.scan-go:hover { background: #44b595; }
-.scan-go:disabled { background: #9ca3af; cursor: not-allowed; }
-#filter-btn { background: #1c2b4a; }
-#filter-btn:hover { background: #243660; }
-
-.filter-divider { width: 1px; height: 40px; background: #eee; flex-shrink: 0; }
-
-.result-counts { font-size: 12px; color: #888; margin-left: auto; }
-.result-counts strong { color: #5bc8a8; font-size: 15px; }
-
-/* Progress bar */
-.progress-bar-wrap {
-  padding: 8px 20px;
-  background: white;
-  border-bottom: 1px solid #eee;
-  display: none;
-  flex-shrink: 0;
-  max-height: 180px;
-  overflow: hidden;
-}
-.progress-bar-wrap.visible { display: block; }
-.progress-track {
-  height: 3px;
-  background: #eee;
-  border-radius: 2px;
-  overflow: hidden;
-  margin-bottom: 6px;
-}
-.progress-fill {
-  height: 100%;
-  background: #5bc8a8;
-  transition: width 0.3s;
-  border-radius: 2px;
-}
-.progress-text {
-  font-size: 11px;
-  color: #888;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-.spinner {
-  width: 11px; height: 11px;
-  border: 2px solid #ddd;
-  border-top-color: #5bc8a8;
-  border-radius: 50%;
-  animation: spin 0.6s linear infinite;
-  flex-shrink: 0;
-}
-@keyframes spin { to { transform: rotate(360deg); } }
-.company-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px;
-  margin-top: 6px;
-  max-height: 118px;
-  overflow-y: auto;
-  padding-right: 4px;
-}
-.company-chips::-webkit-scrollbar { width: 4px; }
-.company-chips::-webkit-scrollbar-thumb { background: #dde1e7; border-radius: 2px; }
-.chip {
-  font-size: 10px;
-  padding: 2px 7px;
-  border-radius: 10px;
-  border: 1px solid #eee;
-  color: #888;
-  white-space: nowrap;
-}
-.chip.ok  { border-color: #bbf7d0; color: #15803d; background: #f0fdf4; }
-.chip.err { border-color: #fecaca; color: #dc2626; background: #fef2f2; }
-.chip.scanning { border-color: #5bc8a8; color: #0d9488; animation: blink 1s infinite; }
-@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.5} }
-
-/* Results area */
-.results-area {
-  flex: 1;
-  overflow-y: auto;
-  padding: 16px 20px;
-}
-.results-area::-webkit-scrollbar { width: 5px; }
-.results-area::-webkit-scrollbar-thumb { background: #dde1e7; border-radius: 3px; }
-
-/* Empty state */
-.empty-state {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  color: #aaa;
-  text-align: center;
-}
-.empty-state .icon { font-size: 40px; margin-bottom: 12px; }
-.empty-state h3 { font-size: 16px; color: #666; margin-bottom: 6px; }
-.empty-state p { font-size: 13px; line-height: 1.6; max-width: 360px; }
-.legend { display: flex; gap: 16px; margin-top: 16px; font-size: 11px; color: #aaa; }
-.legend-item { display: flex; align-items: center; gap: 5px; }
-.ldot { width: 7px; height: 7px; border-radius: 50%; }
-
-/* Section */
-.section-head {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 0 8px;
-  border-bottom: 2px solid #1c2b4a;
-  margin-bottom: 10px;
-}
-.section-title { font-size: 13px; font-weight: 700; color: #1c2b4a; }
-.new-badge {
-  background: #5bc8a8;
-  color: white;
-  font-size: 9px;
-  font-weight: 700;
-  padding: 2px 7px;
-  border-radius: 10px;
-  text-transform: uppercase;
-}
-.section-count { margin-left: auto; font-size: 11px; color: #999; }
-.results-section { margin-bottom: 28px; }
-
-/* Job table */
-.job-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-.job-table th {
-  text-align: left;
-  font-size: 10px;
-  font-weight: 600;
-  color: #999;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  padding: 6px 10px;
-  border-bottom: 1px solid #eee;
-  background: #fafafa;
-}
-.job-row {
-  border-bottom: 1px solid #f0f2f5;
-  transition: background 0.1s;
-  animation: rowIn 0.2s ease both;
-}
-.job-row:hover { background: #f7f8fa; }
-.job-row.is-new { background: #f0fdf8; }
-.job-row.is-new:hover { background: #e6faf3; }
-.job-row.filtered-out { display: none; }
-
-@keyframes rowIn {
-  from { opacity: 0; transform: translateX(-4px); }
-  to   { opacity: 1; transform: translateX(0); }
-}
-
-.job-row td {
-  padding: 9px 10px;
-  vertical-align: middle;
-}
-.td-new { width: 36px; }
-.new-dot {
-  width: 7px; height: 7px;
-  border-radius: 50%;
-  background: #5bc8a8;
-  margin: 0 auto;
-  display: none;
-}
-.is-new .new-dot { display: block; }
-
-.td-title { max-width: 340px; }
-.job-title-link {
-  color: #1c2b4a;
-  text-decoration: none;
-  font-weight: 500;
-  font-size: 13px;
-  line-height: 1.35;
-}
-.job-title-link:hover { text-decoration: underline; color: #243660; }
-.job-co {
-  font-size: 11px;
-  color: #888;
-  margin-top: 2px;
-}
-.interview-tag { color: #0f766e; font-weight: 600; }
-
-.td-loc { width: 160px; font-size: 12px; color: #666; }
-.td-src { width: 100px; }
-.src-tag {
-  display: inline-block;
-  font-size: 10px;
-  padding: 2px 7px;
-  border-radius: 10px;
-  border: 1px solid;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-}
-.src-tag.greenhouse { border-color: #bbf7d0; color: #15803d; background: #f0fdf4; }
-.src-tag.lever      { border-color: #bfdbfe; color: #1d4ed8; background: #eff6ff; }
-.src-tag.ashby      { border-color: #e9d5ff; color: #7c3aed; background: #faf5ff; }
-.src-tag.workday    { border-color: #fde68a; color: #b45309; background: #fffbeb; }
-.src-tag.apple      { border-color: #e5e7eb; color: #374151; background: #f9fafb; }
-.src-tag.google     { border-color: #fecaca; color: #b91c1c; background: #fef2f2; }
-.src-tag.microsoft  { border-color: #bae6fd; color: #0369a1; background: #f0f9ff; }
-.src-tag.html       { border-color: #e5e7eb; color: #6b7280; background: #f9fafb; }
-.src-tag.playwright { border-color: #fed7aa; color: #c2410c; background: #fff7ed; }
-
-.td-seen { width: 120px; font-size: 11px; color: #aaa; white-space: nowrap; }
-.td-seen.is-new-cell { color: #5bc8a8; font-weight: 600; }
-
-.no-match {
-  text-align: center;
-  padding: 40px 0;
-  color: #aaa;
-  font-size: 13px;
-  display: none;
-}
-.old-toggle-btn {
-  display: block;
-  width: 100%;
-  padding: 10px;
-  margin: 12px 0 4px;
-  background: #f7f8fa;
-  border: 1px dashed #dde1e7;
-  border-radius: 6px;
-  color: #999;
-  cursor: pointer;
-  font-size: 12px;
-  font-weight: 500;
-  text-align: center;
-  transition: all 0.1s;
-}
-.old-toggle-btn:hover { background: #eef0f3; color: #555; border-color: #bbb; }
-.page-controls {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  margin: 16px 0 12px;
-}
-.page-btn {
-  padding: 7px 12px;
-  border-radius: 6px;
-  border: 1px solid #dde1e7;
-  background: white;
-  color: #1c2b4a;
-  font-size: 12px;
-  font-weight: 700;
-  cursor: pointer;
-}
-.page-btn:disabled { color: #aaa; cursor: not-allowed; background: #f7f8fa; }
-.page-info { font-size: 12px; color: #777; }
-.clicked-dot {
-  width: 7px; height: 7px;
-  border-radius: 50%;
-  background: #5bc8a8;
-  margin: 0 auto;
-}
-.td-date { width: 120px; font-size: 11px; color: #aaa; white-space: nowrap; }
-.td-date.has-posted { color: #1c2b4a; font-weight: 500; }
-</style>
+<title>JobDrop</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,500&family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/tokens.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/jobs.css') }}">
 </head>
 <body>
 
 <!-- Top bar -->
 <div class="topbar">
-  <div class="topbar-dot"></div>
-  <div class="topbar-logo">Job<span>Radar</span></div>
+  <div class="tb-brand">
+    <div class="topbar-dot"></div>
+    <div class="topbar-logo">Job<em>Drop</em></div>
+  </div>
+  <span class="tb-spring"></span>
   <div class="topbar-stats">
     <strong id="hdr-sel">0</strong> selected &nbsp;·&nbsp;
     <strong id="hdr-total">{{ companies|length }}</strong> companies
@@ -571,7 +35,7 @@ body {
     </div>
 
     <div class="cat-wrap" id="cat-wrap"></div>
-
+    <div class="sidebar-resizer" id="sidebar-resizer"></div>
     <div class="company-list" id="company-list"></div>
 
     <div class="sidebar-foot">
@@ -819,8 +283,16 @@ async function applyFilters(companyNames = null, page = 1) {
   names.forEach(name => params.append('company', name));
 
   try {
+    const noMatch = document.getElementById('no-match');
+    if (resultsVisible()) {
+      noMatch.textContent = 'Loading jobs...';
+      noMatch.style.display = 'block';
+    }
     const resp = await fetch('/api/jobs?' + params);
-    if (!resp.ok) return;
+    if (!resp.ok) {
+      showEmptyMessage('Could not load jobs. Try again in a moment.');
+      return;
+    }
     const payload = await resp.json();
     const jobs = Array.isArray(payload) ? payload : (payload.jobs || []);
     if (!Array.isArray(jobs)) return;
@@ -832,6 +304,7 @@ async function applyFilters(companyNames = null, page = 1) {
     filterDOM();
   } catch(e) {
     console.error('Failed to load jobs:', e);
+    showEmptyMessage('Could not load jobs. Try again in a moment.');
   }
 }
 
@@ -1013,17 +486,29 @@ async function startScan() {
 async function pollProgress() {
   const data     = await fetch('/api/progress').then(r => r.json());
   const progress = data.progress || [];
-  const total    = selected.size;
+  const total    = Math.max(progress.length, selected.size, 1);
   const done     = progress.filter(p => p.status !== 'scanning' && p.status !== 'pending').length;
 
-  document.getElementById('progress-fill').style.width = `${Math.round(done / total * 100)}%`;
-  document.getElementById('progress-text').textContent  = `Scanning ${done}/${total} companies…`;
+  document.getElementById('progress-fill').style.width = `${Math.min(100, Math.round(done / total * 100))}%`;
+  document.getElementById('progress-text').textContent  =
+    data.running && done >= total
+      ? `Finalizing ${done}/${total} companies…`
+      : `Scanning ${done}/${total} companies…`;
 
-  document.getElementById('company-chips').innerHTML = progress.map(p => {
+  const activeChips = progress.filter(p => p.status === 'scanning');
+  const errorChips  = progress.filter(p => p.status === 'error');
+  const doneChips   = progress.filter(p => p.status === 'done').slice(-80);
+  const hiddenDone  = Math.max(0, progress.filter(p => p.status === 'done').length - doneChips.length);
+  const chips       = [...activeChips, ...errorChips, ...doneChips];
+
+  document.getElementById('company-chips').innerHTML = [
+    hiddenDone ? `<span class="chip ok">+${hiddenDone} completed</span>` : '',
+    ...chips.map(p => {
     const cls = p.status === 'done' ? 'ok' : p.status === 'error' ? 'err' : 'scanning';
     const suf = p.status === 'done' ? ` (${p.count})` : p.status === 'error' ? ' ✗' : '…';
     return `<span class="chip ${cls}">${p.company}${suf}</span>`;
-  }).join('');
+    })
+  ].join('');
 
   if (data.done) {
     clearInterval(scanInterval);
@@ -1134,10 +619,6 @@ function renderSection(id, jobs, title, isNew, bucket) {
     const dateCls  = (hasPosted || hasSeen) ? 'td-date has-posted' : 'td-date';
     const source   = j.source || 'html';
     const expLabel = j.exp_label ? ` · ${esc2(j.exp_label)}` : '';
-    const interview = j.interview || null;
-    const interviewLabel = interview
-      ? ` · <span class="interview-tag" title="${escAttr(interview.process || '')}">No whiteboard</span>`
-      : '';
     const dotCell = bucket === 'new'
       ? '<div class="new-dot"></div>'
       : bucket === 'clicked' ? '<div class="clicked-dot"></div>' : '';
@@ -1156,7 +637,7 @@ function renderSection(id, jobs, title, isNew, bucket) {
       <td class="td-new">${dotCell}</td>
       <td class="td-title">
         ${titleHtml}
-        <div class="job-co">${esc2(j.company)}${expLabel}${interviewLabel}</div>
+        <div class="job-co">${esc2(j.company)}${expLabel}</div>
       </td>
       <td class="td-loc">${esc2(loc)}</td>
       <td class="td-src"><span class="src-tag ${source}">${source}</span></td>
@@ -1225,5 +706,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 });
 </script>
+<script src="{{ url_for('static', filename='js/sidebar-resize.js') }}"></script>
 </body>
 </html>

@@ -36,18 +36,19 @@ def main():
     parser.add_argument("--all", action="store_true", help="Scan all configured companies")
     parser.add_argument("--selected", action="store_true", help="Scan selected/enabled config entries only")
     parser.add_argument("--company", action="append", default=[], help="Scan a named company; repeat as needed")
+    parser.add_argument("--full", action="store_true", help="Run the slower full audit instead of a fresh scan")
     args = parser.parse_args()
 
     companies = load_companies(args.companies_file)
-    scan_type = "all"
+    scan_type = "fresh"
     if args.company:
         companies = filter_named(companies, args.company)
-        scan_type = "named"
     elif args.selected:
         companies = filter_selected(companies)
-        scan_type = "selected"
     elif not args.all:
         raise ValueError("Use --all, --selected, or --company NAME")
+    if args.full:
+        scan_type = "full"
 
     result = run_scan(companies=companies, scan_type=scan_type)
     printable = {key: value for key, value in result.items() if key not in {"results", "progress"}}

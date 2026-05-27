@@ -5,8 +5,10 @@ import secrets
 import threading
 import time
 from datetime import datetime
+from urllib.parse import urlsplit
 
 from flask import Flask, jsonify, redirect, render_template, request, session, url_for
+from werkzeug.middleware.proxy_fix import ProxyFix
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from .database import connect_db, placeholders
@@ -29,7 +31,15 @@ from .search import (
 )
 
 app = Flask(__name__, template_folder="../templates")
+app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1)
 app.secret_key = os.environ.get("SECRET_KEY") or os.environ.get("JOBRADAR_SECRET_KEY") or secrets.token_hex(32)
+app.config["SESSION_COOKIE_HTTPONLY"] = True
+app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
+app.config["SESSION_COOKIE_SECURE"] = (
+    os.environ.get("SESSION_COOKIE_SECURE", "").lower() in {"1", "true", "yes"}
+    or os.environ.get("FLASK_ENV") == "production"
+    or bool(os.environ.get("RENDER"))
+)
 init_db()
 
 ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD") or os.environ.get("JOBRADAR_ADMIN_PASSWORD")
@@ -48,15 +58,17 @@ def _wants_json():
 
 def _safe_next(default_endpoint):
     target = request.args.get("next") or request.form.get("next") or ""
-    if target.startswith("/") and not target.startswith("//"):
+    parsed = urlsplit(target)
+    if (
+        target.startswith("/")
+        and not target.startswith(("//", "/\\"))
+        and not parsed.scheme
+        and not parsed.netloc
+    ):
         return target
     return url_for(default_endpoint)
 
-def _is_local():
-    return request.remote_addr in {"127.0.0.1", "::1"}
-
 def _admin_required():
-    if _is_local(): return None
     if not ADMIN_PASSWORD:
         if _wants_json():
             return jsonify({"error": "Admin password is not configured"}), 503
@@ -67,7 +79,6 @@ def _admin_required():
     return redirect(url_for("login", next=request.full_path))
 
 def _user_required():
-    if _is_local():  return None
     if _is_user():   return None
     if _wants_json():
         return jsonify({"error": "Login required"}), 401
@@ -81,6 +92,7 @@ def protect_routes():
         request.path == "/admin"
         or request.path.startswith("/api/scan")
         or request.path.startswith("/api/reset")
+        or request.path.startswith("/api/reenrich")
         or request.path in {"/api/clear_data", "/api/detect_ats", "/api/add_detected_company"}
     )
     if protected:
@@ -681,8 +693,14 @@ def api_jobs():
     }
     if companies:
         companies = [name for name in companies if name in active_company_names]
-    limit    = min(int(request.args.get("limit", 100) or 100), 5000)
-    page     = max(int(request.args.get("page", 1) or 1), 1)
+    try:
+        limit = min(int(request.args.get("limit", 100) or 100), 5000)
+    except (ValueError, TypeError):
+        limit = 100
+    try:
+        page = max(int(request.args.get("page", 1) or 1), 1)
+    except (ValueError, TypeError):
+        page = 1
     offset   = (page - 1) * limit
 
     clauses, params = ["is_open = TRUE"], []

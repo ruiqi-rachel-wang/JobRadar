@@ -1,146 +1,345 @@
-"""Fetcher registry and dispatch for JobRadar ATS sources."""
+"""
+ATS fetcher registry and job-enrichment pipeline.
 
-from .utils import _parse_posted, extract_experience, make_id, normalize_location
+fetch_jobs() is the single entry point called by scanner_service for every
+company. It dispatches to the right ATS fetcher, optionally falls back to
+Playwright, enriches every job with experience/skills/employment-type, and
+filters by text include rules from the company config.
 
-from .ats.greenhouse import fetch_greenhouse
-from .ats.lever import fetch_lever
-from .ats.ashby import fetch_ashby
-from .ats.workday import fetch_workday
-from .ats.bamboohr import fetch_bamboohr
-from .ats.icims import fetch_icims
-from .ats.apple import fetch_apple
-from .ats.google import fetch_google
-from .ats.microsoft import fetch_microsoft
-from .ats.pinpoint import fetch_pinpoint
-from .ats.eightfold import fetch_eightfold
-from .ats.smartrecruiters import fetch_smartrecruiters
-from .ats.oraclecloud import fetch_oraclecloud, fetch_oracle
-from .ats.avature import fetch_avature
-from .ats.successfactors import fetch_successfactors
-from .ats.workable import fetch_workable
-from .ats.jazzhr import fetch_jazzhr
-from .ats.jobvite import fetch_jobvite
-from .ats.rippling import fetch_rippling
-from .ats.talentbrew import fetch_talentbrew
-from .ats.careerpuck import fetch_careerpuck
-from .ats.playwright import (
-    fetch_adp, fetch_brassring, fetch_gr8people, fetch_internal, fetch_paradox,
-    fetch_phenom, fetch_playwright, fetch_proprietary, fetch_recooty,
-    fetch_salesforce, fetch_taleo, fetch_talemetry, _fetch_playwright_with_source,
+scan_type controls two fetcher-level behaviours:
+  "fresh"  – stop_on_seen injected as True  (fetcher stops on seen pages)
+             detail fetch defaults to new jobs only (fast, but still enriches
+             newly discovered jobs)
+  "full"   – stop_on_seen forced to False    (fetcher scans all pages)
+             detail fetch defaults to True    (refresh rich details)
+"""
+
+import re as _re
+from statistics import median
+
+from .utils import (
+    _parse_posted,
+    extract_employment_type as _extract_employment_type,
+    extract_experience,
+    extract_skills,
+    make_id,
+    norm,
+    normalize_location,
 )
-from .ats.html import fetch_html
-from .ats.jobsapi import fetch_jobsapi
-from .ats.tiktok import fetch_tiktok
-from .ats.companies.amazon import fetch_amazon
-from .ats.companies.americanexpress import fetch_americanexpress
-from .ats.companies.bain import fetch_bain
-from .ats.companies.boozallen import fetch_boozallen
-from .ats.companies.dhl import fetch_dhl
-from .ats.companies.dominos import fetch_dominos
-from .ats.companies.etsy import fetch_etsy
-from .ats.companies.johnsoncontrols import fetch_johnsoncontrols
-from .ats.companies.kpmg import fetch_kpmg
-from .ats.companies.nike import fetch_nike
-from .ats.companies.starbucks import fetch_starbucks
-from .ats.companies.unitedhealth import fetch_unitedhealth
-from .ats.companies.vimeo import fetch_vimeo
-from .ats.companies.adobe import fetch_adobe
 
+_HTML_TAG_RE = _re.compile(r'<[^>]+>')
+
+def _strip_html(text):
+    """Fast HTML tag stripper — avoids BeautifulSoup overhead in the hot path."""
+    if not text or '<' not in text:
+        return text
+    return ' '.join(_HTML_TAG_RE.sub(' ', text).split())
+from .ats.greenhouse      import fetch_greenhouse
+from .ats.lever           import fetch_lever
+from .ats.ashby           import fetch_ashby
+from .ats.workday         import fetch_workday
+from .ats.bamboohr        import fetch_bamboohr
+from .ats.icims           import fetch_icims
+from .ats.pinpoint        import fetch_pinpoint
+from .ats.eightfold       import fetch_eightfold
+from .ats.smartrecruiters import fetch_smartrecruiters
+from .ats.oraclecloud     import fetch_oraclecloud, fetch_oracle
+from .ats.avature         import fetch_avature
+from .ats.successfactors  import fetch_successfactors
+from .ats.workable        import fetch_workable
+from .ats.jazzhr          import fetch_jazzhr
+from .ats.jobvite         import fetch_jobvite
+from .ats.rippling        import fetch_rippling
+from .ats.talentbrew      import fetch_talentbrew
+from .ats.careerpuck      import fetch_careerpuck
+try:
+    from .ats.playwright import (
+        fetch_adp, fetch_brassring, fetch_phenom, fetch_playwright,
+        fetch_salesforce, fetch_taleo, fetch_talemetry,
+        _fetch_playwright_with_source,
+    )
+except Exception as _pw_err:
+    import logging as _log
+    _log.warning(f"Playwright unavailable ({_pw_err}) — browser-based fetchers disabled")
+    def _pw_stub(*a, **k): return [], "playwright not available on this platform"
+    fetch_adp = fetch_brassring = fetch_phenom = fetch_playwright = _pw_stub
+    fetch_salesforce = fetch_taleo = fetch_talemetry = _pw_stub
+    def _fetch_playwright_with_source(*a, **k): return [], "playwright not available"
+from .ats.html    import fetch_html
+from .ats.jobsapi import fetch_jobsapi
+
+# Map mode name → fetcher function.
 FETCHERS = {
-    "greenhouse": fetch_greenhouse,
-    "lever": fetch_lever,
-    "ashby": fetch_ashby,
-    "workday": fetch_workday,
-    "bamboohr": fetch_bamboohr,
-    "icims": fetch_icims,
-    "apple": fetch_apple,
-    "google": fetch_google,
-    "microsoft": fetch_microsoft,
-    "pinpoint": fetch_pinpoint,
-    "eightfold": fetch_eightfold,
+    "greenhouse":      fetch_greenhouse,
+    "lever":           fetch_lever,
+    "ashby":           fetch_ashby,
+    "workday":         fetch_workday,
+    "bamboohr":        fetch_bamboohr,
+    "icims":           fetch_icims,
+    "pinpoint":        fetch_pinpoint,
+    "eightfold":       fetch_eightfold,
     "smartrecruiters": fetch_smartrecruiters,
-    "oraclecloud": fetch_oraclecloud,
-    "oracle": fetch_oracle,
-    "avature": fetch_avature,
-    "successfactors": fetch_successfactors,
-    "workable": fetch_workable,
-    "jazzhr": fetch_jazzhr,
-    "jobvite": fetch_jobvite,
-    "rippling": fetch_rippling,
-    "talentbrew": fetch_talentbrew,
-    "careerpuck": fetch_careerpuck,
-    "brassring": fetch_brassring,
-    "taleo": fetch_taleo,
-    "paradox": fetch_paradox,
-    "recooty": fetch_recooty,
-    "phenom": fetch_phenom,
-    "talemetry": fetch_talemetry,
-    "adp": fetch_adp,
-    "salesforce": fetch_salesforce,
-    "bambusdev": fetch_salesforce,
-    "internal": fetch_internal,
-    "proprietary": fetch_proprietary,
-    "gr8people": fetch_gr8people,
-    "amazon": fetch_amazon,
-    "americanexpress": fetch_americanexpress,
-    "bain": fetch_bain,
-    "boozallen": fetch_boozallen,
-    "dhl": fetch_dhl,
-    "dominos": fetch_dominos,
-    "etsy": fetch_etsy,
-    "johnsoncontrols": fetch_johnsoncontrols,
-    "kpmg": fetch_kpmg,
-    "nike": fetch_nike,
-    "starbucks": fetch_starbucks,
-    "unitedhealth": fetch_unitedhealth,
-    "vimeo": fetch_vimeo,
-    "adobe": fetch_adobe,
-    "jobsapi": fetch_jobsapi,
-    "tiktok": fetch_tiktok,
-    "playwright": fetch_playwright,
-    "html": fetch_html,
+    "oraclecloud":     fetch_oraclecloud,
+    "oracle":          fetch_oracle,
+    "avature":         fetch_avature,
+    "successfactors":  fetch_successfactors,
+    "workable":        fetch_workable,
+    "jazzhr":          fetch_jazzhr,
+    "jobvite":         fetch_jobvite,
+    "rippling":        fetch_rippling,
+    "talentbrew":      fetch_talentbrew,
+    "careerpuck":      fetch_careerpuck,
+    "brassring":       fetch_brassring,
+    "taleo":           fetch_taleo,
+    "phenom":          fetch_phenom,
+    "talemetry":       fetch_talemetry,
+    "adp":             fetch_adp,
+    "salesforce":      fetch_salesforce,
+    "jobsapi":         fetch_jobsapi,
+    "playwright":      fetch_playwright,
+    "html":            fetch_html,
 }
 
-_API_MODES = set(FETCHERS) - {"html"}
+# Modes served by JSON APIs (not browser automation).
+_API_MODES = set(FETCHERS) - {"html", "playwright"}
 
-def fetch_jobs(company, seen):
-    scrape = company.get("scrape") or {}
-    mode = scrape.get("mode", "html")
+
+# ── Public entry point ────────────────────────────────────────────────────────
+
+def fetch_jobs(company, seen, scan_type="fresh"):
+    """Fetch, enrich, and filter jobs for one company.
+
+    Args:
+        company:   Company config dict (from companies.json).
+        seen:      Dict of already-known job IDs → metadata.
+        scan_type: "fresh" or "full" – controls stop-early and detail-fetch.
+
+    Returns:
+        (jobs, error_string | None)
+    """
+    scrape = _apply_scan_defaults(company.get("scrape") or {}, scan_type)
+    mode   = scrape.get("mode", "html")
+
+    if mode == "multi":
+        jobs, err = _fetch_multi(scrape, seen, company["name"])
+        _enrich(jobs or [], seen, company["name"], scan_type=scan_type)
+        _apply_text_filter(jobs or [], scrape)
+        return jobs or [], err
+
     fn = FETCHERS.get(mode)
     if not fn:
         return [], f"unknown mode: {mode}"
+
     jobs, err = fn(scrape, seen, company["name"])
-    if (err or not jobs) and mode not in {"playwright", "html"} and scrape.get("list_url") and (scrape.get("prefix") or scrape.get("include")):
-        fallback_jobs, fallback_err = _fetch_playwright_with_source(scrape, seen, company["name"], mode)
-        if fallback_jobs or not jobs:
-            jobs, err = fallback_jobs, fallback_err
-    for j in jobs or []:
+
+    # Playwright fallback: if an API fetcher fails and the config has a URL
+    # with a prefix/include filter, try scraping the page directly.
+    if (err or not jobs) and _should_try_playwright_fallback(mode, scrape):
+        fallback, fb_err = _fetch_playwright_with_source(scrape, seen, company["name"], mode)
+        if fallback or not jobs:
+            jobs, err = fallback, fb_err
+
+    _enrich(jobs or [], seen, company["name"], scan_type=scan_type)
+    _apply_text_filter(jobs or [], scrape)
+    return jobs or [], err
+
+
+# ── Private helpers ───────────────────────────────────────────────────────────
+
+def _apply_scan_defaults(scrape, scan_type):
+    """Return a copy of scrape with scan-mode defaults injected."""
+    scrape = dict(scrape)  # don't mutate the original config
+    if scan_type != "full":
+        scrape.setdefault("stop_on_seen",          True)
+        scrape.setdefault("fetch_posted_details",  False)
+        scrape.setdefault("fetch_experience_details", True)
+        scrape.setdefault("fetch_new_experience_only", True)
+    else:  # full
+        # Always override stop_on_seen so a full scan really is complete.
+        scrape["stop_on_seen"] = False
+        scrape.setdefault("fetch_posted_details", True)
+        scrape.setdefault("fetch_experience_details", True)
+        scrape.setdefault("fetch_new_experience_only", False)
+        scrape.setdefault("refresh_experience", True)
+    return scrape
+
+
+def _should_try_playwright_fallback(mode, scrape):
+    """True when an API fetcher has failed and Playwright may recover it."""
+    return (
+        scrape.get("allow_browser_fallback") is True
+        and
+        mode not in {"playwright", "html"}
+        and scrape.get("list_url")
+        and (scrape.get("prefix") or scrape.get("include"))
+    )
+
+
+def _fetch_multi(scrape, seen, company_name):
+    """Fetch one company from multiple public career sources."""
+    sources = scrape.get("sources") or []
+    jobs_by_id = {}
+    errors = []
+    for source in sources:
+        source_scrape = {
+            **{k: v for k, v in scrape.items() if k in {
+                "stop_on_seen", "fetch_posted_details", "fetch_experience_details",
+                "fetch_new_experience_only", "refresh_experience", "sort",
+            }},
+            **(source or {}),
+        }
+        mode = source_scrape.get("mode", "html")
+        fn = FETCHERS.get(mode)
+        if not fn:
+            errors.append(f"unknown mode: {mode}")
+            continue
+        try:
+            source_jobs, err = fn(source_scrape, seen, company_name)
+        except Exception as exc:
+            source_jobs, err = [], str(exc)
+        if (err or not source_jobs) and _should_try_playwright_fallback(mode, source_scrape):
+            fallback, fb_err = _fetch_playwright_with_source(source_scrape, seen, company_name, mode)
+            if fallback or not source_jobs:
+                source_jobs, err = fallback, fb_err
+        if err:
+            errors.append(err)
+        for job in source_jobs or []:
+            jid = make_id(company_name, job.get("url", ""), job.get("title", ""))
+            jobs_by_id[jid] = job
+    if jobs_by_id:
+        return list(jobs_by_id.values()), None
+    return [], "; ".join(errors) if errors else "no jobs found"
+
+
+def _enrich(jobs, seen, company_name, scan_type="fresh"):
+    """Normalise location/date and extract experience, skills, employment type."""
+    is_full = scan_type == "full"
+    for j in jobs:
         j["location"] = normalize_location(j.get("location", ""))
-        j["posted"] = _parse_posted(j.get("posted", ""))
-        existing = None
-        if isinstance(seen, dict):
-            existing = seen.get(make_id(company["name"], j.get("url", ""), j.get("title", "")))
-        if not j.get("description") and isinstance(existing, dict) and existing.get("exp_label"):
-            j["exp_min"] = existing.get("exp_min")
-            j["exp_max"] = existing.get("exp_max")
-            j["exp_label"] = existing.get("exp_label", "")
-            j["exp_source"] = existing.get("exp_source", "")
+        j["posted"]   = _parse_posted(j.get("posted", ""))
+
+        # Strip HTML tags so regex-based extractors see plain text.
+        raw_desc = j.get("description", "") or ""
+        if raw_desc and '<' in raw_desc:
+            raw_desc = _strip_html(raw_desc)
+            j["description"] = raw_desc
+
+        jid      = make_id(company_name, j.get("url", ""), j.get("title", ""))
+        existing = seen.get(jid) if isinstance(seen, dict) else None
+        desc     = raw_desc or j.get("description", "")
+
+        # Reuse cached fields when we have no description (avoids re-extraction).
+        # In a full scan, do not preserve title-only estimates; try company
+        # peers first, then recompute title as the final fallback.
+        existing_source = (existing.get("exp_source") or "") if isinstance(existing, dict) else ""
+        can_reuse_existing = (
+            not desc
+            and isinstance(existing, dict)
+            and existing.get("exp_label")
+            and (not is_full or existing_source in {"text", "company_peer"})
+        )
+        if can_reuse_existing:
+            j.setdefault("exp_min",    existing.get("exp_min"))
+            j.setdefault("exp_max",    existing.get("exp_max"))
+            j.setdefault("exp_label",  existing.get("exp_label", ""))
+            j.setdefault("exp_source", existing.get("exp_source", ""))
+            j.setdefault("skills",     existing.get("skills") or [])
         else:
-            exp = extract_experience(j.get("title", ""), j.get("description", ""))
-            j["exp_min"] = exp.get("min")
-            j["exp_max"] = exp.get("max")
-            j["exp_label"] = exp.get("label", "")
+            exp = extract_experience(j.get("title", ""), desc, allow_title_fallback=False)
+            if not exp.get("label"):
+                exp = _peer_experience_estimate(company_name, j.get("title", ""), seen)
+            if not exp.get("label"):
+                exp = extract_experience(j.get("title", ""), "", allow_title_fallback=True)
+            j["exp_min"]    = exp.get("min")
+            j["exp_max"]    = exp.get("max")
+            j["exp_label"]  = exp.get("label", "")
             j["exp_source"] = exp.get("source", "")
+            if not j.get("skills"):
+                j["skills"] = extract_skills(j.get("title", ""), desc)
+
+        if not j.get("employment_type"):
+            j["employment_type"] = _extract_employment_type(j.get("title", ""), desc)
+
+
+_TITLE_LEVEL_WORDS = {
+    "intern", "internship", "co", "op", "coop", "junior", "jr", "senior", "sr",
+    "staff", "principal", "lead", "manager", "director", "associate", "ii", "iii",
+    "iv", "v", "l1", "l2", "l3", "l4", "l5", "l6", "l7", "i",
+}
+_TITLE_STOP_WORDS = {
+    "the", "and", "or", "of", "for", "to", "with", "in", "on", "remote",
+    "hybrid", "temporary", "contract", "full", "time", "part",
+}
+
+
+def _title_core_tokens(title):
+    raw = _re.sub(r'[^a-z0-9+#.]+', ' ', (title or '').lower())
+    tokens = []
+    for token in raw.split():
+        token = token.strip(".")
+        if len(token) < 2:
+            continue
+        if token in _TITLE_LEVEL_WORDS or token in _TITLE_STOP_WORDS:
+            continue
+        tokens.append(token)
+    return set(tokens)
+
+
+def _peer_experience_estimate(company_name, title, seen):
+    """Estimate from same-company jobs with similar titles and non-title evidence."""
+    if not isinstance(seen, dict):
+        return {"min": None, "max": None, "label": "", "source": ""}
+    query_tokens = _title_core_tokens(title)
+    if not query_tokens:
+        return {"min": None, "max": None, "label": "", "source": ""}
+
+    candidates = []
+    seen_snapshot = list(seen.values())
+    for item in seen_snapshot:
+        if not isinstance(item, dict):
+            continue
+        if (item.get("company") or "").lower() != (company_name or "").lower():
+            continue
+        # Do not let blunt title fallbacks teach other jobs. Text evidence and
+        # peer-derived values are acceptable; title-only values remain last-resort.
+        if (item.get("exp_source") or "") not in {"text", "company_peer"}:
+            continue
+        if item.get("exp_min") is None and item.get("exp_max") is None:
+            continue
+        peer_tokens = _title_core_tokens(item.get("title", ""))
+        if not peer_tokens:
+            continue
+        overlap = len(query_tokens & peer_tokens)
+        score = overlap / max(len(query_tokens | peer_tokens), 1)
+        if overlap >= 2 and score >= 0.35:
+            candidates.append((score, item))
+
+    if not candidates:
+        return {"min": None, "max": None, "label": "", "source": ""}
+
+    candidates.sort(key=lambda row: row[0], reverse=True)
+    strongest = [item for score, item in candidates if score >= candidates[0][0] - 0.1][:7]
+    mins = [int(item["exp_min"]) for item in strongest if item.get("exp_min") is not None]
+    maxes = [int(item["exp_max"]) for item in strongest if item.get("exp_max") is not None]
+    if not mins:
+        return {"min": None, "max": None, "label": "", "source": ""}
+
+    lo = int(median(mins))
+    hi = int(median(maxes)) if maxes and len(maxes) >= max(1, len(strongest) // 2) else None
+    if hi is not None and hi < lo:
+        hi = lo
+    label = f"{lo}-{hi} years" if hi is not None else f"{lo}+ years"
+    return {"min": lo, "max": hi, "label": label, "source": "company_peer"}
+
+
+def _apply_text_filter(jobs, scrape):
+    """Remove jobs whose title/location/URL don't match required keywords."""
     include_text = scrape.get("text_include")
-    if include_text and jobs:
-        needles = include_text if isinstance(include_text, list) else [include_text]
-        needles = [str(n).lower() for n in needles if str(n).strip()]
-        if needles:
-            jobs = [
-                j for j in jobs
-                if any(
-                    n in " ".join([j.get("title", ""), j.get("location", ""), j.get("url", "")]).lower()
-                    for n in needles
-                )
-            ]
-    return jobs, err
+    if not include_text or not jobs:
+        return
+    needles = include_text if isinstance(include_text, list) else [include_text]
+    needles = [str(n).lower() for n in needles if str(n).strip()]
+    if not needles:
+        return
+    haystack = lambda j: " ".join([j.get("title",""), j.get("location",""), j.get("url","")]).lower()
+    jobs[:] = [j for j in jobs if any(n in haystack(j) for n in needles)]

@@ -29,7 +29,7 @@ def fetch_eightfold(scrape, seen, company):
             r.raise_for_status()
             data = r.json()
         except Exception as e:
-            if scrape.get("fallback") == "playwright":
+            if scrape.get("fallback") == "playwright" and scrape.get("allow_browser_fallback"):
                 from .playwright import _fetch_playwright_with_source
                 return _fetch_playwright_with_source(scrape, seen, company, "eightfold")
             return jobs, str(e)
@@ -55,4 +55,3 @@ def fetch_eightfold(scrape, seen, company):
         if count and start + limit >= count:
             break
     return jobs, None
-

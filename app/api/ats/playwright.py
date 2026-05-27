@@ -61,12 +61,6 @@ def fetch_brassring(scrape, seen, company):
 def fetch_taleo(scrape, seen, company):
     return _fetch_playwright_with_source(scrape, seen, company, "taleo")
 
-def fetch_paradox(scrape, seen, company):
-    return _fetch_playwright_with_source(scrape, seen, company, "paradox")
-
-def fetch_recooty(scrape, seen, company):
-    return _fetch_playwright_with_source(scrape, seen, company, "recooty")
-
 def fetch_phenom(scrape, seen, company):
     """
     Phenom Talent Experience Management scraper.
@@ -77,6 +71,7 @@ def fetch_phenom(scrape, seen, company):
     if not list_url:
         return [], "no list_url"
     prefix = (scrape.get("prefix") or "").rstrip("/")
+    verify_ssl = bool(scrape.get("verify_ssl", True))
     # Derive job URL base from list_url: replace /search-results (or /search-jobs)
     if prefix:
         job_base = prefix + "/"
@@ -94,7 +89,7 @@ def fetch_phenom(scrape, seen, company):
             base = list_url.split("?")[0]
             purl = f"{base}?from={offset}&s=1"
         try:
-            r = requests.get(purl, headers=HEADERS, timeout=25)
+            r = requests.get(purl, headers=HEADERS, timeout=25, verify=verify_ssl)
             r.raise_for_status()
         except Exception as e:
             return list(jobs.values()), str(e)
@@ -136,10 +131,11 @@ def fetch_phenom(scrape, seen, company):
     if jobs:
         return list(jobs.values()), None
 
-    # Fallback to Playwright if JSON extraction found nothing
-    pw_jobs, pw_err = _fetch_playwright_with_source(scrape, seen, company, "phenom")
-    if pw_jobs:
-        return pw_jobs, pw_err
+    pw_err = "no Phenom JSON jobs found"
+    if scrape.get("allow_browser_fallback"):
+        pw_jobs, pw_err = _fetch_playwright_with_source(scrape, seen, company, "phenom")
+        if pw_jobs:
+            return pw_jobs, pw_err
     if "keysight.com" in list_url:
         return _fetch_jibe_text_cards(scrape, seen, company, "phenom")
     return [], pw_err
@@ -252,7 +248,8 @@ def _fetch_bambusdev_salesforce(scrape, seen, company):
         if not title or title.lower() in {"more", "clear all", "refine your search"}:
             continue
         req, location, posted = m.groups()
-        url = prefix + req
+        slug = re.sub(r'[^a-zA-Z0-9-]', '-', title)
+        url = prefix + slug + "_" + req
         if url in seen_urls:
             continue
         seen_urls.add(url)
@@ -269,15 +266,6 @@ def fetch_salesforce(scrape, seen, company):
     if "bambusdev.my.site.com" in (scrape.get("list_url") or ""):
         return _fetch_bambusdev_salesforce(scrape, seen, company)
     return _fetch_playwright_with_source(scrape, seen, company, scrape.get("source", "salesforce"))
-
-def fetch_internal(scrape, seen, company):
-    return _fetch_playwright_with_source(scrape, seen, company, "internal")
-
-def fetch_proprietary(scrape, seen, company):
-    return _fetch_playwright_with_source(scrape, seen, company, "proprietary")
-
-def fetch_gr8people(scrape, seen, company):
-    return _fetch_playwright_with_source(scrape, seen, company, "gr8people")
 
 
 # ── Playwright ────────────────────────────────────────────────────────────────

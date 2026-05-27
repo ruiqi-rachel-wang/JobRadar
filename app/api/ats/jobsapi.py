@@ -54,7 +54,7 @@ def fetch_jobsapi(scrape, seen, company):
             j = item.get("data", item)
 
             title = norm(j.get("title") or "")
-            req_id = str(j.get("req_id") or j.get("slug") or "").strip()
+            req_id = str(j.get("req_id") or j.get("slug") or j.get("id_icims") or j.get("id") or "").strip()
             if not title or not req_id:
                 continue
 
@@ -68,11 +68,17 @@ def fetch_jobsapi(scrape, seen, company):
             raw_date = j.get("posted_date") or j.get("create_date") or j.get("update_date") or ""
             posted = _parse_posted(raw_date[:10] if raw_date else "")
 
+            desc_parts = [j.get("description") or j.get("description_short") or ""]
+            for extra in ("basic_qualifications", "preferred_qualifications"):
+                if j.get(extra):
+                    desc_parts.append(str(j[extra]))
+            desc = " ".join(p for p in desc_parts if p).strip()
+
             jid = make_id(company, jurl, title)
             if stop_on_seen and jid in seen:
                 return jobs, None
 
-            jobs.append({"title": title, "url": jurl, "location": loc,
+            jobs.append({"title": title, "url": jurl, "location": loc, "description": desc,
                          "source": "jobsapi", "posted": posted})
 
         total = int(data.get("totalCount") or data.get("total") or 0)

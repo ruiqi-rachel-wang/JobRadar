@@ -280,6 +280,6 @@ def fetch_icims(scrape, seen, company):
                 if not first_err:
                     first_err = str(e)
 
-    if scrape.get("list_url") and (scrape.get("prefix") or scrape.get("include")):
+    if scrape.get("allow_browser_fallback") and scrape.get("list_url") and (scrape.get("prefix") or scrape.get("include")):
         return _fetch_playwright_with_source(scrape, seen, company, "icims")
     return [], first_err or "no jobs found"

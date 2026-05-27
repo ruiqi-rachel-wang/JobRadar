@@ -8,11 +8,12 @@ def fetch_talentbrew(scrape, seen, company):
         return [], "no list_url"
     max_pages = int(scrape.get("hard_max_pages") or 10000)
     page_param = scrape.get("page_param", "pg")
+    verify_ssl = bool(scrape.get("verify_ssl", True))
     jobs = {}
     for page in range(max_pages):
         purl = list_url if page == 0 else make_paged_url(list_url, {"param": page_param, "start": page + 1}, 0)
         try:
-            r = requests.get(purl, headers=HEADERS, timeout=25)
+            r = requests.get(purl, headers=HEADERS, timeout=25, verify=verify_ssl)
             r.raise_for_status()
         except Exception as e:
             return list(jobs.values()), str(e)
@@ -76,4 +77,3 @@ def fetch_talentbrew(scrape, seen, company):
         if len(jobs) == before:
             break
     return list(jobs.values()), None
-

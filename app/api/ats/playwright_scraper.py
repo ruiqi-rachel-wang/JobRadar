@@ -58,11 +58,29 @@ _JOB_PATH_RE = re.compile(
 )
 
 _BAD_TITLE_RE = re.compile(
-    r'^(?:about|account|all jobs|benefits|blog|business areas|candidate home|company|'
-    r'contact|contacts|customer stories|downloads|events|financial calendar|home|'
-    r'investor relations?|learn more|legal|locations?|login|media|news|privacy|'
-    r'reasons to invest|saved jobs|search|search jobs|service|sign in|sitemap|'
-    r'terms|view all jobs|webinars)$',
+    r'^(?:'
+    # Single-word navigation / section headers / language selectors
+    r'about|account|benefits|blog|careers?|citizenship|company|contact|contacts?|'
+    r'cookies?|culture|diversity|downloads|engineering|events|explore|'
+    r'financial calendar|home|icon|legal|locations?|login|media|news|'
+    r'privacy|search|services?|sign in|sitemap|technologies|terms|webinars|'
+    r'workplace|english|chinese|french|german|spanish|japanese|korean|'
+    r'portuguese|dutch|italian|arabic|hindi|'
+    # Multi-word navigation phrases
+    r'all jobs|back to top|business areas|candidate home|career opportunities|'
+    r'career paths?|cookie settings|current openings|customer stories|'
+    r'early talent|explore entry level opportunities|'
+    r'explore our application steps and tips|'
+    r'facility operations|financial calendar|'
+    r'inclusive culture|investor relations?|job listings|job openings|'
+    r'jobs per page|join us|learn more|life at \S+|manage cookies|meet our team|'
+    r'no jobs found|open positions|open roles|our culture|our values|our team|'
+    r'privacy notice.*|reasons to invest|saved jobs|search jobs|skip to.*|'
+    r'student careers|view all jobs|view all openings|view open.*|view openings|'
+    r'why work here|'
+    # Logo / image alt text leaking in
+    r'.*logo.*|.*icon.*|rrd logo.*|.*for header'
+    r')$',
     re.I,
 )
 
@@ -592,7 +610,7 @@ def fetch_playwright(scrape: dict, seen: dict, company: str):
                 title = _title_from_context(c.get("ctx", ""))
             title = norm(title)
             if not title or len(title) < 4:
-                title = norm(_title_from_context(c.get("ctx", "")) or _title_from_url_or_text(u, "")) or "Unknown Title"
+                title = norm(_title_from_context(c.get("ctx", "")) or _title_from_url_or_text(u, ""))
             title = _clean_title(title)
             title_regex = scrape.get("title_regex")
             if title_regex:
@@ -623,7 +641,9 @@ def fetch_playwright(scrape: dict, seen: dict, company: str):
                 if "jobdetails?id=" in ul or "jobdetails?jobid=" in ul or "jobdetails?reqid=" in ul:
                     seen_job_urls.add(u)
                     title    = _title_from_url_or_text(u, c.get("text", ""))
-                    title    = norm(title or _title_from_context(c.get("ctx", ""))) or "Unknown Title"
+                    title    = norm(title or _title_from_context(c.get("ctx", "")))
+                    if not title or len(title) < 4:
+                        continue
                     title    = _clean_title(title)
                     title_regex = scrape.get("title_regex")
                     if title_regex:

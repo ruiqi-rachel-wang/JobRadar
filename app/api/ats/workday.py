@@ -174,7 +174,7 @@ def fetch_workday(scrape, seen, company):
             for j in jobs or []:
                 j["source"] = "workday"
             return jobs, err
-        if scrape.get("fallback") == "playwright":
+        if scrape.get("fallback") == "playwright" and scrape.get("allow_browser_fallback"):
             from .playwright import _fetch_playwright_with_source
             return _fetch_playwright_with_source(scrape, seen, company, "workday")
         return [], f"cannot parse Workday URL: {list_url}"
@@ -198,6 +198,8 @@ def fetch_workday(scrape, seen, company):
     consec_all_seen = 0
     fetch_details   = bool(scrape.get("fetch_posted_details", False))
     fetch_exp_detail = bool(scrape.get("fetch_experience_details", True))
+    fetch_new_exp_only = bool(scrape.get("fetch_new_experience_only", False))
+    refresh_experience = bool(scrape.get("refresh_experience", False))
     detail_limit    = int(scrape.get("max_posted_details", 1000000))
     detail_delay    = float(scrape.get("posted_detail_delay", 0.05))
     detail_workers  = int(scrape.get("detail_workers", 3))
@@ -242,9 +244,23 @@ def fetch_workday(scrape, seen, company):
                 existing = seen.get(jid) if isinstance(seen, dict) else None
                 if not posted and isinstance(existing, dict):
                     posted = _parse_posted(existing.get("posted") or "")
-                existing_exp = isinstance(existing, dict) and bool(existing.get("exp_label"))
-                needs_detail = (fetch_exp_detail and not existing_exp) or (not posted) or loc == "Multiple Locations"
-                if needs_detail and fetch_details and detail_count < detail_limit:
+                existing_source = (existing.get("exp_source") or "") if isinstance(existing, dict) else ""
+                existing_exp = (
+                    isinstance(existing, dict)
+                    and bool(existing.get("exp_label"))
+                    and not refresh_experience
+                )
+                exp_detail_needed = (
+                    fetch_exp_detail
+                    and not existing_exp
+                    and (not fetch_new_exp_only or not isinstance(existing, dict))
+                )
+                needs_detail = exp_detail_needed or (not posted) or loc == "Multiple Locations"
+                # Always fetch detail for Multiple Locations. In fresh mode, also
+                # fetch detail for brand-new jobs so experience is available now,
+                # while old jobs wait for the next full refresh.
+                fetch_for_this = fetch_details or loc == "Multiple Locations" or exp_detail_needed
+                if needs_detail and fetch_for_this and detail_count < detail_limit:
                     page_had_missing_posted = True
                 elif not posted:
                     page_had_missing_posted = True
@@ -255,7 +271,7 @@ def fetch_workday(scrape, seen, company):
                     "source": "workday",
                     "posted": posted,
                     "description": "",
-                    "_detail_path": path if needs_detail and fetch_details else "",
+                    "_detail_path": path if needs_detail and fetch_for_this else "",
                 })
 
         detail_targets = [

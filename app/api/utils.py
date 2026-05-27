@@ -16,7 +16,7 @@ def make_id(company, url, title):
 def norm(s):
     return " ".join((s or "").split())
 
-def extract_experience(title="", text=""):
+def extract_experience(title="", text="", allow_title_fallback=True):
     """Return an estimated experience range from requirements text or title."""
     title = norm(title)
     text = norm(text)
@@ -36,10 +36,36 @@ def extract_experience(title="", text=""):
         "sixteen": "16", "seventeen": "17", "eighteen": "18",
         "nineteen": "19", "twenty": "20",
     }
-    requirement = text.lower().replace("’", "'")
+    requirement = text.lower().replace("'", "'")
     for word, value in word_years.items():
         requirement = re.sub(rf"\b{word}\b", value, requirement)
+
+    _REQ_SENTENCE_RE = re.compile(
+        r'\b(?:experience|require[sd]?|must have|qualif\w+|proficien\w+|background|'
+        r'expertise|knowledge|skill\w*|familiar\w*|working with|hands.on)\b',
+        re.I,
+    )
+    _COMPANY_HISTORY_RE = re.compile(
+        r'\b(?:founded|established|serving|operated?|operating|company|leading|'
+        r'pioneer\w*|deliver\w+|provid\w+|offer\w+|headquarter\w*)\b',
+        re.I,
+    )
+
+    def _requirement_sentences(section):
+        """Return only sentences that look like job requirements, not company history."""
+        sentences = re.split(r'(?<=[.!?;])\s+', section)
+        # If fewer than 3 sentences, just return the whole section unchanged
+        if len(sentences) < 3:
+            return section
+        req_sents = []
+        for s in sentences:
+            if _REQ_SENTENCE_RE.search(s) and not _COMPANY_HISTORY_RE.search(s):
+                req_sents.append(s)
+        return " ".join(req_sents) if req_sents else section
+
     def text_matches(section):
+        # Filter to requirement-context sentences before pattern matching
+        filtered = _requirement_sentences(section)
         range_pattern = re.compile(
             r'(\d{1,2})\s*(?:-\s*|to\s+)(\d{1,2})\s*(?:years?|yrs?)'
             r'(?:\s+[^.;:]{0,100}?\bexperience\b)?'
@@ -49,9 +75,10 @@ def extract_experience(title="", text=""):
                 r'(\d{1,2})\s*\+\s*(?:years?|yrs?)'
                 r'(?:\s+[^.;:]{0,100}?\bexperience\b)?'
             ),
+            # "more than/at least/minimum X years" — require "experience" within 60 chars
             re.compile(
                 r'(?:minimum|min\.?|at least|more than)\s+(\d{1,2})\s*(?:years?|yrs?)'
-                r'(?:\s+[^.;:]{0,100}?\bexperience\b)?'
+                r'\s+[^.;:]{0,60}?\bexperience\b'
             ),
             re.compile(
                 r'(\d{1,2})\s*(?:or more|plus)\s*(?:years?|yrs?)'
@@ -63,15 +90,19 @@ def extract_experience(title="", text=""):
         ]
         matches = []
         range_spans = []
-        for m in range_pattern.finditer(section):
+        for m in range_pattern.finditer(filtered):
             lo, hi = int(m.group(1)), int(m.group(2))
+            if lo > 18 or hi > 18:   # implausible job requirement
+                continue
             matches.append(result(lo, hi, f"{lo}-{hi} years", "text"))
             range_spans.append(m.span())
         for pattern in minimum_patterns:
-            for m in pattern.finditer(section):
+            for m in pattern.finditer(filtered):
                 if any(start <= m.start() < end for start, end in range_spans):
                     continue
                 lo = int(m.group(1))
+                if lo > 18:          # implausible job requirement
+                    continue
                 matches.append(result(lo, None, f"{lo}+ years", "text"))
         return matches
 
@@ -98,9 +129,84 @@ def extract_experience(title="", text=""):
         for pattern, lo, hi, label in title_rules
         if re.search(pattern, title_l)
     ]
-    if title_matches:
+    if allow_title_fallback and title_matches:
         return max(title_matches, key=lambda x: (x["min"] or -1, x["max"] or 10_000))
     return {"min": None, "max": None, "label": "", "source": ""}
+
+# ── Skills extraction ─────────────────────────────────────────────────────────
+
+_TECH_SKILLS = [
+    # Languages
+    "Python","Java","JavaScript","TypeScript","Go","Rust","C++","C#","Swift","Kotlin",
+    "Scala","Ruby","PHP","R","MATLAB","Bash","Shell","Perl","Haskell","Elixir",
+    # Web / Frontend
+    "React","Vue","Angular","Next.js","Svelte","HTML","CSS","Tailwind","GraphQL",
+    "REST","WebSockets","Node.js","Express","Django","FastAPI","Flask","Spring",
+    "Rails","Laravel","ASP.NET",
+    # Data / ML
+    "SQL","PostgreSQL","MySQL","SQLite","NoSQL","MongoDB","Redis","Elasticsearch",
+    "Kafka","Spark","Hadoop","Airflow","dbt","Snowflake","BigQuery","Redshift",
+    "Pandas","NumPy","PyTorch","TensorFlow","Keras","scikit-learn","HuggingFace",
+    "LLM","RAG","OpenAI","Langchain","LangChain","MLflow","Databricks",
+    # Cloud / DevOps
+    "AWS","GCP","Azure","Kubernetes","Docker","Terraform","Ansible","CI/CD",
+    "GitHub Actions","Jenkins","Linux","Nginx","Prometheus","Grafana","ArgoCD",
+    # Tools / Misc
+    "Git","Jira","Figma","Salesforce","Tableau","PowerBI","Excel","Looker",
+]
+_SKILL_RE = {
+    s: re.compile(
+        rf'(?<![A-Za-z0-9.#]){re.escape(s)}(?![A-Za-z0-9.#])',
+        re.I if s == s.lower() else 0,
+    )
+    for s in _TECH_SKILLS
+}
+# Normalise display name (e.g. "langchain" → "LangChain", "next.js" → "Next.js")
+_SKILL_CANONICAL = {s.lower(): s for s in _TECH_SKILLS}
+
+_REQ_SECTION_RE = re.compile(
+    r'(?:required|requirements?|must.have|qualifications?|you.(?:must|need|have)|'
+    r'what.you.(?:bring|need|have)|basic.qualifications?|minimum.qualifications?)'
+    r'[:\s]+(.*?)(?=\n\n|\Z)',
+    re.I | re.S,
+)
+_PREF_SECTION_RE = re.compile(
+    r'(?:preferred|nice.to.have|bonus|desired|advantageous|plus)'
+    r'[:\s]+(.*?)(?=\n\n|\Z)',
+    re.I | re.S,
+)
+
+def extract_skills(title="", description=""):
+    """Return a list of canonical tech skill names found in required sections."""
+    # Extract only the required section if a structure is present
+    req_text = title
+    if description:
+        pref_m = _PREF_SECTION_RE.search(description)
+        pref_span = pref_m.span() if pref_m else None
+
+        req_m = _REQ_SECTION_RE.search(description)
+        if req_m:
+            req_body = req_m.group(1)
+            # Exclude anything past the preferred section
+            if pref_m and pref_m.start() > req_m.start():
+                req_body = req_body[:pref_m.start() - req_m.start(0)]
+            req_text = title + " " + req_body
+        else:
+            # No clear structure — use full description but remove preferred section
+            req_text = title + " " + description
+            if pref_span:
+                req_text = req_text[:pref_span[0]]
+
+    found = []
+    seen_lower = set()
+    for skill in _TECH_SKILLS:
+        pattern = _SKILL_RE[skill]
+        if pattern.search(req_text):
+            key = skill.lower()
+            if key not in seen_lower:
+                found.append(_SKILL_CANONICAL.get(key, skill))
+                seen_lower.add(key)
+    return found
 
 def experience_match_score(user_years, exp_min, exp_max):
     """Higher is better. Negative means a known requirement is too high."""
@@ -119,7 +225,14 @@ def experience_match_score(user_years, exp_min, exp_max):
     if hi is not None and lo <= y <= hi:
         return 100
     if hi is None and y >= lo:
-        return 90
+        gap = y - lo
+        if gap <= 3:
+            return 90
+        if gap <= 7:
+            return 60
+        if gap <= 12:
+            return 35
+        return 15
     if hi is not None and y < lo:
         return max(0, 70 - int((lo - y) * 20))
     if hi is not None and y > hi:
@@ -230,6 +343,13 @@ def normalize_location(loc):
     loc = re.sub(r'\s*[•|│]\s*', ', ', loc)
     loc = re.sub(r'\s*/\s*', ', ', loc)
     loc = re.sub(r'\s*,\s*', ', ', loc).strip(' ,-')
+    # Reject raw requisition IDs like "R 104778", "REQ-1234", "WD12345" early
+    if re.fullmatch(r'[A-Z]{0,4}[\s-]?\d{4,8}', loc):
+        return ''
+    # Strip trailing US zip code ("West Milford, NJ 07480" → "West Milford, NJ")
+    loc = re.sub(r',?\s*\b\d{5}(?:-\d{4})?\s*$', '', loc).strip(' ,')
+    # Strip trailing store/facility numbers like "Braselton, GA 3498" or "City, ST 123"
+    loc = re.sub(r',?\s*\b\d{3,6}\s*$', '', loc).strip(' ,')
     if ";" in loc:
         normalized_parts = []
         seen_parts = set()
@@ -417,8 +537,11 @@ def extract_location_from_text(text):
         if candidate and not _LOCATION_NOISE.search(candidate):
             return candidate
 
+    # Pipe/bullet-separated segments: only treat segments short enough to be a single location.
     parts = [p.strip() for p in re.split(r'\s*[|│•]\s*', compact) if p.strip()]
     for part in parts:
+        if len(part) > 80:          # too long to be just a location segment
+            continue
         if _LOCATION_NOISE.search(part):
             continue
         normalized = normalize_location(part)
@@ -430,22 +553,39 @@ def extract_location_from_text(text):
                 continue
             return normalized
 
+    # "Remote" / "Remote, US" — check before city_region which can't detect it
+    if re.search(r'\bremote\b', compact, re.I):
+        # Confirm it's not just "not remote" / "non-remote"
+        if not re.search(r'\b(?:not|non-?|in-?)\b.{0,20}\bremote\b', compact, re.I):
+            country_m = re.search(r'\bremote[,\s-]+(US|USA|United States|United Kingdom|UK|Canada|India|Australia)\b', compact, re.I)
+            return normalize_location("Remote, " + country_m.group(1) if country_m else "Remote")
+
     # Require 2-letter state code to avoid matching job title words as city names
     # (e.g. "Sr. Specialist, Securities" → false match without this restriction).
     _UNLIKELY_CITY_RE = re.compile(
-        r'^(?:Sr\.?|Jr\.?|Senior|Junior|Manager|Director|Engineer|Analyst|'
+        r'^(?:Sr\.?|Jr\.?|Senior|Junior|Manager|Director|Engineer|Engineering|Analyst|'
         r'Specialist|Associate|Executive|Principal|Lead|VP|President|Officer|'
         r'Consultant|Head|Chief|General|Operations|Order|Management|Product|'
         r'Project|Program|Business|Global|Regional|Production|System|Systems|'
-        r'Financial|Legal|Quantitative|Counsel|Support|ALM|NET|BCG)\b',
+        r'Financial|Legal|Quantitative|Counsel|Support|ALM|NET|BCG|Risk|Compliance|'
+        r'Treasury|Investment|Banking|Markets|Governance|Planning|Audit|Procurement|'
+        r'Divisional|Corporate|Capital|Wealth|Trading|Pricing|Security|Infrastructure|'
+        r'Software|Hardware|Data|Platform|Cloud|Services|Solutions|Technology|Technologies)\b',
         re.I,
     )
-    city_region = re.search(
+    # Try all city_region matches (not just first) so job-title words don't block real cities
+    for city_region in re.finditer(
         r'\b([A-Z][A-Za-z.-]+(?:\s+[A-Z][A-Za-z.-]+){0,1}),\s*'
         r'([A-Z]{2}|United\s+(?:Kingdom|States(?:\s+of\s+America)?)|[A-Z][a-z]+)\b',
         compact,
-    )
-    if city_region and not _UNLIKELY_CITY_RE.match(city_region.group(1)):
+    ):
+        city_part = city_region.group(1)
+        state_part = city_region.group(2)
+        if _UNLIKELY_CITY_RE.match(city_part):
+            continue
+        # Reject if the state part is a job-title word (not a real 2-letter state code)
+        if not re.fullmatch(r'[A-Z]{2}', state_part) and _UNLIKELY_CITY_RE.match(state_part):
+            continue
         candidate = city_region.group(0)
         if len(candidate) < 50:
             return normalize_location(candidate)
@@ -640,3 +780,28 @@ def make_paged_url(base, pg_cfg, idx):
     qs[param] = [str(val)]
     parts[4]  = urlencode(qs, doseq=True)
     return urlunparse(parts) + frag
+
+_EMP_TYPE_MAP = [
+    (r'\binternship\b|\bintern\b(?! review)',        'Internship'),
+    (r'\bcontract(?:or|ing)?\b|\bfreelance\b',       'Contract'),
+    (r'\bpart[- ]time\b',                            'Part-time'),
+    (r'\bfull[- ]time\b|\bpermanent\b',              'Full-time'),
+    (r'\btemporary\b|\btemp\b',                      'Temporary'),
+]
+
+def extract_employment_type(title, desc):
+    """Return normalized employment type from title+description.
+
+    Checks title first (most reliable signal), then description.
+    Defaults to 'Full-time' when nothing specific is found.
+    """
+    # Title is the most reliable signal — check it first for non-default types
+    _NON_DEFAULT = _EMP_TYPE_MAP[:-2]   # Internship, Contract, Part-time
+    _ALL_TYPES   = _EMP_TYPE_MAP        # includes Full-time and Temporary
+    for pattern, label in _NON_DEFAULT:
+        if re.search(pattern, (title or "").lower()):
+            return label
+    for pattern, label in _ALL_TYPES:
+        if re.search(pattern, (desc or "").lower()):
+            return label
+    return "Full-time"

@@ -74,6 +74,9 @@ def init_db():
             "exp_max INTEGER",
             "exp_label TEXT DEFAULT ''",
             "exp_source TEXT DEFAULT ''",
+            "description TEXT DEFAULT ''",
+            "skills TEXT DEFAULT '[]'",
+            "employment_type TEXT DEFAULT ''",
         ):
             add_column_if_missing(conn, "jobs", column_sql)
         conn.execute("CREATE INDEX IF NOT EXISTS idx_jobs_open ON jobs(is_open)")
@@ -94,8 +97,58 @@ def init_db():
             CREATE INDEX IF NOT EXISTS idx_jobs_company_open_posted_sort
             ON jobs(company, is_open, CASE WHEN posted != '' THEN 0 ELSE 1 END, posted DESC, substr(first_seen,1,10) DESC)
         """)
-
-init_db()
+        conn.execute("""
+            CREATE TABLE IF NOT EXISTS feedback (
+                id           INTEGER PRIMARY KEY AUTOINCREMENT,
+                type         TEXT    NOT NULL DEFAULT 'other',
+                message      TEXT    NOT NULL,
+                url          TEXT    DEFAULT '',
+                submitted_at TEXT    DEFAULT (datetime('now')),
+                status       TEXT    DEFAULT 'new'
+            )
+        """)
+        conn.execute("CREATE INDEX IF NOT EXISTS idx_feedback_status ON feedback(status)")
+        conn.execute("""
+            CREATE TABLE IF NOT EXISTS users (
+                id            INTEGER PRIMARY KEY AUTOINCREMENT,
+                username      TEXT    NOT NULL UNIQUE,
+                email         TEXT    DEFAULT '',
+                password_hash TEXT    NOT NULL,
+                role          TEXT    DEFAULT 'user',
+                created_at    TEXT    DEFAULT (datetime('now'))
+            )
+        """)
+        conn.execute("""
+            CREATE TABLE IF NOT EXISTS user_apply_list (
+                id            INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_id       INTEGER NOT NULL,
+                job_id        TEXT    NOT NULL,
+                stage         TEXT    DEFAULT 'to-apply',
+                added_at      TEXT    DEFAULT (datetime('now')),
+                job_title     TEXT    DEFAULT '',
+                job_company   TEXT    DEFAULT '',
+                job_location  TEXT    DEFAULT '',
+                job_url       TEXT    DEFAULT '',
+                job_exp_label TEXT    DEFAULT '',
+                job_posted    TEXT    DEFAULT '',
+                UNIQUE(user_id, job_id)
+            )
+        """)
+        conn.execute("""
+            CREATE TABLE IF NOT EXISTS user_saved_searches (
+                id         INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_id    INTEGER NOT NULL,
+                name       TEXT    NOT NULL,
+                kw         TEXT    DEFAULT '',
+                loc        TEXT    DEFAULT '',
+                exp_yrs    TEXT    DEFAULT '',
+                since      TEXT    DEFAULT 'any',
+                category   TEXT    DEFAULT 'All',
+                created_at TEXT    DEFAULT (datetime('now'))
+            )
+        """)
+        conn.execute("CREATE INDEX IF NOT EXISTS idx_apply_user ON user_apply_list(user_id)")
+        conn.execute("CREATE INDEX IF NOT EXISTS idx_searches_user ON user_saved_searches(user_id)")
 
 def upsert_jobs(job_list):
     if not job_list:
@@ -104,8 +157,8 @@ def upsert_jobs(job_list):
     with connect_db() as conn:
         conn.executemany(
             "INSERT INTO jobs "
-            "(id, title, url, company, location, source, categories, first_seen, posted, last_seen_at, is_open, exp_min, exp_max, exp_label, exp_source) "
-            "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) "
+            "(id, title, url, company, location, source, categories, first_seen, posted, last_seen_at, is_open, exp_min, exp_max, exp_label, exp_source, description, skills, employment_type) "
+            "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) "
             "ON CONFLICT(id) DO UPDATE SET "
             "title=excluded.title, "
             "location=CASE WHEN excluded.location != '' THEN excluded.location ELSE jobs.location END, "
@@ -118,12 +171,17 @@ def upsert_jobs(job_list):
             "exp_min=CASE WHEN excluded.exp_min IS NOT NULL THEN excluded.exp_min ELSE jobs.exp_min END, "
             "exp_max=CASE WHEN excluded.exp_max IS NOT NULL THEN excluded.exp_max ELSE jobs.exp_max END, "
             "exp_label=CASE WHEN excluded.exp_label != '' THEN excluded.exp_label ELSE jobs.exp_label END, "
-            "exp_source=CASE WHEN excluded.exp_source != '' THEN excluded.exp_source ELSE jobs.exp_source END",
+            "exp_source=CASE WHEN excluded.exp_source != '' THEN excluded.exp_source ELSE jobs.exp_source END, "
+            "description=CASE WHEN excluded.description != '' THEN excluded.description ELSE jobs.description END, "
+            "skills=CASE WHEN excluded.skills != '[]' THEN excluded.skills ELSE jobs.skills END, "
+            "employment_type=CASE WHEN excluded.employment_type != '' THEN excluded.employment_type ELSE jobs.employment_type END",
             [(j["id"], j["title"], j.get("url",""), j["company"],
               j.get("location",""), j.get("source",""),
               json.dumps(j.get("categories",[])), j["first_seen"],
               j.get("posted",""), now_str, True, j.get("exp_min"), j.get("exp_max"),
-              j.get("exp_label",""), j.get("exp_source",""))
+              j.get("exp_label",""), j.get("exp_source",""),
+              j.get("description",""), json.dumps(j.get("skills",[])),
+              j.get("employment_type",""))
              for j in job_list],
         )
 
@@ -180,11 +238,18 @@ def load_companies():
     return companies
 
 COMPANIES = load_companies()
+_COMPANIES_MTIME = COMPANIES_FILE.stat().st_mtime if COMPANIES_FILE.exists() else 0
 
 def current_companies():
-    """Reload companies.json so config edits show up without stale process state."""
-    global COMPANIES
-    COMPANIES = load_companies()
+    """Return companies.json, reloading only when the file changes."""
+    global COMPANIES, _COMPANIES_MTIME
+    try:
+        mtime = COMPANIES_FILE.stat().st_mtime
+    except FileNotFoundError:
+        mtime = 0
+    if mtime != _COMPANIES_MTIME:
+        COMPANIES = load_companies()
+        _COMPANIES_MTIME = mtime
     return COMPANIES
 
 def add_or_update_company(name, scrape, categories=None):
@@ -221,7 +286,7 @@ def load_seen():
         with connect_db(rows=True) as conn:
             rows = conn.execute(
                 "SELECT company, url, title, location, source, first_seen, posted, "
-                "exp_min, exp_max, exp_label, exp_source FROM jobs WHERE is_open = 1"
+                "exp_min, exp_max, exp_label, exp_source, skills FROM jobs WHERE is_open = 1"
             ).fetchall()
         return {
             make_id(r["company"], r["url"], r["title"]): {
@@ -236,6 +301,7 @@ def load_seen():
                 "exp_max":    r["exp_max"],
                 "exp_label":  r["exp_label"] or "",
                 "exp_source": r["exp_source"] or "",
+                "skills":     json.loads(r["skills"] or "[]"),
             }
             for r in rows
         }
@@ -308,6 +374,7 @@ def jobs_from_seen_fallback(keyword, location, since, category, companies, limit
             "exp_max":    item.get("exp_max"),
             "exp_label":  item.get("exp_label", ""),
             "exp_source": item.get("exp_source", ""),
+            "skills":     item.get("skills") or [],
             "is_new":     fs == today,
         })
     jobs.sort(key=lambda j: j.get("first_seen", ""), reverse=True)

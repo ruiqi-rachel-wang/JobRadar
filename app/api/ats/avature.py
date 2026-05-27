@@ -66,7 +66,7 @@ def fetch_avature(scrape, seen, company):
                 jobs[jurl] = {"title": title, "url": jurl, "location": loc, "source": "avature", "posted": posted}
         if len(jobs) == page_count:
             break
-    if not jobs and scrape.get("list_url") and (scrape.get("prefix") or scrape.get("include")):
+    if not jobs and scrape.get("allow_browser_fallback") and scrape.get("list_url") and (scrape.get("prefix") or scrape.get("include")):
         from .playwright import _fetch_playwright_with_source
         return _fetch_playwright_with_source(scrape, seen, company, "avature")
     if fetch_details:

@@ -2,8 +2,24 @@
 
 ## Public First Version
 
-The app is ready to deploy as a Render web service. Admin actions are protected
-by `ADMIN_PASSWORD`; the public home page and job search API remain readable.
+JobRadar is a Flask app for collecting and searching public job postings from
+company career pages and ATS job-board APIs.
+
+Admin actions are protected by `ADMIN_PASSWORD`; the public home page and job
+search API remain readable.
+
+### Public Release Safety
+
+- Runtime state is intentionally ignored: `.env`, `app/data/jobs.db`,
+  `app/data/seen_jobs.json`, and `app/data/scan_summary.json`.
+- Higher-risk company configs are kept locally in ignored `app/private/`.
+  These include browser-automation configs, proprietary/custom single-company
+  fetchers, and copied interview-process prose that should be reviewed before
+  public release.
+- The public `app/companies.json` is the safer first-pass list. It favors
+  public ATS APIs and direct career-page feeds.
+- This project is not legal advice. Before deploying a public crawler, review
+  each source site's terms, robots policy, and rate limits.
 
 ### Required Render Environment
 

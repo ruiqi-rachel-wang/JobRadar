@@ -26,6 +26,7 @@ def fetch_lever(scrape, seen, company):
             desc_parts.append(list_item.get("text") or "")
             desc_parts.extend(list_item.get("content") or [])
         desc = norm(" ".join(str(x) for x in desc_parts if x))
+        commitment = norm((j.get("categories") or {}).get("commitment") or "")
         if title and jurl:
-            jobs.append({"title":title,"url":jurl,"location":loc,"source":"lever","posted":posted,"description":desc})
+            jobs.append({"title":title,"url":jurl,"location":loc,"source":"lever","posted":posted,"description":desc,"employment_type":commitment})
     return jobs, None

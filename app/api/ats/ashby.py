@@ -176,6 +176,7 @@ def fetch_ashby(scrape, seen, company):
         raw_loc = j.get("locationName") or ""
         loc     = normalize_location(norm(raw_loc))
         posted  = dates.get(jid, "")
+        emp_type = norm(j.get("employmentType") or "")
         if title:
-            jobs.append({"title":title,"url":jurl,"location":loc,"source":"ashby","posted":posted})
+            jobs.append({"title":title,"url":jurl,"location":loc,"source":"ashby","posted":posted,"employment_type":emp_type})
     return jobs, None
