@@ -7,6 +7,8 @@ def fetch_html(scrape, seen, company):
     list_url    = scrape.get("list_url","")
     include     = scrape.get("include","")
     title_param = scrape.get("title_param","")
+    url_exclude = [str(s).lower() for s in (scrape.get("url_exclude") or [])]
+    title_exclude = [str(s).lower() for s in (scrape.get("title_exclude") or [])]
     stop_on_seen = bool(scrape.get("stop_on_seen", False))
     use_reader  = bool(scrape.get("reader", False))
     verify_ssl  = bool(scrape.get("verify_ssl", True))
@@ -34,11 +36,15 @@ def fetch_html(scrape, seen, company):
                 for title, abs_url in re.findall(r"\[([^\]]{4,180})\]\((https?://[^)\s]+)\)", line):
                     if not has_include(abs_url, include):
                         continue
+                    if url_exclude and any(ex in abs_url.lower() for ex in url_exclude):
+                        continue
                     if abs_url in visited:
                         continue
                     visited.add(abs_url)
                     title = norm(re.sub(r"!\[[^\]]*\]", " ", title))
                     if not title or re.search(r"^(apply|view job|search jobs|saved jobs|learn more)$", title, re.I):
+                        continue
+                    if title_exclude and any(ex in title.lower() for ex in title_exclude):
                         continue
                     jid = make_id(company, abs_url, title)
                     if stop_on_seen and jid in seen:
@@ -75,6 +81,8 @@ def fetch_html(scrape, seen, company):
                 continue
             abs_url = urljoin(page_url, href)
             if not has_include(abs_url, include):
+                continue
+            if url_exclude and any(ex in abs_url.lower() for ex in url_exclude):
                 continue
             if abs_url in visited:
                 continue
@@ -114,10 +122,32 @@ def fetch_html(scrape, seen, company):
                 title = re.sub(r"[-_]"," ", seg).strip()
             if not title or len(title) < 4:
                 continue
-            _NAV = {"view all jobs", "view all", "all jobs", "apply", "view job",
-                    "search jobs", "saved jobs", "learn more", "see all openings",
-                    "see all jobs", "open positions", "view openings"}
-            if title.lower().strip() in _NAV:
+            _NAV = {
+                "view all jobs","view all","all jobs","apply","view job","search jobs",
+                "saved jobs","learn more","see all openings","see all jobs","open positions",
+                "view openings","view open jobs","careers","career","about","about us",
+                "contact","contact us","benefits","diversity","home","search","login",
+                "sign in","engineering","technologies","blog","news","events","media",
+                "privacy","terms","legal","sitemap","locations","back to top","join us",
+                "job listings","job openings","open roles","our culture","our values",
+                "why work here","meet our team","early talent","student careers",
+                "inclusive culture","citizenship","current openings","career opportunities",
+                "career paths","facility operations","skip to content","manage cookies",
+                "cookie settings","job search","no jobs found","find jobs","explore jobs",
+                "company","workplace","services","explore","service","explore entry level",
+                "explore our application steps","jobs per page","back to top page navigation",
+                "unknown title","view all openings","see all","all openings",
+            }
+            t_lower = title.lower().strip()
+            if t_lower in _NAV:
+                continue
+            # Also skip very generic single-word / logo / icon titles
+            import re as _re2
+            if _re2.match(r'^(?:engineering|about|contact|careers?|benefits?|diversity|'
+                          r'technologies?|services?|explore|workplace|culture|citizenship|'
+                          r'.*\blogo\b.*|.*\bicon\b.*|hrcc|about us|contact us)$', t_lower, _re2.I):
+                continue
+            if title_exclude and any(ex in title.lower() for ex in title_exclude):
                 continue
 
             jid = make_id(company, abs_url, title)

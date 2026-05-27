@@ -1,11 +1,15 @@
 import json
 import os
+import re
 import secrets
 import threading
 import time
 from datetime import datetime
+from urllib.parse import urlsplit
 
 from flask import Flask, jsonify, redirect, render_template, request, session, url_for
+from werkzeug.middleware.proxy_fix import ProxyFix
+from werkzeug.security import check_password_hash, generate_password_hash
 
 from .database import connect_db, placeholders
 try:
@@ -27,63 +31,127 @@ from .search import (
 )
 
 app = Flask(__name__, template_folder="../templates")
+app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1)
 app.secret_key = os.environ.get("SECRET_KEY") or os.environ.get("JOBRADAR_SECRET_KEY") or secrets.token_hex(32)
+app.config["SESSION_COOKIE_HTTPONLY"] = True
+app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
+app.config["SESSION_COOKIE_SECURE"] = (
+    os.environ.get("SESSION_COOKIE_SECURE", "").lower() in {"1", "true", "yes"}
+    or os.environ.get("FLASK_ENV") == "production"
+    or bool(os.environ.get("RENDER"))
+)
 init_db()
 
 ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD") or os.environ.get("JOBRADAR_ADMIN_PASSWORD")
 
-def _admin_configured():
-    return bool(ADMIN_PASSWORD)
-
 def _is_admin():
     return bool(session.get("admin_ok"))
+
+def _is_user():
+    return bool(session.get("user_id") or session.get("admin_ok"))
+
+def _current_user_id():
+    return session.get("user_id")
 
 def _wants_json():
     return request.path.startswith("/api/") or "application/json" in (request.headers.get("Accept") or "")
 
+def _safe_next(default_endpoint):
+    target = request.args.get("next") or request.form.get("next") or ""
+    parsed = urlsplit(target)
+    if (
+        target.startswith("/")
+        and not target.startswith(("//", "/\\"))
+        and not parsed.scheme
+        and not parsed.netloc
+    ):
+        return target
+    return url_for(default_endpoint)
+
 def _admin_required():
-    # Local development should not get stuck on a stale Flask session after
-    # server restarts. Production/non-loopback requests still require admin.
-    if request.remote_addr in {"127.0.0.1", "::1"}:
-        return None
-    if not _admin_configured():
-        return None  # no password set → local mode, allow through
-    if _is_admin():
-        return None
+    if not ADMIN_PASSWORD:
+        if _wants_json():
+            return jsonify({"error": "Admin password is not configured"}), 503
+        return "Admin password is not configured", 503
+    if _is_admin():  return None
     if _wants_json():
         return jsonify({"error": "Admin login required"}), 401
     return redirect(url_for("login", next=request.full_path))
 
-def _login_page(error=""):
-    error_html = f"<p class='err'>{error}</p>" if error else ""
-    return f"""<!doctype html>
-<html><head><title>JobRadar Login</title>
-<style>
-body{{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f5f7fb;margin:0;display:grid;place-items:center;min-height:100vh;color:#172033}}
-.box{{width:min(420px,calc(100vw - 32px));background:white;border:1px solid #dfe5ef;border-radius:10px;padding:24px;box-shadow:0 16px 40px rgba(23,32,51,.12)}}
-h1{{font-size:20px;margin:0 0 16px}} label{{font-size:12px;font-weight:700;color:#526174}} input{{box-sizing:border-box;width:100%;padding:11px;border:1px solid #cfd8e6;border-radius:8px;margin:6px 0 14px}}
-button{{width:100%;padding:11px;border:0;border-radius:8px;background:#1c2b4a;color:white;font-weight:700;cursor:pointer}} .err{{color:#b42318;background:#fff1f0;border:1px solid #ffccc7;border-radius:8px;padding:10px;font-size:13px}}
-</style></head><body><form class="box" method="post"><h1>JobRadar Admin</h1>{error_html}<label>Password</label><input name="password" type="password" autofocus><button>Sign in</button></form></body></html>"""
+def _user_required():
+    if _is_user():   return None
+    if _wants_json():
+        return jsonify({"error": "Login required"}), 401
+    return redirect(url_for("login", next=request.full_path))
 
 @app.before_request
-def protect_admin_routes():
+def protect_routes():
+    if request.path == "/app":
+        return _user_required()
     protected = (
         request.path == "/admin"
         or request.path.startswith("/api/scan")
         or request.path.startswith("/api/reset")
+        or request.path.startswith("/api/reenrich")
         or request.path in {"/api/clear_data", "/api/detect_ats", "/api/add_detected_company"}
     )
     if protected:
         return _admin_required()
     return None
 
-# ── Scan ──────────────────────────────────────────────────────────────────────
+# ── Scan state + schedule ─────────────────────────────────────────────────────
 
 scan_state = {
-    "running":False, "done":False, "started_at":0,
-    "progress":[], "results":[], "new_count":0,
-    "scan_run_id": None,
+    "running": False, "done": False, "started_at": 0,
+    "progress": [], "new_count": 0,
+    "scan_run_id": None, "scan_type": "fresh",
 }
+
+# ── Auto-schedule ──────────────────────────────────────────────────────────────
+
+_last_schedule_trigger: str = ""   # "HH:MM" of last auto-triggered slot
+
+
+def _get_schedule() -> dict:
+    """Load the scan schedule from app_state (persisted JSON)."""
+    from .job_data import get_app_state
+    raw = get_app_state("scan_schedule")
+    try:
+        return json.loads(raw) if raw else {}
+    except Exception:
+        return {}
+
+
+def _try_run_scheduled():
+    """Fire a scheduled scan if the current minute matches a configured slot."""
+    global _last_schedule_trigger
+    if scan_state["running"]:
+        return
+    now = datetime.now().strftime("%H:%M")
+    if now == _last_schedule_trigger:
+        return  # already fired this minute
+    schedule = _get_schedule()
+    for scan_type in ("fresh", "full"):
+        cfg = schedule.get(scan_type, {})
+        if cfg.get("enabled") and now in (cfg.get("times") or []):
+            _last_schedule_trigger = now
+            names = [c["name"] for c in current_companies()]
+            threading.Thread(target=scan_runner, args=(names, scan_type), daemon=True).start()
+            break
+
+
+def _schedule_loop():
+    """Background thread: checks every 30 s whether a scheduled slot should fire."""
+    while True:
+        time.sleep(30)
+        try:
+            _try_run_scheduled()
+        except Exception:
+            pass
+
+
+threading.Thread(target=_schedule_loop, daemon=True).start()
+
 
 def _recover_stale_scans():
     """On startup, mark any scan_runs stuck in 'running' as abandoned."""
@@ -98,17 +166,21 @@ def _recover_stale_scans():
 
 _recover_stale_scans()
 
-def scan_runner(selected_names):
+def scan_runner(selected_names, scan_type="fresh"):
     try:
-        do_scan(selected_names)
+        do_scan(selected_names, scan_type=scan_type)
     except Exception as e:
-        scan_state.update(running=False, done=True, results=[], new_count=0)
+        scan_state.update(running=False, done=True, new_count=0)
         for p in scan_state.get("progress", []):
             if p.get("status") in {"pending", "scanning"}:
                 p.update(status="error", error=str(e), count=0, new=0)
 
-def do_scan(selected_names):
-    scan_state.update(running=True, done=False, started_at=time.time(), progress=[], results=[], new_count=0, scan_run_id=None)
+def do_scan(selected_names, scan_type="fresh"):
+    scan_state.update(
+        running=True, done=False, started_at=time.time(),
+        progress=[], new_count=0,
+        scan_run_id=None, scan_type=scan_type,
+    )
     companies = current_companies()
     target = [c for c in companies if c["name"] in selected_names]
     scan_state["progress"] = [
@@ -117,11 +189,10 @@ def do_scan(selected_names):
          "status":  "pending", "count": 0, "new": 0}
         for c in target
     ]
-    result = run_scan(target, scan_type="manual", progress=scan_state["progress"])
+    result = run_scan(target, scan_type=scan_type, progress=scan_state["progress"])
     scan_state.update(
         running=False,
         done=True,
-        results=result["results"],
         new_count=result["new_count"],
         scan_run_id=result.get("scan_run_id"),
     )
@@ -129,23 +200,103 @@ def do_scan(selected_names):
 
 # ── Routes ────────────────────────────────────────────────────────────────────
 
+def _user_ctx():
+    """Template context for the current user."""
+    uid = session.get("user_id")
+    if uid:
+        with connect_db(rows=True) as conn:
+            row = conn.execute("SELECT username, role FROM users WHERE id=?", (uid,)).fetchone()
+        if row:
+            return {"username": row["username"], "is_admin": row["role"] == "admin"}
+    if _is_admin():
+        return {"username": "Admin", "is_admin": True}
+    return {"username": None, "is_admin": False}
+
 @app.route("/")
-def index():
-    return render_template("user.html", companies=current_companies())
+def public_view():
+    return render_template("user.html", companies=current_companies(),
+                           is_public=True, is_admin=False, username=None)
+
+@app.route("/app")
+def app_view():
+    ctx = _user_ctx()
+    return render_template("user.html", companies=current_companies(),
+                           is_public=False, is_admin=ctx["is_admin"],
+                           username=ctx["username"])
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
-        if _admin_configured() and secrets.compare_digest(request.form.get("password", ""), ADMIN_PASSWORD):
+        username = request.form.get("username", "").strip()
+        password = request.form.get("password", "")
+        # Admin shortcut: username "admin" + env password
+        if ADMIN_PASSWORD and username.lower() == "admin" and secrets.compare_digest(password, ADMIN_PASSWORD):
+            session.clear()
             session["admin_ok"] = True
-            return redirect(request.args.get("next") or url_for("admin"))
-        return _login_page("Incorrect password." if _admin_configured() else "Set ADMIN_PASSWORD in the environment first."), 401
-    return _login_page()
+            return redirect(_safe_next("admin"))
+        # Regular user lookup
+        with connect_db(rows=True) as conn:
+            row = conn.execute(
+                "SELECT id, username, password_hash, role FROM users WHERE username=?",
+                (username,)
+            ).fetchone()
+        if row and check_password_hash(row["password_hash"], password):
+            session.clear()
+            session["user_id"]  = row["id"]
+            session["username"] = row["username"]
+            if row["role"] == "admin":
+                session["admin_ok"] = True
+                return redirect(_safe_next("admin"))
+            return redirect(_safe_next("app_view"))
+        return render_template("auth.html", mode="login",
+                               error="Incorrect username or password.",
+                               next=request.args.get("next", "")), 401
+    return render_template("auth.html", mode="login", error="",
+                           next=request.args.get("next", ""))
+
+@app.route("/signup", methods=["GET", "POST"])
+def signup():
+    if request.method == "POST":
+        username = request.form.get("username", "").strip()
+        email    = request.form.get("email", "").strip()
+        password = request.form.get("password", "")
+        confirm  = request.form.get("confirm", "")
+        # Validation
+        if not username or not password:
+            return render_template("auth.html", mode="signup",
+                                   error="Username and password are required."), 400
+        if not re.match(r'^[a-zA-Z0-9_.-]{3,30}$', username):
+            return render_template("auth.html", mode="signup",
+                                   error="Username: 3-30 chars, letters/numbers/._- only."), 400
+        if len(password) < 6:
+            return render_template("auth.html", mode="signup",
+                                   error="Password must be at least 6 characters."), 400
+        if password != confirm:
+            return render_template("auth.html", mode="signup",
+                                   error="Passwords do not match."), 400
+        pw_hash = generate_password_hash(password)
+        try:
+            with connect_db() as conn:
+                conn.execute(
+                    "INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?)",
+                    (username, email, pw_hash)
+                )
+        except Exception:
+            return render_template("auth.html", mode="signup",
+                                   error="Username already taken."), 400
+        # Auto-login after signup
+        with connect_db(rows=True) as conn:
+            row = conn.execute("SELECT id FROM users WHERE username=?", (username,)).fetchone()
+        session.clear()
+        session["user_id"]  = row["id"]
+        session["username"] = username
+        return redirect(url_for("app_view"))
+    return render_template("auth.html", mode="signup", error="")
 
 @app.route("/logout", methods=["POST", "GET"])
 def logout():
     session.clear()
-    return redirect(url_for("index"))
+    return redirect(url_for("public_view"))
 
 @app.route("/admin")
 def admin():
@@ -154,6 +305,64 @@ def admin():
 @app.route("/legacy")
 def legacy():
     return render_template("index.html", companies=current_companies())
+
+# ── Apply list API ─────────────────────────────────────────────────────────────
+
+@app.route("/api/apply", methods=["GET"])
+def get_apply():
+    uid = _current_user_id()
+    if not uid:
+        return jsonify([])
+    with connect_db(rows=True) as conn:
+        rows = conn.execute(
+            "SELECT job_id, stage, job_title, job_company, job_location, "
+            "job_url, job_exp_label, job_posted, added_at FROM user_apply_list "
+            "WHERE user_id=? ORDER BY added_at DESC", (uid,)
+        ).fetchall()
+    return jsonify([dict(r) for r in rows])
+
+@app.route("/api/apply", methods=["POST"])
+def add_apply():
+    uid = _current_user_id()
+    if not uid:
+        return jsonify({"error": "not logged in"}), 401
+    d = request.get_json(silent=True) or {}
+    job_id = (d.get("job_id") or "").strip()
+    if not job_id:
+        return jsonify({"error": "job_id required"}), 400
+    with connect_db() as conn:
+        conn.execute(
+            "INSERT INTO user_apply_list "
+            "(user_id, job_id, stage, job_title, job_company, job_location, job_url, job_exp_label, job_posted) "
+            "VALUES (?,?,?,?,?,?,?,?,?) ON CONFLICT(user_id, job_id) DO UPDATE SET stage=excluded.stage",
+            (uid, job_id, d.get("stage", "to-apply"),
+             d.get("job_title",""), d.get("job_company",""), d.get("job_location",""),
+             d.get("job_url",""), d.get("job_exp_label",""), d.get("job_posted",""))
+        )
+    return jsonify({"ok": True})
+
+@app.route("/api/apply/<job_id>", methods=["PATCH"])
+def update_apply(job_id):
+    uid = _current_user_id()
+    if not uid:
+        return jsonify({"error": "not logged in"}), 401
+    stage = (request.get_json(silent=True) or {}).get("stage", "")
+    valid = {"to-apply","applied","interview","offer","closed"}
+    if stage not in valid:
+        return jsonify({"error": "invalid stage"}), 400
+    with connect_db() as conn:
+        conn.execute("UPDATE user_apply_list SET stage=? WHERE user_id=? AND job_id=?",
+                     (stage, uid, job_id))
+    return jsonify({"ok": True})
+
+@app.route("/api/apply/<job_id>", methods=["DELETE"])
+def remove_apply(job_id):
+    uid = _current_user_id()
+    if not uid:
+        return jsonify({"error": "not logged in"}), 401
+    with connect_db() as conn:
+        conn.execute("DELETE FROM user_apply_list WHERE user_id=? AND job_id=?", (uid, job_id))
+    return jsonify({"ok": True})
 
 @app.route("/api/scan", methods=["POST"])
 def start_scan():
@@ -172,12 +381,15 @@ def start_scan():
             pass
     if scan_state["running"]:
         return jsonify({"ok":True, "already_running":True})
-    data     = request.get_json(silent=True) or {}
-    selected = data.get("companies",[])
+    data      = request.get_json(silent=True) or {}
+    selected  = data.get("companies", [])
+    scan_type = data.get("scan_type", "fresh")
+    if scan_type not in {"fresh", "full"}:
+        scan_type = "fresh"
     if not selected:
-        return jsonify({"error":"No companies selected"}), 400
-    threading.Thread(target=scan_runner, args=(selected,), daemon=True).start()
-    return jsonify({"ok":True})
+        return jsonify({"error": "No companies selected"}), 400
+    threading.Thread(target=scan_runner, args=(selected, scan_type), daemon=True).start()
+    return jsonify({"ok": True, "scan_type": scan_type})
 
 @app.route("/api/reset_scan", methods=["POST"])
 def reset_scan():
@@ -191,8 +403,8 @@ def get_progress():
     return jsonify({
         "running":     scan_state["running"],
         "done":        scan_state["done"],
+        "scan_type":   scan_state.get("scan_type", "fresh"),
         "progress":    scan_state["progress"],
-        "results":     scan_state["results"],
         "new_count":   scan_state["new_count"],
         "scan_run_id": scan_state.get("scan_run_id"),
     })
@@ -200,8 +412,52 @@ def get_progress():
 @app.route("/api/reset_seen", methods=["POST"])
 def reset_seen():
     set_app_state("force_all_new_once", "1")
-    scan_state["results"] = []
     return jsonify({"ok":True})
+
+@app.route("/api/reenrich", methods=["POST"])
+def reenrich_jobs():
+    """Re-extract experience/skills/employment-type from already-stored descriptions."""
+    if scan_state.get("running"):
+        return jsonify({"error": "Cannot re-enrich while a scan is running"}), 409
+    import threading
+    def _run():
+        try:
+            from .apis import _strip_html
+            from .utils import extract_experience, extract_skills, extract_employment_type as et
+            with connect_db(rows=True) as conn:
+                rows = conn.execute(
+                    "SELECT id, title, description FROM jobs WHERE length(description) > 0"
+                ).fetchall()
+            updates = []
+            for r in rows:
+                clean = _strip_html(r["description"] or "")
+                if not clean:
+                    continue
+                exp    = extract_experience(r["title"] or "", clean)
+                skills = extract_skills(r["title"] or "", clean)
+                emp    = et(r["title"] or "", clean)
+                updates.append((
+                    clean,
+                    exp.get("min"), exp.get("max"), exp.get("label", ""), exp.get("source", ""),
+                    json.dumps(skills or []),
+                    emp,
+                    r["id"],
+                ))
+            with connect_db() as conn:
+                conn.executemany(
+                    "UPDATE jobs SET description=?,exp_min=?,exp_max=?,exp_label=?,exp_source=?,skills=?,employment_type=? WHERE id=?",
+                    updates,
+                )
+            scan_state["_reenrich"] = f"Done — {len(updates)} jobs updated"
+        except Exception as exc:
+            scan_state["_reenrich"] = f"Error: {exc}"
+    scan_state["_reenrich"] = "running"
+    threading.Thread(target=_run, daemon=True).start()
+    return jsonify({"ok": True, "message": "Re-enrichment started in background"})
+
+@app.route("/api/reenrich/status", methods=["GET"])
+def reenrich_status():
+    return jsonify({"status": scan_state.get("_reenrich", "idle")})
 
 @app.route("/api/clear_data", methods=["POST"])
 def clear_data():
@@ -212,7 +468,7 @@ def clear_data():
         conn.execute("DELETE FROM app_state")
         conn.execute("DELETE FROM scan_runs")
         conn.execute("DELETE FROM scan_company_status")
-    scan_state.update(results=[], new_count=0, done=False, scan_run_id=None)
+    scan_state.update(new_count=0, done=False, scan_run_id=None)
     return jsonify({"ok": True})
 
 @app.route("/api/detect_ats", methods=["POST"])
@@ -334,6 +590,84 @@ def api_scan_companies(scan_run_id):
     rows = scan_company_records(scan_run_id)
     return jsonify([dict(row) for row in rows])
 
+@app.route("/api/schedule", methods=["GET"])
+def get_schedule():
+    return jsonify(_get_schedule())
+
+@app.route("/api/schedule", methods=["POST"])
+def save_schedule():
+    guard = _admin_required()
+    if guard: return guard
+    data = request.get_json(silent=True) or {}
+    schedule = {}
+    for scan_type in ("fresh", "full"):
+        cfg   = data.get(scan_type, {})
+        times = sorted({t for t in (cfg.get("times") or [])
+                        if re.match(r'^\d{2}:\d{2}$', str(t))})
+        schedule[scan_type] = {"enabled": bool(cfg.get("enabled")), "times": times}
+    from .job_data import set_app_state
+    set_app_state("scan_schedule", json.dumps(schedule))
+    return jsonify({"ok": True})
+
+@app.route("/api/scans/recent")
+def api_scans_recent():
+    with connect_db(rows=True) as conn:
+        rows = conn.execute("""
+            SELECT id, scan_type, status, started_at, finished_at,
+                   total_companies, companies_scanned, total_jobs_found,
+                   new_jobs_found, failed_companies
+            FROM scan_runs ORDER BY id DESC LIMIT 10
+        """).fetchall()
+    return jsonify([dict(r) for r in rows])
+
+@app.route("/api/feedback", methods=["POST"])
+def submit_feedback():
+    d   = request.get_json(silent=True) or {}
+    msg = (d.get("message") or "").strip()
+    if not msg:
+        return jsonify({"error": "message required"}), 400
+    with connect_db() as conn:
+        conn.execute(
+            "INSERT INTO feedback (type, message, url) VALUES (?, ?, ?)",
+            (d.get("type", "other"), msg, (d.get("url") or "").strip()),
+        )
+    return jsonify({"ok": True})
+
+@app.route("/api/feedback", methods=["GET"])
+def get_feedback():
+    guard = _admin_required()
+    if guard: return guard
+    status = request.args.get("status")
+    with connect_db(rows=True) as conn:
+        if status:
+            rows = conn.execute(
+                "SELECT * FROM feedback WHERE status=? ORDER BY submitted_at DESC", (status,)
+            ).fetchall()
+        else:
+            rows = conn.execute(
+                "SELECT * FROM feedback ORDER BY submitted_at DESC"
+            ).fetchall()
+    return jsonify([dict(r) for r in rows])
+
+@app.route("/api/feedback/<int:fid>", methods=["DELETE"])
+def delete_feedback(fid):
+    guard = _admin_required()
+    if guard: return guard
+    with connect_db() as conn:
+        conn.execute("DELETE FROM feedback WHERE id=?", (fid,))
+    return jsonify({"ok": True})
+
+@app.route("/api/feedback/<int:fid>", methods=["PATCH"])
+def update_feedback(fid):
+    guard = _admin_required()
+    if guard: return guard
+    status = (request.get_json(silent=True) or {}).get("status", "")
+    if status not in {"new", "triaged", "resolved"}:
+        return jsonify({"error": "invalid status"}), 400
+    with connect_db() as conn:
+        conn.execute("UPDATE feedback SET status=? WHERE id=?", (status, fid))
+    return jsonify({"ok": True})
+
 @app.route("/api/jobs")
 def api_jobs():
     keyword  = (request.args.get("keyword")  or "").strip().lower()
@@ -351,15 +685,22 @@ def api_jobs():
     if not companies:
         raw_companies = (request.args.get("companies") or "").strip()
         companies = [c.strip() for c in raw_companies.split(",") if c.strip()]
+    company_configs = current_companies()
     active_company_names = {
         company.get("name")
-        for company in current_companies()
+        for company in company_configs
         if company.get("scan_enabled", True) is not False
     }
     if companies:
         companies = [name for name in companies if name in active_company_names]
-    limit    = min(int(request.args.get("limit", 100) or 100), 5000)
-    page     = max(int(request.args.get("page", 1) or 1), 1)
+    try:
+        limit = min(int(request.args.get("limit", 100) or 100), 5000)
+    except (ValueError, TypeError):
+        limit = 100
+    try:
+        page = max(int(request.args.get("page", 1) or 1), 1)
+    except (ValueError, TypeError):
+        page = 1
     offset   = (page - 1) * limit
 
     clauses, params = ["is_open = TRUE"], []
@@ -397,7 +738,7 @@ def api_jobs():
     where = ("WHERE " + " AND ".join(clauses)) if clauses else ""
     company_interviews = {
         company.get("name"): company.get("interview")
-        for company in current_companies()
+        for company in company_configs
         if company.get("interview")
     }
     relevance_sql = keyword_relevance_sql(keyword, kw_groups) if kw_groups else "0"
@@ -412,7 +753,7 @@ def api_jobs():
     )
     # Sort by posted date, falling back to first_seen only when posted is missing.
     sql   = (f"SELECT id, title, url, company, location, source, categories, first_seen, posted, "
-             f"exp_min, exp_max, exp_label, exp_source{select_rank}{select_exp} "
+             f"exp_min, exp_max, exp_label, exp_source, skills, employment_type{select_rank}{select_exp} "
              f"FROM jobs {where} ORDER BY {order_sql} LIMIT ? OFFSET ?")
     count_sql = f"SELECT COUNT(*) FROM jobs {where}"
     query_params = list(params) + [limit, offset]
@@ -445,7 +786,9 @@ def api_jobs():
                 "exp_label":  r["exp_label"] or "",
                 "exp_source": r["exp_source"] or "",
                 "exp_score":  experience_match_score(exp_years, r["exp_min"], r["exp_max"]) if exp_years is not None else 0,
-                "interview":  company_interviews.get(r["company"]),
+                "skills":           json.loads(r["skills"] or "[]"),
+                "employment_type":  r["employment_type"] or "",
+                "interview":        company_interviews.get(r["company"]),
                 "is_new":     fs == today,
             })
         if not jobs and total == 0:

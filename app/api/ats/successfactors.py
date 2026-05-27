@@ -14,10 +14,10 @@ def fetch_successfactors(scrape, seen, company):
         purl = list_url if idx == 0 else make_paged_url(list_url, {"param": "startrow", "start": idx * 25}, 0)
         try:
             try:
-                r = requests.get(purl, headers=HEADERS, timeout=25)
+                r = requests.get(purl, headers=HEADERS, timeout=45)
                 r.raise_for_status()
             except requests.exceptions.SSLError:
-                r = requests.get(purl, headers=HEADERS, timeout=25, verify=False)
+                r = requests.get(purl, headers=HEADERS, timeout=45, verify=False)
                 r.raise_for_status()
         except Exception as e:
             return list(jobs.values()), str(e)
@@ -51,7 +51,7 @@ def fetch_successfactors(scrape, seen, company):
                 jobs[jurl] = {"title": title, "url": jurl, "location": loc, "source": "successfactors", "posted": posted}
         if len(jobs) == before:
             break
-    if not jobs and scrape.get("list_url") and (scrape.get("prefix") or scrape.get("include")):
+    if not jobs and scrape.get("allow_browser_fallback") and scrape.get("list_url") and (scrape.get("prefix") or scrape.get("include")):
         from .playwright import _fetch_playwright_with_source
         return _fetch_playwright_with_source(scrape, seen, company, "successfactors")
     return list(jobs.values()), None

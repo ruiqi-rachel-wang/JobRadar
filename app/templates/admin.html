@@ -3,267 +3,277 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>JobRadar — Scan Board</title>
+<title>JobDrop — Scan Board</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,500&family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/tokens.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
 <style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  font-size: 14px; background: #f0f2f5; color: #1a1a1a;
-  height: 100vh; display: flex; flex-direction: column; overflow: hidden;
+/* Admin-specific styles */
+/* 2-col scan layout */
+.scan-main  { flex:1; min-width:0; overflow-y:auto; padding:20px; }
+.scan-right { width:310px; flex-shrink:0; border-left:1px solid var(--line); overflow-y:auto; background:var(--surface); }
+.rp-section { padding:18px 18px 14px; }
+.rp-title   { font-size:15px; font-weight:700; color:var(--ink); letter-spacing:-.01em; margin-bottom:2px; }
+.rp-sub     { font-size:12px; color:var(--ink-4); margin-bottom:12px; }
+/* Schedule blocks */
+.sched-block  { padding-bottom:14px; }
+.sched-header { display:flex; align-items:flex-start; justify-content:space-between; gap:10px; margin-bottom:10px; }
+.sched-name   { font-size:13.5px; font-weight:600; color:var(--ink); }
+.sched-desc   { font-size:11.5px; color:var(--ink-4); margin-top:2px; }
+.sched-next   { font-size:11px; color:var(--mint-deep); font-weight:500; margin-top:4px; }
+.sched-times  { display:flex; flex-wrap:wrap; gap:5px; margin-bottom:8px; }
+.time-chip {
+  display:inline-flex; align-items:center; gap:5px;
+  padding:4px 10px 4px 12px;
+  background:var(--navy-050); border:1px solid var(--navy-100);
+  border-radius:12px; font-size:12px; font-weight:500; color:var(--navy);
+  font-family:var(--font-mono);
 }
-.topbar {
-  background: #1c2b4a; color: white; padding: 0 20px; height: 48px;
-  display: flex; align-items: center; gap: 16px; flex-shrink: 0;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+.time-chip button { font-size:13px; color:var(--ink-4); line-height:1; background:none; border:none; cursor:pointer; padding:0; }
+.time-chip button:hover { color:var(--err); }
+.add-time-btn {
+  font-size:12px; font-weight:600; color:var(--mint-deep);
+  background:var(--mint-050); border:1px dashed var(--mint-100);
+  border-radius:8px; padding:5px 12px; cursor:pointer; transition:all .1s;
+  width:100%;
 }
-.topbar-dot { width: 7px; height: 7px; border-radius: 50%; background: #5bc8a8;
-              animation: pulse 2s ease-in-out infinite; flex-shrink: 0; }
-@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
-.topbar-logo { font-size: 17px; font-weight: 700; letter-spacing: -0.3px; color: white; }
-.topbar-logo span { color: #5bc8a8; }
-.nav-pill { font-size: 12px; padding: 4px 10px; border-radius: 5px; color: rgba(255,255,255,.7);
-            border: none; background: transparent; cursor: pointer; text-decoration: none;
-            display: inline-block; transition: background .12s; }
-.nav-pill:hover { background: rgba(255,255,255,.1); color: white; }
-.nav-pill.active { background: rgba(91,200,168,.2); color: #5bc8a8; }
-.topbar-stats { margin-left: auto; font-size: 12px; color: rgba(255,255,255,0.6); }
-.topbar-stats strong { color: #5bc8a8; }
-.shell { display: flex; flex: 1; overflow: hidden; position: relative; }
-
-/* ── Sidebar (identical to user.html) ── */
-.sidebar { width: 280px; background: white; border-right: 1px solid #dde1e7;
-           display: flex; flex-direction: column; overflow: hidden; flex-shrink: 0; }
-.sidebar-search-wrap { padding: 12px 12px 8px; border-bottom: 1px solid #eee; flex-shrink: 0; }
-.sidebar-search { width: 100%; padding: 7px 10px; border: 1px solid #dde1e7; border-radius: 6px;
-                  font-size: 13px; outline: none; background: #f7f8fa; }
-.sidebar-search:focus { border-color: #1c2b4a; background: white; }
-.cat-wrap { padding: 8px 10px 6px; border-bottom: 1px solid #eee; display: flex;
-            flex-wrap: wrap; gap: 4px; max-height: 150px; overflow-y: auto; flex-shrink: 0; }
-.cat-wrap::-webkit-scrollbar { width: 4px; }
-.cat-wrap::-webkit-scrollbar-thumb { background: #dde1e7; border-radius: 2px; }
-.cat-btn { padding: 3px 10px; border-radius: 12px; border: 1px solid #dde1e7;
-           background: white; font-size: 11px; color: #555; cursor: pointer;
-           transition: all 0.1s; white-space: nowrap; }
-.cat-btn:hover { border-color: #1c2b4a; color: #1c2b4a; }
-.cat-btn.active { background: #1c2b4a; border-color: #1c2b4a; color: white; }
-.company-list { flex: 1; min-height: 0; overflow-y: auto; padding: 4px 6px; }
-.company-list::-webkit-scrollbar { width: 4px; }
-.company-list::-webkit-scrollbar-thumb { background: #dde1e7; border-radius: 2px; }
-.co-item { display: flex; align-items: center; gap: 8px; padding: 7px 8px;
-           border-radius: 6px; cursor: pointer; transition: background 0.1s;
-           border: 1px solid transparent; }
-.co-item:hover { background: #f0f2f5; }
-.co-item.selected { background: #e8f4ef; border-color: #5bc8a8; }
-.co-item.hidden { display: none; }
-.co-check { width: 15px; height: 15px; border: 1.5px solid #ccc; border-radius: 3px;
-            display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-            font-size: 9px; color: transparent; transition: all 0.1s; }
-.co-item.selected .co-check { background: #1c2b4a; border-color: #1c2b4a; color: white; }
-.co-name { font-size: 13px; color: #1a1a1a; flex: 1;
-           white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.co-mode { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
-.co-mode.greenhouse{background:#22c55e}.co-mode.lever{background:#3b82f6}
-.co-mode.ashby{background:#a855f7}.co-mode.workday{background:#f59e0b}
-.co-mode.bamboohr{background:#14b8a6}.co-mode.icims{background:#6366f1}
-.co-mode.apple{background:#6b7280}.co-mode.google{background:#ef4444}
-.co-mode.microsoft{background:#0ea5e9}.co-mode.pinpoint{background:#ec4899}
-.co-mode.html{background:#9ca3af}.co-mode.playwright{background:#d97706}
-.sidebar-foot { padding: 10px 12px; border-top: 1px solid #eee; background: #fafafa; flex-shrink: 0; }
-.sel-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px;
-           font-size: 12px; color: #666; }
-.sel-num { font-weight: 700; color: #1c2b4a; font-size: 15px; }
-.sel-link { color: #888; text-decoration: underline; cursor: pointer; font-size: 11px; }
-.sel-link:hover { color: #1c2b4a; }
-.btn-row { display: flex; gap: 6px; }
-.btn { flex: 1; padding: 8px; border-radius: 6px; border: none; cursor: pointer;
-       font-size: 12px; font-weight: 600; transition: all 0.12s; }
-.btn-scan { background: #1c2b4a; color: white; }
-.btn-scan:hover { background: #243660; }
-.btn-scan:disabled { background: #9ca3af; cursor: not-allowed; }
-.btn-stop { background: #dc2626; color: white; flex: 0 0 auto; padding: 8px 12px; }
-.btn-stop:hover { background: #b91c1c; }
-.reset-link { display: block; margin-top: 8px; text-align: center; font-size: 11px;
-              color: #aaa; cursor: pointer; text-decoration: underline; }
-.reset-link:hover { color: #c0392b; }
-
-/* ── Main ── */
-.main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
-
-/* Progress */
-.progress-bar-wrap { padding: 10px 20px; background: white; border-bottom: 1px solid #eee;
-                     display: none; flex-shrink: 0; max-height: 200px; overflow: hidden; }
-.progress-bar-wrap.visible { display: block; }
-.progress-track { height: 3px; background: #eee; border-radius: 2px; overflow: hidden; margin-bottom: 6px; }
-.progress-fill  { height: 100%; background: #5bc8a8; transition: width 0.3s; border-radius: 2px; }
-.progress-text  { font-size: 11px; color: #888; display: flex; align-items: center; gap: 6px; }
-.spinner { width: 11px; height: 11px; border: 2px solid #ddd; border-top-color: #5bc8a8;
-           border-radius: 50%; animation: spin 0.6s linear infinite; flex-shrink: 0; }
-@keyframes spin { to { transform: rotate(360deg); } }
-.company-chips { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px;
-                 max-height: 118px; overflow-y: auto; padding-right: 4px; }
-.company-chips::-webkit-scrollbar { width: 4px; }
-.company-chips::-webkit-scrollbar-thumb { background: #dde1e7; border-radius: 2px; }
-.chip { font-size: 10px; padding: 2px 7px; border-radius: 10px; border: 1px solid #eee;
-        color: #888; white-space: nowrap; }
-.chip.ok      { border-color: #bbf7d0; color: #15803d; background: #f0fdf4; }
-.chip.err     { border-color: #fecaca; color: #dc2626; background: #fef2f2; }
-.chip.scanning{ border-color: #5bc8a8; color: #0d9488; animation: blink 1s infinite; }
-@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.5} }
-
-/* Summary area */
+.add-time-btn:hover { background:var(--mint-100); }
+/* Toggle switch */
+.toggle-switch { position:relative; width:40px; height:22px; flex-shrink:0; cursor:pointer; }
+.toggle-switch input { opacity:0; width:0; height:0; position:absolute; }
+.toggle-track {
+  position:absolute; inset:0; border-radius:11px; background:var(--line-3);
+  transition:background .2s;
+}
+.toggle-track::after {
+  content:""; position:absolute; left:3px; top:3px;
+  width:16px; height:16px; border-radius:50%; background:white;
+  transition:transform .2s; box-shadow:0 1px 3px rgba(0,0,0,.2);
+}
+.toggle-switch input:checked + .toggle-track { background:var(--mint); }
+.toggle-switch input:checked + .toggle-track::after { transform:translateX(18px); }
+/* Past scan items */
+.past-scan-item {
+  padding:10px 12px; border-radius:var(--r-sm);
+  cursor:pointer; transition:background .1s;
+  border:1px solid transparent; margin-bottom:4px;
+}
+.past-scan-item:hover { background:var(--surface-2); }
+.past-scan-item.is-sel { background:var(--navy-050); border-color:var(--navy); }
+.psi-top { display:flex; align-items:center; gap:8px; margin-bottom:4px; }
+.psi-tag { font-size:10px; font-weight:700; padding:2px 7px; border-radius:4px; text-transform:uppercase; letter-spacing:.04em; }
+.psi-tag.fresh { background:var(--mint-050); color:var(--mint-deep); }
+.psi-tag.full  { background:var(--navy-050); color:var(--navy); }
+.psi-time { font-size:12px; font-weight:600; color:var(--ink); }
+.psi-meta { font-size:11px; color:var(--ink-4); }
+.psi-new  { font-size:11px; font-weight:700; padding:2px 8px; border-radius:8px; margin-left:auto; }
+.psi-new.pos  { background:var(--warm-050); color:var(--warm-2); }
+.psi-new.zero { color:var(--ink-5); }
+/* Feedback */
+.fb-stat-card {
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);
+  padding:12px 14px;text-align:left;cursor:pointer;transition:border-color .12s;
+}
+.fb-stat-card:hover{border-color:var(--line-3);}
+.fb-stat-card.is-on{background:var(--navy);border-color:var(--navy);}
+.fb-stat-n{font-size:22px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--ink);font-family:var(--font-display);line-height:1;}
+.fb-stat-l{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-3);margin-top:4px;}
+.fb-stat-card.is-on .fb-stat-n,.fb-stat-card.is-on .fb-stat-l{color:white;}
+.fb-type-filter{padding:4px 10px;border-radius:12px;font-size:11.5px;font-weight:500;background:var(--surface);color:var(--ink-3);border:1px solid var(--line);cursor:pointer;transition:all .1s;}
+.fb-type-filter:hover{border-color:var(--line-3);color:var(--ink);}
+.fb-type-filter.is-on{background:var(--navy);color:white;border-color:var(--navy);}
+.fb-card{padding:12px 14px;border-radius:var(--r-sm);margin-bottom:4px;cursor:pointer;transition:background .1s;border-left:3px solid transparent;}
+.fb-card:hover{background:var(--surface-2);}
+.fb-card.is-sel{background:var(--navy-050);border-color:var(--navy)!important;}
+.fd-section-l{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-3);margin-bottom:8px;}
+.fb-tag{font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;text-transform:uppercase;letter-spacing:.04em;}
+.btn-ghost{background:var(--surface);color:var(--ink-2);border:1px solid var(--line);border-radius:var(--r);cursor:pointer;font-family:inherit;font-size:13px;font-weight:500;transition:all .12s;}
+.btn-ghost:hover{border-color:var(--line-3);color:var(--ink);}
+.apply-stage-bar { padding:10px 20px 8px; background:var(--surface); border-bottom:1px solid var(--line-2); display:flex; gap:6px; flex-shrink:0; }
+.apply-pill { padding:5px 13px; border-radius:14px; font-size:12px; font-weight:500; background:var(--surface); color:var(--ink-3); border:1px solid var(--line); cursor:pointer; transition:all .1s; }
+.apply-pill:hover { border-color:var(--line-3); color:var(--ink); }
+.apply-pill.is-on { background:var(--navy); color:white; border-color:var(--navy); }
+.exp-chip { display:inline-block; font-size:11px; padding:2px 8px; border-radius:8px; background:var(--navy-050); color:var(--navy); border:1px solid var(--navy-100); font-weight:600; font-family:var(--font-mono); }
+.shell { position: relative; }
+.kpi-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; margin-bottom: 18px; }
+.kpi {
+  background: var(--surface); border: 1px solid var(--line);
+  border-radius: var(--r-md); padding: 16px 18px;
+  box-shadow: var(--shadow-sm); cursor: default;
+  transition: border-color .12s;
+  text-align: left;
+}
+button.kpi { cursor: pointer; }
+button.kpi:hover { border-color: var(--line-3); }
+.kpi.is-active { background: var(--navy); border-color: var(--navy); color: white; }
+.kpi-v {
+  font-size: 26px; font-weight: 600; letter-spacing: -0.025em;
+  color: var(--ink); font-variant-numeric: tabular-nums; line-height: 1.05;
+  font-family: var(--font-display);
+}
+.kpi.is-active .kpi-v { color: white !important; }
+.kpi-l { font-size: 11px; font-weight: 700; color: var(--ink-3); text-transform: uppercase; letter-spacing: .07em; margin-top: 6px; }
+.kpi.is-active .kpi-l { color: rgba(255,255,255,.7); }
+.kpi-s { font-size: 11.5px; color: var(--ink-4); margin-top: 3px; }
+.kpi.is-active .kpi-s { color: rgba(255,255,255,.5); }
+.adm-pill {
+  padding: 4px 12px; border-radius: 12px; font-size: 12px; font-weight: 500;
+  background: var(--surface); color: var(--ink-3); border: 1px solid var(--line);
+  cursor: pointer; transition: all .1s;
+}
+.adm-pill:hover { border-color: var(--line-3); color: var(--ink); }
+.adm-pill.is-on { background: var(--navy); color: white; border-color: var(--navy); }
 .summary-area { flex: 1; overflow-y: auto; padding: 20px; }
 .summary-area::-webkit-scrollbar { width: 5px; }
-.summary-area::-webkit-scrollbar-thumb { background: #dde1e7; border-radius: 3px; }
-
-/* Empty state */
+.summary-area::-webkit-scrollbar-thumb { background: var(--line-3); border-radius: 3px; }
 .empty-state { display: flex; flex-direction: column; align-items: center;
-               justify-content: center; height: 100%; color: #aaa; text-align: center; }
+               justify-content: center; height: 100%; color: var(--ink-4); text-align: center; }
 .empty-state .icon { font-size: 40px; margin-bottom: 12px; }
-.empty-state h3 { font-size: 16px; color: #666; margin-bottom: 6px; }
+.empty-state h3 { font-size: 16px; color: var(--ink-3); margin-bottom: 6px; }
 .empty-state p { font-size: 13px; line-height: 1.6; max-width: 360px; }
-
-/* Stats row */
+.progress-bar-wrap { padding: 10px 22px; background: var(--surface); border-bottom: 1px solid var(--line-2);
+                     display: none; flex-shrink: 0; max-height: 200px; overflow: hidden; }
+.progress-bar-wrap.visible { display: block; }
+.progress-track { height: 3px; background: var(--line-2); border-radius: 2px; overflow: hidden; margin-bottom: 6px; }
+.progress-fill  { height: 100%; background: var(--mint); transition: width 0.3s; border-radius: 2px; }
+.progress-text  { font-size: 11px; color: var(--ink-3); display: flex; align-items: center; gap: 6px; }
+.spinner { width: 11px; height: 11px; border: 2px solid var(--line-2); border-top-color: var(--mint);
+           border-radius: 50%; animation: spin 0.6s linear infinite; flex-shrink: 0; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.company-chips { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; max-height: 118px; overflow-y: auto; padding-right: 4px; }
+.chip { font-size: 10px; padding: 2px 7px; border-radius: 10px; border: 1px solid var(--line-2); color: var(--ink-4); white-space: nowrap; }
+.chip.ok      { border-color: var(--mint-100); color: var(--ok); background: var(--mint-050); }
+.chip.err     { border-color: color-mix(in oklab, var(--err) 25%, white); color: var(--err); background: color-mix(in oklab, var(--err) 6%, white); }
+.chip.scanning{ border-color: var(--mint); color: var(--mint-deep); animation: blink 1s infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.5} }
 .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px; }
-.stat-card { background: white; border: 1px solid #dde1e7; border-radius: 8px; padding: 14px 16px; }
-.stat-card.hi { background: #1c2b4a; border-color: #1c2b4a; color: white; }
+.stat-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-md); padding: 14px 16px; }
+.stat-card.hi { background: var(--navy); border-color: var(--navy); color: white; }
 .stat-val { font-size: 24px; font-weight: 700; letter-spacing: -0.03em;
-            font-variant-numeric: tabular-nums; line-height: 1; }
-.stat-card.hi .stat-val { color: #5bc8a8; }
-.stat-lbl { font-size: 10px; font-weight: 600; color: #888; text-transform: uppercase;
+            font-variant-numeric: tabular-nums; line-height: 1; font-family: var(--font-display); }
+.stat-card.hi .stat-val { color: var(--mint); }
+.stat-lbl { font-size: 10px; font-weight: 600; color: var(--ink-4); text-transform: uppercase;
             letter-spacing: 0.06em; margin-top: 4px; }
 .stat-card.hi .stat-lbl { color: rgba(255,255,255,.6); }
-.stat-sub { font-size: 11.5px; color: #aaa; margin-top: 3px; }
+.stat-sub { font-size: 11.5px; color: var(--ink-4); margin-top: 3px; }
 .stat-card.hi .stat-sub { color: rgba(255,255,255,.4); }
-
-/* Summary section header */
 .section-head { display: flex; align-items: center; gap: 8px; padding: 6px 0 8px;
-                border-bottom: 2px solid #1c2b4a; margin-bottom: 10px; }
-.section-title { font-size: 13px; font-weight: 700; color: #1c2b4a; }
-.section-count { margin-left: auto; font-size: 11px; color: #999; }
-
-/* Summary table */
-.sum-table { width: 100%; border-collapse: collapse; background: white;
-             border: 1px solid #dde1e7; border-radius: 8px; overflow: hidden; }
-.sum-table th { text-align: left; font-size: 10px; font-weight: 600; color: #999;
-                text-transform: uppercase; letter-spacing: 0.05em; padding: 8px 12px;
-                border-bottom: 1px solid #eee; background: #fafafa; }
-.sum-table td { padding: 9px 12px; font-size: 13px; border-bottom: 1px solid #f0f2f5;
-                vertical-align: middle; }
+                border-bottom: 2px solid var(--navy); margin-bottom: 10px; }
+.section-title { font-size: 13px; font-weight: 700; color: var(--navy); }
+.section-count { margin-left: auto; font-size: 11px; color: var(--ink-4); }
+.sum-table { width: 100%; border-collapse: collapse; background: var(--surface);
+             border: 1px solid var(--line); border-radius: var(--r-md); overflow: hidden; }
+.sum-table th { text-align: left; font-size: 10px; font-weight: 600; color: var(--ink-4);
+                text-transform: uppercase; letter-spacing: 0.06em; padding: 8px 12px;
+                border-bottom: 1px solid var(--line-2); background: var(--surface-2); }
+.sum-table td { padding: 9px 12px; font-size: 13px; border-bottom: 1px solid var(--surface-3); vertical-align: middle; }
 .sum-table tr:last-child td { border-bottom: none; }
-.sum-table tr:hover td { background: #f7f8fa; }
+.sum-table tr:hover td { background: var(--surface-2); }
 .co-dot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; margin-right: 6px; }
 .td-company { font-weight: 500; }
-.td-count  { font-variant-numeric: tabular-nums; font-size: 13px; font-weight: 600; color: #1c2b4a; }
-.td-new    { font-variant-numeric: tabular-nums; font-size: 13px; font-weight: 600; color: #5bc8a8; }
-.td-new.zero { color: #ccc; font-weight: 400; }
-.td-dur    { font-size: 11px; color: #aaa; }
-.status-ok      { font-size: 11px; color: #16a34a; }
-.status-error   { font-size: 11px; color: #dc2626; }
-.status-pending { font-size: 11px; color: #9ca3af; }
-.status-scanning{ font-size: 11px; color: #0d9488; }
-.err-detail { font-size: 10.5px; color: #dc2626; max-width: 220px;
-              white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-
-.last-scan-info { font-size: 11px; color: #888; margin-bottom: 14px; }
-.last-scan-info strong { color: #1c2b4a; }
-
-/* ── Detect ATS panel ── */
+.td-count  { font-variant-numeric: tabular-nums; font-size: 13px; font-weight: 600; color: var(--navy); }
+.td-new    { font-variant-numeric: tabular-nums; font-size: 13px; font-weight: 600; color: var(--mint-deep); }
+.td-new.zero { color: var(--ink-5); font-weight: 400; }
+.td-dur    { font-size: 11px; color: var(--ink-4); font-family: var(--font-mono); }
+.status-ok      { font-size: 11px; color: var(--ok); }
+.status-error   { font-size: 11px; color: var(--err); }
+.status-pending { font-size: 11px; color: var(--ink-4); }
+.status-scanning{ font-size: 11px; color: var(--mint); }
+.err-detail { font-size: 10.5px; color: var(--err); max-width: 220px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.last-scan-info { font-size: 11px; color: var(--ink-3); margin-bottom: 14px; }
+.last-scan-info strong { color: var(--navy); }
 .detect-overlay {
   position: absolute; inset: 0; background: rgba(0,0,0,0.35);
-  display: none; z-index: 100; align-items: flex-start; justify-content: center;
-  padding-top: 60px;
+  display: none; z-index: 100; align-items: flex-start; justify-content: center; padding-top: 60px;
 }
 .detect-overlay.open { display: flex; }
 .detect-panel {
-  background: white; border-radius: 10px; width: 560px; max-width: 94vw;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.18); overflow: hidden;
-  display: flex; flex-direction: column; max-height: 80vh;
+  background: var(--surface); border-radius: var(--r-md); width: 560px; max-width: 94vw;
+  box-shadow: var(--shadow-lg); overflow: hidden; display: flex; flex-direction: column; max-height: 80vh;
 }
-.detect-head {
-  display: flex; align-items: center; padding: 14px 18px;
-  border-bottom: 1px solid #eee; gap: 10px;
-}
-.detect-head-title { font-size: 15px; font-weight: 700; color: #1c2b4a; flex: 1; }
-.detect-close { font-size: 18px; color: #aaa; cursor: pointer; border: none;
-                background: none; padding: 0 4px; line-height: 1; }
-.detect-close:hover { color: #333; }
+.detect-head { display: flex; align-items: center; padding: 14px 18px; border-bottom: 1px solid var(--line); gap: 10px; }
+.detect-head-title { font-size: 15px; font-weight: 700; color: var(--navy); flex: 1; }
+.detect-close { font-size: 18px; color: var(--ink-4); cursor: pointer; padding: 0 4px; line-height: 1; }
+.detect-close:hover { color: var(--ink); }
 .detect-body { padding: 18px; overflow-y: auto; flex: 1; }
-.detect-body label { font-size: 12px; font-weight: 600; color: #555; display: block; margin-bottom: 5px; }
-.detect-input {
-  width: 100%; padding: 9px 11px; border: 1px solid #dde1e7; border-radius: 6px;
-  font-size: 13px; outline: none; font-family: inherit;
-}
-.detect-input:focus { border-color: #1c2b4a; }
+.detect-body label { font-size: 12px; font-weight: 600; color: var(--ink-3); display: block; margin-bottom: 5px; }
+.detect-input { width: 100%; padding: 9px 11px; border: 1px solid var(--line); border-radius: var(--r);
+                font-size: 13px; outline: none; font-family: inherit; }
+.detect-input:focus { border-color: var(--mint); box-shadow: 0 0 0 3px var(--mint-050); }
 .detect-row { display: flex; gap: 8px; margin-top: 12px; }
-.btn-detect { padding: 8px 18px; background: #1c2b4a; color: white; border: none;
-              border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; }
-.btn-detect:hover { background: #243660; }
-.btn-detect:disabled { background: #9ca3af; cursor: not-allowed; }
+.btn-detect { padding: 8px 18px; background: var(--navy); color: white; border: none;
+              border-radius: var(--r); font-size: 13px; font-weight: 600; cursor: pointer; }
+.btn-detect:hover { background: var(--navy-2); }
+.btn-detect:disabled { background: var(--ink-5); cursor: not-allowed; }
 .detect-results { margin-top: 16px; }
-.detect-candidate {
-  border: 1px solid #dde1e7; border-radius: 8px; padding: 14px 16px; margin-bottom: 10px;
-}
-.detect-candidate.verified { border-color: #5bc8a8; background: #f0fdf8; }
-.detect-candidate.failed   { border-color: #fecaca; background: #fef9f9; }
+.detect-candidate { border: 1px solid var(--line); border-radius: var(--r-md); padding: 14px 16px; margin-bottom: 10px; }
+.detect-candidate.verified { border-color: var(--mint); background: var(--mint-050); }
+.detect-candidate.failed   { border-color: color-mix(in oklab, var(--err) 25%, white); background: color-mix(in oklab, var(--err) 5%, white); }
 .dc-head { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
-.dc-mode { font-size: 13px; font-weight: 700; color: #1c2b4a; }
-.dc-badge {
-  font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 10px;
-  background: #dcfce7; color: #15803d;
-}
-.dc-badge.warn { background: #fef3c7; color: #92400e; }
-.dc-badge.fail { background: #fee2e2; color: #dc2626; }
-.dc-source { margin-left: auto; font-size: 10px; color: #aaa; }
-.dc-jobs { font-size: 12px; color: #555; margin-bottom: 8px; }
-.dc-err  { font-size: 11px; color: #dc2626; margin-bottom: 8px; }
-.dc-json {
-  background: #f4f6f8; border-radius: 5px; padding: 10px 12px;
-  font-family: "SF Mono", "Fira Code", monospace; font-size: 11.5px; color: #1a1a1a;
-  white-space: pre; overflow-x: auto; margin-bottom: 8px;
-}
-.btn-copy-cfg { padding: 5px 12px; background: #1c2b4a; color: white; border: none;
-                border-radius: 5px; font-size: 11px; cursor: pointer; }
-.btn-copy-cfg:hover { background: #243660; }
-.detect-spinner { display: none; font-size: 12px; color: #888; margin-top: 8px; }
+.dc-mode { font-size: 13px; font-weight: 700; color: var(--navy); }
+.dc-badge { font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 10px; background: var(--mint-100); color: var(--mint-deep); }
+.dc-badge.warn { background: var(--warm-100); color: var(--warm-2); }
+.dc-badge.fail { background: color-mix(in oklab, var(--err) 12%, white); color: var(--err); }
+.dc-source { margin-left: auto; font-size: 10px; color: var(--ink-4); }
+.dc-jobs { font-size: 12px; color: var(--ink-2); margin-bottom: 8px; }
+.dc-err  { font-size: 11px; color: var(--err); margin-bottom: 8px; }
+.dc-json { background: var(--surface-3); border-radius: var(--r-sm); padding: 10px 12px;
+           font-family: var(--font-mono); font-size: 11.5px; color: var(--ink);
+           white-space: pre; overflow-x: auto; margin-bottom: 8px; }
+.btn-copy-cfg { padding: 5px 12px; background: var(--navy); color: white; border: none;
+                border-radius: var(--r-sm); font-size: 11px; cursor: pointer; }
+.btn-copy-cfg:hover { background: var(--navy-2); }
+.detect-spinner { display: none; font-size: 12px; color: var(--ink-3); margin-top: 8px; }
 .detect-spinner.visible { display: block; }
-.detect-empty { font-size: 13px; color: #aaa; margin-top: 12px; text-align: center; padding: 20px 0; }
+.detect-empty { font-size: 13px; color: var(--ink-4); margin-top: 12px; text-align: center; padding: 20px 0; }
 </style>
 </head>
 <body>
 
 <div class="topbar">
-  <div class="topbar-dot"></div>
-  <div class="topbar-logo">Job<span>Radar</span></div>
-  <a href="/" class="nav-pill">Jobs</a>
-  <span class="nav-pill active">Scan Board</span>
-  <button class="nav-pill" onclick="openDetect()" style="cursor:pointer">+ Detect ATS</button>
-  <div class="topbar-stats">
-    <strong id="hdr-sel">0</strong> selected &nbsp;·&nbsp;
-    <strong id="hdr-total">{{ companies|length }}</strong> companies
+  <div class="tb-brand">
+    <div class="topbar-dot"></div>
+    <div class="topbar-logo">Job<em>Drop</em></div>
   </div>
+  <button class="nav-pill active" id="atab-scan"     onclick="setAdminTab('scan')">Scan Board</button>
+  <button class="nav-pill"       id="atab-feedback" onclick="setAdminTab('feedback')">
+    Feedback
+    <span id="fb-new-badge" style="display:none;background:var(--warm);color:white;border-radius:8px;padding:1px 6px;font-size:10px;margin-left:3px"></span>
+  </button>
+  <span class="tb-spring"></span>
+  <a href="/app" class="nav-pill" style="color:rgba(255,255,255,.5);font-size:12px">Browse Jobs →</a>
+  <a href="/logout" class="tb-logout-btn">Sign out</a>
 </div>
 
-<div class="shell">
+<div class="shell" style="position:relative">
   <!-- Sidebar -->
   <aside class="sidebar">
     <div class="sidebar-search-wrap">
       <input class="sidebar-search" id="sidebar-search" placeholder="Search companies..." oninput="filterSidebar()">
     </div>
     <div class="cat-wrap" id="cat-wrap"></div>
+    <div class="sidebar-resizer" id="sidebar-resizer"></div>
     <div class="company-list" id="company-list"></div>
     <div class="sidebar-foot">
       <div class="sel-row">
         <span class="sel-num" id="sel-count">0</span>
-        <span style="color:#666">selected</span>
-        <span class="sel-link" onclick="selectAllVisible()">all</span>
-        <span class="sel-link" onclick="deselectAll()">none</span>
+        <span style="color:var(--ink-3)">selected</span>
+        <button class="sel-link" onclick="selectAllVisible()">all</button>
+        <button class="sel-link" onclick="deselectAll()">none</button>
       </div>
-      <div class="btn-row">
-        <button class="btn btn-scan" id="btn-scan" onclick="startScan()" disabled>▶ Scan</button>
+      <div class="btn-row" style="flex-direction:column;gap:5px">
+        <div style="display:flex;gap:5px">
+          <button class="btn btn-scan" id="btn-fresh" onclick="startScan('fresh')" disabled style="font-size:11.5px">⚡ Fresh Scan</button>
+          <button class="btn" id="btn-full" onclick="startScan('full')" disabled style="font-size:11.5px;background:var(--surface);color:var(--navy);border:1px solid var(--navy)">⟳ Full Scan</button>
+        </div>
         <button class="btn btn-stop" id="btn-stop" onclick="forceStop()" style="display:none">⏹ Stop</button>
       </div>
-      <span class="reset-link" onclick="resetSeen()">↺ Reset "new" tracking</span>
-      <span class="reset-link" style="color:#dc2626" onclick="clearAllData()">🗑 Clear all job data</span>
+      <div id="scan-type-label" style="font-size:11px;color:var(--ink-4);text-align:center;margin-top:4px;display:none"></div>
+      <button class="reset-link" onclick="resetSeen()">↺ Reset "new" tracking</button>
+      <button class="reset-link" id="btn-reenrich" onclick="reEnrich()">⟳ Re-enrich descriptions</button>
+      <button class="reset-link" style="color:var(--err)" onclick="clearAllData()">🗑 Clear all data</button>
     </div>
   </aside>
 
@@ -271,72 +281,225 @@ body {
   <div class="main">
     <!-- Progress bar -->
     <div class="progress-bar-wrap" id="progress-wrap">
-      <div class="progress-track">
-        <div class="progress-fill" id="progress-fill" style="width:0%"></div>
-      </div>
-      <div class="progress-text">
-        <div class="spinner"></div>
-        <span id="progress-text">Scanning...</span>
-      </div>
+      <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+      <div class="progress-text"><div class="spinner"></div><span id="progress-text">Scanning...</span></div>
       <div class="company-chips" id="company-chips"></div>
     </div>
 
-    <!-- Summary area -->
-    <div class="summary-area" id="summary-area">
-      <div class="empty-state" id="empty-state">
-        <div class="icon">🔍</div>
-        <h3>Select companies, then scan</h3>
-        <p>Choose companies from the sidebar and click Scan.<br>
-        Results will appear here with per-company stats.</p>
-      </div>
+    <!-- Scan Board panel: left (results) + right (auto-scan + past scans) -->
+    <div id="summary-area" style="display:flex;flex:1;min-height:0;overflow:hidden">
 
-      <div id="summary-content" style="display:none">
-        <div class="stats-row">
-          <div class="stat-card">
-            <div class="stat-val" id="stat-cos">—</div>
-            <div class="stat-lbl">Companies</div>
-            <div class="stat-sub" id="stat-cos-sub">scanned</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-val" id="stat-jobs">—</div>
-            <div class="stat-lbl">Total Jobs</div>
-            <div class="stat-sub">found this scan</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-val" id="stat-new">—</div>
-            <div class="stat-lbl">New Jobs</div>
-            <div class="stat-sub">added to database</div>
-          </div>
-          <div class="stat-card hi">
-            <div class="stat-val" id="stat-errors">—</div>
-            <div class="stat-lbl">Errors</div>
-            <div class="stat-sub" id="stat-errors-sub">companies failed</div>
-          </div>
+      <!-- ── Left: KPI + search + table ── -->
+      <div class="scan-main">
+        <div class="empty-state" id="empty-state">
+          <div class="icon">🔍</div>
+          <h3>Select companies, then scan</h3>
+          <p>Pick companies from the sidebar and click Scan.</p>
+          <button class="btn btn-scan" style="margin-top:16px;flex:none;padding:9px 20px" onclick="openDetect()">+ Add company via Detect ATS</button>
         </div>
 
-        <div id="last-scan-info" class="last-scan-info" style="display:none"></div>
+        <div id="summary-content" style="display:none">
+          <!-- KPIs -->
+          <div class="kpi-row">
+            <button class="kpi" id="kpi-all" onclick="setTableFilter('all')">
+              <div class="kpi-v" id="stat-cos">—</div>
+              <div class="kpi-l">Companies</div>
+              <div class="kpi-s" id="stat-cos-sub">scanned</div>
+            </button>
+            <div class="kpi">
+              <div class="kpi-v" id="stat-jobs">—</div>
+              <div class="kpi-l">Total Jobs</div>
+              <div class="kpi-s">found this scan</div>
+            </div>
+            <div class="kpi" style="border-color:var(--mint)">
+              <div class="kpi-v" id="stat-new" style="color:var(--mint-deep)">—</div>
+              <div class="kpi-l">New Jobs</div>
+              <div class="kpi-s">added to database</div>
+            </div>
+            <button class="kpi" id="kpi-errors" onclick="setTableFilter('errors')">
+              <div class="kpi-v" id="stat-errors" style="color:var(--err)">—</div>
+              <div class="kpi-l">Errors</div>
+              <div class="kpi-s" id="stat-errors-sub">companies failed</div>
+            </button>
+          </div>
 
-        <div class="section-head">
-          <span class="section-title" id="results-title">Scan results</span>
-          <span class="section-count" id="results-count"></span>
-        </div>
+          <div id="last-scan-info" class="last-scan-info" style="display:none"></div>
 
-        <table class="sum-table" id="sum-table">
-          <thead>
-            <tr>
-              <th style="width:220px">Company</th>
-              <th style="width:100px">Source</th>
-              <th style="width:80px;text-align:right">Jobs</th>
-              <th style="width:80px;text-align:right">New</th>
+          <!-- Search + filter + actions row -->
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap">
+            <div class="admin-search" style="flex:1;max-width:280px">
+              <span class="icon">⌕</span>
+              <input id="tbl-search" placeholder="Search company…" oninput="filterTable()">
+            </div>
+            <select id="tbl-source" class="filter-input is-small" style="width:140px;padding:7px 10px" onchange="filterTable()">
+              <option value="">All sources</option>
+              <option value="greenhouse">Greenhouse</option>
+              <option value="lever">Lever</option>
+              <option value="ashby">Ashby</option>
+              <option value="workday">Workday</option>
+              <option value="bamboohr">BambooHR</option>
+              <option value="icims">iCIMS</option>
+              <option value="html">HTML</option>
+              <option value="playwright">Playwright</option>
+            </select>
+            <div style="display:flex;gap:5px;flex-wrap:wrap">
+              <button class="adm-pill is-on" id="pill-all"    onclick="setTableFilter('all')">All</button>
+              <button class="adm-pill"       id="pill-errors" onclick="setTableFilter('errors')">Errors</button>
+              <button class="adm-pill"       id="pill-new"    onclick="setTableFilter('newonly')">New only</button>
+              <button class="adm-pill"       id="pill-zero"   onclick="setTableFilter('nojobs')">0 jobs</button>
+            </div>
+            <span class="section-count" id="results-count" style="margin-left:auto"></span>
+            <button class="adm-pill" onclick="openDetect()">+ Add company</button>
+          </div>
+
+          <!-- Results title -->
+          <div style="font-size:12px;font-weight:700;color:var(--ink-3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px" id="results-title">Scan results</div>
+
+          <table class="sum-table" id="sum-table">
+            <thead><tr>
+              <th style="width:200px">Company</th>
+              <th style="width:110px">Source</th>
+              <th style="width:70px;text-align:right">Jobs</th>
+              <th style="width:70px;text-align:right">New</th>
               <th style="width:80px;text-align:right">Duration</th>
               <th>Status</th>
-            </tr>
-          </thead>
-          <tbody id="sum-tbody"></tbody>
-        </table>
+            </tr></thead>
+            <tbody id="sum-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ── Right panel: auto-scan + past scans ── -->
+      <div class="scan-right">
+
+        <!-- Auto-scan -->
+        <div class="rp-section">
+          <div class="rp-title">Auto-scan</div>
+          <div class="rp-sub">Two independent schedules</div>
+
+          <!-- Fresh schedule -->
+          <div class="sched-block">
+            <div class="sched-header">
+              <div>
+                <div class="sched-name">Fresh scan</div>
+                <div class="sched-desc">Looks for new openings</div>
+                <div class="sched-next" id="next-fresh"></div>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" id="fresh-enabled" onchange="saveSchedule()">
+                <span class="toggle-track"></span>
+              </label>
+            </div>
+            <div class="sched-times" id="fresh-times"></div>
+            <button class="add-time-btn" onclick="addTime('fresh')">+ Add time</button>
+          </div>
+
+          <!-- Full schedule -->
+          <div class="sched-block" style="border-top:1px solid var(--line-2);padding-top:14px">
+            <div class="sched-header">
+              <div>
+                <div class="sched-name">Full scan</div>
+                <div class="sched-desc">Audits & removes closed jobs</div>
+                <div class="sched-next" id="next-full"></div>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" id="full-enabled" onchange="saveSchedule()">
+                <span class="toggle-track"></span>
+              </label>
+            </div>
+            <div class="sched-times" id="full-times"></div>
+            <button class="add-time-btn" onclick="addTime('full')">+ Add time</button>
+          </div>
+        </div>
+
+        <!-- Past scans -->
+        <div class="rp-section" style="border-top:1px solid var(--line-2)">
+          <div class="rp-title">Past scans</div>
+          <div class="rp-sub">Click any run to view results</div>
+          <div id="past-scans-list" style="margin-top:10px"></div>
+        </div>
+
+      </div><!-- /scan-right -->
+    </div><!-- /summary-area -->
+
+    <!-- Apply List tab (admin-scoped) -->
+    <div id="apply-panel" class="summary-area" style="display:none">
+      <div class="apply-stage-bar">
+        <button class="apply-pill is-on" data-stage="all"       onclick="adminSetApplyStage(this,'all')">All</button>
+        <button class="apply-pill"       data-stage="to-apply"  onclick="adminSetApplyStage(this,'to-apply')">To Apply</button>
+        <button class="apply-pill"       data-stage="applied"   onclick="adminSetApplyStage(this,'applied')">Applied</button>
+        <button class="apply-pill"       data-stage="interview" onclick="adminSetApplyStage(this,'interview')">Interviewing</button>
+        <button class="apply-pill"       data-stage="offer"     onclick="adminSetApplyStage(this,'offer')">Offer</button>
+        <button class="apply-pill"       data-stage="closed"    onclick="adminSetApplyStage(this,'closed')">Closed</button>
+      </div>
+      <div id="admin-apply-content" style="padding:16px 20px"></div>
+    </div>
+
+    <!-- Feedback inbox tab -->
+    <div id="feedback-panel" style="display:none;flex:1;min-height:0;flex-direction:row">
+      <!-- Left: list -->
+      <div id="fb-left" style="width:380px;flex-shrink:0;border-right:1px solid var(--line);display:flex;flex-direction:column;min-height:0">
+        <div style="padding:20px 20px 12px">
+          <div style="font-size:20px;font-weight:700;color:var(--ink);letter-spacing:-.015em;font-family:var(--font-display);margin-bottom:3px">User feedback</div>
+          <div style="font-size:12px;color:var(--ink-4)" id="fb-subtitle">Loading…</div>
+        </div>
+        <!-- Stat cards -->
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:0 16px 12px">
+          <button class="fb-stat-card is-on" id="fbc-all" onclick="setFbFilter('all')">
+            <div class="fb-stat-n" id="fbs-all">—</div>
+            <div class="fb-stat-l">All</div>
+          </button>
+          <button class="fb-stat-card" id="fbc-new" onclick="setFbFilter('new')">
+            <div class="fb-stat-n" id="fbs-new" style="color:var(--mint-deep)">—</div>
+            <div class="fb-stat-l">New</div>
+          </button>
+          <button class="fb-stat-card" id="fbc-solved" onclick="setFbFilter('solved')">
+            <div class="fb-stat-n" id="fbs-solved" style="color:var(--ink-4)">—</div>
+            <div class="fb-stat-l">Solved</div>
+          </button>
+        </div>
+        <!-- Type filters -->
+        <div style="display:flex;gap:5px;flex-wrap:wrap;padding:0 16px 10px;border-bottom:1px solid var(--line-2)">
+          <button class="fb-type-filter is-on" data-ftype="all"        onclick="setFbType(this,'all')">All</button>
+          <button class="fb-type-filter"       data-ftype="bug"        onclick="setFbType(this,'bug')">Bug</button>
+          <button class="fb-type-filter"       data-ftype="wrong"      onclick="setFbType(this,'wrong')">Wrong info</button>
+          <button class="fb-type-filter"       data-ftype="missing"    onclick="setFbType(this,'missing')">Missing</button>
+          <button class="fb-type-filter"       data-ftype="missing-co" onclick="setFbType(this,'missing-co')">Missing co.</button>
+          <button class="fb-type-filter"       data-ftype="suggest"    onclick="setFbType(this,'suggest')">Suggestion</button>
+          <button class="fb-type-filter"       data-ftype="other"      onclick="setFbType(this,'other')">Other</button>
+        </div>
+        <!-- List -->
+        <div id="fb-list" style="flex:1;overflow-y:auto;padding:6px 8px"></div>
+      </div>
+      <!-- Right: detail -->
+      <div id="fb-detail" style="flex:1;min-height:0;overflow-y:auto;padding:24px 28px">
+        <div id="fb-detail-empty" style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--ink-4);font-size:14px">Select a report to view</div>
+        <div id="fb-detail-content" style="display:none">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
+            <span id="fd-type-tag" class="fb-tag"></span>
+            <span id="fd-status-dot" style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em"></span>
+            <span style="margin-left:auto;font-size:12px;color:var(--ink-4)" id="fd-time"></span>
+          </div>
+          <div style="font-size:14px;font-weight:600;color:var(--ink-2);margin-bottom:18px" id="fd-who"></div>
+          <div class="fd-section-l">Report</div>
+          <div style="font-size:14px;color:var(--ink-2);line-height:1.7;margin-bottom:18px;white-space:pre-wrap" id="fd-msg"></div>
+          <div id="fd-url-wrap" style="display:none;margin-bottom:18px">
+            <div class="fd-section-l">Related URL</div>
+            <a id="fd-url" href="#" target="_blank" style="font-family:var(--font-mono);font-size:12.5px;color:var(--mint-deep);text-decoration:underline"></a>
+          </div>
+          <div class="fd-section-l">Reply</div>
+          <textarea id="fd-reply" class="filter-input" rows="4" placeholder="Reply to reporter…" style="width:100%;resize:vertical;margin-bottom:16px"></textarea>
+          <div style="display:flex;gap:8px;align-items:center">
+            <button class="btn btn-scan" style="flex:none;padding:8px 18px" onclick="fdSaveNote()">Save note</button>
+            <button id="fd-solve-btn" class="btn btn-ghost" style="flex:none;padding:8px 18px" onclick="fdToggleSolved()"></button>
+            <button class="btn" style="flex:none;padding:8px 12px;margin-left:auto;color:var(--err);border:1px solid color-mix(in oklab,var(--err) 25%,white);background:color-mix(in oklab,var(--err) 6%,white)" onclick="fdDelete()">Delete</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
+
+</div>
   <!-- Detect ATS overlay -->
   <div class="detect-overlay" id="detect-overlay" onclick="closeDetectIfBg(event)">
     <div class="detect-panel">
@@ -430,36 +593,43 @@ function deselectAll() {
   updateCounts();
 }
 function updateCounts() {
-  const n = selected.size;
-  document.getElementById('sel-count').textContent = n;
-  document.getElementById('hdr-sel').textContent   = n;
-  document.getElementById('btn-scan').disabled = n === 0;
+  const n    = selected.size;
+  const none = n === 0;
+  document.getElementById('sel-count').textContent  = n;
+  document.getElementById('btn-fresh').disabled = none;
+  document.getElementById('btn-full').disabled  = none;
 }
 
 // ── Scan ─────────────────────────────────────────────────────────────────────
-function setScanningUI(scanning) {
-  const scanBtn = document.getElementById('btn-scan');
-  const stopBtn = document.getElementById('btn-stop');
-  scanBtn.disabled    = scanning || selected.size === 0;
-  scanBtn.textContent = scanning ? '⏳ Scanning...' : '▶ Scan';
-  stopBtn.style.display = scanning ? '' : 'none';
+function setScanningUI(scanning, scanType) {
+  const none    = !scanning && selected.size === 0;
+  document.getElementById('btn-fresh').disabled = scanning || none;
+  document.getElementById('btn-full').disabled  = scanning || none;
+  document.getElementById('btn-stop').style.display = scanning ? '' : 'none';
   document.getElementById('progress-wrap').classList.toggle('visible', scanning);
+  const lbl = document.getElementById('scan-type-label');
+  if (lbl) {
+    lbl.style.display = scanning ? '' : 'none';
+    lbl.textContent   = scanning
+      ? (scanType === 'full' ? '⟳ Full scan — auditing all pages' : '⚡ Fresh scan — finding new jobs')
+      : '';
+  }
 }
 
-async function startScan() {
+async function startScan(scanType) {
   if (selected.size === 0) return;
   const names = [...selected]
     .map(i => COMPANIES[i])
     .filter(c => c && c.scan_enabled !== false)
     .map(c => c.name);
-  setScanningUI(true);
+  setScanningUI(true, scanType);
   document.getElementById('company-chips').innerHTML = '';
   document.getElementById('progress-fill').style.width = '0%';
 
   try {
     const resp = await fetch('/api/scan', {
       method: 'POST', headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({ companies: names })
+      body: JSON.stringify({ companies: names, scan_type: scanType })
     });
     if (!resp.ok) {
       const d = await resp.json().catch(()=>({}));
@@ -497,6 +667,7 @@ async function pollProgress() {
   const data     = await fetch('/api/progress').then(r => r.json()).catch(()=>null);
   if (!data) return;
   const progress = data.progress || [];
+  const scanType = data.scan_type || 'fresh';
   const total    = selected.size;
   const done     = progress.filter(p => p.status !== 'scanning' && p.status !== 'pending').length;
 
@@ -508,33 +679,33 @@ async function pollProgress() {
     return `<span class="chip ${cls}">${esc2(p.company)}${suf}</span>`;
   }).join('');
 
-  // Update live summary table
-  if (progress.length > 0) showSummary(progress, false);
-
+  if (progress.length > 0) showSummary(progress, false, scanType);
   if (data.done) {
     clearInterval(scanInterval);
-    setScanningUI(false);
-    showSummary(progress, true);
+    setScanningUI(false, scanType);
+    showSummary(progress, true, scanType);
   }
 }
 
-function showSummary(progress, isFinal) {
-  document.getElementById('empty-state').style.display   = 'none';
+function showSummary(progress, isFinal, scanType) {
+  scanType = scanType || 'fresh';
+  _lastProgress = progress;
+  document.getElementById('empty-state').style.display    = 'none';
   document.getElementById('summary-content').style.display = '';
 
-  const done    = progress.filter(p => p.status === 'done');
-  const errors  = progress.filter(p => p.status === 'error');
+  const done      = progress.filter(p => p.status === 'done');
+  const errors    = progress.filter(p => p.status === 'error');
   const totalJobs = done.reduce((a, p) => a + (p.count||0), 0);
   const totalNew  = done.reduce((a, p) => a + (p.new||0), 0);
 
-  document.getElementById('stat-cos').textContent       = progress.length;
-  document.getElementById('stat-cos-sub').textContent   = isFinal ? `${done.length} ok · ${errors.length} err` : 'in progress…';
-  document.getElementById('stat-jobs').textContent      = totalJobs;
-  document.getElementById('stat-new').textContent       = totalNew;
-  document.getElementById('stat-errors').textContent    = errors.length;
-  document.getElementById('stat-errors-sub').textContent= errors.length === 0 ? 'none — clean run' : 'companies failed';
-  document.getElementById('results-title').textContent  = isFinal ? 'Scan results' : 'Live scan progress';
-  document.getElementById('results-count').textContent  = `${progress.length} companies`;
+  document.getElementById('stat-cos').textContent        = progress.length;
+  document.getElementById('stat-cos-sub').textContent    = isFinal ? `${done.length} ok · ${errors.length} err` : 'in progress…';
+  document.getElementById('stat-jobs').textContent       = totalJobs.toLocaleString();
+  document.getElementById('stat-new').textContent        = totalNew.toLocaleString();
+  document.getElementById('stat-errors').textContent     = errors.length;
+  document.getElementById('stat-errors-sub').textContent = errors.length === 0 ? 'none — clean run' : 'companies failed';
+  const typeLabel = scanType === 'full' ? '⟳ Full scan' : '⚡ Fresh scan';
+  document.getElementById('results-title').textContent = isFinal ? typeLabel + ' results' : 'Live — ' + typeLabel;
 
   const tbody = document.getElementById('sum-tbody');
   tbody.innerHTML = progress.map(p => {
@@ -547,23 +718,84 @@ function showSummary(progress, isFinal) {
                                 `<span class="status-pending">○ pending</span>`;
     const newCls = (p.new||0) > 0 ? 'td-new' : 'td-new zero';
     const dur = p.duration_s != null ? `${p.duration_s}s` : '—';
-    return `<tr>
-      <td class="td-company">
-        <span class="co-dot" style="background:${color}"></span>${esc2(p.company)}
-      </td>
-      <td style="font-size:11px;color:#888">${mode}</td>
+    return `<tr data-status="${p.status}" data-count="${p.count||0}" data-newcount="${p.new||0}" data-company="${esc2(p.company).toLowerCase()}" data-source="${mode}">
+      <td class="td-company"><span class="co-dot" style="background:${color}"></span>${esc2(p.company)}</td>
+      <td style="font-size:11px;color:var(--ink-3)">${mode}</td>
       <td class="td-count" style="text-align:right">${p.status==='done' ? (p.count||0) : '—'}</td>
       <td class="${newCls}" style="text-align:right">${p.status==='done' ? (p.new||0) : '—'}</td>
       <td class="td-dur" style="text-align:right">${dur}</td>
       <td>${statusHtml}</td>
     </tr>`;
   }).join('');
+  _applyTableFilter(progress);
+}
+
+let _lastProgress = [];
+let _tableFilter  = 'all';
+
+function setTableFilter(f) {
+  _tableFilter = f;
+  ['all','errors','new','zero'].forEach(k => {
+    const el = document.getElementById('pill-' + k);
+    if (el) el.classList.toggle('is-on', k === f || (k==='all' && f==='all'));
+  });
+  ['kpi-all','kpi-errors'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const match = (id==='kpi-all' && f==='all') || (id==='kpi-errors' && f==='errors');
+    el.classList.toggle('is-active', match);
+  });
+  if (_lastProgress.length) _applyTableFilter(_lastProgress);
+}
+
+function _applyTableFilter(progress) {
+  const rows = document.querySelectorAll('#sum-tbody tr');
+  let vis = 0;
+  rows.forEach(row => {
+    const show = _tableFilter === 'all'
+      || (_tableFilter === 'errors'  && row.dataset.status === 'error')
+      || (_tableFilter === 'nojobs'  && row.dataset.count  === '0' && row.dataset.status === 'done')
+      || (_tableFilter === 'newonly' && parseInt(row.dataset.newcount||'0') > 0);
+    row.style.display = show ? '' : 'none';
+    if (show) vis++;
+  });
+  document.getElementById('results-count').textContent = `${vis} companies`;
+  // Also re-apply text/source filter on top
+  const q   = (document.getElementById('tbl-search')?.value || '').toLowerCase();
+  const src = (document.getElementById('tbl-source')?.value || '').toLowerCase();
+  if (q || src) {
+    document.querySelectorAll('#sum-tbody tr').forEach(row => {
+      if (row.style.display === 'none') return;
+      const matchQ   = !q   || (row.dataset.company || '').includes(q);
+      const matchSrc = !src || (row.dataset.source || '') === src;
+      if (!matchQ || !matchSrc) row.style.display = 'none';
+    });
+  }
 }
 
 async function resetSeen() {
   if (!confirm('Clear all "seen" tracking? Everything will show as NEW on next scan.')) return;
   await fetch('/api/reset_seen', { method: 'POST' });
   alert('Done — next scan marks everything as new.');
+}
+
+async function reEnrich() {
+  const btn = document.getElementById('btn-reenrich');
+  btn.disabled = true;
+  btn.textContent = '⟳ Running…';
+  try {
+    const r = await fetch('/api/reenrich', { method: 'POST' });
+    if (!r.ok) { alert('Failed to start re-enrichment.'); btn.disabled = false; btn.textContent = '⟳ Re-enrich descriptions'; return; }
+    // Poll for completion
+    const poll = setInterval(async () => {
+      const s = await fetch('/api/reenrich/status').then(x => x.json());
+      if (s.status === 'running') return;
+      clearInterval(poll);
+      btn.disabled = false;
+      btn.textContent = '⟳ Re-enrich descriptions';
+      alert(s.status);
+    }, 2000);
+  } catch { btn.disabled = false; btn.textContent = '⟳ Re-enrich descriptions'; }
 }
 
 async function clearAllData() {
@@ -578,7 +810,8 @@ async function clearAllData() {
   }
 }
 
-function esc2(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function esc2(s)    { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function escAttr(s) { return (s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
 // ── Detect ATS ───────────────────────────────────────────────────────────────
 function openDetect() {
@@ -686,6 +919,446 @@ function copyText(text, btn) {
   });
 }
 
+// ── Admin tabs ────────────────────────────────────────────────────────────────
+// ── Apply List (admin-scoped key, separate from user) ────────────────────────
+const ADMIN_APPLY_KEY = 'jd_apply_admin';
+let adminApplyStage = 'all';
+
+function _alsGet(k, fb) { try { return JSON.parse(localStorage.getItem(k)) ?? fb; } catch { return fb; } }
+function _alsSet(k, v)  { localStorage.setItem(k, JSON.stringify(v)); }
+function adminGetApply() { return _alsGet(ADMIN_APPLY_KEY, {}); }
+function adminSetApplyStage(btn, stage) {
+  adminApplyStage = stage;
+  document.querySelectorAll('#apply-panel .apply-pill').forEach(b => b.classList.toggle('is-on', b === btn));
+  renderAdminApply();
+}
+function adminRemoveApply(id) {
+  const list = adminGetApply(); delete list[id]; _alsSet(ADMIN_APPLY_KEY, list); renderAdminApply();
+}
+function adminUpdateStage(id, stage) {
+  const list = adminGetApply(); if (list[id]) { list[id].stage = stage; _alsSet(ADMIN_APPLY_KEY, list); }
+}
+function renderAdminApply() {
+  const el = document.getElementById('admin-apply-content');
+  const list = adminGetApply();
+  let entries = Object.entries(list);
+  if (adminApplyStage !== 'all') entries = entries.filter(([,v]) => v.stage === adminApplyStage);
+  if (!entries.length) {
+    el.innerHTML = '<div style="text-align:center;padding:60px 0;color:var(--ink-4)">No jobs in this stage</div>'; return;
+  }
+  const STAGE_OPTS = ['to-apply','applied','interview','offer','closed']
+    .map(s => `<option value="${s}">${s.charAt(0).toUpperCase()+s.slice(1).replace('-',' ')}</option>`).join('');
+  el.innerHTML = `<table class="sum-table"><thead><tr>
+    <th>Title</th><th style="width:160px">Company</th><th style="width:140px">Location</th>
+    <th style="width:100px">Exp</th><th style="width:120px">Stage</th><th style="width:44px"></th>
+  </tr></thead><tbody>` + entries.map(([id,j]) => `<tr>
+    <td style="font-weight:500">${esc2(j.title||'')}</td>
+    <td style="font-size:12.5px">${esc2(j.company||'')}</td>
+    <td style="font-size:12.5px;color:var(--ink-3)">${esc2(j.location||'—')}</td>
+    <td>${j.exp_label?`<span class="exp-chip">${esc2(j.exp_label)}</span>`:''}</td>
+    <td><select style="font-size:11.5px;padding:3px 6px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--surface)"
+        onchange="adminUpdateStage('${id}',this.value)">${STAGE_OPTS.replace(`value="${j.stage}"`,`value="${j.stage}" selected`)}</select></td>
+    <td>${j.url?`<a class="j-open-btn" href="${escAttr(j.url||'')}" target="_blank" rel="noopener">↗</a>`:''}</td>
+  </tr>`).join('') + '</tbody></table>';
+}
+
+function setAdminTab(tab) {
+  ['scan','feedback'].forEach(t =>
+    document.getElementById('atab-'+t)?.classList.toggle('active', t === tab));
+  document.getElementById('summary-area').style.display   = tab === 'scan'     ? 'flex' : 'none';
+  document.getElementById('feedback-panel').style.display = tab === 'feedback' ? 'flex' : 'none';
+  if (tab === 'feedback') loadFeedback();
+  if (tab === 'scan') { loadSchedule(); loadPastScans(); }
+}
+
+// ── Feedback inbox ────────────────────────────────────────────────────────────
+let _fbAll = [], _fbStatus = 'all', _fbType = 'all', _fdSelected = null;
+
+const FB_TYPE_LABELS = { bug:'Bug', wrong:'Wrong info', missing:'Missing', 'missing-co':'Missing co.', suggest:'Suggestion', other:'Other' };
+const FB_TYPE_COLORS = { bug:'#fee2e2:#b91c1c', wrong:'#fef3c7:#b45309', missing:'#d1fae5:#065f46', 'missing-co':'#dbeafe:#1d4ed8', suggest:'#ede9fe:#5b21b6', other:'#f3f4f6:#374151' };
+
+function _fbTimeAgo(dt) {
+  if (!dt) return '';
+  const diff = Math.floor((Date.now() - new Date(dt).getTime()) / 1000);
+  if (diff < 60)   return 'just now';
+  if (diff < 3600) return `${Math.floor(diff/60)}m ago`;
+  if (diff < 86400)return `${Math.floor(diff/3600)}h ago`;
+  const days = Math.floor(diff/86400);
+  return days === 1 ? 'Yesterday' : `${days}d ago`;
+}
+
+function _fbNormStatus(s) { return (s === 'resolved' || s === 'triaged') ? 'solved' : (s || 'new'); }
+
+async function loadFeedback() {
+  _fbAll = await fetch('/api/feedback').then(r => r.json()).catch(() => []);
+  _fbAll.forEach(r => { r.status = _fbNormStatus(r.status); });
+  _renderFbList();
+  const newCount = _fbAll.filter(r => r.status === 'new').length;
+  const badge = document.getElementById('fb-new-badge');
+  if (badge) { badge.textContent = newCount || ''; badge.style.display = newCount ? '' : 'none'; }
+}
+
+function setFbFilter(status) {
+  _fbStatus = status;
+  ['all','new','solved'].forEach(s => document.getElementById('fbc-'+s)?.classList.toggle('is-on', s === status));
+  _renderFbList();
+}
+
+function setFbType(btn, type) {
+  _fbType = type;
+  document.querySelectorAll('.fb-type-filter').forEach(b => b.classList.toggle('is-on', b === btn));
+  _renderFbList();
+}
+
+function _renderFbList() {
+  // Update stat counts
+  const total  = _fbAll.length;
+  const newN   = _fbAll.filter(r => r.status === 'new').length;
+  const solved = _fbAll.filter(r => r.status === 'solved').length;
+  document.getElementById('fbs-all').textContent    = total;
+  document.getElementById('fbs-new').textContent    = newN;
+  document.getElementById('fbs-solved').textContent = solved;
+  const sub = document.getElementById('fb-subtitle');
+  if (sub) sub.textContent = `${newN} new · ${total} total`;
+
+  let items = _fbAll;
+  if (_fbStatus !== 'all') items = items.filter(r => r.status === _fbStatus);
+  if (_fbType   !== 'all') items = items.filter(r => r.type   === _fbType);
+
+  const el = document.getElementById('fb-list');
+  if (!items.length) {
+    el.innerHTML = '<div style="padding:40px 16px;text-align:center;color:var(--ink-4)">No reports</div>';
+    return;
+  }
+  el.innerHTML = items.map(r => {
+    const [bg, fg] = (FB_TYPE_COLORS[r.type] || '#f3f4f6:#374151').split(':');
+    const isSel = _fdSelected?.id === r.id;
+    return `<div class="fb-card${isSel?' is-sel':''}" onclick="fdOpen(${r.id})"
+               style="border-left:3px solid ${r.status==='new'?'var(--mint)':'var(--ink-5)'}">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px">
+        <span style="font-size:10px;font-weight:700;padding:2px 7px;border-radius:4px;background:${bg};color:${fg};text-transform:uppercase;letter-spacing:.04em">${(FB_TYPE_LABELS[r.type]||r.type).toUpperCase()}</span>
+        <span style="font-size:11px;color:var(--ink-4)">${_fbTimeAgo(r.submitted_at)}</span>
+        <span style="margin-left:auto;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:${r.status==='new'?'var(--mint-deep)':'var(--ink-4)'}">${r.status==='solved'?'● SOLVED':'● NEW'}</span>
+      </div>
+      <div style="font-size:13.5px;color:var(--ink);line-height:1.5;font-weight:500;margin-bottom:4px">${esc2((r.message||'').slice(0,80))}${r.message?.length>80?'…':''}</div>
+      <div style="font-size:11.5px;color:var(--ink-4)">${esc2(r.email||'anonymous')}</div>
+    </div>`;
+  }).join('');
+}
+
+function fdOpen(id) {
+  _fdSelected = _fbAll.find(r => r.id === id);
+  if (!_fdSelected) return;
+  const r = _fdSelected;
+  _renderFbList(); // re-render to update selection highlight
+  document.getElementById('fb-detail-empty').style.display   = 'none';
+  document.getElementById('fb-detail-content').style.display = '';
+  const [bg,fg] = (FB_TYPE_COLORS[r.type]||'#f3f4f6:#374151').split(':');
+  document.getElementById('fd-type-tag').textContent  = (FB_TYPE_LABELS[r.type]||r.type).toUpperCase();
+  document.getElementById('fd-type-tag').style.cssText = `background:${bg};color:${fg}`;
+  document.getElementById('fd-status-dot').textContent  = r.status === 'solved' ? '● Solved' : '● New';
+  document.getElementById('fd-status-dot').style.color  = r.status === 'solved' ? 'var(--ink-4)' : 'var(--mint-deep)';
+  document.getElementById('fd-time').textContent = _fbTimeAgo(r.submitted_at);
+  document.getElementById('fd-who').textContent  = r.email || 'anonymous';
+  document.getElementById('fd-msg').textContent  = r.message || '';
+  const urlWrap = document.getElementById('fd-url-wrap');
+  const urlEl   = document.getElementById('fd-url');
+  if (r.url) { urlEl.textContent = r.url; urlEl.href = r.url.startsWith('http') ? r.url : 'https://'+r.url; urlWrap.style.display = ''; }
+  else urlWrap.style.display = 'none';
+  document.getElementById('fd-reply').value = '';
+  document.getElementById('fd-solve-btn').textContent = r.status === 'solved' ? 'Reopen' : 'Mark solved';
+}
+
+async function fdToggleSolved() {
+  if (!_fdSelected) return;
+  const newStatus = _fdSelected.status === 'solved' ? 'new' : 'solved';
+  await fetch(`/api/feedback/${_fdSelected.id}`, {
+    method: 'PATCH', headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({ status: newStatus === 'solved' ? 'resolved' : 'new' }),
+  });
+  await loadFeedback();
+  fdOpen(_fdSelected.id);
+}
+
+async function fdDelete() {
+  if (!_fdSelected || !confirm('Delete this report?')) return;
+  await fetch(`/api/feedback/${_fdSelected.id}`, { method: 'DELETE' });
+  _fdSelected = null;
+  document.getElementById('fb-detail-empty').style.display   = '';
+  document.getElementById('fb-detail-content').style.display = 'none';
+  await loadFeedback();
+}
+
+function fdSaveNote() {
+  const note = document.getElementById('fd-reply').value.trim();
+  if (!note) return;
+  document.getElementById('fd-reply').value = '';
+  // Note saved locally for now (could be stored in DB in future)
+  alert('Note saved (visible in this session).');
+}
+
+// ── Admin Jobs browser ────────────────────────────────────────────────────────
+let ajPage = 1, ajTotal = 0, ajLimit = 100, ajJobs = [];
+
+async function adminLoadJobs(page) {
+  page = page || 1;
+  const names = [...selected].map(i => COMPANIES[i]).filter(c => c?.scan_enabled !== false).map(c => c.name);
+  if (!names.length) {
+    document.getElementById('admin-jobs-area').innerHTML =
+      '<div style="text-align:center;padding:60px 0;color:var(--ink-4)">Select at least one company first.</div>';
+    return;
+  }
+  const kw  = (document.getElementById('aj-keyword')?.value || '').trim();
+  const loc = (document.getElementById('aj-location')?.value || '').trim();
+  const exp = (document.getElementById('aj-exp')?.value || '').trim();
+  const p = new URLSearchParams({ limit: ajLimit, page });
+  if (kw)  p.set('keyword', kw);
+  if (loc) p.set('location', loc);
+  if (exp) p.set('experience', exp);
+  names.forEach(n => p.append('company', n));
+  const data = await fetch('/api/jobs?' + p).then(r => r.json()).catch(() => null);
+  if (!data) return;
+  ajJobs  = Array.isArray(data) ? data : (data.jobs || []);
+  ajPage  = Number(data.page  || page);
+  ajTotal = Number(data.total ?? ajJobs.length);
+  ajLimit = Number(data.limit || 100);
+  document.getElementById('admin-jobs-area').dataset.loaded = '1';
+  document.getElementById('aj-counts').textContent = `${ajTotal.toLocaleString()} jobs`;
+  adminRenderJobs();
+}
+
+function adminFilterDOM() {
+  const kw  = (document.getElementById('aj-keyword')?.value || '').toLowerCase();
+  const loc = (document.getElementById('aj-location')?.value || '').toLowerCase();
+  document.querySelectorAll('#admin-jobs-area .job-row').forEach(row => {
+    const ok = (!kw || (row.dataset.title + ' ' + row.dataset.co).includes(kw)) &&
+               (!loc || row.dataset.loc.includes(loc));
+    row.style.display = ok ? '' : 'none';
+  });
+}
+
+function adminRenderJobs() {
+  const el = document.getElementById('admin-jobs-area');
+  if (!ajJobs.length) { el.innerHTML = '<div style="text-align:center;padding:60px 0;color:var(--ink-4)">No jobs found.</div>'; return; }
+  const totalPages = Math.max(1, Math.ceil(ajTotal / ajLimit));
+  const rows = ajJobs.map((j, i) => {
+    const date = j.posted || (j.first_seen||'').slice(0,10) || '—';
+    const mode = MODE_COLORS[j.source] ? j.source : 'html';
+    return `<tr class="job-row" data-title="${esc2(j.title).toLowerCase()}" data-co="${esc2(j.company).toLowerCase()}" data-loc="${esc2(j.location||'').toLowerCase()}" style="animation-delay:${i*4}ms">
+      <td class="td-title" style="max-width:340px"><span style="font-weight:600;font-size:13.5px;color:var(--navy)">${esc2(j.title)}</span></td>
+      <td style="font-size:12.5px;color:var(--ink-2);width:150px">${esc2(j.company)}</td>
+      <td style="font-size:12.5px;color:var(--ink-3);width:150px">${esc2(j.location||'—')}</td>
+      <td style="width:110px">${j.exp_label?`<span class="exp-chip">${esc2(j.exp_label)}</span>`:''}</td>
+      <td style="font-size:11.5px;color:var(--ink-3);width:100px;font-family:var(--font-mono)">${date}</td>
+      <td style="width:40px">${j.url?`<a href="${escAttr(j.url)}" target="_blank" rel="noopener" class="j-open-btn" title="Open">↗</a>`:''}</td>
+    </tr>`;
+  }).join('');
+  const pagination = totalPages > 1 ? `<div style="display:flex;align-items:center;justify-content:center;gap:10px;padding:14px 0">
+    <button class="page-btn" onclick="adminLoadJobs(${ajPage-1})" ${ajPage<=1?'disabled':''}>Prev</button>
+    <span style="font-size:12px;color:var(--ink-3)">Page ${ajPage} / ${totalPages} · ${ajTotal.toLocaleString()} jobs</span>
+    <button class="page-btn" onclick="adminLoadJobs(${ajPage+1})" ${ajPage>=totalPages?'disabled':''}>Next</button>
+  </div>` : '';
+  el.innerHTML = `<table class="sum-table" style="margin-bottom:8px">
+    <thead><tr>
+      <th>Title</th><th style="width:150px">Company</th><th style="width:150px">Location</th>
+      <th style="width:110px">Exp</th><th style="width:100px">Posted</th><th style="width:40px"></th>
+    </tr></thead>
+    <tbody>${rows}</tbody>
+  </table>${pagination}`;
+}
+
+// ── Table search + source filter ──────────────────────────────────────────────
+function filterTable() {
+  const q   = (document.getElementById('tbl-search')?.value || '').toLowerCase();
+  const src = (document.getElementById('tbl-source')?.value || '').toLowerCase();
+  let vis = 0;
+  document.querySelectorAll('#sum-tbody tr').forEach(row => {
+    const company = (row.dataset.company || '').toLowerCase();
+    const source  = (row.dataset.source  || '').toLowerCase();
+    const matchQ   = !q   || company.includes(q);
+    const matchSrc = !src || source === src;
+    const matchPill = _tableFilter === 'all'
+      || (_tableFilter === 'errors'  && row.dataset.status === 'error')
+      || (_tableFilter === 'nojobs'  && row.dataset.count  === '0' && row.dataset.status === 'done')
+      || (_tableFilter === 'newonly' && parseInt(row.dataset.newcount || '0') > 0);
+    row.style.display = (matchQ && matchSrc && matchPill) ? '' : 'none';
+    if (matchQ && matchSrc && matchPill) vis++;
+  });
+  document.getElementById('results-count').textContent = `${vis} companies`;
+}
+
+// ── Schedule ──────────────────────────────────────────────────────────────────
+let _schedule = { fresh: { enabled: false, times: [] }, full: { enabled: false, times: [] } };
+
+async function loadSchedule() {
+  _schedule = await fetch('/api/schedule').then(r => r.json()).catch(() => _schedule);
+  renderSchedule();
+}
+
+function renderSchedule() {
+  for (const type of ['fresh', 'full']) {
+    const cfg = _schedule[type] || { enabled: false, times: [] };
+    const cb  = document.getElementById(`${type}-enabled`);
+    if (cb) cb.checked = !!cfg.enabled;
+    _renderTimes(type, cfg.times || []);
+    document.getElementById(`next-${type}`).textContent =
+      cfg.enabled && cfg.times?.length ? _nextRunText(cfg.times) : '';
+  }
+}
+
+function _renderTimes(type, times) {
+  const el = document.getElementById(`${type}-times`);
+  if (!el) return;
+  el.innerHTML = times.map(t =>
+    `<span class="time-chip">${_fmt12(t)}<button onclick="removeTime('${type}','${t}')" title="Remove">×</button></span>`
+  ).join('');
+}
+
+function addTime(type) {
+  const btnId  = `add-time-btn-${type}`;
+  const formId = `add-time-form-${type}`;
+  // Toggle: if form already open, close it
+  const existing = document.getElementById(formId);
+  if (existing) { existing.remove(); return; }
+  // Build inline form
+  const form = document.createElement('div');
+  form.id = formId;
+  form.style.cssText = 'display:flex;gap:6px;align-items:center;margin-top:8px';
+  form.innerHTML = `
+    <input type="time" id="time-inp-${type}" style="flex:1;padding:7px 10px;border:1px solid var(--line);border-radius:var(--r);font-size:13px;font-family:var(--font-sans);outline:none;background:var(--surface);color:var(--ink)">
+    <button onclick="_confirmAddTime('${type}')" style="padding:7px 14px;background:var(--navy);color:white;border:none;border-radius:var(--r);font-size:12.5px;font-weight:600;cursor:pointer">Add</button>
+    <button onclick="document.getElementById('${formId}').remove()" style="padding:7px 10px;background:var(--surface-2);color:var(--ink-3);border:1px solid var(--line);border-radius:var(--r);font-size:12.5px;cursor:pointer">✕</button>
+  `;
+  const btn = document.getElementById(btnId) || document.querySelector(`[onclick="addTime('${type}')"]`);
+  btn.parentNode.insertBefore(form, btn);
+  const inp = document.getElementById(`time-inp-${type}`);
+  inp.focus();
+  inp.addEventListener('keydown', e => { if (e.key === 'Enter') _confirmAddTime(type); });
+}
+
+function _confirmAddTime(type) {
+  const inp = document.getElementById(`time-inp-${type}`);
+  const t   = inp?.value;
+  const formId = `add-time-form-${type}`;
+  if (t && !(_schedule[type].times || []).includes(t)) {
+    _schedule[type].times = [...(_schedule[type].times || []), t].sort();
+    _renderTimes(type, _schedule[type].times);
+    _updateNextRun(type);
+    saveSchedule();
+  }
+  document.getElementById(formId)?.remove();
+}
+
+function removeTime(type, t) {
+  _schedule[type].times = (_schedule[type].times || []).filter(x => x !== t);
+  _renderTimes(type, _schedule[type].times);
+  _updateNextRun(type);
+  saveSchedule();
+}
+
+function _updateNextRun(type) {
+  const cfg = _schedule[type];
+  document.getElementById(`next-${type}`).textContent =
+    cfg.enabled && cfg.times?.length ? _nextRunText(cfg.times) : '';
+}
+
+async function saveSchedule() {
+  _schedule.fresh.enabled = document.getElementById('fresh-enabled')?.checked;
+  _schedule.full.enabled  = document.getElementById('full-enabled')?.checked;
+  renderSchedule();
+  await fetch('/api/schedule', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(_schedule),
+  });
+}
+
+function _nextRunText(times) {
+  const now = new Date();
+  const nowM = now.getHours() * 60 + now.getMinutes();
+  const slotMinutes = times
+    .map(t => { const [h, m] = t.split(':').map(Number); return h * 60 + m; })
+    .sort((a, b) => a - b);
+  const next = slotMinutes.find(m => m > nowM);
+  const diffM = next !== undefined
+    ? next - nowM
+    : (24 * 60 - nowM) + slotMinutes[0];
+  if (diffM < 60) return `Next run in ${diffM}m`;
+  const h = Math.floor(diffM / 60), m = diffM % 60;
+  return `Next run in ${h}h${m ? ` ${m}m` : ''}`;
+}
+
+function _fmt12(t) {
+  // "14:30" → "2:30 PM"
+  const [hh, mm] = t.split(':').map(Number);
+  const ampm = hh < 12 ? 'AM' : 'PM';
+  const h12  = ((hh % 12) || 12);
+  return `${h12}:${String(mm).padStart(2,'0')} ${ampm}`;
+}
+
+// ── Past scans ────────────────────────────────────────────────────────────────
+let _selectedScanId = null;
+
+async function loadPastScans() {
+  const scans = await fetch('/api/scans/recent').then(r => r.json()).catch(() => []);
+  renderPastScans(scans);
+}
+
+function renderPastScans(scans) {
+  const el = document.getElementById('past-scans-list');
+  if (!scans.length) { el.innerHTML = '<div style="font-size:12px;color:var(--ink-4);padding:8px 0">No past scans yet</div>'; return; }
+  el.innerHTML = scans.map(s => {
+    const type    = (s.scan_type || 'fresh').replace('manual','fresh');
+    const tag     = type === 'full' ? 'full' : 'fresh';
+    const label   = tag === 'full' ? '⟳ FULL' : '⚡ FRESH';
+    const when    = _relTime(s.started_at);
+    const meta    = [s.total_companies && `${s.total_companies} cos`, s.total_jobs_found && `${Number(s.total_jobs_found).toLocaleString()} found`, s.failed_companies && `${s.failed_companies} err`].filter(Boolean).join(' · ');
+    const newN    = s.new_jobs_found || 0;
+    const newHtml = newN > 0
+      ? `<span class="psi-new pos">+${Number(newN).toLocaleString()} new</span>`
+      : `<span class="psi-new zero">0 new</span>`;
+    return `<div class="past-scan-item${s.id === _selectedScanId ? ' is-sel' : ''}" onclick="selectPastScan(${s.id},this)">
+      <div class="psi-top">
+        <span class="psi-tag ${tag}">${label}</span>
+        <span class="psi-time">${when}</span>
+        ${newHtml}
+      </div>
+      <div class="psi-meta">${meta}</div>
+    </div>`;
+  }).join('');
+}
+
+async function selectPastScan(id, el) {
+  _selectedScanId = id;
+  document.querySelectorAll('.past-scan-item').forEach(e => e.classList.toggle('is-sel', e === el));
+  const rows = await fetch(`/api/scans/${id}/companies`).then(r => r.json()).catch(() => []);
+  if (!rows.length) return;
+  // Convert DB rows to the progress format showSummary expects
+  const progress = rows.map(r => ({
+    company:    r.company_name,
+    mode:       (COMPANIES.find(c => c.name === r.company_name)?.scrape?.mode) || 'html',
+    status:     r.status === 'success' ? 'done' : r.status === 'failed' ? 'error' : r.status,
+    count:      r.jobs_found || 0,
+    new:        r.new_jobs_found || 0,
+    duration_s: r.finished_at && r.started_at
+      ? parseFloat(((new Date(r.finished_at) - new Date(r.started_at)) / 1000).toFixed(1))
+      : null,
+    error:      r.error_message || null,
+  }));
+  showSummary(progress, true, 'past');
+  document.getElementById('results-title').textContent = `Past scan #${id}`;
+}
+
+function _relTime(dtStr) {
+  if (!dtStr) return '—';
+  const diff = Math.floor((Date.now() - new Date(dtStr).getTime()) / 1000);
+  if (diff < 60)    return 'just now';
+  if (diff < 3600)  return `${Math.floor(diff/60)}m ago`;
+  if (diff < 86400) return `${Math.floor(diff/3600)}h ago`;
+  const d = Math.floor(diff/86400);
+  return d === 1 ? 'Yesterday' : `${d}d ago`;
+}
+
 buildSidebar();
 updateCounts();
 
@@ -738,7 +1411,11 @@ document.addEventListener('DOMContentLoaded', async () => {
       } catch {}
     }
   }
+  // Always load schedule and past scans on page load
+  loadSchedule();
+  loadPastScans();
 });
 </script>
+<script src="{{ url_for('static', filename='js/sidebar-resize.js') }}"></script>
 </body>
 </html>

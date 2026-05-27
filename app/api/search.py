@@ -70,14 +70,18 @@ _KEYWORD_ALIASES = {
 
 def experience_score_sql(years):
     y = float(years)
-    close = int(y) + 1
+    close = int(y) + 2
     return (
         "CASE "
         "WHEN exp_min IS NULL AND exp_max IS NULL THEN 0 "
         f"WHEN exp_min > {close} THEN -100 "
         f"WHEN COALESCE(exp_min,0) <= {y} AND exp_max IS NOT NULL AND exp_max >= {y} THEN 100 "
-        f"WHEN COALESCE(exp_min,0) <= {y} AND exp_max IS NULL THEN 90 "
-        f"WHEN exp_min <= {close} THEN 60 "
+        # Open-ended "X+ years": penalise by how far below user_years exp_min is
+        f"WHEN COALESCE(exp_min,0) <= {y} AND exp_max IS NULL AND ({y} - COALESCE(exp_min,0)) <= 3 THEN 90 "
+        f"WHEN COALESCE(exp_min,0) <= {y} AND exp_max IS NULL AND ({y} - COALESCE(exp_min,0)) <= 7 THEN 60 "
+        f"WHEN COALESCE(exp_min,0) <= {y} AND exp_max IS NULL AND ({y} - COALESCE(exp_min,0)) <= 12 THEN 35 "
+        f"WHEN COALESCE(exp_min,0) <= {y} AND exp_max IS NULL THEN 15 "
+        f"WHEN exp_min <= {close} THEN 55 "
         "ELSE 10 END"
     )
 

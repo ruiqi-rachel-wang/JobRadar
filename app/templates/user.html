@@ -3,181 +3,44 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>JobRadar — Jobs</title>
-<style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  font-size: 14px; background: #f0f2f5; color: #1a1a1a;
-  height: 100vh; display: flex; flex-direction: column; overflow: hidden;
-}
-.topbar {
-  background: #1c2b4a; color: white; padding: 0 20px; height: 48px;
-  display: flex; align-items: center; gap: 16px; flex-shrink: 0;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-}
-.topbar-dot { width: 7px; height: 7px; border-radius: 50%; background: #5bc8a8;
-              animation: pulse 2s ease-in-out infinite; flex-shrink: 0; }
-@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
-.topbar-logo { font-size: 17px; font-weight: 700; letter-spacing: -0.3px; color: white; }
-.topbar-logo span { color: #5bc8a8; }
-.nav-pill { font-size: 12px; padding: 4px 10px; border-radius: 5px; color: rgba(255,255,255,.7);
-            border: none; background: transparent; cursor: pointer; text-decoration: none;
-            display: inline-block; transition: background .12s; }
-.nav-pill:hover { background: rgba(255,255,255,.1); color: white; }
-.nav-pill.active { background: rgba(91,200,168,.2); color: #5bc8a8; }
-.topbar-stats { margin-left: auto; font-size: 12px; color: rgba(255,255,255,0.6); }
-.topbar-stats strong { color: #5bc8a8; }
-.shell { display: flex; flex: 1; overflow: hidden; }
-.sidebar { width: 280px; background: white; border-right: 1px solid #dde1e7;
-           display: flex; flex-direction: column; overflow: hidden; flex-shrink: 0; }
-.sidebar-search-wrap { padding: 12px 12px 8px; border-bottom: 1px solid #eee; flex-shrink: 0; }
-.sidebar-search { width: 100%; padding: 7px 10px; border: 1px solid #dde1e7; border-radius: 6px;
-                  font-size: 13px; outline: none; background: #f7f8fa; }
-.sidebar-search:focus { border-color: #1c2b4a; background: white; }
-.cat-wrap { padding: 8px 10px 6px; border-bottom: 1px solid #eee; display: flex;
-            flex-wrap: wrap; gap: 4px; max-height: 150px; overflow-y: auto; flex-shrink: 0; }
-.cat-wrap::-webkit-scrollbar { width: 4px; }
-.cat-wrap::-webkit-scrollbar-thumb { background: #dde1e7; border-radius: 2px; }
-.cat-btn { padding: 3px 10px; border-radius: 12px; border: 1px solid #dde1e7;
-           background: white; font-size: 11px; color: #555; cursor: pointer;
-           transition: all 0.1s; white-space: nowrap; }
-.cat-btn:hover { border-color: #1c2b4a; color: #1c2b4a; }
-.cat-btn.active { background: #1c2b4a; border-color: #1c2b4a; color: white; }
-.company-list { flex: 1; min-height: 0; overflow-y: auto; padding: 4px 6px; }
-.company-list::-webkit-scrollbar { width: 4px; }
-.company-list::-webkit-scrollbar-thumb { background: #dde1e7; border-radius: 2px; }
-.co-item { display: flex; align-items: center; gap: 8px; padding: 7px 8px;
-           border-radius: 6px; cursor: pointer; transition: background 0.1s;
-           border: 1px solid transparent; }
-.co-item:hover { background: #f0f2f5; }
-.co-item.selected { background: #e8f4ef; border-color: #5bc8a8; }
-.co-item.hidden { display: none; }
-.co-check { width: 15px; height: 15px; border: 1.5px solid #ccc; border-radius: 3px;
-            display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-            font-size: 9px; color: transparent; transition: all 0.1s; }
-.co-item.selected .co-check { background: #1c2b4a; border-color: #1c2b4a; color: white; }
-.co-name { font-size: 13px; color: #1a1a1a; flex: 1;
-           white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.co-mode { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
-.co-mode.greenhouse{background:#22c55e}.co-mode.lever{background:#3b82f6}
-.co-mode.ashby{background:#a855f7}.co-mode.workday{background:#f59e0b}
-.co-mode.bamboohr{background:#14b8a6}.co-mode.icims{background:#6366f1}
-.co-mode.apple{background:#6b7280}.co-mode.google{background:#ef4444}
-.co-mode.microsoft{background:#0ea5e9}.co-mode.pinpoint{background:#ec4899}
-.co-mode.html{background:#9ca3af}.co-mode.playwright{background:#d97706}
-.sidebar-foot { padding: 10px 12px; border-top: 1px solid #eee; background: #fafafa;
-                flex-shrink: 0; }
-.sel-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px;
-           font-size: 12px; color: #666; }
-.sel-num { font-weight: 700; color: #1c2b4a; font-size: 15px; }
-.sel-link { color: #888; text-decoration: underline; cursor: pointer; font-size: 11px; }
-.sel-link:hover { color: #1c2b4a; }
-.btn-row { display: flex; gap: 6px; }
-.btn { flex: 1; padding: 8px; border-radius: 6px; border: none; cursor: pointer;
-       font-size: 12px; font-weight: 600; transition: all 0.12s; }
-.btn-show { background: #1c2b4a; color: white; }
-.btn-show:hover { background: #243660; }
-.btn-show:disabled { background: #9ca3af; cursor: not-allowed; }
-.main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
-.filters-bar { background: white; border-bottom: 1px solid #dde1e7; padding: 12px 20px;
-               display: flex; align-items: center; gap: 10px; flex-shrink: 0; flex-wrap: wrap; }
-.filter-group { display: flex; flex-direction: column; gap: 3px; }
-.filter-label { font-size: 10px; font-weight: 600; color: #888;
-                text-transform: uppercase; letter-spacing: 0.05em; }
-.filter-input { padding: 7px 10px; border: 1px solid #dde1e7; border-radius: 6px;
-                font-size: 13px; outline: none; background: #f7f8fa;
-                transition: border-color 0.15s; }
-.filter-input:focus { border-color: #1c2b4a; background: white; }
-#f-keyword { width: 220px; } #f-location { width: 160px; } #f-exp { width: 92px; } #f-begin { width: 140px; }
-.filter-divider { width: 1px; height: 40px; background: #eee; flex-shrink: 0; }
-.scan-go { align-self: flex-end; padding: 8px 20px; background: #5bc8a8; color: white;
-           font-size: 13px; font-weight: 700; border: none; border-radius: 6px;
-           cursor: pointer; transition: background 0.12s; white-space: nowrap; }
-.scan-go:hover { background: #44b595; }
-#filter-btn { background: #1c2b4a; } #filter-btn:hover { background: #243660; }
-.result-counts { font-size: 12px; color: #888; margin-left: auto; }
-.result-counts strong { color: #5bc8a8; font-size: 15px; }
-.results-area { flex: 1; overflow-y: auto; padding: 16px 20px; }
-.results-area::-webkit-scrollbar { width: 5px; }
-.results-area::-webkit-scrollbar-thumb { background: #dde1e7; border-radius: 3px; }
-.empty-state { display: flex; flex-direction: column; align-items: center;
-               justify-content: center; height: 100%; color: #aaa; text-align: center; }
-.empty-state .icon { font-size: 40px; margin-bottom: 12px; }
-.empty-state h3 { font-size: 16px; color: #666; margin-bottom: 6px; }
-.empty-state p { font-size: 13px; line-height: 1.6; max-width: 360px; }
-.legend { display: flex; gap: 16px; margin-top: 16px; font-size: 11px; color: #aaa; flex-wrap: wrap; justify-content: center; }
-.legend-item { display: flex; align-items: center; gap: 5px; }
-.ldot { width: 7px; height: 7px; border-radius: 50%; }
-.section-head { display: flex; align-items: center; gap: 8px; padding: 6px 0 8px;
-                border-bottom: 2px solid #1c2b4a; margin-bottom: 10px; }
-.section-title { font-size: 13px; font-weight: 700; color: #1c2b4a; }
-.new-badge { background: #5bc8a8; color: white; font-size: 9px; font-weight: 700;
-             padding: 2px 7px; border-radius: 10px; text-transform: uppercase; }
-.section-count { margin-left: auto; font-size: 11px; color: #999; }
-.results-section { margin-bottom: 28px; }
-.job-table { width: 100%; border-collapse: collapse; }
-.job-table th { text-align: left; font-size: 10px; font-weight: 600; color: #999;
-                text-transform: uppercase; letter-spacing: 0.05em; padding: 6px 10px;
-                border-bottom: 1px solid #eee; background: #fafafa; }
-.job-row { border-bottom: 1px solid #f0f2f5; transition: background 0.1s;
-           animation: rowIn 0.2s ease both; }
-.job-row:hover { background: #f7f8fa; }
-.job-row.filtered-out { display: none; }
-@keyframes rowIn { from{opacity:0;transform:translateX(-4px)} to{opacity:1;transform:translateX(0)} }
-.job-row td { padding: 9px 10px; vertical-align: middle; }
-.td-new { width: 36px; }
-.new-dot { width: 7px; height: 7px; border-radius: 50%; background: #5bc8a8; margin: 0 auto; }
-.clicked-dot { width: 7px; height: 7px; border-radius: 50%; background: #5bc8a8; margin: 0 auto; opacity: .5; }
-.td-title { max-width: 340px; }
-.job-title-link { color: #1c2b4a; text-decoration: none; font-weight: 500;
-                  font-size: 13px; line-height: 1.35; }
-.job-title-link:hover { text-decoration: underline; color: #243660; }
-.job-co { font-size: 11px; color: #888; margin-top: 2px; }
-.interview-tag { color: #0f766e; font-weight: 600; }
-.td-loc { width: 160px; font-size: 12px; color: #666; }
-.td-src { width: 100px; }
-.src-tag { display: inline-block; font-size: 10px; padding: 2px 7px; border-radius: 10px;
-           border: 1px solid; text-transform: uppercase; letter-spacing: 0.04em; }
-.src-tag.greenhouse{border-color:#bbf7d0;color:#15803d;background:#f0fdf4}
-.src-tag.lever{border-color:#bfdbfe;color:#1d4ed8;background:#eff6ff}
-.src-tag.ashby{border-color:#e9d5ff;color:#7c3aed;background:#faf5ff}
-.src-tag.workday{border-color:#fde68a;color:#b45309;background:#fffbeb}
-.src-tag.apple{border-color:#e5e7eb;color:#374151;background:#f9fafb}
-.src-tag.google{border-color:#fecaca;color:#b91c1c;background:#fef2f2}
-.src-tag.microsoft{border-color:#bae6fd;color:#0369a1;background:#f0f9ff}
-.src-tag.html{border-color:#e5e7eb;color:#6b7280;background:#f9fafb}
-.src-tag.playwright{border-color:#fed7aa;color:#c2410c;background:#fff7ed}
-.src-tag.bamboohr{border-color:#99f6e4;color:#0f766e;background:#f0fdfa}
-.src-tag.icims{border-color:#c7d2fe;color:#4338ca;background:#eef2ff}
-.src-tag.pinpoint{border-color:#fce7f3;color:#be185d;background:#fdf2f8}
-.td-date { width: 120px; font-size: 11px; color: #aaa; white-space: nowrap; }
-.td-date.has-posted { color: #1c2b4a; font-weight: 500; }
-.no-match { text-align: center; padding: 40px 0; color: #aaa; font-size: 13px; display: none; }
-.old-toggle-btn { display: block; width: 100%; padding: 10px; margin: 12px 0 4px;
-                  background: #f7f8fa; border: 1px dashed #dde1e7; border-radius: 6px;
-                  color: #999; cursor: pointer; font-size: 12px; font-weight: 500;
-                  text-align: center; transition: all 0.1s; }
-.old-toggle-btn:hover { background: #eef0f3; color: #555; border-color: #bbb; }
-.page-controls { display: flex; align-items: center; justify-content: center;
-                 gap: 10px; margin: 16px 0 12px; }
-.page-btn { padding: 7px 12px; border-radius: 6px; border: 1px solid #dde1e7;
-            background: white; color: #1c2b4a; font-size: 12px; font-weight: 700; cursor: pointer; }
-.page-btn:disabled { color: #aaa; cursor: not-allowed; background: #f7f8fa; }
-.page-info { font-size: 12px; color: #777; }
-</style>
+<title>JobDrop — Jobs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,500&family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/tokens.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/jobs.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/drawer.css') }}">
 </head>
 <body>
 
 <div class="topbar">
-  <div class="topbar-dot"></div>
-  <div class="topbar-logo">Job<span>Radar</span></div>
-  <span class="nav-pill active">Jobs</span>
-  <a href="/admin" class="nav-pill">Scan Board</a>
+  <div class="tb-brand">
+    <div class="topbar-dot"></div>
+    <div class="topbar-logo">Job<em>Drop</em></div>
+  </div>
+  {% if not is_public %}
+  <button class="nav-pill active" id="tab-jobs" onclick="setTab('jobs')">Jobs</button>
+  <button class="nav-pill" id="tab-apply" onclick="setTab('apply')">Apply List <span class="apply-badge" id="apply-badge" style="display:none"></span></button>
+  {% if is_admin %}<a href="/admin" class="nav-pill" style="color:rgba(255,255,255,.45);font-size:12px">← Admin</a>{% endif %}
+  {% endif %}
+  <span class="tb-spring"></span>
   <div class="topbar-stats">
     <strong id="hdr-sel">0</strong> selected &nbsp;·&nbsp;
     <strong id="hdr-total">{{ companies|length }}</strong> companies
   </div>
+  <button class="tb-report-btn" onclick="openFeedback()">🏳 Report</button>
+  {% if is_public %}
+  <a href="/login" class="tb-login-btn">Log in / Sign up</a>
+  {% else %}
+  {% if username %}
+  <div class="tb-user-pill">
+    <span class="tb-avatar">{{ username[0].upper() }}</span>
+    <span>{{ username }}</span>
+  </div>
+  {% endif %}
+  <a href="/logout" class="tb-logout-btn">Sign out</a>
+  {% endif %}
 </div>
 
 <div class="shell">
@@ -186,17 +49,21 @@ body {
       <input class="sidebar-search" id="sidebar-search" placeholder="Search companies..." oninput="filterSidebar()">
     </div>
     <div class="cat-wrap" id="cat-wrap"></div>
+    <div class="sidebar-resizer" id="sidebar-resizer"></div>
     <div class="company-list" id="company-list"></div>
     <div class="sidebar-foot">
       <div class="sel-row">
         <span class="sel-num" id="sel-count">0</span>
-        <span style="color:#666">selected</span>
-        <span class="sel-link" onclick="selectAllVisible()">all</span>
-        <span class="sel-link" onclick="deselectAll()">none</span>
+        <span style="color:var(--ink-3)">selected</span>
+        <button class="sel-link" onclick="selectAllVisible()">all</button>
+        <button class="sel-link" onclick="deselectAll()">none</button>
       </div>
       <div class="btn-row">
         <button class="btn btn-show" id="btn-show" onclick="showJobs()" disabled>Show Jobs</button>
       </div>
+      {% if not is_public %}
+      <button class="reset-link" onclick="resetSeen()">↺ Reset "new" tracking</button>
+      {% endif %}
     </div>
   </aside>
 
@@ -218,72 +85,121 @@ body {
       </div>
       <div class="filter-divider"></div>
       <div class="filter-group">
-        <div class="filter-label">Posted / seen after</div>
-        <input class="filter-input" id="f-begin" type="date">
+        <div class="filter-label">Posted</div>
+        <div class="fb-seg" id="seg-date">
+          <button class="fb-seg-btn is-on" onclick="setDateSeg(this,'')">Any</button>
+          <button class="fb-seg-btn" onclick="setDateSeg(this,'1')">24h</button>
+          <button class="fb-seg-btn" onclick="setDateSeg(this,'3')">3d</button>
+          <button class="fb-seg-btn" onclick="setDateSeg(this,'7')">7d</button>
+          <button class="fb-seg-btn" onclick="setDateSeg(this,'30')">30d</button>
+          <span class="fb-seg-date">
+            <span class="label-from">from</span>
+            <input type="date" id="f-begin" oninput="onDateInput()">
+          </span>
+        </div>
       </div>
       <button class="scan-go" id="filter-btn" onclick="applyFilters(null,1)">⌕ Filter</button>
+      {% if not is_public %}<button class="save-search-btn" id="save-search-btn" onclick="saveSearch()" title="Save this search">★</button>{% endif %}
       <div class="result-counts" id="result-counts" style="display:none">
-        <strong id="stat-clicked" style="color:#5bc8a8">—</strong> opened &nbsp;/&nbsp;
-        <strong id="stat-total" style="color:#1c2b4a">—</strong> total
+        <strong id="stat-tracked">—</strong> tracked &nbsp;/&nbsp;
+        <strong id="stat-total">—</strong> total
       </div>
     </div>
+    <div class="saved-searches-bar" id="saved-bar" style="display:none"></div>
 
+    <!-- Jobs tab -->
+    <div id="jobs-view">
     <div class="results-area" id="results-area">
       <div class="empty-state" id="empty-state">
         <div class="icon">📋</div>
         <h3>Select companies, then click Show Jobs</h3>
         <p>Pick one or more companies from the sidebar to browse their stored jobs.<br>
         Use the filters above to narrow by keyword, location, or date.</p>
-        <div class="legend">
-          <div class="legend-item"><div class="ldot" style="background:#22c55e"></div>Greenhouse</div>
-          <div class="legend-item"><div class="ldot" style="background:#3b82f6"></div>Lever</div>
-          <div class="legend-item"><div class="ldot" style="background:#a855f7"></div>Ashby</div>
-          <div class="legend-item"><div class="ldot" style="background:#f59e0b"></div>Workday</div>
-          <div class="legend-item"><div class="ldot" style="background:#d97706"></div>Playwright</div>
-          <div class="legend-item"><div class="ldot" style="background:#9ca3af"></div>Other</div>
-        </div>
+      </div>
+      <div class="empty-state" id="policy-notice" style="display:none">
+        <div class="icon">🔒</div>
+        <h3 id="policy-co-name"></h3>
+        <p id="policy-co-msg" style="max-width:420px;margin:0 auto"></p>
+        <a id="policy-co-link" href="#" target="_blank" rel="noopener"
+           style="display:inline-block;margin-top:18px;padding:9px 20px;background:var(--navy);color:#fff;border-radius:8px;text-decoration:none;font-size:13px;font-weight:500">
+          View Careers Page ↗
+        </a>
+        <p style="margin-top:14px;font-size:12px;color:var(--ink-4)">
+          We check policy changes periodically — this may become available in the future.
+        </p>
       </div>
       <div id="results-container" style="display:none">
         <div id="new-section"></div>
         <button id="old-toggle" onclick="toggleOldJobs()" style="display:none" class="old-toggle-btn"></button>
         <div id="old-section"></div>
         <div id="page-controls"></div>
-        <button id="clicked-toggle" onclick="toggleClickedJobs()" style="display:none" class="old-toggle-btn"></button>
-        <div id="clicked-section"></div>
         <div class="no-match" id="no-match">No jobs match your filter.</div>
       </div>
     </div>
+    </div><!-- /jobs-view -->
+
+    <!-- Apply List tab -->
+    {% if not is_public %}
+    <div id="apply-view" style="display:none;flex-direction:column;flex:1;min-height:0">
+      <div class="apply-stage-bar" id="apply-stage-bar"></div>
+      <div class="results-area">
+        <div id="apply-content"></div>
+      </div>
+    </div>
+    {% endif %}
   </div>
 </div>
 
 <script>
-const COMPANIES   = {{ companies|tojson }};
-const RECENT_DAYS = 7;
-const CLICKED_KEY = 'jobradar_clicked';
+const COMPANIES    = {{ companies|tojson }};
+const IS_PUBLIC    = {{ is_public|tojson }};
+const IS_ADMIN     = {{ is_admin|tojson }};
+const SEARCHES_KEY = 'jd_searches_{{ username or "anon" }}';
 let selected         = new Set();
 let activeSidebarCat = 'All';
 let allResults       = [];
 let currentPage  = 1;
 let currentTotal = 0;
 let currentLimit = 100;
+let activeTab    = 'jobs';
+let activeApplyStage = 'all';
 
-function getClicked() {
-  try { return new Set(JSON.parse(localStorage.getItem(CLICKED_KEY)||'[]')); } catch { return new Set(); }
+// ── localStorage helpers ──────────────────────────────────────────────────────
+function _lsGet(key, fallback) {
+  try { return JSON.parse(localStorage.getItem(key)) ?? fallback; } catch { return fallback; }
 }
-function markClicked(id) {
-  const s = getClicked(); s.add(id);
-  localStorage.setItem(CLICKED_KEY, JSON.stringify([...s]));
-}
-function isRecent(fs) {
-  if (!fs) return true;
-  const cut = new Date(); cut.setDate(cut.getDate() - RECENT_DAYS);
-  return new Date(fs.slice(0,10)) >= cut;
-}
+function _lsSet(key, val) { localStorage.setItem(key, JSON.stringify(val)); }
+
+// Auto-add to Apply List with "applied" when the external link is opened
 function onJobClick(id) {
-  markClicked(id);
-  const area = document.getElementById('results-area');
-  const top  = area.scrollTop;
-  setTimeout(() => { renderResults(allResults); area.scrollTop = top; }, 80);
+  if (IS_PUBLIC || _applyCache[id]) return;
+  const job = jobsById[id];
+  if (job) saveToApply(job, 'applied').then(() => _syncApplyBtn(id));
+}
+
+async function resetSeen() {
+  if (!confirm('Clear all "seen" tracking? Everything will show as NEW on next scan.')) return;
+  await fetch('/api/reset_seen', { method: 'POST' });
+  alert('Done — next scan marks everything as new.');
+}
+
+// ── Segmented date filter ──────────────────────────────────────────────────────
+function setDateSeg(btn, days) {
+  document.querySelectorAll('#seg-date .fb-seg-btn').forEach(b => b.classList.remove('is-on'));
+  btn.classList.add('is-on');
+  const inp = document.getElementById('f-begin');
+  if (!days) {
+    inp.value = '';
+  } else {
+    const d = new Date();
+    d.setDate(d.getDate() - parseInt(days, 10));
+    inp.value = d.toISOString().slice(0, 10);
+  }
+  if (resultsVisible()) applyFilters(null, 1);
+}
+function onDateInput() {
+  document.querySelectorAll('#seg-date .fb-seg-btn').forEach(b => b.classList.remove('is-on'));
+  if (resultsVisible()) applyFilters(null, 1);
 }
 
 // ── Sidebar ───────────────────────────────────────────────────────────────────
@@ -309,12 +225,14 @@ function buildSidebar() {
   const list = document.getElementById('company-list');
   COMPANIES.forEach((c, i) => {
     const mode = (c.scrape||{}).mode || 'html';
+    const isBlocked = !!c.policy;
     const div = document.createElement('div');
-    div.className = 'co-item'; div.dataset.idx = i;
-    div.innerHTML = `<div class="co-check">✓</div>
+    div.className = 'co-item' + (isBlocked ? ' co-policy' : '');
+    div.dataset.idx = i;
+    div.innerHTML = `<div class="co-check">${isBlocked ? '🔒' : '✓'}</div>
       <div class="co-name">${esc2(c.name)}</div>
-      <div class="co-mode ${mode}"></div>`;
-    div.onclick = () => toggleCo(i, div);
+      <div class="co-mode ${isBlocked ? '' : mode}"></div>`;
+    div.onclick = isBlocked ? () => showPolicyNotice(c) : () => toggleCo(i, div);
     list.appendChild(div);
   });
 }
@@ -323,6 +241,17 @@ function toggleCo(idx, el) {
   if (selected.has(idx)) { selected.delete(idx); el.classList.remove('selected'); }
   else { selected.add(idx); el.classList.add('selected'); }
   updateCounts();
+}
+function showPolicyNotice(c) {
+  setTab('jobs');
+  document.getElementById('empty-state').style.display       = 'none';
+  document.getElementById('results-container').style.display = 'none';
+  document.getElementById('policy-notice').style.display     = 'flex';
+  document.getElementById('policy-co-name').textContent      = c.name;
+  document.getElementById('policy-co-msg').textContent       = (c.policy||{}).message || '';
+  const link = document.getElementById('policy-co-link');
+  link.href        = (c.policy||{}).careers_url || '#';
+  link.textContent = 'View ' + c.name + ' Careers ↗';
 }
 function filterSidebar() {
   const q = document.getElementById('sidebar-search').value.toLowerCase();
@@ -361,12 +290,12 @@ function selectedCompanyNames() {
 function showEmptyMessage(msg) {
   allResults = []; currentTotal = 0;
   document.getElementById('empty-state').style.display = 'none';
+  document.getElementById('policy-notice').style.display = 'none';
   document.getElementById('result-counts').style.display = 'none';
   document.getElementById('results-container').style.display = 'block';
-  ['clicked-section','new-section','old-section','page-controls'].forEach(id =>
+  ['new-section','old-section','page-controls'].forEach(id =>
     document.getElementById(id).innerHTML = '');
   document.getElementById('old-toggle').style.display = 'none';
-  document.getElementById('clicked-toggle').style.display = 'none';
   const nm = document.getElementById('no-match');
   nm.textContent = msg; nm.style.display = 'block';
 }
@@ -389,8 +318,16 @@ async function applyFilters(companyNames, page) {
   if (activeSidebarCat !== 'All') params.set('category', activeSidebarCat);
   names.forEach(name => params.append('company', name));
   try {
+    const nm = document.getElementById('no-match');
+    if (resultsVisible()) {
+      nm.textContent = 'Loading jobs...';
+      nm.style.display = 'block';
+    }
     const resp = await fetch('/api/jobs?' + params);
-    if (!resp.ok) return;
+    if (!resp.ok) {
+      showEmptyMessage('Could not load jobs. Try again in a moment.');
+      return;
+    }
     const payload = await resp.json();
     const jobs = Array.isArray(payload) ? payload : (payload.jobs || []);
     if (!Array.isArray(jobs)) return;
@@ -399,7 +336,10 @@ async function applyFilters(companyNames, page) {
     currentLimit = Number(payload.limit || 100);
     currentTotal = Number(payload.total ?? jobs.length);
     renderResults(jobs);
-  } catch(e) { console.error('Failed to load jobs:', e); }
+  } catch(e) {
+    console.error('Failed to load jobs:', e);
+    showEmptyMessage('Could not load jobs. Try again in a moment.');
+  }
 }
 
 function filterDOM() {
@@ -516,49 +456,33 @@ async function showJobs() {
 
 // ── Render ────────────────────────────────────────────────────────────────────
 function renderResults(jobs) {
-  const clicked   = getClicked();
-  const clickedJs = jobs.filter(j => clicked.has(j.id));
-  const visibleJobs = jobs.filter(j => !clicked.has(j.id));
   const totalPages = Math.max(1, Math.ceil(currentTotal / currentLimit));
   const startRow   = currentTotal ? (currentPage-1)*currentLimit+1 : 0;
   const endRow     = Math.min(currentPage*currentLimit, currentTotal);
 
   document.getElementById('empty-state').style.display  = 'none';
+  document.getElementById('policy-notice').style.display = 'none';
   document.getElementById('result-counts').style.display = '';
-  document.getElementById('stat-clicked').textContent = clickedJs.length;
+  document.getElementById('stat-tracked').textContent = Object.keys(getApplyList()).length;
   document.getElementById('stat-total').textContent   = currentTotal;
 
   if (!jobs.length) {
-    ['clicked-section','new-section','old-section','page-controls'].forEach(id =>
+    ['new-section','old-section','page-controls'].forEach(id =>
       document.getElementById(id).innerHTML = '');
     document.getElementById('results-container').style.display = 'block';
     document.getElementById('no-match').textContent = 'No jobs match your filter.';
     document.getElementById('no-match').style.display = 'block';
     document.getElementById('old-toggle').style.display = 'none';
-    document.getElementById('clicked-toggle').style.display = 'none';
     return;
   }
   document.getElementById('no-match').style.display = 'none';
   document.getElementById('results-container').style.display = 'block';
-
   document.getElementById('new-section').innerHTML = '';
-  renderSection('old-section',     visibleJobs, 'Jobs by posted date', false, 'old');
+
+  renderSection('old-section', jobs, 'Jobs by posted date', false, 'old');
   renderPagination(startRow, endRow, totalPages);
-  renderSection('clicked-section', clickedJs, '✓ Applied / Opened',     false, 'clicked');
-
-  const oldToggle = document.getElementById('old-toggle');
-  oldToggle.style.display = 'none';
+  document.getElementById('old-toggle').style.display = 'none';
   document.getElementById('old-section').style.display = 'block';
-
-  const clickedToggle = document.getElementById('clicked-toggle');
-  if (clickedJs.length > 0) {
-    clickedToggle.textContent = `▼ Show ${clickedJs.length} opened / applied jobs`;
-    clickedToggle.style.display = 'block';
-    document.getElementById('clicked-section').style.display = 'none';
-  } else {
-    clickedToggle.style.display = 'none';
-    document.getElementById('clicked-section').style.display = 'none';
-  }
 }
 
 function renderPagination(startRow, endRow, totalPages) {
@@ -585,46 +509,39 @@ function toggleOldJobs() {
   const n = sec.querySelectorAll('.job-row').length;
   btn.textContent = show ? `▲ Hide ${n} older jobs` : `▼ Show ${n} older jobs`;
 }
-function toggleClickedJobs() {
-  const sec = document.getElementById('clicked-section');
-  const btn = document.getElementById('clicked-toggle');
-  const show = sec.style.display === 'none';
-  sec.style.display = show ? 'block' : 'none';
-  const n = sec.querySelectorAll('.job-row').length;
-  btn.textContent = show ? `▲ Hide ${n} opened / applied jobs` : `▼ Show ${n} opened / applied jobs`;
-}
 
 function renderSection(id, jobs, title, isNew, bucket) {
   const el = document.getElementById(id);
   if (!jobs.length) { el.innerHTML = ''; return; }
+  jobs.forEach(j => { jobsById[j.id] = j; });
   const rows = jobs.map((j, idx) => {
-    const loc      = j.location || '—';
+    const loc       = j.location || '—';
     const hasPosted = j.posted && j.posted.length >= 8;
-    const seenDate = (j.first_seen || '').slice(0, 10);
-    const hasSeen = !hasPosted && seenDate.length >= 8;
-    const dateVal   = hasPosted ? j.posted : (hasSeen ? seenDate : '—');
-    const dateLabel = hasPosted ? 'Posted' : (hasSeen ? 'Seen' : '');
-    const dateCls   = (hasPosted || hasSeen) ? 'td-date has-posted' : 'td-date';
-    const source   = j.source || 'html';
-    const expLabel = j.exp_label ? ` · ${esc2(j.exp_label)}` : '';
-    const interview = j.interview || null;
-    const interviewLabel = interview
-      ? ` · <span class="interview-tag" title="${escAttr(interview.process || '')}">No whiteboard</span>`
+    const seenDate  = (j.first_seen || '').slice(0, 10);
+    const dateVal   = hasPosted ? j.posted : (seenDate.length >= 8 ? seenDate : '—');
+    const dateCls   = (hasPosted || seenDate.length >= 8) ? 'td-date has-posted' : 'td-date';
+    const yrsHtml   = j.exp_label ? `<span class="exp-chip">${esc2(j.exp_label)}</span>` : '';
+    const dotCell   = '';
+    const titleHtml = `<span class="job-title-link">${esc2(j.title)}</span>`;
+    const openBtn = j.url
+      ? `<a class="j-open-btn" href="${escAttr(j.url)}" target="_blank" rel="noopener" onclick="event.stopPropagation();onJobClick('${j.id}')">↗</a>`
       : '';
-    const dotCell  = bucket==='new' ? '<div class="new-dot"></div>'
-                   : bucket==='clicked' ? '<div class="clicked-dot"></div>' : '';
-    const titleHtml = j.url
-      ? `<a class="job-title-link" href="${escAttr(j.url)}" target="_blank" rel="noopener"
-           onclick="onJobClick('${j.id}')">${esc2(j.title)}</a>`
-      : `<span class="job-title-link">${esc2(j.title)}</span>`;
-    return `<tr class="job-row" data-title="${esc(j.title)}" data-co="${esc(j.company)}"
-              data-loc="${esc(j.location||'')}" data-seen="${(j.first_seen||'').slice(0,10)}"
-              data-cats='${JSON.stringify(j.categories||[])}' style="animation-delay:${idx*6}ms">
+    const inApply = !IS_PUBLIC && !!getApplyList()[j.id];
+    const trackBtnFull = !IS_PUBLIC
+      ? `<button class="j-apply-btn j-track-btn${inApply?' is-on':''}" data-jid="${j.id}" onclick="toggleApplyFromRow('${j.id}',event)" title="${inApply?'In apply list':'Add to apply list'}">${inApply?'✓':'+'}</button>`
+      : '';
+    return `<tr class="job-row"
+               data-id="${j.id}" data-title="${esc(j.title)}" data-co="${esc(j.company)}"
+               data-loc="${esc(j.location||'')}" data-cats='${JSON.stringify(j.categories||[])}'
+               style="animation-delay:${idx*6}ms"
+               onclick="openJobDrawer('${j.id}')">
       <td class="td-new">${dotCell}</td>
-      <td class="td-title">${titleHtml}<div class="job-co">${esc2(j.company)}${expLabel}${interviewLabel}</div></td>
+      <td class="td-title">${titleHtml}</td>
+      <td class="td-co">${esc2(j.company)}</td>
       <td class="td-loc">${esc2(loc)}</td>
-      <td class="td-src"><span class="src-tag ${source}">${source}</span></td>
-      <td class="${dateCls}">${dateLabel ? dateLabel + ': ' + dateVal : dateVal}</td>
+      <td class="td-yrs">${yrsHtml}</td>
+      <td class="${dateCls}">${dateVal}</td>
+      <td class="td-act">${openBtn}${trackBtnFull}</td>
     </tr>`;
   }).join('');
   el.innerHTML = `<div class="results-section">
@@ -634,7 +551,15 @@ function renderSection(id, jobs, title, isNew, bucket) {
       <span class="section-count">${jobs.length} listings</span>
     </div>
     <table class="job-table">
-      <thead><tr><th></th><th>Title / Company</th><th>Location</th><th>Source</th><th>Posted</th></tr></thead>
+      <thead><tr>
+        <th style="width:24px"></th>
+        <th>Title</th>
+        <th style="width:150px">Company</th>
+        <th style="width:160px">Location</th>
+        <th style="width:120px">Experience</th>
+        <th style="width:96px">Posted</th>
+        <th style="width:${IS_PUBLIC?'44px':'72px'}"></th>
+      </tr></thead>
       <tbody>${rows}</tbody>
     </table>
   </div>`;
@@ -644,19 +569,459 @@ function esc(s)    { return (s||'').toLowerCase(); }
 function escAttr(s){ return (s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 function esc2(s)   { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
+// ── Job detail drawer ─────────────────────────────────────────────────────────
+const jobsById = {};
+let currentDrawerJob = null;
+
+function _extractJobType(title, desc) {
+  const hay = ((title || '') + ' ' + (desc || '')).toLowerCase();
+  if (/\b(internship|intern\b)/.test(hay))      return 'Internship';
+  if (/\bcontract(or|ing)?\b/.test(hay))         return 'Contract';
+  if (/\bfreelance\b/.test(hay))                 return 'Freelance';
+  if (/\bpart[- ]time\b/.test(hay))              return 'Part-time';
+  if (/\bfull[- ]time\b/.test(hay))              return 'Full-time';
+  if (/\btemporary|temp\b/.test(hay))            return 'Temporary';
+  return '';
+}
+
+const MODE_DOT_COLORS = {
+  greenhouse:'#22c55e',lever:'#3b82f6',ashby:'#a855f7',workday:'#f59e0b',
+  bamboohr:'#14b8a6',icims:'#6366f1',html:'#9ca3af',playwright:'#cf923a',
+  successfactors:'#0070f3',smartrecruiters:'#22c55e',rippling:'#7c3aed',
+  pinpoint:'#ec4899',phenom:'#8b5cf6',talentbrew:'#be185d',
+};
+
+function openJobDrawer(id) {
+  const job = jobsById[id];
+  if (!job) return;
+  currentDrawerJob = job;
+  // Co line
+  document.getElementById('jd-company').textContent = job.company || '';
+  document.getElementById('jd-location').textContent = job.location || '—';
+  // Title
+  document.getElementById('jd-title').textContent = job.title || '';
+  // Posted
+  const dateStr = job.posted || (job.first_seen||'').slice(0,10) || '';
+  const postedEl = document.getElementById('jd-posted-line');
+  if (dateStr) {
+    const daysAgo = Math.floor((Date.now() - new Date(dateStr).getTime()) / 86400000);
+    if (daysAgo === 0) postedEl.innerHTML = '<span class="jd-posted-fresh">● Posted today</span>';
+    else if (daysAgo === 1) postedEl.innerHTML = '<span class="jd-posted-fresh">● Posted 1 day ago</span>';
+    else postedEl.textContent = `Posted ${dateStr} · ${daysAgo}d ago`;
+  } else { postedEl.textContent = ''; }
+  // Open link
+  const linkEl = document.getElementById('jd-open-link');
+  linkEl.href = job.url || '#';
+  linkEl.style.display = job.url ? '' : 'none';
+  // Quick stats — use API-supplied employment_type, fall back to text extraction
+  document.getElementById('jd-exp').textContent  = job.exp_label || '—';
+  document.getElementById('jd-type').textContent = job.employment_type || _extractJobType(job.title, job.description) || '—';
+  // Skills
+  const skills = job.skills || [];
+  document.getElementById('jd-skills').innerHTML = skills.map(s => `<span class="jd-skill">${esc2(s)}</span>`).join('');
+  document.getElementById('jd-skills-sec').style.display = skills.length ? '' : 'none';
+  // Description
+  const desc = (job.description || '').trim();
+  document.getElementById('jd-desc').textContent = desc;
+  document.getElementById('jd-desc-sec').style.display = desc ? '' : 'none';
+  // Details grid
+  document.getElementById('jd-d-company').textContent  = job.company || '—';
+  document.getElementById('jd-d-location').textContent = job.location || '—';
+  document.getElementById('jd-d-cats').textContent     = (job.categories||[]).slice(0,3).join(', ') || '—';
+  document.getElementById('jd-d-seen').textContent     = (job.first_seen||'').slice(0,10) || '—';
+  // Interview style from company data
+  const iv = job.interview || {};
+  const ivText = iv.process || (iv.no_whiteboard ? 'No whiteboard' : '') || '—';
+  document.getElementById('jd-d-interview').textContent = ivText;
+  // Source URL
+  document.getElementById('jd-url-display').textContent = (job.url||'').replace(/^https?:\/\//,'').slice(0,70);
+  // Track button
+  _updateDrawerTrackBtn();
+  // Show
+  document.getElementById('jd-bg').style.display = '';
+  document.getElementById('jd-drawer').style.display = '';
+}
+
+function _updateDrawerTrackBtn() {
+  const btn = document.getElementById('jd-track-btn');
+  if (!currentDrawerJob || IS_PUBLIC) { btn.style.display = 'none'; return; }
+  btn.style.display = '';
+  const on = !!_applyCache[currentDrawerJob.id];
+  btn.textContent = on ? '✓ In Apply List' : '+ Add to apply list';
+  btn.classList.toggle('is-saved', on);
+}
+
+function drawerToggleTrack() {
+  if (!currentDrawerJob || IS_PUBLIC) return;
+  const id = currentDrawerJob.id;
+  if (_applyCache[id]) {
+    removeFromApply(id).then(() => { _updateDrawerTrackBtn(); _syncApplyBtn(id); });
+  } else {
+    saveToApply(currentDrawerJob).then(() => { _updateDrawerTrackBtn(); _syncApplyBtn(id); });
+  }
+}
+
+function closeDrawer() {
+  document.getElementById('jd-bg').style.display = 'none';
+  document.getElementById('jd-drawer').style.display = 'none';
+  currentDrawerJob = null;
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrawer(); });
+
+// ── Tab system ────────────────────────────────────────────────────────────────
+function setTab(tab) {
+  activeTab = tab;
+  document.getElementById('tab-jobs')?.classList.toggle('active', tab === 'jobs');
+  document.getElementById('tab-apply')?.classList.toggle('active', tab === 'apply');
+  const onJobs = tab === 'jobs';
+  document.querySelector('.filters-bar').style.display     = onJobs ? '' : 'none';
+  const sb = document.getElementById('saved-bar');
+  if (sb) sb.style.display = onJobs && getSavedSearches().length ? '' : 'none';
+  document.getElementById('jobs-view').style.display  = onJobs ? '' : 'none';
+  const av = document.getElementById('apply-view');
+  if (av) av.style.display = onJobs ? 'none' : 'flex';
+  if (!onJobs) { renderApplyList(); _refreshApplyBadge(); }
+}
+
+// ── Apply list ────────────────────────────────────────────────────────────────
+const STAGES = [
+  {key:'to-apply', label:'To Apply'},  {key:'applied',   label:'Applied'},
+  {key:'interview',label:'Interviewing'},{key:'offer',  label:'Offer'},
+  {key:'closed',   label:'Closed'},
+];
+
+// ── Apply list — server-side for logged-in users, no-op for public ────────────
+let _applyCache = {};  // job_id → {stage, title, company, ...} (in-memory cache)
+
+function getApplyList() { return _applyCache; }
+
+async function _applyFetch() {
+  if (IS_PUBLIC) return;
+  const rows = await fetch('/api/apply').then(r => r.json()).catch(() => []);
+  _applyCache = {};
+  rows.forEach(r => {
+    _applyCache[r.job_id] = {
+      stage:     r.stage,
+      title:     r.job_title,
+      company:   r.job_company,
+      location:  r.job_location,
+      url:       r.job_url,
+      exp_label: r.job_exp_label,
+      posted:    r.job_posted,
+    };
+  });
+  _refreshApplyBadge();
+}
+
+async function saveToApply(job, stage = 'to-apply') {
+  if (IS_PUBLIC) return;
+  await fetch('/api/apply', {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({
+      job_id: job.id, stage,
+      job_title: job.title||'', job_company: job.company||'',
+      job_location: job.location||'', job_url: job.url||'',
+      job_exp_label: job.exp_label||'', job_posted: job.posted||'',
+    }),
+  });
+  _applyCache[job.id] = { stage, title:job.title, company:job.company,
+    location:job.location, url:job.url, exp_label:job.exp_label, posted:job.posted };
+  _refreshApplyBadge();
+}
+
+async function removeFromApply(id) {
+  if (IS_PUBLIC) return;
+  await fetch(`/api/apply/${id}`, { method: 'DELETE' });
+  delete _applyCache[id];
+  _refreshApplyBadge();
+  if (activeTab === 'apply') renderApplyList();
+}
+
+async function updateApplyStage(id, stage) {
+  if (IS_PUBLIC) return;
+  await fetch(`/api/apply/${id}`, {
+    method: 'PATCH',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({ stage }),
+  });
+  if (_applyCache[id]) _applyCache[id].stage = stage;
+}
+
+function toggleApplyFromRow(jobId, e) {
+  e.stopPropagation();
+  if (_applyCache[jobId]) {
+    removeFromApply(jobId).then(() => _syncApplyBtn(jobId));
+  } else {
+    const job = jobsById[jobId];
+    if (job) saveToApply(job).then(() => _syncApplyBtn(jobId));
+  }
+}
+
+function _syncApplyBtn(jobId) {
+  const inList = !!_applyCache[jobId];
+  document.querySelectorAll(`.j-apply-btn[data-jid="${jobId}"]`).forEach(btn => {
+    btn.classList.toggle('is-on', inList);
+    btn.textContent = inList ? '✓' : '+';
+    btn.title = inList ? 'In apply list' : 'Add to apply list';
+  });
+}
+
+function _refreshApplyBadge() {
+  const n = Object.keys(_applyCache).length;
+  const badge = document.getElementById('apply-badge');
+  if (!badge) return;
+  badge.textContent = n || '';
+  badge.style.display = n ? '' : 'none';
+}
+
+function setApplyStage(btn, stage) {
+  activeApplyStage = stage;
+  renderApplyList(); // pills re-rendered inside
+}
+
+function renderApplyList() {
+  const el = document.getElementById('apply-content');
+  if (!el) return;
+  const list    = _applyCache;
+  const all     = Object.entries(list);
+  const entries = activeApplyStage === 'all' ? all : all.filter(([,v]) => v.stage === activeApplyStage);
+
+  // Stage pills with counts
+  const stagePillBar = document.getElementById('apply-stage-bar');
+  if (stagePillBar) {
+    const counts = { all: all.length };
+    STAGES.forEach(s => { counts[s.key] = all.filter(([,v]) => v.stage === s.key).length; });
+    const pillDefs = [{ key:'all', label:'All' }, ...STAGES];
+    stagePillBar.innerHTML = pillDefs.map(s =>
+      `<button class="apply-pill${activeApplyStage===s.key?' is-on':''}" onclick="setApplyStage(this,'${s.key}')">
+        ${s.label} <span class="apply-pill-count">${counts[s.key]||0}</span>
+       </button>`
+    ).join('');
+  }
+
+  if (!entries.length) {
+    el.innerHTML = `<div class="empty-state" style="height:300px">
+      <div class="icon">📋</div>
+      <h3>${activeApplyStage === 'all' ? 'No jobs saved yet' : 'Nothing in this stage'}</h3>
+      <p>Click + on any job row to add it to your apply list.</p>
+    </div>`;
+    return;
+  }
+
+  const rows = entries.map(([id, j]) => {
+    const stageOpts = STAGES.map(s =>
+      `<option value="${s.key}"${j.stage===s.key?' selected':''}>${s.label}</option>`
+    ).join('');
+    return `<tr class="job-row al-row" data-id="${id}">
+      <td class="al-title"><span style="font-weight:600;font-size:14px;color:var(--navy)">${esc2(j.title)}</span></td>
+      <td class="al-co">${esc2(j.company)}</td>
+      <td class="al-loc">${esc2(j.location||'—')}</td>
+      <td class="al-stage">
+        <select class="al-stage-sel" onchange="updateApplyStage('${id}',this.value)" onclick="event.stopPropagation()">
+          ${stageOpts}
+        </select>
+      </td>
+      <td class="al-yrs">${j.exp_label ? esc2(j.exp_label.replace(' years','').replace(' yrs','') + '+') : '—'}</td>
+      <td class="al-act">
+        ${j.url ? `<a class="al-open-btn" href="${escAttr(j.url)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">↗</a>` : ''}
+        <button class="al-remove-btn" onclick="event.stopPropagation();removeFromApply('${id}')" title="Remove">×</button>
+      </td>
+    </tr>`;
+  }).join('');
+
+  el.innerHTML = `<div class="al-wrap">
+    <div class="al-head">
+      <span class="al-title-h">All applications</span>
+      <span class="al-count">${entries.length} listing${entries.length!==1?'s':''}</span>
+    </div>
+    <table class="al-table">
+      <thead><tr>
+        <th>Title</th>
+        <th style="width:160px">Company</th>
+        <th style="width:160px">Location</th>
+        <th style="width:160px">Stage</th>
+        <th style="width:68px">Years</th>
+        <th style="width:96px"></th>
+      </tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+  </div>`;
+}
+
+// ── Saved searches ────────────────────────────────────────────────────────────
+function getSavedSearches() { return _lsGet(SEARCHES_KEY, []); }
+
+function saveSearch() {
+  const kw  = document.getElementById('f-keyword').value.trim();
+  const loc = document.getElementById('f-location').value.trim();
+  const exp = document.getElementById('f-exp').value.trim();
+  const dt  = document.getElementById('f-begin').value.trim();
+  if (!kw && !loc && !exp && !dt && activeSidebarCat === 'All') {
+    alert('Set at least one filter before saving.'); return;
+  }
+  const name = prompt('Name this search:');
+  if (!name) return;
+  const searches = getSavedSearches();
+  searches.push({ id: Date.now(), name, kw, loc, exp, since: dt, cat: activeSidebarCat });
+  _lsSet(SEARCHES_KEY, searches);
+  renderSavedBar();
+}
+
+function applySavedSearch(s) {
+  document.getElementById('f-keyword').value  = s.kw  || '';
+  document.getElementById('f-location').value = s.loc || '';
+  document.getElementById('f-exp').value      = s.exp || '';
+  document.getElementById('f-begin').value    = s.since || '';
+  // reset date seg buttons
+  document.querySelectorAll('#seg-date .fb-seg-btn').forEach(b => b.classList.remove('is-on'));
+  if (!s.since) document.querySelector('#seg-date .fb-seg-btn')?.classList.add('is-on');
+  if (s.cat && s.cat !== 'All') {
+    activeSidebarCat = s.cat;
+    document.querySelectorAll('.cat-btn').forEach(b => { b.classList.toggle('active', b.textContent === s.cat); });
+    filterSidebar();
+  }
+  if (resultsVisible()) applyFilters(null, 1);
+}
+
+function deleteSavedSearch(id) {
+  _lsSet(SEARCHES_KEY, getSavedSearches().filter(s => s.id !== id));
+  renderSavedBar();
+}
+
+function renderSavedBar() {
+  const searches = getSavedSearches();
+  const bar = document.getElementById('saved-bar');
+  if (!bar) return;
+  if (!searches.length) { bar.style.display = 'none'; return; }
+  bar.style.display = '';
+  bar.innerHTML = '<span class="saved-bar-label">Saved:</span>' + searches.map(s =>
+    `<span class="saved-pill">
+       <button onclick="applySavedSearch(${JSON.stringify(s).replace(/"/g,'&quot;')})">${esc2(s.name)}</button>
+       <button class="saved-pill-del" onclick="deleteSavedSearch(${s.id})" title="Delete">×</button>
+     </span>`
+  ).join('');
+}
+
+// ── Feedback ──────────────────────────────────────────────────────────────────
+let _fbType = 'bug';
+function openFeedback() { document.getElementById('feedback-bg').style.display = ''; }
+function closeFeedback() { document.getElementById('feedback-bg').style.display = 'none'; }
+function setFbType(btn) {
+  _fbType = btn.dataset.type;
+  document.querySelectorAll('.fb-type-btn').forEach(b => b.classList.toggle('is-on', b === btn));
+}
+async function submitFeedback() {
+  const msg = (document.getElementById('fb-msg').value || '').trim();
+  if (!msg) { document.getElementById('fb-msg').focus(); return; }
+  const btn = document.getElementById('fb-submit');
+  btn.disabled = true; btn.textContent = 'Sending…';
+  try {
+    await fetch('/api/feedback', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ type: _fbType, message: msg, url: window.location.href }),
+    });
+    document.getElementById('fb-msg').value = '';
+    btn.textContent = '✓ Sent';
+    setTimeout(closeFeedback, 1200);
+  } catch {
+    btn.disabled = false; btn.textContent = 'Send report';
+  }
+}
+
 buildSidebar();
 updateCounts();
+renderSavedBar();
+_applyFetch().then(() => { _refreshApplyBadge(); });
 
 document.addEventListener('DOMContentLoaded', () => {
-  ['f-keyword','f-location','f-exp'].forEach(id =>
+  ['f-keyword','f-location'].forEach(id =>
     document.getElementById(id).addEventListener('input', filterDOM));
-  document.getElementById('f-begin').addEventListener('change', () => {
-    if (resultsVisible()) applyFilters(null, 1);
-  });
+  document.getElementById('f-exp').addEventListener('input', filterDOM);
   document.getElementById('f-exp').addEventListener('change', () => {
     if (resultsVisible()) applyFilters(null, 1);
   });
+  // Enter key on any filter input triggers API search
+  ['f-keyword','f-location','f-exp'].forEach(id => {
+    document.getElementById(id).addEventListener('keydown', e => {
+      if (e.key === 'Enter') { e.preventDefault(); applyFilters(null, 1); }
+    });
+  });
+  // Support ?tab=apply from admin nav link
+  if (new URLSearchParams(location.search).get('tab') === 'apply') setTab('apply');
 });
 </script>
+<!-- Feedback modal -->
+<div class="modal-bg" id="feedback-bg" style="display:none" onclick="closeFeedback()">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-title">Report an issue</div>
+    <div class="modal-sub">We read every report. Be as specific as you like.</div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:14px">
+      <button class="fb-type-btn is-on" data-type="bug"     onclick="setFbType(this)">🐛 Bug / Broken link</button>
+      <button class="fb-type-btn"       data-type="wrong"   onclick="setFbType(this)">⚠ Wrong info on job</button>
+      <button class="fb-type-btn"       data-type="missing" onclick="setFbType(this)">＋ Missing listing</button>
+      <button class="fb-type-btn"       data-type="missing-co" onclick="setFbType(this)">🏢 Missing company</button>
+      <button class="fb-type-btn"       data-type="suggest" onclick="setFbType(this)">💡 Suggestion</button>
+      <button class="fb-type-btn"       data-type="other"   onclick="setFbType(this)">· Other</button>
+    </div>
+    <textarea class="filter-input" id="fb-msg" rows="4" placeholder="Describe the issue…" style="margin-top:12px;resize:vertical;width:100%"></textarea>
+    <div class="modal-actions">
+      <button class="btn btn-scan" id="fb-submit" onclick="submitFeedback()">Send report</button>
+      <button class="btn btn-clear" onclick="closeFeedback()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- Job detail drawer -->
+<div class="jd-bg" id="jd-bg" style="display:none" onclick="closeDrawer()"></div>
+<div class="jd" id="jd-drawer" style="display:none" role="dialog" aria-modal="true">
+  <div class="jd-h">
+    <button class="jd-close" onclick="closeDrawer()">✕</button>
+    <div class="jd-co-line">
+      <b id="jd-company"></b>
+      <span style="color:var(--ink-4)">·</span>
+      <span id="jd-location"></span>
+    </div>
+    <div class="jd-title" id="jd-title"></div>
+    <div class="jd-posted-line" id="jd-posted-line"></div>
+    <div class="jd-actions">
+      <a class="jd-btn-primary" id="jd-open-link" href="#" target="_blank" rel="noopener">Open link <span style="font-size:16px">↗</span></a>
+      <button class="jd-btn-mint" id="jd-track-btn" onclick="drawerToggleTrack()">+ Track</button>
+    </div>
+  </div>
+  <div class="jd-body">
+    <div class="jd-quick-row">
+      <div class="jd-quick">
+        <div class="jd-quick-l">Experience</div>
+        <div class="jd-quick-v" id="jd-exp">—</div>
+      </div>
+      <div class="jd-quick">
+        <div class="jd-quick-l">Type</div>
+        <div class="jd-quick-v" id="jd-type" style="font-size:15px;font-family:var(--font-sans)">—</div>
+      </div>
+    </div>
+    <div class="jd-sec" id="jd-skills-sec">
+      <div class="jd-sec-h">Skills</div>
+      <div class="jd-skills" id="jd-skills"></div>
+    </div>
+    <div class="jd-sec" id="jd-desc-sec">
+      <div class="jd-sec-h">Description</div>
+      <div class="jd-desc" id="jd-desc"></div>
+    </div>
+    <div class="jd-sec">
+      <div class="jd-sec-h">At a glance</div>
+      <div class="jd-details">
+        <div><div class="jd-detail-l">Company</div><div class="jd-detail-v" id="jd-d-company"></div></div>
+        <div><div class="jd-detail-l">Location</div><div class="jd-detail-v" id="jd-d-location"></div></div>
+        <div><div class="jd-detail-l">Interview style</div><div class="jd-detail-v" id="jd-d-interview" style="font-size:12px"></div></div>
+        <div><div class="jd-detail-l">Categories</div><div class="jd-detail-v" id="jd-d-cats"></div></div>
+        <div><div class="jd-detail-l">First seen</div><div class="jd-detail-v" id="jd-d-seen"></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="{{ url_for('static', filename='js/sidebar-resize.js') }}"></script>
 </body>
 </html>

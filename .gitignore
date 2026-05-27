@@ -1,7 +1,11 @@
 __pycache__/
 *.py[cod]
 .env
+.DS_Store
+app/.DS_Store
+app/private/
 app/data/jobs.db
+app/data/*.db
+app/data/*.sqlite*
 app/data/seen_jobs.json
 app/data/scan_summary.json
-.DS_Store
