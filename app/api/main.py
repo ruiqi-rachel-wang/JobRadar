@@ -94,6 +94,7 @@ def protect_routes():
         or request.path.startswith("/api/scan")
         or request.path.startswith("/api/reset")
         or request.path.startswith("/api/reenrich")
+        or request.path.startswith("/api/backfill")
         or request.path in {"/api/clear_data", "/api/detect_ats", "/api/add_detected_company"}
     )
     if protected:
