@@ -11,7 +11,7 @@ from flask import Flask, jsonify, redirect, render_template, request, session, u
 from werkzeug.middleware.proxy_fix import ProxyFix
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from .database import connect_db, placeholders
+from .database import IS_POSTGRES, connect_db, placeholders
 try:
     from scanner_service import run_scan
     from scan_store import latest_scan as latest_scan_record, scan_companies as scan_company_records
@@ -27,7 +27,8 @@ from .apis import fetch_jobs
 from .utils import experience_match_score
 from .search import (
     display_location, display_title,
-    experience_score_sql, keyword_groups, keyword_relevance_sql, keyword_where,
+    experience_score_sql, fts_match_query, keyword_groups, keyword_relevance_sql, keyword_where,
+    role_intent_where,
 )
 
 app = Flask(__name__, template_folder="../templates")
@@ -106,6 +107,7 @@ scan_state = {
     "progress": [], "new_count": 0,
     "scan_run_id": None, "scan_type": "fresh",
 }
+_scan_cancel_event = threading.Event()
 
 # ── Auto-schedule ──────────────────────────────────────────────────────────────
 
@@ -176,6 +178,7 @@ def scan_runner(selected_names, scan_type="fresh"):
                 p.update(status="error", error=str(e), count=0, new=0)
 
 def do_scan(selected_names, scan_type="fresh"):
+    _scan_cancel_event.clear()
     scan_state.update(
         running=True, done=False, started_at=time.time(),
         progress=[], new_count=0,
@@ -189,12 +192,18 @@ def do_scan(selected_names, scan_type="fresh"):
          "status":  "pending", "count": 0, "new": 0}
         for c in target
     ]
-    result = run_scan(target, scan_type=scan_type, progress=scan_state["progress"])
+    result = run_scan(
+        target,
+        scan_type=scan_type,
+        progress=scan_state["progress"],
+        on_scan_run_id=lambda scan_run_id: scan_state.update(scan_run_id=scan_run_id),
+        should_cancel=_scan_cancel_event.is_set,
+    )
     scan_state.update(
         running=False,
         done=True,
         new_count=result["new_count"],
-        scan_run_id=result.get("scan_run_id"),
+        scan_run_id=result.get("scan_run_id") or scan_state.get("scan_run_id"),
     )
 
 
@@ -395,6 +404,7 @@ def start_scan():
 def reset_scan():
     # Keep progress/results so the panel still shows what was found before stop.
     # Only clear the running flag so polling stops.
+    _scan_cancel_event.set()
     scan_state.update(running=False, done=True, started_at=0)
     return jsonify({"ok":True})
 
@@ -433,7 +443,7 @@ def reenrich_jobs():
                 clean = _strip_html(r["description"] or "")
                 if not clean:
                     continue
-                exp    = extract_experience(r["title"] or "", clean)
+                exp    = extract_experience(r["title"] or "", clean, allow_title_fallback=False)
                 skills = extract_skills(r["title"] or "", clean)
                 emp    = et(r["title"] or "", clean)
                 updates.append((
@@ -458,6 +468,95 @@ def reenrich_jobs():
 @app.route("/api/reenrich/status", methods=["GET"])
 def reenrich_status():
     return jsonify({"status": scan_state.get("_reenrich", "idle")})
+
+@app.route("/api/backfill_descriptions", methods=["POST"])
+def backfill_descriptions():
+    """Fetch descriptions for open jobs that don't have them, then re-extract experience."""
+    if scan_state.get("running"):
+        return jsonify({"error": "Cannot backfill while a scan is running"}), 409
+    if scan_state.get("_backfill_desc") == "running":
+        return jsonify({"error": "Backfill already in progress"}), 409
+
+    limit = int(request.json.get("limit", 500) if request.json else 500)
+
+    def _run():
+        import concurrent.futures
+        import requests
+        from bs4 import BeautifulSoup
+        from .apis import _strip_html
+        from .utils import extract_experience, extract_skills, extract_employment_type as et
+        from .common import HEADERS
+
+        _SELECTORS = [
+            '.jobDescription', '#jobDescription', '[class*="job-description"]',
+            '[class*="jobDescription"]', '[class*="job-content"]', '[class*="jobContent"]',
+            '.iCIMS_JobContent', 'main article', 'main', 'article',
+        ]
+
+        def _fetch_desc(row):
+            try:
+                r = requests.get(row["url"], headers=HEADERS, timeout=20, verify=False)
+                if r.status_code != 200:
+                    return row["id"], ""
+                soup = BeautifulSoup(r.text, "lxml")
+                for sel in _SELECTORS:
+                    el = soup.select_one(sel)
+                    if el:
+                        text = " ".join(el.get_text(" ", strip=True).split())
+                        if len(text) > 100:
+                            return row["id"], text
+                return row["id"], ""
+            except Exception:
+                return row["id"], ""
+
+        try:
+            with connect_db(rows=True) as conn:
+                rows = conn.execute(
+                    "SELECT id, url, title, source FROM jobs "
+                    "WHERE is_open=1 AND has_description=0 AND COALESCE(url,'') != '' "
+                    "ORDER BY first_seen DESC LIMIT ?",
+                    (limit,),
+                ).fetchall()
+
+            scan_state["_backfill_desc"] = f"running — fetching {len(rows)} descriptions"
+            updates = []
+            with concurrent.futures.ThreadPoolExecutor(max_workers=8) as ex:
+                for job_id, desc in ex.map(_fetch_desc, rows):
+                    if desc:
+                        updates.append((job_id, desc))
+
+            if updates:
+                enrich_updates = []
+                for job_id, desc in updates:
+                    clean = _strip_html(desc)
+                    title = next((r["title"] for r in rows if r["id"] == job_id), "")
+                    exp    = extract_experience(title, clean)
+                    skills = extract_skills(title, clean)
+                    emp    = et(title, clean)
+                    enrich_updates.append((
+                        clean,
+                        exp.get("min"), exp.get("max"), exp.get("label", ""), exp.get("source", ""),
+                        json.dumps(skills or []),
+                        emp,
+                        job_id,
+                    ))
+                with connect_db() as conn:
+                    conn.executemany(
+                        "UPDATE jobs SET description=?,exp_min=?,exp_max=?,exp_label=?,exp_source=?,skills=?,employment_type=?,has_description=1 WHERE id=?",
+                        enrich_updates,
+                    )
+
+            scan_state["_backfill_desc"] = f"done — {len(updates)}/{len(rows)} descriptions fetched"
+        except Exception as exc:
+            scan_state["_backfill_desc"] = f"error: {exc}"
+
+    scan_state["_backfill_desc"] = "running"
+    threading.Thread(target=_run, daemon=True).start()
+    return jsonify({"ok": True, "message": f"Description backfill started (limit={limit})"})
+
+@app.route("/api/backfill_descriptions/status", methods=["GET"])
+def backfill_descriptions_status():
+    return jsonify({"status": scan_state.get("_backfill_desc", "idle")})
 
 @app.route("/api/clear_data", methods=["POST"])
 def clear_data():
@@ -668,6 +767,37 @@ def update_feedback(fid):
         conn.execute("UPDATE feedback SET status=? WHERE id=?", (status, fid))
     return jsonify({"ok": True})
 
+@app.route("/api/jobs/<job_id>")
+def api_job_detail(job_id):
+    interview_map = {c["name"]: c.get("interview") for c in current_companies() if c.get("interview")}
+    with connect_db(rows=True) as conn:
+        row = conn.execute(
+            "SELECT id, title, url, company, location, source, posted, first_seen, "
+            "exp_label, exp_min, exp_max, skills, categories, employment_type, description "
+            "FROM jobs WHERE id = ?",
+            (job_id,)
+        ).fetchone()
+    if not row:
+        return jsonify({"error": "Job not found"}), 404
+    skills = json.loads(row["skills"] or "[]") if row["skills"] else []
+    cats   = json.loads(row["categories"] or "[]") if row["categories"] else []
+    return jsonify({
+        "id":              row["id"],
+        "title":           row["title"] or "",
+        "company":         row["company"] or "",
+        "location":        row["location"] or "",
+        "source":          row["source"] or "",
+        "posted":          (row["posted"] or "")[:10],
+        "first_seen":      (row["first_seen"] or "")[:10],
+        "url":             row["url"] or "",
+        "exp_label":       row["exp_label"] or "",
+        "employment_type": row["employment_type"] or "",
+        "skills":          skills,
+        "categories":      cats,
+        "interview":       interview_map.get(row["company"] or ""),
+        "description":     row["description"] or "",
+    })
+
 @app.route("/api/jobs")
 def api_jobs():
     keyword  = (request.args.get("keyword")  or "").strip().lower()
@@ -703,13 +833,28 @@ def api_jobs():
         page = 1
     offset   = (page - 1) * limit
 
-    clauses, params = ["is_open = TRUE"], []
     kw_groups = keyword_groups(keyword)
-    if keyword:
-        keyword_clauses, keyword_params = keyword_where(kw_groups)
-        clauses.extend(keyword_clauses)
-        params.extend(keyword_params)
-    if location:
+    fts_query = fts_match_query(keyword, location, kw_groups) if (not IS_POSTGRES and keyword and location) else ""
+    use_fts = bool(fts_query)
+
+    if use_fts:
+        from_sql = "jobs_fts JOIN jobs ON jobs.id = jobs_fts.job_id"
+        clauses, params = ["jobs_fts MATCH ?", "jobs.is_open = TRUE"], [fts_query]
+        field = lambda name: f"jobs.{name}"
+        role_where, role_params = role_intent_where(kw_groups, "jobs.title")
+        if role_where:
+            clauses.append(role_where)
+            params.extend(role_params)
+    else:
+        from_sql = "jobs"
+        clauses, params = ["is_open = TRUE"], []
+        field = lambda name: name
+        if keyword:
+            keyword_clauses, keyword_params = keyword_where(kw_groups)
+            clauses.extend(keyword_clauses)
+            params.extend(keyword_params)
+
+    if location and not use_fts:
         if location in ("united states", "usa", "u.s.", "u.s.a.", "america"):
             clauses.append("(LOWER(location) = ? OR LOWER(location) LIKE ?)")
             params.extend(["us", "%, us%"])
@@ -720,19 +865,19 @@ def api_jobs():
             clauses.append("(' ' || REPLACE(LOWER(location), ', ', ' ') || ' ') LIKE ?")
             params.append(f"% {location} %")
     if since:
-        clauses.append("COALESCE(NULLIF(posted,''), substr(first_seen,1,10)) >= ?")
+        clauses.append(f"COALESCE(NULLIF({field('posted')},''), substr({field('first_seen')},1,10)) >= ?")
         params.append(since)
     if exp_years is not None:
         # Keep unknowns, exact/close matches, and junior-ish roles. Drop known
         # requirements clearly above the user's experience.
-        clauses.append("(exp_min IS NULL OR exp_min <= ?)")
+        clauses.append(f"({field('exp_min')} IS NULL OR {field('exp_min')} <= ?)")
         params.append(int(exp_years) + 1)
     if category:
-        clauses.append("categories LIKE ?")
+        clauses.append(f"{field('categories')} LIKE ?")
         params.append(f'%"{category}"%')
     if companies:
         company_marks = placeholders(len(companies))
-        clauses.append(f"company IN ({company_marks})")
+        clauses.append(f"{field('company')} IN ({company_marks})")
         params.extend(companies)
 
     where = ("WHERE " + " AND ".join(clauses)) if clauses else ""
@@ -741,29 +886,47 @@ def api_jobs():
         for company in company_configs
         if company.get("interview")
     }
-    relevance_sql = keyword_relevance_sql(keyword, kw_groups) if kw_groups else "0"
+    relevance_sql = keyword_relevance_sql(keyword, kw_groups) if kw_groups and not use_fts else "0"
     select_rank = f", {relevance_sql} AS relevance" if kw_groups else ""
     exp_score_sql = experience_score_sql(exp_years) if exp_years is not None else "0"
+    if use_fts:
+        exp_score_sql = exp_score_sql.replace("exp_min", "jobs.exp_min").replace("exp_max", "jobs.exp_max")
     select_exp = f", {exp_score_sql} AS exp_score" if exp_years is not None else ""
     exp_order = ", exp_score DESC" if exp_years is not None else ""
+    date_expr = f"COALESCE(NULLIF({field('posted')},''), substr({field('first_seen')},1,10))"
     order_sql = (
-        f"COALESCE(NULLIF(posted,''), substr(first_seen,1,10)) DESC{exp_order}, relevance DESC"
-        if kw_groups else
-        f"COALESCE(NULLIF(posted,''), substr(first_seen,1,10)) DESC{exp_order}"
+        f"{date_expr} DESC{exp_order}, relevance DESC"
+        if kw_groups and not use_fts else
+        f"{date_expr} DESC{exp_order}"
     )
     # Sort by posted date, falling back to first_seen only when posted is missing.
-    sql   = (f"SELECT id, title, url, company, location, source, categories, first_seen, posted, "
-             f"exp_min, exp_max, exp_label, exp_source, skills, employment_type{select_rank}{select_exp} "
-             f"FROM jobs {where} ORDER BY {order_sql} LIMIT ? OFFSET ?")
-    count_sql = f"SELECT COUNT(*) FROM jobs {where}"
+    select_cols = (
+        "jobs.id, jobs.title, jobs.url, jobs.company, jobs.location, jobs.source, "
+        "jobs.categories, jobs.first_seen, jobs.posted, jobs.exp_min, jobs.exp_max, "
+        "jobs.exp_label, jobs.exp_source, jobs.skills, jobs.employment_type"
+        if use_fts else
+        "id, title, url, company, location, source, categories, first_seen, posted, "
+        "exp_min, exp_max, exp_label, exp_source, skills, employment_type"
+    )
+    sql   = (f"SELECT {select_cols}{select_rank}{select_exp} "
+             f"FROM {from_sql} {where} ORDER BY {order_sql} LIMIT ? OFFSET ?")
+    count_sql = f"SELECT COUNT(*) FROM {from_sql} {where}"
     query_params = list(params) + [limit, offset]
+    exact_count = not (keyword or location or since or exp_years is not None or category or companies)
 
     today = datetime.now().strftime("%Y-%m-%d")
     try:
         with connect_db(rows=True) as conn:
             rows = conn.execute(sql, query_params).fetchall()
-            total_row = conn.execute(count_sql, params).fetchone()
-            total = next(iter(total_row.values())) if isinstance(total_row, dict) else total_row[0]
+            has_more = False
+            if exact_count:
+                total_row = conn.execute(count_sql, params).fetchone()
+                total = next(iter(total_row.values())) if isinstance(total_row, dict) else total_row[0]
+            else:
+                has_more = len(rows) == limit
+                total = offset + len(rows) + (1 if has_more else 0)
+            total_lower_bound = offset + len(rows)
+            total_exact = exact_count or not has_more
         jobs = []
         for r in rows:
             cats   = json.loads(r["categories"] or "[]")
@@ -793,6 +956,14 @@ def api_jobs():
             })
         if not jobs and total == 0:
             jobs, total = jobs_from_seen_fallback(keyword, location, since, category, companies, limit, offset, today)
-        return jsonify({"jobs": jobs, "total": total, "page": page, "limit": limit})
+        return jsonify({
+            "jobs": jobs,
+            "total": total,
+            "total_lower_bound": total_lower_bound,
+            "total_exact": total_exact,
+            "has_more": has_more,
+            "page": page,
+            "limit": limit,
+        })
     except Exception as e:
         return jsonify({"error": str(e)}), 500

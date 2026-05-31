@@ -1,4 +1,5 @@
 from .base import *
+import html
 
 # ── CareerPuck ────────────────────────────────────────────────────────────────
 
@@ -51,7 +52,12 @@ def fetch_careerpuck(scrape, seen, company):
         loc = normalize_location(norm(raw_loc))
 
         posted = _parse_posted(j.get("postedAt") or j.get("createdAt") or "")
+        desc_html = html.unescape(j.get("content") or "")
+        desc = ""
+        if desc_html:
+            desc = norm(BeautifulSoup(desc_html, "lxml").get_text(" ", strip=True))
         jobs.append({"title": title, "url": jurl, "location": loc,
-                     "source": "careerpuck", "posted": posted})
+                     "source": "careerpuck", "posted": posted,
+                     "description": desc})
 
     return jobs, None

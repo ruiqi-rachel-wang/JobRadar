@@ -1746,7 +1746,10 @@
     ],
     "scrape": {
       "mode": "brassring",
-      "list_url": "https://sjobs.brassring.com/TGnewUI/Search/home/HomeWithPreLoad?partnerid=25632&siteid=5649"
+      "list_url": "https://sjobs.brassring.com/TGnewUI/Search/home/HomeWithPreLoad?partnerid=25632&siteid=5649",
+      "prefix": "https://sjobs.brassring.com/",
+      "validate_prefix": false,
+      "scroll_rounds": 8
     }
   },
   {
@@ -2099,7 +2102,11 @@
     ],
     "scrape": {
       "mode": "workday",
-      "list_url": "https://bu.wd1.myworkdayjobs.com/en-US/BUMSC"
+      "list_url": "https://bu.wd1.myworkdayjobs.com/en-US/BUMSC",
+      "allow_browser_fallback": true,
+      "prefix": "https://bu.wd1.myworkdayjobs.com/en-US/BUMSC/job/",
+      "validate_prefix": false,
+      "scroll_rounds": 10
     }
   },
   {
@@ -2391,7 +2398,9 @@
     ],
     "scrape": {
       "mode": "taleo",
-      "list_url": "https://phf.tbe.taleo.net/phf03/ats/careers/v2/searchResults?org=CALTECH&cws=37"
+      "list_url": "https://phf.tbe.taleo.net/phf03/ats/careers/v2/searchResults?org=CALTECH&cws=37",
+      "include": "viewRequisition",
+      "scroll_rounds": 10
     }
   },
   {
@@ -6578,8 +6587,8 @@
       "AI & Machine Learning"
     ],
     "scrape": {
-      "board_token": "hebbia",
-      "mode": "greenhouse"
+      "mode": "ashby",
+      "ashby_slug": "hebbia-ai"
     }
   },
   {
@@ -7915,9 +7924,9 @@
       "Healthcare & Biotech"
     ],
     "scrape": {
-      "mode": "html",
+      "mode": "phenom",
       "list_url": "https://careers.labcorp.com/global/en/search-results",
-      "include": "careers.labcorp.com"
+      "prefix": "https://careers.labcorp.com/global/en/job/"
     }
   },
   {
@@ -9375,9 +9384,9 @@
       "Software & SaaS"
     ],
     "scrape": {
-      "mode": "html",
+      "mode": "eightfold",
       "list_url": "https://explore.jobs.netflix.net/careers",
-      "include": "explore.jobs.netflix.net/careers"
+      "domain": "netflix.com"
     },
     "interview": {
       "no_whiteboard": false,
@@ -10104,8 +10113,9 @@
       "Software & SaaS"
     ],
     "scrape": {
-      "mode": "greenhouse",
-      "board_token": "opendoor"
+      "mode": "html",
+      "list_url": "https://www.opendoor.com/careers/open-positions",
+      "include": "www.opendoor.com/careers/open-positions/jobs/"
     }
   },
   {
@@ -16305,7 +16315,8 @@
       "mode": "playwright",
       "list_url": "https://www.zynga.com/careers/positions",
       "prefix": "https://www.zynga.com",
-      "include": "zynga.com/careers/"
+      "include": "zynga.com/careers/",
+      "nav_timeout": 30000
     }
   }
 ]

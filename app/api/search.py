@@ -1,9 +1,10 @@
 """Keyword parsing, SQL query builders, and display-formatting helpers for job search."""
 import re
+from functools import lru_cache
 from urllib.parse import unquote
 
 from .database import IS_POSTGRES
-from .utils import _COUNTRY_CODES, _US_STATES, norm, normalize_location
+from .utils import _COUNTRY_CODES, _US_STATE_NAMES, _US_STATES, norm, normalize_location
 
 # ── Display constants ─────────────────────────────────────────────────────────
 
@@ -27,7 +28,7 @@ _KEYWORD_ALIASES = {
     "business": {"biz"},
     "customer": {"client", "cx"},
     "client": {"customer"},
-    "data": {"analytics", "analyst"},
+    "data": set(),
     "design": {"designer", "ux", "ui"},
     "designer": {"design", "ux", "ui"},
     "dev": {"develop", "developer", "development", "developement", "engineering", "engineer"},
@@ -103,6 +104,9 @@ def keyword_groups(keyword):
     return groups
 
 def keyword_where(groups):
+    intent = role_intent(groups)
+    if intent:
+        return [_role_where("title", intent)], list(intent["patterns"])
     clauses, params = [], []
     for group in groups:
         bits = []
@@ -113,6 +117,142 @@ def keyword_where(groups):
             params.extend(title_params + company_params)
         clauses.append("(" + " OR ".join(bits) + ")")
     return clauses, params
+
+_ROLE_INTENTS = [
+    {
+        "name": "software_engineering",
+        "buckets": [{"software", "swe"}, {"engineer", "engineering", "developer", "development", "sde"}],
+        "fts": "engineer*",
+        "patterns": [
+            "%software engineer%", "%software developer%", "%software development engineer%",
+            "%swe%", "%sde%", "%backend engineer%", "%back end engineer%",
+            "%frontend engineer%", "%front end engineer%", "%full stack engineer%",
+            "%fullstack engineer%", "%platform engineer%", "%infrastructure engineer%",
+            "%product engineer%", "%application engineer%", "%systems engineer%",
+            "%data engineer%", "%machine learning engineer%", "%ml engineer%",
+            "%ai engineer%", "%devops engineer%", "%site reliability engineer%",
+            "%reliability engineer%", "%security engineer%",
+        ],
+    },
+    {
+        "name": "data_science",
+        "buckets": [{"data"}, {"scientist", "science", "scient", "ml", "machine"}],
+        "fts": "data*",
+        "patterns": ["%data scientist%", "%machine learning scientist%", "%ml scientist%", "%applied scientist%", "%research scientist%", "%ai scientist%"],
+    },
+    {
+        "name": "data_analytics",
+        "buckets": [{"data", "business"}, {"analyst", "analysis", "analytics", "analy"}],
+        "fts": "analyst*",
+        "patterns": ["%data analyst%", "%business analyst%", "%analytics analyst%", "%product analyst%", "%bi analyst%", "%business intelligence%", "%data analytics%"],
+    },
+    {
+        "name": "data_engineering",
+        "buckets": [{"data"}, {"engineer", "engineering", "developer", "development"}],
+        "fts": "engineer*",
+        "patterns": ["%data engineer%", "%analytics engineer%", "%etl engineer%", "%bi engineer%", "%data platform engineer%", "%data infrastructure engineer%"],
+    },
+    {
+        "name": "product_management",
+        "buckets": [{"product"}, {"manager", "management", "mgr", "owner", "lead"}],
+        "fts": "product*",
+        "patterns": ["%product manager%", "%product management%", "%product owner%", "%technical product manager%", "%group product manager%", "%product lead%", "%principal product manager%"],
+    },
+    {
+        "name": "program_project_management",
+        "buckets": [{"program", "project"}, {"manager", "management", "mgr", "lead"}],
+        "fts": "manager*",
+        "patterns": ["%program manager%", "%project manager%", "%technical program manager%", "%technical project manager%", "%tpm%", "%scrum master%", "%delivery manager%"],
+    },
+    {
+        "name": "design",
+        "buckets": [{"design", "designer", "ux", "ui"}],
+        "fts": "design*",
+        "patterns": ["%product designer%", "%ux designer%", "%ui designer%", "%visual designer%", "%brand designer%", "%design lead%", "%user experience%", "%user interface%"],
+    },
+    {
+        "name": "security",
+        "buckets": [{"security", "cybersecurity", "cyber"}],
+        "fts": "security*",
+        "patterns": ["%security engineer%", "%cybersecurity%", "%cyber security%", "%security analyst%", "%soc analyst%", "%appsec%", "%application security%", "%information security%", "%security architect%"],
+    },
+    {
+        "name": "devops_cloud",
+        "buckets": [{"devops", "cloud", "infrastructure", "platform", "sre"}],
+        "fts": "engineer*",
+        "patterns": ["%devops engineer%", "%cloud engineer%", "%infrastructure engineer%", "%platform engineer%", "%site reliability engineer%", "%sre%", "%systems engineer%", "%release engineer%"],
+    },
+    {
+        "name": "sales",
+        "buckets": [{"sales", "account"}],
+        "fts": "sales*",
+        "patterns": ["%sales%", "%account executive%", "%account manager%", "%business development%", "%solution consultant%", "%solutions consultant%", "%sales engineer%", "%revenue%"],
+    },
+    {
+        "name": "marketing",
+        "buckets": [{"marketing", "market", "growth"}],
+        "fts": "marketing*",
+        "patterns": ["%marketing%", "%growth%", "%demand generation%", "%go-to-market%", "%gtm%", "%content strategist%", "%campaign manager%"],
+    },
+    {
+        "name": "recruiting",
+        "buckets": [{"recruiter", "recruiting", "talent"}],
+        "fts": "recruit*",
+        "patterns": ["%recruiter%", "%recruiting%", "%talent acquisition%", "%sourcer%", "%people partner%"],
+    },
+    {
+        "name": "customer_success",
+        "buckets": [{"customer", "client", "cx"}, {"success", "support", "solutions"}],
+        "fts": "customer*",
+        "patterns": ["%customer success%", "%client success%", "%customer support%", "%solutions engineer%", "%solution engineer%", "%implementation consultant%", "%technical support%"],
+    },
+]
+
+def role_intent(groups):
+    for intent in _ROLE_INTENTS:
+        if _groups_have_buckets(groups, intent["buckets"]):
+            return intent
+    return None
+
+def role_intent_where(groups, field="title"):
+    intent = role_intent(groups)
+    if not intent:
+        return "", []
+    return _role_where(field, intent), list(intent["patterns"])
+
+def _role_where(field, intent):
+    return "(" + " OR ".join(f"LOWER({field}) LIKE ?" for _ in intent["patterns"]) + ")"
+
+def _groups_have_buckets(groups, buckets):
+    term_sets = [set(group) for group in groups]
+    return all(any(bucket & terms for terms in term_sets) for bucket in buckets)
+
+def fts_match_query(keyword="", location="", groups=None):
+    parts = []
+    stop = {"a", "an", "and", "at", "for", "in", "of", "on", "or", "the", "to"}
+    intent = role_intent(groups or [])
+    if intent:
+        parts.append(intent["fts"])
+    else:
+        for token in re.findall(r"[a-z0-9]+", (keyword or "").lower()):
+            if token not in stop:
+                term = _fts_term(token)
+                if term:
+                    parts.append(term)
+    loc = norm(location or "").lower()
+    if loc and loc not in {"united states", "usa", "u.s.", "u.s.a.", "america", "uk", "u.k.", "united kingdom"}:
+        loc_tokens = re.findall(r"[a-z0-9]+", loc)
+        if loc_tokens:
+            parts.append('"' + " ".join(loc_tokens).replace('"', '""') + '"')
+    return " ".join(parts)
+
+def _fts_term(term):
+    tokens = re.findall(r"[a-z0-9]+", (term or "").lower())
+    if not tokens:
+        return ""
+    if len(tokens) == 1:
+        return tokens[0] + "*"
+    return '"' + " ".join(tokens).replace('"', '""') + '"'
 
 def keyword_relevance_sql(keyword, groups):
     terms = {term for group in groups for term in group}
@@ -187,6 +327,7 @@ def _sql_lit(value):
 
 # ── Display title / location helpers ─────────────────────────────────────────
 
+@lru_cache(maxsize=8192)
 def display_title(title, url=""):
     slug_title = _title_from_opening_slug(url)
     if slug_title:
@@ -209,18 +350,30 @@ def display_title(title, url=""):
     )
     return norm(title)
 
+@lru_cache(maxsize=8192)
 def display_location(raw_location, title, url=""):
-    loc = normalize_location(raw_location or "")
+    loc = _display_location_from_dash_list(raw_location) or normalize_location(raw_location or "")
     title_loc = _location_from_title_noise(title, url)
     url_loc = _location_from_job_url(url)
+    if loc == "Multiple Locations":
+        return title_loc or url_loc or ""
     if _bad_display_location(loc, title):
         return title_loc or url_loc or ""
     return loc or title_loc or url_loc
+
+def _display_location_from_dash_list(raw_location):
+    raw = norm(raw_location or "")
+    m = re.search(r'([A-Z][A-Za-z .\'-]+?)\s+-\s+[^-]+?\s+-\s+([A-Z][A-Za-z ]+)', raw)
+    if not m:
+        return ""
+    return normalize_location(f"{m.group(1)}, {m.group(2)}")
 
 def _bad_display_location(loc, title=""):
     loc = norm(loc)
     if not loc:
         return False
+    if re.search(r'\b(?:deloitte|llp|inc\.?|corp\.?|corporation)\b', loc, re.I):
+        return True
     if re.fullmatch(r'(?:ATCI[-\w]*|(?:REQ|JR|WD|EB|R|S)[-_]?\d[\w-]*|\d{5,})', loc, re.I):
         return True
     title_l = norm(title).lower()
@@ -280,11 +433,26 @@ def _location_from_job_url(url):
         path = url.split("?", 1)[0]
     except Exception:
         return ""
-    m = re.search(r'/job/([^/]+)/[^/]+$', path)
+    m = re.search(r'/job/([^/]+)/', path)
     if not m:
         return ""
     slug = unquote(m.group(1)).replace("_", "-")
+    delimited_parts = [
+        p.replace("-", " ").strip()
+        for p in re.split(r'-{2,}', slug.strip("-"))
+        if p.replace("-", " ").strip()
+    ]
+    if len(delimited_parts) >= 3 and delimited_parts[0].lower() in {"usa", "us", "united states"}:
+        state = _US_STATE_NAMES.get(delimited_parts[1].lower()) or delimited_parts[1].upper()
+        if state in _US_STATES:
+            return normalize_location(f"{delimited_parts[2]}, {state}, US")
+    if len(delimited_parts) >= 2 and delimited_parts[0].upper() in _US_STATES:
+        city = re.sub(r'\s+\d{5}(?:-\d{4})?$', '', delimited_parts[1]).strip()
+        return normalize_location(f"{city}, {delimited_parts[0].upper()}, US")
+    if len(delimited_parts) >= 2 and delimited_parts[1].upper() in _US_STATES:
+        return normalize_location(f"{delimited_parts[0]}, {delimited_parts[1].upper()}, US")
     raw = norm(slug.replace("-", " ")).strip()
+    raw = re.sub(r'^(?:usa|us|united states)\s+', '', raw, flags=re.I).strip()
     if not raw:
         return ""
     for city in sorted(_DISPLAY_CITIES, key=len, reverse=True):

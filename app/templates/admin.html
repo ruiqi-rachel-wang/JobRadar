@@ -96,6 +96,7 @@
 .apply-pill:hover { border-color:var(--line-3); color:var(--ink); }
 .apply-pill.is-on { background:var(--navy); color:white; border-color:var(--navy); }
 .exp-chip { display:inline-block; font-size:11px; padding:2px 8px; border-radius:8px; background:var(--navy-050); color:var(--navy); border:1px solid var(--navy-100); font-weight:600; font-family:var(--font-mono); }
+.exp-chip-muted { background:transparent; color:var(--ink-4); border-color:var(--line); }
 .shell { position: relative; }
 .kpi-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; margin-bottom: 18px; }
 .kpi {
@@ -273,6 +274,8 @@ button.kpi:hover { border-color: var(--line-3); }
       <div id="scan-type-label" style="font-size:11px;color:var(--ink-4);text-align:center;margin-top:4px;display:none"></div>
       <button class="reset-link" onclick="resetSeen()">↺ Reset "new" tracking</button>
       <button class="reset-link" id="btn-reenrich" onclick="reEnrich()">⟳ Re-enrich descriptions</button>
+      <button class="reset-link" id="btn-backfill-desc" onclick="backfillDescriptions()">⬇ Fetch missing descriptions</button>
+      <div id="backfill-status" style="font-size:11px;color:var(--ink-4);margin-top:2px;display:none"></div>
       <button class="reset-link" style="color:var(--err)" onclick="clearAllData()">🗑 Clear all data</button>
     </div>
   </aside>
@@ -798,6 +801,42 @@ async function reEnrich() {
   } catch { btn.disabled = false; btn.textContent = '⟳ Re-enrich descriptions'; }
 }
 
+async function backfillDescriptions() {
+  const btn = document.getElementById('btn-backfill-desc');
+  const statusEl = document.getElementById('backfill-status');
+  btn.disabled = true;
+  btn.textContent = '⬇ Starting…';
+  statusEl.style.display = '';
+  statusEl.textContent = 'Connecting…';
+  try {
+    const r = await fetch('/api/backfill_descriptions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ limit: 500 }),
+    });
+    if (!r.ok) {
+      const e = await r.json();
+      btn.disabled = false;
+      btn.textContent = '⬇ Fetch missing descriptions';
+      statusEl.textContent = e.error || 'Failed to start.';
+      return;
+    }
+    const poll = setInterval(async () => {
+      const s = await fetch('/api/backfill_descriptions/status').then(x => x.json());
+      statusEl.textContent = s.status;
+      if (!s.status.startsWith('running')) {
+        clearInterval(poll);
+        btn.disabled = false;
+        btn.textContent = '⬇ Fetch missing descriptions';
+      }
+    }, 2000);
+  } catch (e) {
+    btn.disabled = false;
+    btn.textContent = '⬇ Fetch missing descriptions';
+    statusEl.textContent = 'Error: ' + e;
+  }
+}
+
 async function clearAllData() {
   if (!confirm('Delete ALL stored jobs, seen tracking, and scan history?\nThis cannot be undone.')) return;
   const r = await fetch('/api/clear_data', { method: 'POST' });
@@ -955,7 +994,7 @@ function renderAdminApply() {
     <td style="font-weight:500">${esc2(j.title||'')}</td>
     <td style="font-size:12.5px">${esc2(j.company||'')}</td>
     <td style="font-size:12.5px;color:var(--ink-3)">${esc2(j.location||'—')}</td>
-    <td>${j.exp_label?`<span class="exp-chip">${esc2(j.exp_label)}</span>`:''}</td>
+    <td>${j.exp_label?`<span class="exp-chip">${esc2(j.exp_label)}</span>`:'<span class="exp-chip exp-chip-muted">Not listed</span>'}</td>
     <td><select style="font-size:11.5px;padding:3px 6px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--surface)"
         onchange="adminUpdateStage('${id}',this.value)">${STAGE_OPTS.replace(`value="${j.stage}"`,`value="${j.stage}" selected`)}</select></td>
     <td>${j.url?`<a class="j-open-btn" href="${escAttr(j.url||'')}" target="_blank" rel="noopener">↗</a>`:''}</td>
@@ -1148,7 +1187,7 @@ function adminRenderJobs() {
       <td class="td-title" style="max-width:340px"><span style="font-weight:600;font-size:13.5px;color:var(--navy)">${esc2(j.title)}</span></td>
       <td style="font-size:12.5px;color:var(--ink-2);width:150px">${esc2(j.company)}</td>
       <td style="font-size:12.5px;color:var(--ink-3);width:150px">${esc2(j.location||'—')}</td>
-      <td style="width:110px">${j.exp_label?`<span class="exp-chip">${esc2(j.exp_label)}</span>`:''}</td>
+      <td style="width:110px">${j.exp_label?`<span class="exp-chip">${esc2(j.exp_label)}</span>`:'<span class="exp-chip exp-chip-muted">Not listed</span>'}</td>
       <td style="font-size:11.5px;color:var(--ink-3);width:100px;font-family:var(--font-mono)">${date}</td>
       <td style="width:40px">${j.url?`<a href="${escAttr(j.url)}" target="_blank" rel="noopener" class="j-open-btn" title="Open">↗</a>`:''}</td>
     </tr>`;

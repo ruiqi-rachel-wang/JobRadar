@@ -57,14 +57,18 @@ def _fetch_ashby_public_api(slug, company):
             jurl = f"https://jobs.ashbyhq.com/{slug}/{j.get('id')}"
         posted = _parse_posted(j.get("publishedAt") or j.get("publishedDate") or "")
         loc = _ashby_location(j)
+        desc = j.get("descriptionHtml") or j.get("descriptionPlain") or ""
         if title and jurl:
-            jobs.append({
+            job = {
                 "title": title,
                 "url": jurl,
                 "location": loc,
                 "source": "ashby",
                 "posted": posted,
-            })
+            }
+            if desc:
+                job["description"] = desc
+            jobs.append(job)
     return jobs, None
 
 def _ashby_post(payload, timeout=20, retries=4):
@@ -128,18 +132,20 @@ def fetch_ashby(scrape, seen, company):
     postings = board.get("jobPostings") or []
 
     dates = {}
+    descs = {}
     fetch_details = bool(scrape.get("fetch_posted_details", True))
     if fetch_details:
         # Ashby only exposes publish dates on the per-job detail query. Requests
         # go through _ashby_post, which serializes and backs off on 429s.
-        def _fetch_date(jid):
+        # Also fetch descriptionHtml while we're there.
+        def _fetch_ashby_detail(jid):
             detail_payload = {
                 "operationName": "ApiJobPosting",
                 "variables": {"organizationHostedJobsPageName": slug, "jobPostingId": jid},
                 "query": (
                     "query ApiJobPosting($organizationHostedJobsPageName: String!, $jobPostingId: String!) {"
                     "  jobPosting(organizationHostedJobsPageName: $organizationHostedJobsPageName, jobPostingId: $jobPostingId) {"
-                    "    publishedDate"
+                    "    publishedDate descriptionHtml"
                     "  }"
                     "}"
                 ),
@@ -147,8 +153,12 @@ def fetch_ashby(scrape, seen, company):
             data, _ = _ashby_post(detail_payload, timeout=15, retries=2)
             if data:
                 jp = ((data.get("data") or {}).get("jobPosting")) or {}
-                return jid, _parse_posted(jp.get("publishedDate") or jp.get("publishedAt") or "")
-            return jid, ""
+                return (
+                    jid,
+                    _parse_posted(jp.get("publishedDate") or jp.get("publishedAt") or ""),
+                    jp.get("descriptionHtml") or "",
+                )
+            return jid, "", ""
 
         ids = []
         max_details = int(scrape.get("max_posted_details", 1000000))
@@ -160,13 +170,17 @@ def fetch_ashby(scrape, seen, company):
             jurl = f"https://jobs.ashbyhq.com/{slug}/{jid}"
             existing = seen.get(make_id(company, jurl, title)) if isinstance(seen, dict) and title else None
             existing_posted = _parse_posted((existing or {}).get("posted") or "") if isinstance(existing, dict) else ""
+            existing_has_desc = isinstance(existing, dict) and existing.get("has_description")
             if existing_posted:
                 dates[jid] = existing_posted
-            else:
+            if not (existing_posted and existing_has_desc):
                 ids.append(jid)
         for jid in ids[:max_details]:
-            jid, d = _fetch_date(jid)
-            dates[jid] = d
+            jid, d, desc = _fetch_ashby_detail(jid)
+            if d:
+                dates[jid] = d
+            if desc:
+                descs[jid] = desc
 
     jobs = []
     for j in postings:
@@ -178,5 +192,8 @@ def fetch_ashby(scrape, seen, company):
         posted  = dates.get(jid, "")
         emp_type = norm(j.get("employmentType") or "")
         if title:
-            jobs.append({"title":title,"url":jurl,"location":loc,"source":"ashby","posted":posted,"employment_type":emp_type})
+            job = {"title":title,"url":jurl,"location":loc,"source":"ashby","posted":posted,"employment_type":emp_type}
+            if descs.get(jid):
+                job["description"] = descs[jid]
+            jobs.append(job)
     return jobs, None

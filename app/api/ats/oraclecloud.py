@@ -60,6 +60,19 @@ def _oraclecloud_detail_text(api_host, req_id, vanity_domain="", timeout=20):
     ]
     return norm(BeautifulSoup(" ".join(parts), "lxml").get_text(" ", strip=True))
 
+def _oraclecloud_list_text(job):
+    """Text Oracle already embeds in the search response."""
+    parts = [
+        job.get("ExternalQualificationsStr") or "",
+        job.get("ExternalResponsibilitiesStr") or "",
+        job.get("ExternalDescriptionStr") or "",
+        job.get("ShortDescriptionStr") or "",
+    ]
+    text = " ".join(str(p) for p in parts if p)
+    if not text:
+        return ""
+    return norm(BeautifulSoup(text, "lxml").get_text(" ", strip=True))
+
 def fetch_oraclecloud(scrape, seen, company):
     """Oracle Cloud Candidate Experience public API."""
     list_url = scrape.get("list_url", "")
@@ -69,7 +82,7 @@ def fetch_oraclecloud(scrape, seen, company):
     host = parsed.netloc
     site = scrape.get("site") or scrape.get("site_number") or _oraclecloud_site_from_url(list_url)
     if not host or not site:
-        if scrape.get("allow_browser_fallback") and (scrape.get("prefix") or scrape.get("include")):
+        if scrape.get("allow_browser_fallback") is not False and (scrape.get("prefix") or scrape.get("include")):
             from .playwright import _fetch_playwright_with_source
             return _fetch_playwright_with_source(scrape, seen, company, "oraclecloud")
         return [], f"cannot parse Oracle Cloud URL: {list_url}"
@@ -137,15 +150,29 @@ def fetch_oraclecloud(scrape, seen, company):
                     jurl = f"{job_url_prefix}/{jid}"
                 else:
                     jurl = f"https://{host}/hcmUI/CandidateExperience/en/sites/{site}/job/{jid}"
+                list_desc = _oraclecloud_list_text(j)
+                if list_desc:
+                    descriptions[jid] = list_desc
+                    continue
                 existing = seen.get(make_id(company, jurl, title)) if isinstance(seen, dict) else None
                 if fetch_new_exp_only and isinstance(existing, dict):
                     continue
+                existing_source = (existing.get("exp_source") or "") if isinstance(existing, dict) else ""
+                existing_has_description = (
+                    isinstance(existing, dict)
+                    and bool(existing.get("has_description"))
+                )
                 has_good_existing_exp = (
                     isinstance(existing, dict)
-                    and existing.get("exp_label")
-                    and not refresh_experience
+                    and bool(existing.get("exp_label"))
+                    and (not refresh_experience or existing_has_description)
+                    and existing_source in {"text", "company_peer"}
                 )
-                if not has_good_existing_exp:
+                # If we already have the description stored, skip the detail fetch.
+                # Re-fetching returns the same text and would take hours for large companies.
+                # _enrich re-extracts from the stored exp or title fallback as needed.
+                desc_already_fetched = bool(existing_has_description)
+                if not has_good_existing_exp and not desc_already_fetched:
                     ids.append(jid)
 
             def _fetch_desc(req_id):
@@ -165,7 +192,7 @@ def fetch_oraclecloud(scrape, seen, company):
             loc = normalize_location(norm(j.get("PrimaryLocation") or j.get("PrimaryLocationCountry") or ""))
             posted = _parse_posted(j.get("PostedDate") or "")
             if title and jurl:
-                desc = descriptions.get(jid, "")
+                desc = descriptions.get(jid) or _oraclecloud_list_text(j)
                 jobs.append({"title": title, "url": jurl, "location": loc, "source": "oraclecloud", "posted": posted, "description": desc})
 
         if total and offset + limit >= total:
@@ -179,7 +206,7 @@ def fetch_oracle(scrape, seen, company):
     list_url = scrape.get("list_url", "")
     if "/hcmUI/CandidateExperience/" in list_url or "/hcmRestApi/" in list_url:
         return fetch_oraclecloud(scrape, seen, company)
-    if scrape.get("allow_browser_fallback"):
+    if scrape.get("allow_browser_fallback") is not False:
         from .playwright import _fetch_playwright_with_source
         return _fetch_playwright_with_source(scrape, seen, company, "oracle")
     return [], f"unsupported Oracle URL without browser fallback: {list_url}"

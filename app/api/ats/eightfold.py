@@ -29,7 +29,7 @@ def fetch_eightfold(scrape, seen, company):
             r.raise_for_status()
             data = r.json()
         except Exception as e:
-            if scrape.get("fallback") == "playwright" and scrape.get("allow_browser_fallback"):
+            if scrape.get("fallback") == "playwright" and scrape.get("allow_browser_fallback") is not False:
                 from .playwright import _fetch_playwright_with_source
                 return _fetch_playwright_with_source(scrape, seen, company, "eightfold")
             return jobs, str(e)

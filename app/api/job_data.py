@@ -7,10 +7,44 @@ from .common import COMPANIES_FILE, DEFAULT_COMPANIES_FILE
 from .database import IS_POSTGRES, add_column_if_missing, connect_db, initialize_postgres_schema, placeholders
 from .utils import extract_experience, location_matches, make_id, normalize_location, _parse_posted
 
+def _backfill_has_description_once(conn):
+    """One-time migration flag for the expensive description scan."""
+    row = conn.execute(
+        "SELECT value FROM app_state WHERE key='has_description_backfilled'"
+    ).fetchone()
+    value = row[0] if row else ""
+    if value == "1":
+        return
+    conn.execute(
+        "UPDATE jobs SET has_description = 1 "
+        "WHERE has_description = 0 AND COALESCE(description, '') != ''"
+    )
+    conn.execute(
+        "INSERT INTO app_state (key, value) VALUES ('has_description_backfilled', '1') "
+        "ON CONFLICT(key) DO UPDATE SET value=excluded.value"
+    )
+
+def _init_jobs_fts(conn):
+    if IS_POSTGRES:
+        return
+    conn.execute("""
+        CREATE VIRTUAL TABLE IF NOT EXISTS jobs_fts
+        USING fts5(job_id UNINDEXED, title, company, location)
+    """)
+    row = conn.execute("SELECT COUNT(*) FROM jobs_fts").fetchone()
+    count = row[0] if row else 0
+    if count == 0:
+        conn.execute("""
+            INSERT INTO jobs_fts(job_id, title, company, location)
+            SELECT id, title, company, location FROM jobs WHERE is_open=1
+        """)
+
 def init_db():
     with connect_db() as conn:
         if IS_POSTGRES:
             initialize_postgres_schema(conn)
+            add_column_if_missing(conn, "jobs", "has_description INTEGER DEFAULT 0")
+            _backfill_has_description_once(conn)
             return
         conn.execute("""
             CREATE TABLE IF NOT EXISTS jobs (
@@ -75,10 +109,13 @@ def init_db():
             "exp_label TEXT DEFAULT ''",
             "exp_source TEXT DEFAULT ''",
             "description TEXT DEFAULT ''",
+            "has_description INTEGER DEFAULT 0",
             "skills TEXT DEFAULT '[]'",
             "employment_type TEXT DEFAULT ''",
         ):
             add_column_if_missing(conn, "jobs", column_sql)
+        _backfill_has_description_once(conn)
+        _init_jobs_fts(conn)
         conn.execute("CREATE INDEX IF NOT EXISTS idx_jobs_open ON jobs(is_open)")
         conn.execute("CREATE INDEX IF NOT EXISTS idx_jobs_company_open ON jobs(company, is_open)")
         conn.execute("""
@@ -157,8 +194,8 @@ def upsert_jobs(job_list):
     with connect_db() as conn:
         conn.executemany(
             "INSERT INTO jobs "
-            "(id, title, url, company, location, source, categories, first_seen, posted, last_seen_at, is_open, exp_min, exp_max, exp_label, exp_source, description, skills, employment_type) "
-            "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) "
+            "(id, title, url, company, location, source, categories, first_seen, posted, last_seen_at, is_open, exp_min, exp_max, exp_label, exp_source, description, has_description, skills, employment_type) "
+            "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) "
             "ON CONFLICT(id) DO UPDATE SET "
             "title=excluded.title, "
             "location=CASE WHEN excluded.location != '' THEN excluded.location ELSE jobs.location END, "
@@ -168,11 +205,12 @@ def upsert_jobs(job_list):
             "posted=CASE WHEN excluded.posted != '' THEN excluded.posted ELSE jobs.posted END, "
             "last_seen_at=excluded.last_seen_at, "
             "is_open=excluded.is_open, "
-            "exp_min=CASE WHEN excluded.exp_min IS NOT NULL THEN excluded.exp_min ELSE jobs.exp_min END, "
-            "exp_max=CASE WHEN excluded.exp_max IS NOT NULL THEN excluded.exp_max ELSE jobs.exp_max END, "
-            "exp_label=CASE WHEN excluded.exp_label != '' THEN excluded.exp_label ELSE jobs.exp_label END, "
-            "exp_source=CASE WHEN excluded.exp_source != '' THEN excluded.exp_source ELSE jobs.exp_source END, "
+            "exp_min=CASE WHEN excluded.exp_label != '' THEN excluded.exp_min WHEN jobs.exp_source='title' THEN NULL ELSE jobs.exp_min END, "
+            "exp_max=CASE WHEN excluded.exp_label != '' THEN excluded.exp_max WHEN jobs.exp_source='title' THEN NULL ELSE jobs.exp_max END, "
+            "exp_label=CASE WHEN excluded.exp_label != '' THEN excluded.exp_label WHEN jobs.exp_source='title' THEN '' ELSE jobs.exp_label END, "
+            "exp_source=CASE WHEN excluded.exp_source != '' THEN excluded.exp_source WHEN jobs.exp_source='title' THEN '' ELSE jobs.exp_source END, "
             "description=CASE WHEN excluded.description != '' THEN excluded.description ELSE jobs.description END, "
+            "has_description=CASE WHEN excluded.has_description != 0 THEN excluded.has_description ELSE jobs.has_description END, "
             "skills=CASE WHEN excluded.skills != '[]' THEN excluded.skills ELSE jobs.skills END, "
             "employment_type=CASE WHEN excluded.employment_type != '' THEN excluded.employment_type ELSE jobs.employment_type END",
             [(j["id"], j["title"], j.get("url",""), j["company"],
@@ -180,10 +218,20 @@ def upsert_jobs(job_list):
               json.dumps(j.get("categories",[])), j["first_seen"],
               j.get("posted",""), now_str, True, j.get("exp_min"), j.get("exp_max"),
               j.get("exp_label",""), j.get("exp_source",""),
-              j.get("description",""), json.dumps(j.get("skills",[])),
-              j.get("employment_type",""))
+              j.get("description",""), int(bool((j.get("description") or "").strip())),
+              json.dumps(j.get("skills",[])), j.get("employment_type",""))
              for j in job_list],
         )
+        if not IS_POSTGRES:
+            fts_rows = [
+                (j["id"], j["title"], j["company"], j.get("location", ""))
+                for j in job_list
+            ]
+            conn.executemany("DELETE FROM jobs_fts WHERE job_id=?", [(row[0],) for row in fts_rows])
+            conn.executemany(
+                "INSERT INTO jobs_fts(job_id, title, company, location) VALUES (?,?,?,?)",
+                fts_rows,
+            )
 
 def get_app_state(key, default=""):
     with connect_db() as conn:
@@ -286,7 +334,8 @@ def load_seen():
         with connect_db(rows=True) as conn:
             rows = conn.execute(
                 "SELECT company, url, title, location, source, first_seen, posted, "
-                "exp_min, exp_max, exp_label, exp_source, skills FROM jobs WHERE is_open = 1"
+                "exp_min, exp_max, exp_label, exp_source, skills, has_description "
+                "FROM jobs WHERE is_open = 1"
             ).fetchall()
         return {
             make_id(r["company"], r["url"], r["title"]): {
@@ -302,6 +351,7 @@ def load_seen():
                 "exp_label":  r["exp_label"] or "",
                 "exp_source": r["exp_source"] or "",
                 "skills":     json.loads(r["skills"] or "[]"),
+                "has_description": bool(r["has_description"]),
             }
             for r in rows
         }

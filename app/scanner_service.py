@@ -26,7 +26,8 @@ try:
     from .api.utils import make_id
     from .scan_store import (
         create_company_scan_status, create_scan_run,
-        finish_company_scan_status, finish_scan_run, update_scan_counts,
+        finish_company_scan_status, finish_scan_run, start_company_scan_status,
+        update_scan_counts,
     )
 except ImportError:
     from api.apis import _API_MODES, fetch_jobs
@@ -36,20 +37,24 @@ except ImportError:
     from api.utils import make_id
     from scan_store import (
         create_company_scan_status, create_scan_run,
-        finish_company_scan_status, finish_scan_run, update_scan_counts,
+        finish_company_scan_status, finish_scan_run, start_company_scan_status,
+        update_scan_counts,
     )
 
 # Guards concurrent writes to the shared `seen` dict across threads.
 _seen_lock = threading.Lock()
 
-# Thread-pool sizes: more workers for fast API sources, fewer for Playwright.
-_API_WORKERS     = 8
+# Thread-pool sizes. Workday gets its own small lane because full scans may
+# fetch thousands of detail pages for experience extraction; letting those fill
+# the general API pool makes the whole scan look frozen.
+_API_WORKERS     = 12
+_WORKDAY_WORKERS = 2
 _BROWSER_WORKERS = 2
 
 
 # ── Public entry point ────────────────────────────────────────────────────────
 
-def run_scan(companies, scan_type="fresh", progress=None):
+def run_scan(companies, scan_type="fresh", progress=None, on_scan_run_id=None, should_cancel=None):
     """Scan a list of companies and return a summary dict.
 
     Args:
@@ -72,6 +77,8 @@ def run_scan(companies, scan_type="fresh", progress=None):
     total_new   = 0
 
     scan_run_id = create_scan_run(scan_type=scan_type, total_companies=len(companies))
+    if on_scan_run_id:
+        on_scan_run_id(scan_run_id)
 
     if progress is None:
         progress = [
@@ -96,6 +103,7 @@ def run_scan(companies, scan_type="fresh", progress=None):
     def _fetch_one(i, company):
         """Call the appropriate ATS fetcher for one company."""
         progress[i]["status"] = "scanning"
+        start_company_scan_status(status_ids[i])
         t0 = time.monotonic()
         try:
             raw, err = fetch_jobs(company, seen, scan_type=scan_type)
@@ -156,26 +164,83 @@ def run_scan(companies, scan_type="fresh", progress=None):
 
     # ── Run fetches concurrently ──────────────────────────────────────────────
 
+    workday_cos = [(i, c) for i, c in enumerate(companies)
+                   if (c.get("scrape") or {}).get("mode", "html") == "workday"]
     api_cos     = [(i, c) for i, c in enumerate(companies)
-                   if (c.get("scrape") or {}).get("mode", "html") in _API_MODES]
+                   if (c.get("scrape") or {}).get("mode", "html") in _API_MODES
+                   and (c.get("scrape") or {}).get("mode", "html") != "workday"]
     browser_cos = [(i, c) for i, c in enumerate(companies)
                    if (c.get("scrape") or {}).get("mode", "html") not in _API_MODES]
+
+    def _cancel_requested():
+        return bool(should_cancel and should_cancel())
+
+    def _mark_cancelled():
+        for i, _company in enumerate(companies):
+            if progress[i].get("status") in {"pending", "scanning"}:
+                progress[i]["status"] = "cancelled"
+                finish_company_scan_status(
+                    status_ids[i],
+                    status="cancelled",
+                    error_message="scan cancelled",
+                )
+
+    def _submit_next(executor, iterator, futures):
+        try:
+            i, c = next(iterator)
+        except StopIteration:
+            return
+        futures[executor.submit(_fetch_one, i, c)] = (executor, iterator)
+
+    def _run_bounded(api_ex, workday_ex, pw_ex):
+        """Keep only active workers queued so progress and memory stay honest."""
+        futures = {}
+        api_iter = iter(api_cos)
+        workday_iter = iter(workday_cos)
+        pw_iter = iter(browser_cos)
+        for _ in range(min(_API_WORKERS, len(api_cos))):
+            _submit_next(api_ex, api_iter, futures)
+        for _ in range(min(_WORKDAY_WORKERS, len(workday_cos))):
+            _submit_next(workday_ex, workday_iter, futures)
+        for _ in range(min(_BROWSER_WORKERS, len(browser_cos))):
+            _submit_next(pw_ex, pw_iter, futures)
+
+        while futures:
+            if _cancel_requested():
+                for fut in futures:
+                    fut.cancel()
+                _mark_cancelled()
+                return "cancelled"
+            done, _pending = concurrent.futures.wait(
+                futures,
+                timeout=1,
+                return_when=concurrent.futures.FIRST_COMPLETED,
+            )
+            if not done:
+                continue
+            for fut in done:
+                executor, iterator = futures.pop(fut)
+                if fut.cancelled():
+                    continue
+                _commit_one(*fut.result())
+                if not _cancel_requested():
+                    _submit_next(executor, iterator, futures)
+        return None
 
     try:
         with (
             concurrent.futures.ThreadPoolExecutor(max_workers=_API_WORKERS)     as api_ex,
+            concurrent.futures.ThreadPoolExecutor(max_workers=_WORKDAY_WORKERS) as workday_ex,
             concurrent.futures.ThreadPoolExecutor(max_workers=_BROWSER_WORKERS) as pw_ex,
         ):
-            futures = (
-                [api_ex.submit(_fetch_one, i, c) for i, c in api_cos]
-                + [pw_ex.submit(_fetch_one, i, c) for i, c in browser_cos]
-            )
-            for fut in concurrent.futures.as_completed(futures):
-                _commit_one(*fut.result())
+            cancelled = _run_bounded(api_ex, workday_ex, pw_ex)
 
         failed  = [s for s in summaries if s["status"] == "error"]
         elapsed = round(time.monotonic() - t_start, 1)
-        status  = "partial_success" if failed else "success"
+        if cancelled:
+            status = "cancelled"
+        else:
+            status = "partial_success" if failed else "success"
 
         finish_scan_run(
             scan_run_id,
@@ -235,6 +300,7 @@ def _make_seen_entry(job, company_name, now_str):
         "exp_label":   job.get("exp_label", ""),
         "exp_source":  job.get("exp_source", ""),
         "skills":      job.get("skills") or [],
+        "has_description": bool((job.get("description") or "").strip()),
     }
 
 
@@ -252,6 +318,8 @@ def _refresh_seen_entry(entry, job):
         })
     if job.get("skills"):
         entry["skills"] = job["skills"]
+    if job.get("description"):
+        entry["has_description"] = True
 
 
 def _make_summary(name, mode, raw, err, duration, new_count):

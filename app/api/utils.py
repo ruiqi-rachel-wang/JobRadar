@@ -1,6 +1,7 @@
 import json
 import re
 from datetime import datetime, timedelta
+from functools import lru_cache
 from urllib.parse import parse_qs, unquote, urlencode, urlparse, urlunparse
 
 from bs4 import BeautifulSoup
@@ -46,8 +47,7 @@ def extract_experience(title="", text="", allow_title_fallback=True):
         re.I,
     )
     _COMPANY_HISTORY_RE = re.compile(
-        r'\b(?:founded|established|serving|operated?|operating|company|leading|'
-        r'pioneer\w*|deliver\w+|provid\w+|offer\w+|headquarter\w*)\b',
+        r'\b(?:founded|established|headquarter\w*|pioneer\w*)\b',
         re.I,
     )
 
@@ -67,7 +67,7 @@ def extract_experience(title="", text="", allow_title_fallback=True):
         # Filter to requirement-context sentences before pattern matching
         filtered = _requirement_sentences(section)
         range_pattern = re.compile(
-            r'(\d{1,2})\s*(?:-\s*|to\s+)(\d{1,2})\s*(?:years?|yrs?)'
+            r'(\d{1,2})\s*(?:[-–—]\s*|to\s+)(\d{1,2})\s*(?:years?|yrs?)'
             r'(?:\s+[^.;:]{0,100}?\bexperience\b)?'
         )
         minimum_patterns = [
@@ -120,7 +120,7 @@ def extract_experience(title="", text="", allow_title_fallback=True):
         (r'\b(?:intern|internship|co-?op|graduate|new grad|entry level|early career|apprentice)\b', 0, 1, "0-1 years"),
         (r'\b(?:junior|jr\.?|associate|analyst i|engineer i|developer i)\b', 0, 3, "0-3 years"),
         (r'\b(?:mid(?:-|\s)?level|engineer ii|developer ii|analyst ii|l3)\b', 2, 5, "2-5 years"),
-        (r'\b(?:senior|sr\.?|engineer iii|developer iii|analyst iii|l4|l5)\b', 4, 8, "4-8 years"),
+        (r'\b(?:engineer iii|developer iii|analyst iii|l4|l5)\b', 4, 8, "4-8 years"),
         (r'\b(?:staff|principal|lead|architect|l6|l7)\b', 6, None, "6+ years"),
         (r'\b(?:director|head of|vp|vice president|executive)\b', 8, None, "8+ years"),
     ]
@@ -332,6 +332,7 @@ def _title_case_city(s):
 def _country_code(raw):
     return _COUNTRY_ALIASES.get((raw or "").strip().lower())
 
+@lru_cache(maxsize=8192)
 def normalize_location(loc):
     if not loc:
         return ''
@@ -796,12 +797,25 @@ def extract_employment_type(title, desc):
     Defaults to 'Full-time' when nothing specific is found.
     """
     # Title is the most reliable signal — check it first for non-default types
+    desc_l = (desc or "").lower()
+    # Benefits/legal boilerplate often says part-time workers may receive fewer
+    # benefits; that does not mean the role itself is part-time.
+    desc_l = re.sub(
+        r'\bsome of the above benefits may not apply to part[- ]time employees[^.]*\.',
+        ' ',
+        desc_l,
+        flags=re.I,
+    )
     _NON_DEFAULT = _EMP_TYPE_MAP[:-2]   # Internship, Contract, Part-time
     _ALL_TYPES   = _EMP_TYPE_MAP        # includes Full-time and Temporary
     for pattern, label in _NON_DEFAULT:
         if re.search(pattern, (title or "").lower()):
             return label
+    if re.search(r'\bjob type\s*:?\s*full[- ]time\b|\btime type\s*:?\s*full[- ]time\b', desc_l):
+        return "Full-time"
+    if re.search(r'\bjob type\s*:?\s*part[- ]time\b|\btime type\s*:?\s*part[- ]time\b|\bschedule\s*:?\s*part[- ]time\b', desc_l):
+        return "Part-time"
     for pattern, label in _ALL_TYPES:
-        if re.search(pattern, (desc or "").lower()):
+        if re.search(pattern, desc_l):
             return label
     return "Full-time"

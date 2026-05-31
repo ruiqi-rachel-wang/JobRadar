@@ -53,17 +53,25 @@ def create_company_scan_status(scan_run_id, company_name):
         if IS_POSTGRES:
             row = conn.execute(
                 "INSERT INTO scan_company_status "
-                "(scan_run_id, company_name, status, started_at) "
-                "VALUES (?, ?, 'scanning', ?) RETURNING id",
-                (scan_run_id, company_name, _now()),
+                "(scan_run_id, company_name, status) "
+                "VALUES (?, ?, 'pending') RETURNING id",
+                (scan_run_id, company_name),
             ).fetchone()
             return row[0]
         cur = conn.execute(
             "INSERT INTO scan_company_status "
-            "(scan_run_id, company_name, status, started_at) VALUES (?, ?, 'scanning', ?)",
-            (scan_run_id, company_name, _now()),
+            "(scan_run_id, company_name, status) VALUES (?, ?, 'pending')",
+            (scan_run_id, company_name),
         )
         return cur.lastrowid
+
+
+def start_company_scan_status(status_id):
+    with connect_db() as conn:
+        conn.execute(
+            "UPDATE scan_company_status SET status='scanning', started_at=? WHERE id=?",
+            (_now(), status_id),
+        )
 
 
 def finish_company_scan_status(status_id, status, jobs_found=0, new_jobs_found=0,

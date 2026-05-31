@@ -216,6 +216,9 @@
   border: 1px solid var(--navy-100); margin: 1px 2px 1px 0;
   font-weight: 600; font-family: var(--font-mono);
 }
+.exp-chip-muted {
+  background: transparent; color: var(--ink-4); border-color: var(--line);
+}
 .skill-tag {
   display: inline-block; font-size: 11px; padding: 2px 7px; border-radius: 8px;
   background: var(--mint-050); color: var(--mint-deep);

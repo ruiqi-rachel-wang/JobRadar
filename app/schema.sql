@@ -33,6 +33,7 @@ CREATE TABLE IF NOT EXISTS jobs (
     exp_label TEXT DEFAULT '',
     exp_source TEXT DEFAULT '',
     description TEXT DEFAULT '',
+    has_description INTEGER DEFAULT 0,
     skills TEXT DEFAULT '[]',
     employment_type TEXT DEFAULT '',
 
