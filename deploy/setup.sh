@@ -9,6 +9,8 @@ PYTHON="python3"
 echo "=== 1. System packages ==="
 sudo apt update && sudo apt upgrade -y
 sudo apt install -y python3 python3-venv python3-pip nginx git curl unzip
+# iptables-persistent saves the firewall rules opened in step 9 across reboots.
+sudo DEBIAN_FRONTEND=noninteractive apt install -y iptables-persistent
 
 echo "=== 2. Clone repo ==="
 # If already cloned, just pull
@@ -45,6 +47,15 @@ if [ ! -f "$APP_DIR/.env" ]; then
     echo ""
 fi
 
+ADMIN_PASSWORD_VALUE="$(grep '^ADMIN_PASSWORD=' "$APP_DIR/.env" | cut -d= -f2- || true)"
+if [ -z "$ADMIN_PASSWORD_VALUE" ] || [ "$ADMIN_PASSWORD_VALUE" = "change-me" ] || [ "$ADMIN_PASSWORD_VALUE" = "admin" ]; then
+    echo ""
+    echo "Refusing to start publicly with a blank/default ADMIN_PASSWORD."
+    echo "Edit $APP_DIR/.env, set a long random ADMIN_PASSWORD, then rerun: bash deploy/setup.sh"
+    echo ""
+    exit 1
+fi
+
 echo "=== 7. systemd services ==="
 sudo cp "$APP_DIR/deploy/jobdrop.service"         /etc/systemd/system/
 sudo cp "$APP_DIR/deploy/jobdrop-scanner.service" /etc/systemd/system/
@@ -62,6 +73,13 @@ sudo cp "$APP_DIR/deploy/nginx.conf" /etc/nginx/sites-available/jobdrop
 sudo ln -sf /etc/nginx/sites-available/jobdrop /etc/nginx/sites-enabled/jobdrop
 sudo rm -f /etc/nginx/sites-enabled/default
 sudo nginx -t && sudo systemctl restart nginx
+
+echo "=== 9. local firewall ==="
+sudo iptables -C INPUT -p tcp --dport 80 -j ACCEPT 2>/dev/null || sudo iptables -I INPUT -p tcp --dport 80 -j ACCEPT
+sudo iptables -C INPUT -p tcp --dport 443 -j ACCEPT 2>/dev/null || sudo iptables -I INPUT -p tcp --dport 443 -j ACCEPT
+# Persist so the rules survive a reboot (otherwise the VM comes back unreachable).
+sudo netfilter-persistent save || true
+echo "Remember: OCI Security List/NSG must also allow 80/443 from the internet."
 
 echo ""
 echo "=== Done ==="
