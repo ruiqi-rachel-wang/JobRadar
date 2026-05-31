@@ -17,11 +17,12 @@ import concurrent.futures
 import threading
 import time
 from datetime import datetime
+from datetime import timedelta
 
 try:
     from .api.apis import _API_MODES, fetch_jobs
     from .api.job_data import (
-        delete_app_state, delete_expired_jobs, get_app_state, load_seen, upsert_jobs,
+        delete_app_state, delete_expired_jobs, get_app_state, load_seen, set_app_state, upsert_jobs,
     )
     from .api.utils import make_id
     from .scan_store import (
@@ -32,7 +33,7 @@ try:
 except ImportError:
     from api.apis import _API_MODES, fetch_jobs
     from api.job_data import (
-        delete_app_state, delete_expired_jobs, get_app_state, load_seen, upsert_jobs,
+        delete_app_state, delete_expired_jobs, get_app_state, load_seen, set_app_state, upsert_jobs,
     )
     from api.utils import make_id
     from scan_store import (
@@ -106,7 +107,16 @@ def run_scan(companies, scan_type="fresh", progress=None, on_scan_run_id=None, s
         start_company_scan_status(status_ids[i])
         t0 = time.monotonic()
         try:
+            blocked_until = _blocked_until(company["name"])
+            if blocked_until and blocked_until > datetime.now():
+                return (
+                    i, company, [],
+                    f"skipped after recent 403 until {blocked_until.strftime('%Y-%m-%d %H:%M:%S')}",
+                    round(time.monotonic() - t0, 1),
+                )
             raw, err = fetch_jobs(company, seen, scan_type=scan_type)
+            if err and _is_forbidden_error(err):
+                _remember_forbidden(company["name"])
             return i, company, raw or [], err, round(time.monotonic() - t0, 1)
         except Exception as exc:
             return i, company, [], str(exc), round(time.monotonic() - t0, 1)
@@ -283,6 +293,24 @@ def _load_seen_with_reset():
         delete_app_state("force_all_new_once")
         return {}
     return load_seen()
+
+def _blocked_until(company_name):
+    raw = get_app_state(f"crawler_403_until:{company_name}")
+    if not raw:
+        return None
+    try:
+        return datetime.strptime(raw, "%Y-%m-%d %H:%M:%S")
+    except Exception:
+        return None
+
+def _remember_forbidden(company_name):
+    hours = int(__import__("os").environ.get("JOBRADAR_403_BACKOFF_HOURS", "168"))
+    until = datetime.now() + timedelta(hours=max(1, hours))
+    set_app_state(f"crawler_403_until:{company_name}", until.strftime("%Y-%m-%d %H:%M:%S"))
+
+def _is_forbidden_error(err):
+    text = str(err or "").lower()
+    return "403" in text or "forbidden" in text
 
 
 def _make_seen_entry(job, company_name, now_str):

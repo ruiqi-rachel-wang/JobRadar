@@ -152,7 +152,8 @@ def _schedule_loop():
             pass
 
 
-threading.Thread(target=_schedule_loop, daemon=True).start()
+if os.environ.get("JOBRADAR_ENABLE_APP_SCHEDULER", "true").lower() in {"1", "true", "yes"}:
+    threading.Thread(target=_schedule_loop, daemon=True).start()
 
 
 def _recover_stale_scans():
@@ -495,7 +496,8 @@ def backfill_descriptions():
 
         def _fetch_desc(row):
             try:
-                r = requests.get(row["url"], headers=HEADERS, timeout=20, verify=False)
+                from .common import REQUESTS_VERIFY_SSL
+                r = requests.get(row["url"], headers=HEADERS, timeout=20, verify=REQUESTS_VERIFY_SSL)
                 if r.status_code != 200:
                     return row["id"], ""
                 soup = BeautifulSoup(r.text, "lxml")

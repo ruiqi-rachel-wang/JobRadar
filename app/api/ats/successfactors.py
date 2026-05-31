@@ -16,7 +16,7 @@ def _fetch_sf_description(jurl, timeout=15):
             r = requests.get(jurl, headers=HEADERS, timeout=timeout)
             r.raise_for_status()
         except requests.exceptions.SSLError:
-            r = requests.get(jurl, headers=HEADERS, timeout=timeout, verify=False)
+            r = requests.get(jurl, headers=HEADERS, timeout=timeout, verify=REQUESTS_VERIFY_SSL)
             r.raise_for_status()
         soup = BeautifulSoup(r.text, "lxml")
         for sel in _SF_DESC_SELECTORS:
@@ -45,7 +45,7 @@ def fetch_successfactors(scrape, seen, company):
                 r = requests.get(purl, headers=HEADERS, timeout=20)
                 r.raise_for_status()
             except requests.exceptions.SSLError:
-                r = requests.get(purl, headers=HEADERS, timeout=20, verify=False)
+                r = requests.get(purl, headers=HEADERS, timeout=20, verify=REQUESTS_VERIFY_SSL)
                 r.raise_for_status()
         except Exception as e:
             return list(jobs.values()), str(e)

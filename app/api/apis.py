@@ -26,6 +26,7 @@ from .utils import (
     norm,
     normalize_location,
 )
+from .common import robots_allowed
 
 _HTML_TAG_RE = _re.compile(r'<[^>]+>')
 _ENRICH_TEXT_LIMIT = 40_000
@@ -131,6 +132,9 @@ def fetch_jobs(company, seen, scan_type="fresh"):
     """
     scrape = _apply_scan_defaults(company.get("scrape") or {}, scan_type)
     mode   = scrape.get("mode", "html")
+    list_url = scrape.get("list_url") or scrape.get("url") or ""
+    if list_url and not robots_allowed(list_url):
+        return [], "blocked by robots.txt"
 
     if mode == "multi":
         jobs, err = _fetch_multi(scrape, seen, company["name"])
