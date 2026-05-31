@@ -1,6 +1,7 @@
 """Thin wrapper so the scanner can be invoked from the repo root."""
 import sys
 import os
+<<<<<<< postgres-migration
 
 # Add app to path so absolute imports work.
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'app'))
@@ -15,6 +16,19 @@ from pathlib import Path
 from dotenv import load_dotenv
 load_dotenv(Path(__file__).resolve().parent.parent / ".env")
 
+=======
+from pathlib import Path
+
+# Add app/ to path so absolute imports work (scanner_service uses both styles)
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'app'))
+
+from dotenv import load_dotenv
+load_dotenv(Path(__file__).resolve().parent.parent / ".env")
+
+import argparse
+import json
+
+>>>>>>> main
 from api.common import COMPANIES_FILE
 from scanner_service import run_scan
 
