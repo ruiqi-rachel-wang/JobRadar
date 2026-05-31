@@ -78,8 +78,9 @@ def fetch_phenom(scrape, seen, company):
     else:
         job_base = re.sub(r'/search(?:-results|-jobs).*', '/job/', list_url)
 
-    max_pages = int(scrape.get("hard_max_pages") or 10000)
+    max_pages = int(scrape.get("hard_max_pages") or 100)
     jobs = {}
+    consec_all_seen = 0
 
     for page in range(max_pages):
         offset = page * 10  # Phenom default page size is 10
@@ -109,6 +110,7 @@ def fetch_phenom(scrape, seen, company):
             break
 
         before = len(jobs)
+        page_seen = []
         for j in job_list:
             title = norm(j.get("title") or "")
             req_id = str(j.get("reqId") or "").strip()
@@ -122,8 +124,14 @@ def fetch_phenom(scrape, seen, company):
             posted = _parse_posted(j.get("postedDate") or j.get("dateCreated") or "")
             jobs[jurl] = {"title": title, "url": jurl, "location": loc,
                           "source": "phenom", "posted": posted}
+            jid = make_id(company, jurl, title)
+            page_seen.append(jid in seen)
         if len(jobs) == before:
             break
+        if scrape.get("stop_on_seen") and page_seen:
+            consec_all_seen = consec_all_seen + 1 if all(page_seen) else 0
+            if consec_all_seen >= 2:
+                break
         if total and offset + 10 >= total:
             break
         time.sleep(0.3)
@@ -132,7 +140,7 @@ def fetch_phenom(scrape, seen, company):
         return list(jobs.values()), None
 
     pw_err = "no Phenom JSON jobs found"
-    if scrape.get("allow_browser_fallback"):
+    if scrape.get("allow_browser_fallback") is not False:
         pw_jobs, pw_err = _fetch_playwright_with_source(scrape, seen, company, "phenom")
         if pw_jobs:
             return pw_jobs, pw_err

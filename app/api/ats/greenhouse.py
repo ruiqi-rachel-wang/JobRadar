@@ -14,16 +14,31 @@ def fetch_greenhouse(scrape, seen, company):
     else:
         bases = ["https://boards-api.greenhouse.io"]
 
+    _MAX_RESPONSE_MB = 80  # boards with 2000+ jobs can return 100MB+ — cap to avoid hour-long hangs
     last_err = "board not found"
     for base in bases:
         url = f"{base}/v1/boards/{token}/jobs?content=true"
         try:
-            r = requests.get(url, headers=HEADERS, timeout=20)
+            r = requests.get(url, headers=HEADERS, timeout=20, stream=True)
             if r.status_code == 404:
                 last_err = f"404 board not found: {token}"
+                r.close()
                 continue
             r.raise_for_status()
-            data = r.json()
+            chunks = []
+            total = 0
+            for chunk in r.iter_content(65536):
+                chunks.append(chunk)
+                total += len(chunk)
+                if total > _MAX_RESPONSE_MB * 1024 * 1024:
+                    r.close()
+                    last_err = f"response too large (>{_MAX_RESPONSE_MB}MB): {token}"
+                    chunks = None
+                    break
+            if chunks is None:
+                continue
+            import json as _json
+            data = _json.loads(b"".join(chunks))
             jobs = []
             for j in data.get("jobs",[]):
                 title  = norm(j.get("title") or "")
@@ -58,7 +73,7 @@ def fetch_greenhouse(scrape, seen, company):
             last_err = f"new-board no jobs: {token}"
     except Exception as e:
         last_err = str(e)
-    if scrape.get("allow_browser_fallback") and scrape.get("list_url") and (scrape.get("prefix") or scrape.get("include")):
+    if scrape.get("allow_browser_fallback") is not False and scrape.get("list_url") and (scrape.get("prefix") or scrape.get("include")):
         from .playwright import _fetch_playwright_with_source
         return _fetch_playwright_with_source(scrape, seen, company, "greenhouse")
     return [], last_err

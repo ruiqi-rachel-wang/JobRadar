@@ -26,14 +26,27 @@ from .utils import (
     norm,
     normalize_location,
 )
+from .common import robots_allowed
 
 _HTML_TAG_RE = _re.compile(r'<[^>]+>')
+_ENRICH_TEXT_LIMIT = 40_000
 
 def _strip_html(text):
     """Fast HTML tag stripper — avoids BeautifulSoup overhead in the hot path."""
     if not text or '<' not in text:
         return text
     return ' '.join(_HTML_TAG_RE.sub(' ', text).split())
+
+def _bounded_enrich_text(text):
+    """Keep regex-based enrichment from chewing through huge ATS descriptions."""
+    if not text:
+        return ""
+    text = str(text)
+    if len(text) <= _ENRICH_TEXT_LIMIT:
+        return text
+    head = text[: _ENRICH_TEXT_LIMIT // 2]
+    tail = text[-_ENRICH_TEXT_LIMIT // 2 :]
+    return head + " " + tail
 from .ats.greenhouse      import fetch_greenhouse
 from .ats.lever           import fetch_lever
 from .ats.ashby           import fetch_ashby
@@ -119,6 +132,9 @@ def fetch_jobs(company, seen, scan_type="fresh"):
     """
     scrape = _apply_scan_defaults(company.get("scrape") or {}, scan_type)
     mode   = scrape.get("mode", "html")
+    list_url = scrape.get("list_url") or scrape.get("url") or ""
+    if list_url and not robots_allowed(list_url):
+        return [], "blocked by robots.txt"
 
     if mode == "multi":
         jobs, err = _fetch_multi(scrape, seen, company["name"])
@@ -150,7 +166,11 @@ def _apply_scan_defaults(scrape, scan_type):
     """Return a copy of scrape with scan-mode defaults injected."""
     scrape = dict(scrape)  # don't mutate the original config
     if scan_type != "full":
-        scrape.setdefault("stop_on_seen",          True)
+        # stop_on_seen is only useful for paginated API sources (workday, greenhouse, etc.).
+        # HTML companies scrape a single page; stopping mid-page on the first known
+        # job causes the fetcher to return 0 results instead of the full listing.
+        if scrape.get("mode", "html") != "html":
+            scrape.setdefault("stop_on_seen", True)
         scrape.setdefault("fetch_posted_details",  False)
         scrape.setdefault("fetch_experience_details", True)
         scrape.setdefault("fetch_new_experience_only", True)
@@ -167,9 +187,8 @@ def _apply_scan_defaults(scrape, scan_type):
 def _should_try_playwright_fallback(mode, scrape):
     """True when an API fetcher has failed and Playwright may recover it."""
     return (
-        scrape.get("allow_browser_fallback") is True
-        and
         mode not in {"playwright", "html"}
+        and scrape.get("allow_browser_fallback") is not False
         and scrape.get("list_url")
         and (scrape.get("prefix") or scrape.get("include"))
     )
@@ -226,16 +245,19 @@ def _enrich(jobs, seen, company_name, scan_type="fresh"):
 
         jid      = make_id(company_name, j.get("url", ""), j.get("title", ""))
         existing = seen.get(jid) if isinstance(seen, dict) else None
-        desc     = raw_desc or j.get("description", "")
+        desc     = _bounded_enrich_text(raw_desc or j.get("description", ""))
 
         # Reuse cached fields when we have no description (avoids re-extraction).
         # In a full scan, do not preserve title-only estimates; try company
         # peers first, then recompute title as the final fallback.
         existing_source = (existing.get("exp_source") or "") if isinstance(existing, dict) else ""
         can_reuse_existing = (
-            not desc
-            and isinstance(existing, dict)
+            isinstance(existing, dict)
             and existing.get("exp_label")
+            and (
+                not desc  # no new text to compute from
+                or (not is_full and existing_source in {"text", "company_peer"})  # fresh: trust stored result
+            )
             and (not is_full or existing_source in {"text", "company_peer"})
         )
         if can_reuse_existing:
@@ -285,6 +307,43 @@ def _title_core_tokens(title):
     return set(tokens)
 
 
+# Per-call cache: maps (seen_id, company_name) → list of peer candidate dicts.
+# Building this list is O(344K) — we do it once per company per _enrich batch.
+_peer_cache: dict = {}
+_peer_cache_seen_id: int = 0
+
+def _get_company_peers(company_name, seen):
+    """Return eligible peer jobs for company_name, cached for the current seen dict."""
+    global _peer_cache, _peer_cache_seen_id
+    sid = id(seen)
+    if sid != _peer_cache_seen_id:
+        _peer_cache = {}
+        _peer_cache_seen_id = sid
+    key = (company_name or "").lower()
+    if key not in _peer_cache:
+        peers = []
+        for _attempt in range(5):
+            try:
+                _snap = list(seen.values())
+                break
+            except RuntimeError:
+                import time as _t; _t.sleep(0.005 * (_attempt + 1))
+        else:
+            _snap = []
+        for item in _snap:
+            if not isinstance(item, dict):
+                continue
+            if (item.get("company") or "").lower() != key:
+                continue
+            if (item.get("exp_source") or "") not in {"text", "company_peer"}:
+                continue
+            if item.get("exp_min") is None and item.get("exp_max") is None:
+                continue
+            peers.append(item)
+        _peer_cache[key] = peers
+    return _peer_cache[key]
+
+
 def _peer_experience_estimate(company_name, title, seen):
     """Estimate from same-company jobs with similar titles and non-title evidence."""
     if not isinstance(seen, dict):
@@ -294,18 +353,7 @@ def _peer_experience_estimate(company_name, title, seen):
         return {"min": None, "max": None, "label": "", "source": ""}
 
     candidates = []
-    seen_snapshot = list(seen.values())
-    for item in seen_snapshot:
-        if not isinstance(item, dict):
-            continue
-        if (item.get("company") or "").lower() != (company_name or "").lower():
-            continue
-        # Do not let blunt title fallbacks teach other jobs. Text evidence and
-        # peer-derived values are acceptable; title-only values remain last-resort.
-        if (item.get("exp_source") or "") not in {"text", "company_peer"}:
-            continue
-        if item.get("exp_min") is None and item.get("exp_max") is None:
-            continue
+    for item in _get_company_peers(company_name, seen):
         peer_tokens = _title_core_tokens(item.get("title", ""))
         if not peer_tokens:
             continue

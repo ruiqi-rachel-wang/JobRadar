@@ -7,7 +7,11 @@ Type=oneshot
 User=ubuntu
 WorkingDirectory=/home/ubuntu/jobdrop
 EnvironmentFile=/home/ubuntu/jobdrop/.env
-ExecStart=/home/ubuntu/jobdrop/venv/bin/python deploy/run_scanner.py --selected --full
-TimeoutStartSec=3600
+ExecStart=/home/ubuntu/jobdrop/venv/bin/python deploy/run_scanner.py --all --full
+# A full scan of ~1,200 companies runs for several hours (longer on the first
+# run, when every job is new and gets detail-fetched). 0 = no start timeout, so
+# systemd lets it run to completion instead of killing it at the 1h mark.
+# Per-request timeouts in the fetchers still bound total runtime.
+TimeoutStartSec=0
 StandardOutput=journal
 StandardError=journal

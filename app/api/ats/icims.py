@@ -50,21 +50,28 @@ def _parse_icims_location(raw):
         return normalize_location(norm(", ".join(comma_parts)))
     return normalize_location(norm(raw))
 
+_ICIMS_DESC_SELECTORS = re.compile(
+    r'iCIMS_JobContent|job[_-]?content|job[_-]?description|job[_-]?detail|description[_-]?content',
+    re.I,
+)
+
 def _icims_location_from_detail(job_url, timeout=12):
     """
-    Fetch an iCIMS job detail page and extract location using:
-      <dt>Location</dt><dd>US-MA-Boston</dd>  (job.joblocation compound field)
+    Fetch an iCIMS job detail page and extract location, posted date, and description.
+    Location: <dt>Location</dt><dd>US-MA-Boston</dd>  (job.joblocation compound field)
     Falls back to JSON-LD jobLocation if the dt/dd structure isn't present.
+    Returns (loc, posted, description).
     """
     try:
         fetch_url = job_url + ('&in_iframe=1' if '?' in job_url else '?in_iframe=1')
         r = requests.get(fetch_url, headers=HEADERS, timeout=timeout)
         if r.status_code != 200:
-            return "", ""
+            return "", "", ""
         soup = BeautifulSoup(r.text, "lxml")
 
         loc = ""
         posted = ""
+        desc = ""
 
         # Primary: <dt>Location</dt><dd>US-MA-Boston</dd>
         # iCIMS HTML can have badly-nested dt/dd elements, so take only the
@@ -108,9 +115,20 @@ def _icims_location_from_detail(job_url, timeout=12):
                 except Exception:
                     pass
 
-        return loc, posted
+        # Extract job description text
+        desc_el = None
+        for el in soup.find_all(True):
+            cls = " ".join(el.get("class") or [])
+            eid = el.get("id") or ""
+            if _ICIMS_DESC_SELECTORS.search(cls) or _ICIMS_DESC_SELECTORS.search(eid):
+                desc_el = el
+                break
+        if desc_el:
+            desc = norm(desc_el.get_text(" ", strip=True))
+
+        return loc, posted, desc
     except Exception:
-        return "", ""
+        return "", "", ""
 
 def _icims_jobs_from_html(html, page_url):
     """
@@ -202,34 +220,37 @@ def fetch_icims(scrape, seen, company):
                                      "source": "icims", "posted": posted})
 
                 if jobs:
-                    # Enrich missing locations from detail pages. Reuse saved
-                    # detail data so repeat scans do not refetch every job.
+                    # Enrich missing locations/dates/descriptions from detail pages.
+                    # Reuse saved data so repeat scans skip jobs that are already complete.
                     targets = []
                     for j in jobs:
                         existing = seen.get(make_id(company, j["url"], j["title"])) if isinstance(seen, dict) else None
                         if isinstance(existing, dict):
                             j["location"] = j.get("location") or existing.get("location", "")
                             j["posted"] = j.get("posted") or _parse_posted(existing.get("posted") or "")
-                        if not j.get("location") or not j.get("posted"):
+                        existing_has_desc = isinstance(existing, dict) and existing.get("has_description")
+                        if not j.get("location") or not j.get("posted") or not existing_has_desc:
                             targets.append(j)
 
                     max_workers = min(6, len(targets))
                     timeout_per = int(scrape.get("detail_timeout", 12))
 
                     def _enrich(j):
-                        loc, posted_detail = _icims_location_from_detail(j["url"], timeout=timeout_per)
-                        return j["url"], loc, posted_detail
+                        loc, posted_detail, desc = _icims_location_from_detail(j["url"], timeout=timeout_per)
+                        return j["url"], loc, posted_detail, desc
 
                     if targets:
                         with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as ex:
                             by_url = {j["url"]: j for j in jobs}
-                            for jurl, loc, posted_detail in ex.map(_enrich, targets):
+                            for jurl, loc, posted_detail, desc in ex.map(_enrich, targets):
                                 j = by_url.get(jurl)
                                 if j:
                                     if loc:
                                         j["location"] = loc
                                     if posted_detail and not j["posted"]:
                                         j["posted"] = posted_detail
+                                    if desc:
+                                        j["description"] = desc
                     return jobs, None
 
             elif r.status_code not in (403, 404):
@@ -261,11 +282,12 @@ def fetch_icims(scrape, seen, company):
                         if isinstance(existing, dict):
                             j["location"] = j.get("location") or existing.get("location", "")
                             j["posted"] = j.get("posted") or _parse_posted(existing.get("posted") or "")
-                        if not j.get("location") or not j.get("posted"):
+                        existing_has_desc = isinstance(existing, dict) and existing.get("has_description")
+                        if not j.get("location") or not j.get("posted") or not existing_has_desc:
                             targets.append(j)
                     if targets:
                         with concurrent.futures.ThreadPoolExecutor(max_workers=min(6, len(targets))) as ex:
-                            for jurl, loc, posted_detail in ex.map(
+                            for jurl, loc, posted_detail, desc in ex.map(
                                 lambda j: (j["url"], *_icims_location_from_detail(j["url"])),
                                 targets,
                             ):
@@ -275,11 +297,14 @@ def fetch_icims(scrape, seen, company):
                                         j["location"] = loc
                                     if posted_detail and not j.get("posted"):
                                         j["posted"] = posted_detail
+                                    if desc:
+                                        j["description"] = desc
                     return list(jobs.values()), None
             except Exception as e:
                 if not first_err:
                     first_err = str(e)
 
-    if scrape.get("allow_browser_fallback") and scrape.get("list_url") and (scrape.get("prefix") or scrape.get("include")):
+    if scrape.get("allow_browser_fallback") is not False and scrape.get("list_url") and (scrape.get("prefix") or scrape.get("include")):
+        from .playwright import _fetch_playwright_with_source
         return _fetch_playwright_with_source(scrape, seen, company, "icims")
     return [], first_err or "no jobs found"

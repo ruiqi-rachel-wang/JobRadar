@@ -174,7 +174,7 @@ def fetch_workday(scrape, seen, company):
             for j in jobs or []:
                 j["source"] = "workday"
             return jobs, err
-        if scrape.get("fallback") == "playwright" and scrape.get("allow_browser_fallback"):
+        if scrape.get("fallback") == "playwright" and scrape.get("allow_browser_fallback") is not False:
             from .playwright import _fetch_playwright_with_source
             return _fetch_playwright_with_source(scrape, seen, company, "workday")
         return [], f"cannot parse Workday URL: {list_url}"
@@ -245,14 +245,23 @@ def fetch_workday(scrape, seen, company):
                 if not posted and isinstance(existing, dict):
                     posted = _parse_posted(existing.get("posted") or "")
                 existing_source = (existing.get("exp_source") or "") if isinstance(existing, dict) else ""
+                existing_has_description = (
+                    isinstance(existing, dict)
+                    and bool(existing.get("has_description"))
+                )
                 existing_exp = (
                     isinstance(existing, dict)
                     and bool(existing.get("exp_label"))
-                    and not refresh_experience
+                    and (not refresh_experience or existing_has_description)
+                    and existing_source in {"text", "company_peer"}
                 )
+                # If we already have the description stored, skip re-fetching.
+                # Re-fetching returns the same text and causes hours-long hangs for large companies.
+                desc_already_fetched = bool(existing_has_description)
                 exp_detail_needed = (
                     fetch_exp_detail
                     and not existing_exp
+                    and not desc_already_fetched
                     and (not fetch_new_exp_only or not isinstance(existing, dict))
                 )
                 needs_detail = exp_detail_needed or (not posted) or loc == "Multiple Locations"
@@ -285,7 +294,9 @@ def fetch_workday(scrape, seen, company):
                 return pos, detail
 
             with concurrent.futures.ThreadPoolExecutor(max_workers=max(1, detail_workers)) as ex:
-                for pos, detail in ex.map(_fetch_target, detail_targets):
+                futures = [ex.submit(_fetch_target, item) for item in detail_targets]
+                for fut in concurrent.futures.as_completed(futures):
+                    pos, detail = fut.result()
                     job = page_jobs[pos]
                     job["posted"] = job.get("posted") or detail.get("posted", "")
                     if detail.get("location"):

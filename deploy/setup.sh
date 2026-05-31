@@ -4,21 +4,25 @@
 set -e
 
 APP_DIR="/home/ubuntu/jobdrop"
+PYTHON="python3"
 
 echo "=== 1. System packages ==="
 sudo apt update && sudo apt upgrade -y
-sudo apt install -y python3.11 python3.11-venv python3-pip nginx git curl
+sudo apt install -y python3 python3-venv python3-pip nginx git curl unzip
+# iptables-persistent saves the firewall rules opened in step 9 across reboots.
+sudo DEBIAN_FRONTEND=noninteractive apt install -y iptables-persistent
 
 echo "=== 2. Clone repo ==="
+# If already cloned, just pull
 if [ -d "$APP_DIR/.git" ]; then
     git -C "$APP_DIR" pull
 else
-    git clone https://github.com/ruiqi-rachel-wang/JobRadar.git "$APP_DIR"
+    git clone --branch postgres-migration https://github.com/ruiqi-rachel-wang/JobRadar.git "$APP_DIR"
 fi
 cd "$APP_DIR"
 
 echo "=== 3. Python venv ==="
-python3.11 -m venv venv
+$PYTHON -m venv venv
 source venv/bin/activate
 pip install --upgrade pip
 pip install -r requirements.txt
@@ -29,23 +33,27 @@ playwright install-deps chromium
 
 echo "=== 5. Data directory ==="
 mkdir -p "$APP_DIR/app/data"
-# Transfer your database from Mac:
+# If you have an existing jobs.db, scp it here:
 #   scp -i your_key.pem jobs.db ubuntu@YOUR_VM_IP:$APP_DIR/app/data/
 
 echo "=== 6. Environment file ==="
 if [ ! -f "$APP_DIR/.env" ]; then
+    cp "$APP_DIR/.env.example" "$APP_DIR/.env"
+    # Generate a random SECRET_KEY
     SECRET=$(python3 -c "import secrets; print(secrets.token_hex(32))")
-    cat > "$APP_DIR/.env" <<EOF
-ADMIN_PASSWORD=change-me-now
-SECRET_KEY=$SECRET
-JOBRADAR_DATA_DIR=$APP_DIR/app/data
-JOBRADAR_COMPANIES_FILE=$APP_DIR/app/companies.json
-EOF
+    sed -i "s/replace-with-a-long-random-string/$SECRET/" "$APP_DIR/.env"
     echo ""
     echo ">>> EDIT $APP_DIR/.env and set ADMIN_PASSWORD before continuing <<<"
-    echo "    nano $APP_DIR/.env"
     echo ""
-    read -p "Press Enter after editing .env..."
+fi
+
+ADMIN_PASSWORD_VALUE="$(grep '^ADMIN_PASSWORD=' "$APP_DIR/.env" | cut -d= -f2- || true)"
+if [ -z "$ADMIN_PASSWORD_VALUE" ] || [ "$ADMIN_PASSWORD_VALUE" = "change-me" ] || [ "$ADMIN_PASSWORD_VALUE" = "admin" ]; then
+    echo ""
+    echo "Refusing to start publicly with a blank/default ADMIN_PASSWORD."
+    echo "Edit $APP_DIR/.env, set a long random ADMIN_PASSWORD, then rerun: bash deploy/setup.sh"
+    echo ""
+    exit 1
 fi
 
 echo "=== 7. systemd services ==="
@@ -66,9 +74,16 @@ sudo ln -sf /etc/nginx/sites-available/jobdrop /etc/nginx/sites-enabled/jobdrop
 sudo rm -f /etc/nginx/sites-enabled/default
 sudo nginx -t && sudo systemctl restart nginx
 
+echo "=== 9. local firewall ==="
+sudo iptables -C INPUT -p tcp --dport 80 -j ACCEPT 2>/dev/null || sudo iptables -I INPUT -p tcp --dport 80 -j ACCEPT
+sudo iptables -C INPUT -p tcp --dport 443 -j ACCEPT 2>/dev/null || sudo iptables -I INPUT -p tcp --dport 443 -j ACCEPT
+# Persist so the rules survive a reboot (otherwise the VM comes back unreachable).
+sudo netfilter-persistent save || true
+echo "Remember: OCI Security List/NSG must also allow 80/443 from the internet."
+
 echo ""
 echo "=== Done ==="
 echo "Web app:    http://$(curl -s ifconfig.me)"
 echo "App status: sudo systemctl status jobdrop"
 echo "App logs:   sudo journalctl -u jobdrop -f"
-echo "Scanner:    sudo systemctl list-timers"
+echo "Scanner:    sudo systemctl status jobdrop-scanner.timer"

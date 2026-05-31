@@ -11,7 +11,7 @@ from urllib.parse import parse_qs, unquote, urljoin, urlparse
 import requests
 from bs4 import BeautifulSoup
 
-from ..common import BASE_DIR, HEADERS
+from ..common import BASE_DIR, HEADERS, REQUESTS_VERIFY_SSL
 from ..utils import (
     _parse_posted, _posted_from_json, extract_location_from_text,
     extract_posted_from_html, extract_posted_from_text, get_param_title,

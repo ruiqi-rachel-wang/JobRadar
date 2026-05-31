@@ -532,6 +532,7 @@ def fetch_playwright(scrape: dict, seen: dict, company: str):
     list_url         = (scrape.get("list_url") or "").strip()
     include          = (scrape.get("prefix", scrape.get("include", ""))  or "").strip()
     scroll_rounds    = int(scrape.get("scroll_rounds", 40))
+    nav_timeout      = int(scrape.get("nav_timeout", 15_000))
     same_origin_only = bool(scrape.get("same_origin_only", False))
     validate_prefix = bool(scrape.get("validate_prefix", True))
     do_sort          = bool(scrape.get("sort", False))
@@ -677,7 +678,7 @@ def fetch_playwright(scrape: dict, seen: dict, company: str):
             empty_streak = 0
 
             if pg_type == "none":
-                page.goto(list_url, wait_until="commit", timeout=15_000)
+                page.goto(list_url, wait_until="commit", timeout=nav_timeout)
                 page.wait_for_timeout(1200)
                 added, hit_seen = process_one_page(page)
                 if added == 0:
@@ -690,7 +691,7 @@ def fetch_playwright(scrape: dict, seen: dict, company: str):
                 for i in range(max_pages):
                     val  = start + i * step
                     purl = _make_paged_url(list_url, param, val)
-                    page.goto(purl, wait_until="commit", timeout=15_000)
+                    page.goto(purl, wait_until="commit", timeout=nav_timeout)
                     page.wait_for_timeout(1200)
                     added, hit_seen = process_one_page(page)
                     if added == 0:
@@ -711,7 +712,7 @@ def fetch_playwright(scrape: dict, seen: dict, company: str):
                 for i in range(max_pages):
                     val  = start + i * step
                     purl = f"{base}/{segment}/{val}/" if i > 0 else list_url
-                    page.goto(purl, wait_until="commit", timeout=15_000)
+                    page.goto(purl, wait_until="commit", timeout=nav_timeout)
                     page.wait_for_timeout(1200)
                     added, hit_seen = process_one_page(page)
                     if added == 0:
@@ -724,7 +725,7 @@ def fetch_playwright(scrape: dict, seen: dict, company: str):
                         break
 
             elif pg_type == "next_link":
-                page.goto(list_url, wait_until="commit", timeout=15_000)
+                page.goto(list_url, wait_until="commit", timeout=nav_timeout)
                 page.wait_for_timeout(1200)
                 for _ in range(max_pages):
                     added, hit_seen = process_one_page(page)
