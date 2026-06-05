@@ -104,9 +104,9 @@ def run_scan(companies, scan_type="fresh", progress=None, on_scan_run_id=None, s
     def _fetch_one(i, company):
         """Call the appropriate ATS fetcher for one company."""
         progress[i]["status"] = "scanning"
-        start_company_scan_status(status_ids[i])
         t0 = time.monotonic()
         try:
+            start_company_scan_status(status_ids[i])
             blocked_until = _blocked_until(company["name"])
             if blocked_until and blocked_until > datetime.now():
                 return (
@@ -232,7 +232,13 @@ def run_scan(companies, scan_type="fresh", progress=None, on_scan_run_id=None, s
                 executor, iterator = futures.pop(fut)
                 if fut.cancelled():
                     continue
-                _commit_one(*fut.result())
+                try:
+                    _commit_one(*fut.result())
+                except Exception as exc:
+                    # One company's failure (e.g. a transient DB lock) must never
+                    # abort the whole scan — log it and keep going.
+                    import logging
+                    logging.warning("scan: skipped a company after commit error: %s", exc)
                 if not _cancel_requested():
                     _submit_next(executor, iterator, futures)
         return None
