@@ -394,7 +394,7 @@ button.kpi:hover { border-color: var(--line-3); }
               </label>
             </div>
             <div class="sched-times" id="fresh-times"></div>
-            <button class="add-time-btn" onclick="addTime('fresh')">+ Add time</button>
+            <button type="button" id="add-time-btn-fresh" class="add-time-btn" onclick="addTime('fresh')">+ Add time</button>
           </div>
 
           <!-- Full schedule -->
@@ -411,7 +411,7 @@ button.kpi:hover { border-color: var(--line-3); }
               </label>
             </div>
             <div class="sched-times" id="full-times"></div>
-            <button class="add-time-btn" onclick="addTime('full')">+ Add time</button>
+            <button type="button" id="add-time-btn-full" class="add-time-btn" onclick="addTime('full')">+ Add time</button>
           </div>
         </div>
 
@@ -1249,11 +1249,12 @@ function _renderTimes(type, times) {
   const el = document.getElementById(`${type}-times`);
   if (!el) return;
   el.innerHTML = times.map(t =>
-    `<span class="time-chip">${_fmt12(t)}<button onclick="removeTime('${type}','${t}')" title="Remove">×</button></span>`
+    `<span class="time-chip">${_fmt12(t)}<button type="button" onclick="removeTime('${type}','${t}')" title="Remove">×</button></span>`
   ).join('');
 }
 
 function addTime(type) {
+  _schedule[type] = _schedule[type] || { enabled: false, times: [] };
   const btnId  = `add-time-btn-${type}`;
   const formId = `add-time-form-${type}`;
   // Toggle: if form already open, close it
@@ -1265,10 +1266,11 @@ function addTime(type) {
   form.style.cssText = 'display:flex;gap:6px;align-items:center;margin-top:8px';
   form.innerHTML = `
     <input type="time" id="time-inp-${type}" style="flex:1;padding:7px 10px;border:1px solid var(--line);border-radius:var(--r);font-size:13px;font-family:var(--font-sans);outline:none;background:var(--surface);color:var(--ink)">
-    <button onclick="_confirmAddTime('${type}')" style="padding:7px 14px;background:var(--navy);color:white;border:none;border-radius:var(--r);font-size:12.5px;font-weight:600;cursor:pointer">Add</button>
-    <button onclick="document.getElementById('${formId}').remove()" style="padding:7px 10px;background:var(--surface-2);color:var(--ink-3);border:1px solid var(--line);border-radius:var(--r);font-size:12.5px;cursor:pointer">✕</button>
+    <button type="button" onclick="_confirmAddTime('${type}')" style="padding:7px 14px;background:var(--navy);color:white;border:none;border-radius:var(--r);font-size:12.5px;font-weight:600;cursor:pointer">Add</button>
+    <button type="button" onclick="document.getElementById('${formId}').remove()" style="padding:7px 10px;background:var(--surface-2);color:var(--ink-3);border:1px solid var(--line);border-radius:var(--r);font-size:12.5px;cursor:pointer">✕</button>
   `;
-  const btn = document.getElementById(btnId) || document.querySelector(`[onclick="addTime('${type}')"]`);
+  const btn = document.getElementById(btnId);
+  if (!btn) return;
   btn.parentNode.insertBefore(form, btn);
   const inp = document.getElementById(`time-inp-${type}`);
   inp.focus();
@@ -1276,6 +1278,7 @@ function addTime(type) {
 }
 
 function _confirmAddTime(type) {
+  _schedule[type] = _schedule[type] || { enabled: false, times: [] };
   const inp = document.getElementById(`time-inp-${type}`);
   const t   = inp?.value;
   const formId = `add-time-form-${type}`;
@@ -1289,6 +1292,7 @@ function _confirmAddTime(type) {
 }
 
 function removeTime(type, t) {
+  _schedule[type] = _schedule[type] || { enabled: false, times: [] };
   _schedule[type].times = (_schedule[type].times || []).filter(x => x !== t);
   _renderTimes(type, _schedule[type].times);
   _updateNextRun(type);
@@ -1302,14 +1306,20 @@ function _updateNextRun(type) {
 }
 
 async function saveSchedule() {
+  _schedule.fresh = _schedule.fresh || { enabled: false, times: [] };
+  _schedule.full = _schedule.full || { enabled: false, times: [] };
   _schedule.fresh.enabled = document.getElementById('fresh-enabled')?.checked;
   _schedule.full.enabled  = document.getElementById('full-enabled')?.checked;
   renderSchedule();
-  await fetch('/api/schedule', {
+  const resp = await fetch('/api/schedule', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(_schedule),
   });
+  if (!resp.ok) {
+    const data = await resp.json().catch(() => ({}));
+    alert(data.error || `Failed to save schedule (${resp.status})`);
+  }
 }
 
 function _nextRunText(times) {
