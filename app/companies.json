@@ -9771,6 +9771,17 @@
     }
   },
   {
+    "name": "MKG",
+    "categories": [
+      "Ad Tech & MarTech",
+      "Media & Entertainment"
+    ],
+    "scrape": {
+      "mode": "paylocity",
+      "list_url": "https://recruiting.paylocity.com/recruiting/jobs/All/d283d194-8507-43c5-a8aa-94561e6e0b50/MKG-Productions"
+    }
+  },
+  {
     "name": "Modal",
     "categories": [
       "AI & Machine Learning",

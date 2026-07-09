@@ -66,6 +66,7 @@ from .ats.jobvite         import fetch_jobvite
 from .ats.rippling        import fetch_rippling
 from .ats.talentbrew      import fetch_talentbrew
 from .ats.careerpuck      import fetch_careerpuck
+from .ats.paylocity       import fetch_paylocity
 try:
     from .ats.playwright import (
         fetch_adp, fetch_brassring, fetch_phenom, fetch_playwright,
@@ -104,6 +105,7 @@ FETCHERS = {
     "rippling":        fetch_rippling,
     "talentbrew":      fetch_talentbrew,
     "careerpuck":      fetch_careerpuck,
+    "paylocity":       fetch_paylocity,
     "brassring":       fetch_brassring,
     "taleo":           fetch_taleo,
     "phenom":          fetch_phenom,
