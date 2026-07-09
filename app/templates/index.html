@@ -60,9 +60,6 @@
 .dm-source-bar span { color: #888; }
 .dm-source-bar code { color: #1c2b4a; font-size: 0.82rem; }
 .dm-source-bar .dm-noagg { margin-left: auto; color: #aaa; }
-.dm-desc-wrap { }
-.dm-desc { font-size: 0.87rem; line-height: 1.65; color: #444; white-space: pre-wrap; word-break: break-word; max-height: 320px; overflow-y: auto; }
-.dm-desc em { color: #aaa; font-style: italic; }
 </style>
 </head>
 <body>
@@ -199,6 +196,10 @@
   <hr class="dm-divider">
   <div class="dm-body">
     <div id="dm-cards" class="dm-cards"></div>
+    <div id="dm-keywords-wrap" style="display:none">
+      <div class="dm-section-label">Keywords</div>
+      <div class="dm-skills" id="dm-keywords"></div>
+    </div>
     <div id="dm-skills-wrap" style="display:none">
       <div class="dm-section-label">Skills</div>
       <div class="dm-skills" id="dm-skills"></div>
@@ -208,10 +209,6 @@
       <div class="dm-glance" id="dm-glance"></div>
     </div>
     <div id="dm-source-bar" class="dm-source-bar" style="display:none"></div>
-    <div id="dm-desc-wrap" class="dm-desc-wrap" style="display:none">
-      <div class="dm-section-label">Description</div>
-      <div class="dm-desc" id="dm-desc"></div>
-    </div>
   </div>
 </div>
 
@@ -803,11 +800,12 @@ async function openDetail(id, title, company, url, jobObj) {
   document.getElementById('dm-co-loc').textContent = '';
   document.getElementById('dm-posted').innerHTML = '';
   document.getElementById('dm-cards').innerHTML = '';
+  document.getElementById('dm-keywords').innerHTML = '';
+  document.getElementById('dm-keywords-wrap').style.display = 'none';
   document.getElementById('dm-skills').innerHTML = '';
   document.getElementById('dm-skills-wrap').style.display = 'none';
   document.getElementById('dm-glance').innerHTML = '<span style="color:#aaa;font-size:.85rem">Loading…</span>';
   document.getElementById('dm-source-bar').style.display = 'none';
-  document.getElementById('dm-desc-wrap').style.display = 'none';
   const openLink = document.getElementById('dm-open-link');
   if (url) { openLink.href = url; openLink.style.display = ''; }
   else openLink.style.display = 'none';
@@ -836,6 +834,12 @@ async function openDetail(id, title, company, url, jobObj) {
       `<div class="dm-card"><div class="dm-card-label">${c.label}</div><div class="dm-card-value">${esc2(c.value)}</div></div>`
     ).join('');
 
+    const keywords = Array.isArray(data.keywords) ? data.keywords : [];
+    if (keywords.length) {
+      document.getElementById('dm-keywords').innerHTML = keywords.map(s => `<span class="dm-skill">${esc2(s)}</span>`).join('');
+      document.getElementById('dm-keywords-wrap').style.display = '';
+    }
+
     const skills = Array.isArray(data.skills) ? data.skills : [];
     if (skills.length) {
       document.getElementById('dm-skills').innerHTML = skills.map(s => `<span class="dm-skill">${esc2(s)}</span>`).join('');
@@ -861,10 +865,6 @@ async function openDetail(id, title, company, url, jobObj) {
       document.getElementById('dm-source-bar').style.display = 'flex';
     }
 
-    if (data.description) {
-      document.getElementById('dm-desc').textContent = data.description;
-      document.getElementById('dm-desc-wrap').style.display = '';
-    }
   } catch(e) {
     document.getElementById('dm-glance').innerHTML = '<em style="color:#aaa">Could not load details.</em>';
   }

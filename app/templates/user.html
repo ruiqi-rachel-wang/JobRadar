@@ -660,19 +660,6 @@ function _renderDrawerPills(id, items) {
   document.getElementById(id + '-sec').style.display = values.length ? '' : 'none';
 }
 
-function _renderDrawerDescription(text) {
-  const desc = (text || '').replace(/\s+/g, ' ').trim();
-  const sec = document.getElementById('jd-desc-sec');
-  const box = document.getElementById('jd-desc');
-  if (!desc) {
-    sec.style.display = 'none';
-    box.textContent = '';
-    return;
-  }
-  box.textContent = desc.length > 700 ? desc.slice(0, 700).trim() + '...' : desc;
-  sec.style.display = '';
-}
-
 const MODE_DOT_COLORS = {
   greenhouse:'#22c55e',lever:'#3b82f6',ashby:'#a855f7',workday:'#f59e0b',
   bamboohr:'#14b8a6',icims:'#6366f1',html:'#9ca3af',playwright:'#cf923a',
@@ -705,9 +692,8 @@ function openJobDrawer(id) {
   document.getElementById('jd-exp').textContent  = job.exp_label || 'Not listed';
   document.getElementById('jd-type').textContent = job.employment_type || '—';
 
-  _renderDrawerPills('jd-skills', job.skills);
   _renderDrawerPills('jd-keywords', job.keywords);
-  _renderDrawerDescription(job.description);
+  _renderDrawerPills('jd-skills', job.skills);
 
   document.getElementById('jd-d-company').textContent  = job.company || '—';
   document.getElementById('jd-d-location').textContent = job.location || '—';
@@ -726,17 +712,13 @@ function openJobDrawer(id) {
     .then(data => {
       if (!data || currentDrawerJob?.id !== id) return;
       if (data.employment_type) document.getElementById('jd-type').textContent = data.employment_type;
-      if (Array.isArray(data.skills)) {
-        currentDrawerJob.skills = data.skills;
-        _renderDrawerPills('jd-skills', data.skills);
-      }
       if (Array.isArray(data.keywords)) {
         currentDrawerJob.keywords = data.keywords;
         _renderDrawerPills('jd-keywords', data.keywords);
       }
-      if (data.description) {
-        currentDrawerJob.description = data.description;
-        _renderDrawerDescription(data.description);
+      if (Array.isArray(data.skills)) {
+        currentDrawerJob.skills = data.skills;
+        _renderDrawerPills('jd-skills', data.skills);
       }
       if (data.interview) {
         const iv = data.interview;
@@ -1109,17 +1091,13 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="jd-quick-v" id="jd-type" style="font-size:15px;font-family:var(--font-sans)">—</div>
       </div>
     </div>
-    <div class="jd-sec" id="jd-skills-sec">
-      <div class="jd-sec-h">Skills</div>
-      <div class="jd-skills" id="jd-skills"></div>
-    </div>
     <div class="jd-sec" id="jd-keywords-sec">
       <div class="jd-sec-h">Keywords</div>
       <div class="jd-skills" id="jd-keywords"></div>
     </div>
-    <div class="jd-sec" id="jd-desc-sec">
-      <div class="jd-sec-h">Description preview</div>
-      <div id="jd-desc" style="font-size:13.5px;line-height:1.5;color:var(--ink-2)"></div>
+    <div class="jd-sec" id="jd-skills-sec">
+      <div class="jd-sec-h">Skills</div>
+      <div class="jd-skills" id="jd-skills"></div>
     </div>
     <div class="jd-sec">
       <div class="jd-sec-h">At a glance</div>
