@@ -621,9 +621,11 @@ def fetch_playwright(scrape: dict, seen: dict, company: str):
             if _is_bad_title(title):
                 continue
 
-            # Use anchor text + card context for location; fall back to title itself
+            # Use anchor text + card context for location. Never use the title as
+            # a location; titles like "Research Scientist" otherwise become
+            # bogus location fragments such as "Scientist".
             _loc_combined = " ".join(filter(None, [c.get("text", ""), c.get("ctx", "")]))
-            location = _extract_location(_loc_combined) or _extract_location(title)
+            location = _extract_location(_loc_combined)
             posted = _extract_posted(c.get("ctx", ""))
             jobs_out.append({"title": title, "url": u, "location": location, "source": "playwright", "posted": posted})
             new_added += 1
@@ -654,7 +656,7 @@ def fetch_playwright(scrape: dict, seen: dict, company: str):
                     if _is_bad_title(title):
                         continue
                     _loc_combined = " ".join(filter(None, [c.get("text", ""), c.get("ctx", "")]))
-                    location = _extract_location(_loc_combined) or _extract_location(title)
+                    location = _extract_location(_loc_combined)
                     posted   = _extract_posted(c.get("ctx", ""))
                     jobs_out.append({"title": title, "url": u, "location": location, "source": "playwright", "posted": posted})
                     new_added += 1

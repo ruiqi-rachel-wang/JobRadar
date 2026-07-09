@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>{{ title }}</title>
+  <meta name="description" content="{{ description }}">
+  <link rel="canonical" href="{{ canonical_url }}">
+  <style>
+    body{margin:0;background:#f7f4eb;color:#20342f;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+    a{color:#2f6f46;text-decoration:none}a:hover{text-decoration:underline}
+    .top{background:#18322d;color:#fff;padding:18px 24px;display:flex;align-items:center;gap:20px}
+    .brand{font-family:Georgia,serif;font-size:25px;font-weight:700}.brand em{color:#75a46f}
+    .nav{margin-left:auto;display:flex;gap:18px;font-size:14px}.nav a{color:#dbe8db}
+    main{max-width:1040px;margin:0 auto;padding:42px 20px 58px}
+    h1{font-size:38px;line-height:1.05;margin:0 0 10px;font-family:Georgia,serif}
+    .intro{max-width:760px;color:#63706e;font-size:17px;line-height:1.55;margin:0 0 26px}
+    .layout{display:grid;grid-template-columns:minmax(0,1fr) 260px;gap:22px;align-items:start}
+    .jobs{display:grid;gap:12px}.job{background:#fff;border:1px solid #ded6c4;border-radius:8px;padding:16px;box-shadow:0 1px 2px rgba(32,52,47,.05)}
+    .job h2{font-size:18px;margin:0 0 7px;line-height:1.25}.meta{color:#70807c;font-size:13px;margin-bottom:8px}
+    .snippet{color:#41504d;font-size:14px;line-height:1.45;margin:8px 0 0}.pills{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+    .pill{background:#edf5e8;border:1px solid #d2e6c9;color:#416d3e;border-radius:999px;padding:4px 8px;font-size:12px}
+    aside{background:#fff;border:1px solid #ded6c4;border-radius:8px;padding:16px}.side-title{font-weight:700;margin-bottom:10px}
+    .side-links{display:grid;gap:8px;font-size:14px}.empty{background:#fff;border:1px solid #ded6c4;border-radius:8px;padding:22px;color:#63706e}
+    @media (max-width:760px){.layout{grid-template-columns:1fr}.nav{display:none}h1{font-size:31px}}
+  </style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "JobDrop",
+    "url": "{{ url_for('public_view', _external=True) }}",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "{{ url_for('public_view', _external=True) }}?keyword={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  }
+  </script>
+</head>
+<body>
+  <header class="top">
+    <a class="brand" href="/">Job<em>Drop</em></a>
+    <nav class="nav">
+      <a href="/companies">Companies</a>
+      <a href="/jobs/new-grad">New grad</a>
+      <a href="/jobs/software-engineer/remote">Remote software</a>
+      <a href="/app">Browse jobs</a>
+    </nav>
+  </header>
+  <main>
+    <h1>{{ h1 }}</h1>
+    <p class="intro">{{ intro }}</p>
+    <div class="layout">
+      <section class="jobs" aria-label="Job openings">
+        {% if jobs %}
+          {% for job in jobs %}
+          <article class="job">
+            <h2><a href="{{ job.url }}" rel="nofollow noopener" target="_blank">{{ job.title }}</a></h2>
+            <div class="meta">
+              {{ job.company }}{% if job.location %} · {{ job.location }}{% endif %}
+              {% if job.posted %} · Posted {{ job.posted }}{% elif job.first_seen %} · First seen {{ job.first_seen }}{% endif %}
+              {% if job.exp_label %} · {{ job.exp_label }}{% endif %}
+            </div>
+            {% if job.description %}<p class="snippet">{{ job.description }}</p>{% endif %}
+            {% set tags = (job.skills or job.keywords or [])[:8] %}
+            {% if tags %}
+            <div class="pills">
+              {% for tag in tags %}<span class="pill">{{ tag }}</span>{% endfor %}
+            </div>
+            {% endif %}
+          </article>
+          {% endfor %}
+        {% else %}
+          <div class="empty">No matching open jobs are listed right now. Check the live JobDrop app for broader filters.</div>
+        {% endif %}
+      </section>
+      <aside>
+        <div class="side-title">More company pages</div>
+        <div class="side-links">
+          {% for company in companies %}
+          <a href="{{ url_for('company_jobs_page', slug=company.slug) }}">{{ company.name }} jobs</a>
+          {% endfor %}
+        </div>
+      </aside>
+    </div>
+  </main>
+</body>
+</html>

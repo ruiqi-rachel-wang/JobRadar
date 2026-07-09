@@ -9,7 +9,97 @@ def fetch_talentbrew(scrape, seen, company):
     max_pages = int(scrape.get("hard_max_pages") or 10000)
     page_param = scrape.get("page_param", "pg")
     verify_ssl = bool(scrape.get("verify_ssl", True))
+    fetch_details = bool(scrape.get("fetch_experience_details") or scrape.get("fetch_details"))
+    refresh_experience = bool(scrape.get("refresh_experience"))
+    max_desc = int(scrape.get("max_desc_details", 300))
+    detail_workers = int(scrape.get("detail_workers", 4))
     jobs = {}
+
+    def _jsonld_values(data):
+        stack = [data]
+        while stack:
+            item = stack.pop()
+            if isinstance(item, dict):
+                yield item
+                stack.extend(item.values())
+            elif isinstance(item, list):
+                stack.extend(item)
+
+    def _jsonld_location(value):
+        locs = []
+        values = value if isinstance(value, list) else [value]
+        for loc in values:
+            raw = ""
+            if isinstance(loc, dict):
+                address = loc.get("address") or {}
+                if isinstance(address, dict):
+                    parts = [
+                        address.get("addressLocality"),
+                        address.get("addressRegion"),
+                        address.get("addressCountry"),
+                    ]
+                    raw = ", ".join(str(p) for p in parts if p)
+                raw = raw or loc.get("name") or ""
+            elif isinstance(loc, str):
+                raw = loc
+            candidate = normalize_location(norm(raw))
+            if candidate and candidate != "Multiple Locations" and candidate.lower() not in {x.lower() for x in locs}:
+                locs.append(candidate)
+        return "; ".join(locs)
+
+    def _detail_location_from_text(text):
+        locs = []
+        patterns = [
+            r'\b(?:Location|Locations|Job Location|Job Locations|Work Location)\s*[:\-]\s*(.+?)(?=\s+(?:Job ID|Req|Posted|Apply|Share|Overview|Responsibilities|Qualifications|$))',
+            r'\bSame job available in\s+\d+\s+locations?\s+(.+?)(?=\s+(?:Apply|Share|Back|$))',
+        ]
+        for pattern in patterns:
+            m = re.search(pattern, text, re.I)
+            if not m:
+                continue
+            for part in re.split(r'\s*[;|•]\s*|\s{2,}', m.group(1)):
+                candidate = normalize_location(norm(part))
+                if candidate and candidate != "Multiple Locations" and candidate.lower() not in {x.lower() for x in locs}:
+                    locs.append(candidate)
+            if locs:
+                return "; ".join(locs)
+        return ""
+
+    def _fetch_detail(job):
+        try:
+            r = requests.get(job["url"], headers=HEADERS, timeout=20, verify=verify_ssl)
+            r.raise_for_status()
+            soup = BeautifulSoup(r.text, "lxml")
+            posted = ""
+            loc = ""
+            desc = ""
+            for raw in soup.find_all("script", {"type": re.compile(r"ld\+json", re.I)}):
+                try:
+                    data = json.loads(raw.get_text(strip=True))
+                except Exception:
+                    continue
+                for obj in _jsonld_values(data):
+                    if not isinstance(obj, dict):
+                        continue
+                    posted = posted or _parse_posted(obj.get("datePosted") or obj.get("postedDate") or "")
+                    loc = loc or _jsonld_location(obj.get("jobLocation"))
+                    if not desc and obj.get("description"):
+                        desc = norm(BeautifulSoup(obj.get("description") or "", "lxml").get_text(" ", strip=True))
+            full_text = norm(soup.get_text(" ", strip=True))
+            loc = loc or _detail_location_from_text(full_text)
+            posted = posted or extract_posted_from_text(full_text)
+            if not desc:
+                for sel in ('.job-description', '#job-description', '[class*="job-description"]',
+                            '[class*="jobDescription"]', 'main', 'article'):
+                    el = soup.select_one(sel)
+                    if el:
+                        text = norm(el.get_text(" ", strip=True))
+                        if len(text) > 150:
+                            desc = text
+                            break
+            return job, {"location": loc, "posted": posted, "description": desc}
+        except Exception:
+            return job, {"location": "", "posted": "", "description": ""}
     for page in range(max_pages):
         purl = list_url if page == 0 else make_paged_url(list_url, {"param": page_param, "start": page + 1}, 0)
         try:
@@ -76,4 +166,22 @@ def fetch_talentbrew(scrape, seen, company):
             jobs[jurl] = {"title": title, "url": jurl, "location": loc, "source": "talentbrew", "posted": posted}
         if len(jobs) == before:
             break
+    detail_targets = []
+    if fetch_details:
+        for job in jobs.values():
+            jid = make_id(company, job.get("url", ""), job.get("title", ""))
+            existing = seen.get(jid) if isinstance(seen, dict) else None
+            existing_has_desc = isinstance(existing, dict) and existing.get("has_description")
+            needs_location = not job.get("location") or re.search(r'\+\s*\d+\s+more|\bmultiple locations?\b', job.get("location") or "", re.I)
+            if refresh_experience or needs_location or not job.get("posted") or not existing_has_desc:
+                detail_targets.append(job)
+    if detail_targets[:max_desc]:
+        with concurrent.futures.ThreadPoolExecutor(max_workers=max(1, detail_workers)) as ex:
+            for job, detail in ex.map(_fetch_detail, detail_targets[:max_desc]):
+                if detail.get("location"):
+                    job["location"] = detail["location"]
+                if detail.get("posted") and not job.get("posted"):
+                    job["posted"] = detail["posted"]
+                if detail.get("description"):
+                    job["description"] = detail["description"]
     return list(jobs.values()), None

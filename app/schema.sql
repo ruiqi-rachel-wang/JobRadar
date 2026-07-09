@@ -28,13 +28,14 @@ CREATE TABLE IF NOT EXISTS jobs (
     last_seen_at TIMESTAMPTZ DEFAULT NOW(),
     is_open BOOLEAN DEFAULT TRUE,
 
-    exp_min INTEGER,
-    exp_max INTEGER,
+    exp_min REAL,
+    exp_max REAL,
     exp_label TEXT DEFAULT '',
     exp_source TEXT DEFAULT '',
     description TEXT DEFAULT '',
     has_description INTEGER DEFAULT 0,
     skills TEXT DEFAULT '[]',
+    keywords TEXT DEFAULT '[]',
     employment_type TEXT DEFAULT '',
 
     raw_data JSONB,
@@ -110,6 +111,13 @@ CREATE TABLE IF NOT EXISTS users (
     email TEXT DEFAULT '',
     password_hash TEXT NOT NULL,
     role TEXT DEFAULT 'user',
+    plan_status TEXT DEFAULT 'free',
+    plan_started_at TIMESTAMPTZ,
+    plan_current_period_end TIMESTAMPTZ,
+    stripe_customer_id TEXT DEFAULT '',
+    stripe_subscription_id TEXT DEFAULT '',
+    last_login_at TIMESTAMPTZ,
+    last_active_at TIMESTAMPTZ,
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
 

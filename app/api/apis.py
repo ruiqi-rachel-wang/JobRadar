@@ -21,6 +21,7 @@ from .utils import (
     _parse_posted,
     extract_employment_type as _extract_employment_type,
     extract_experience,
+    extract_keywords,
     extract_skills,
     make_id,
     norm,
@@ -78,8 +79,9 @@ except Exception as _pw_err:
     fetch_adp = fetch_brassring = fetch_phenom = fetch_playwright = _pw_stub
     fetch_salesforce = fetch_taleo = fetch_talemetry = _pw_stub
     def _fetch_playwright_with_source(*a, **k): return [], "playwright not available"
-from .ats.html    import fetch_html
-from .ats.jobsapi import fetch_jobsapi
+from .ats.html     import fetch_html
+from .ats.jobsapi  import fetch_jobsapi
+from .ats.xml_feed import fetch_xml_feed
 
 # Map mode name → fetcher function.
 FETCHERS = {
@@ -111,10 +113,29 @@ FETCHERS = {
     "jobsapi":         fetch_jobsapi,
     "playwright":      fetch_playwright,
     "html":            fetch_html,
+    "xml_feed":        fetch_xml_feed,
 }
 
 # Modes served by JSON APIs (not browser automation).
 _API_MODES = set(FETCHERS) - {"html", "playwright"}
+
+_NON_JOB_TITLES = {
+    "claim offer", "log in", "login", "sign in", "signin",
+    "learn more", "view all", "view all jobs", "search jobs",
+}
+_OPENINGS_SUMMARY_RE = _re.compile(r"\b\d[\d,]*\s+openings?$", _re.I)
+
+
+def _remove_non_jobs(jobs):
+    jobs[:] = [
+        job for job in jobs
+        if (
+            (job.get("title") or "").strip().lower() not in _NON_JOB_TITLES
+            and not _OPENINGS_SUMMARY_RE.search((job.get("title") or "").strip())
+            and (job.get("title") or "").strip().lower() != "[email protected]"
+            and "/cdn-cgi/l/email-protection" not in (job.get("url") or "").lower()
+        )
+    ]
 
 
 # ── Public entry point ────────────────────────────────────────────────────────
@@ -139,6 +160,7 @@ def fetch_jobs(company, seen, scan_type="fresh"):
     if mode == "multi":
         jobs, err = _fetch_multi(scrape, seen, company["name"])
         _enrich(jobs or [], seen, company["name"], scan_type=scan_type)
+        _remove_non_jobs(jobs or [])
         _apply_text_filter(jobs or [], scrape)
         return jobs or [], err
 
@@ -156,6 +178,7 @@ def fetch_jobs(company, seen, scan_type="fresh"):
             jobs, err = fallback, fb_err
 
     _enrich(jobs or [], seen, company["name"], scan_type=scan_type)
+    _remove_non_jobs(jobs or [])
     _apply_text_filter(jobs or [], scrape)
     return jobs or [], err
 
@@ -270,7 +293,7 @@ def _enrich(jobs, seen, company_name, scan_type="fresh"):
             exp = extract_experience(j.get("title", ""), desc, allow_title_fallback=False)
             if not exp.get("label"):
                 exp = _peer_experience_estimate(company_name, j.get("title", ""), seen)
-            if not exp.get("label"):
+            if desc and not exp.get("label"):
                 exp = extract_experience(j.get("title", ""), "", allow_title_fallback=True)
             j["exp_min"]    = exp.get("min")
             j["exp_max"]    = exp.get("max")
@@ -281,6 +304,8 @@ def _enrich(jobs, seen, company_name, scan_type="fresh"):
 
         if not j.get("employment_type"):
             j["employment_type"] = _extract_employment_type(j.get("title", ""), desc)
+        if not j.get("keywords"):
+            j["keywords"] = extract_keywords(j.get("title", ""), desc, j.get("skills") or [])
 
 
 _TITLE_LEVEL_WORDS = {
@@ -367,16 +392,21 @@ def _peer_experience_estimate(company_name, title, seen):
 
     candidates.sort(key=lambda row: row[0], reverse=True)
     strongest = [item for score, item in candidates if score >= candidates[0][0] - 0.1][:7]
-    mins = [int(item["exp_min"]) for item in strongest if item.get("exp_min") is not None]
-    maxes = [int(item["exp_max"]) for item in strongest if item.get("exp_max") is not None]
+    mins = [float(item["exp_min"]) for item in strongest if item.get("exp_min") is not None]
+    maxes = [float(item["exp_max"]) for item in strongest if item.get("exp_max") is not None]
     if not mins:
         return {"min": None, "max": None, "label": "", "source": ""}
 
-    lo = int(median(mins))
-    hi = int(median(maxes)) if maxes and len(maxes) >= max(1, len(strongest) // 2) else None
+    def _fmt_year(value):
+        if value is None:
+            return ""
+        return str(int(value)) if float(value).is_integer() else str(value).rstrip("0").rstrip(".")
+
+    lo = median(mins)
+    hi = median(maxes) if maxes and len(maxes) >= max(1, len(strongest) // 2) else None
     if hi is not None and hi < lo:
         hi = lo
-    label = f"{lo}-{hi} years" if hi is not None else f"{lo}+ years"
+    label = f"{_fmt_year(lo)}-{_fmt_year(hi)} years" if hi is not None else f"{_fmt_year(lo)}+ years"
     return {"min": lo, "max": hi, "label": label, "source": "company_peer"}
 
 

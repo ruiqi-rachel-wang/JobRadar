@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>JobRadar — Log in / Sign up</title>
+<meta name="robots" content="noindex,nofollow">
+<title>JobDrop — Log in / Sign up</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@1,9..144,500&family=Inter+Tight:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -107,15 +108,17 @@ input:focus { border-color: #5e8a5e; box-shadow: 0 0 0 3px #e9f1e3; }
         <input type="hidden" name="next" value="{{ next or '' }}">
         <label>Username</label>
         <input name="username" type="text" autofocus autocomplete="username"
+               required minlength="3" maxlength="30" pattern="[a-zA-Z0-9_.-]+"
                value="{{ request.form.get('username', '') if mode == 'signup' else '' }}">
         <div class="hint">3–30 characters, letters / numbers / . _ -</div>
         <label>Email <span style="color:#b8ad8e;font-weight:400;text-transform:none">(optional)</span></label>
         <input name="email" type="email" autocomplete="email"
                value="{{ request.form.get('email', '') if mode == 'signup' else '' }}">
         <label>Password</label>
-        <input name="password" type="password" placeholder="At least 6 characters" autocomplete="new-password">
+        <input name="password" type="password" placeholder="At least 6 characters"
+               autocomplete="new-password" required minlength="6">
         <label>Confirm password</label>
-        <input name="confirm" type="password" autocomplete="new-password">
+        <input name="confirm" type="password" autocomplete="new-password" required minlength="6">
         <button class="btn-primary" type="submit">Create account →</button>
       </form>
     </div>
@@ -127,9 +130,9 @@ input:focus { border-color: #5e8a5e; box-shadow: 0 0 0 3px #e9f1e3; }
       {% if mode == 'login' and error %}<div class="err">{{ error }}</div>{% endif %}
       <form method="post" action="/login{% if next %}?next={{ next }}{% endif %}" id="form-login">
         <label>Username</label>
-        <input name="username" type="text" autocomplete="username">
+        <input name="username" type="text" autocomplete="username" required>
         <label>Password</label>
-        <input name="password" type="password" autocomplete="current-password">
+        <input name="password" type="password" autocomplete="current-password" required>
         <button class="btn-primary" type="submit">Log in →</button>
       </form>
     </div>
@@ -146,6 +149,16 @@ function switchTab(tab) {
   document.getElementById('panel-signup').classList.toggle('active', tab === 'signup');
   document.querySelector(`#form-${tab} input`).focus();
 }
+document.getElementById('form-signup').addEventListener('submit', event => {
+  const form = event.currentTarget;
+  const password = form.elements.password;
+  const confirm = form.elements.confirm;
+  confirm.setCustomValidity(password.value === confirm.value ? '' : 'Passwords do not match.');
+  if (!form.checkValidity()) return;
+  const button = form.querySelector('button[type="submit"]');
+  button.disabled = true;
+  button.textContent = 'Creating account…';
+});
 </script>
 </body>
 </html>

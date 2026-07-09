@@ -209,6 +209,16 @@
 .job-title-link { color: var(--navy); font-weight: 600; font-size: 14px; line-height: 1.3; }
 .td-co { width: 150px; font-size: 12.5px; color: var(--ink-2); font-weight: 500; vertical-align: middle; }
 .td-loc { width: 160px; font-size: 13px; color: var(--ink-2); }
+.loc-more {
+  border: 0;
+  background: transparent;
+  color: var(--green);
+  cursor: pointer;
+  font: inherit;
+  font-weight: 600;
+  padding: 0;
+}
+.loc-more:hover { text-decoration: underline; }
 .td-yrs { width: 150px; }
 .exp-chip {
   display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 8px;
@@ -336,7 +346,17 @@
 .al-row:last-child { border-bottom: none; }
 .al-row:hover { background: var(--surface-2); }
 .al-row td { padding: 14px 16px; vertical-align: middle; }
-.al-title { max-width: 360px; }
+.al-title { width: 260px; max-width: 260px; }
+.al-title-text {
+  display: block;
+  max-width: 260px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--navy);
+}
 .al-co   { width: 160px; font-size: 13px; color: var(--ink-2); font-weight: 500; }
 .al-loc  { width: 160px; font-size: 13px; color: var(--ink-3); }
 .al-yrs  { width: 68px;  font-size: 13px; color: var(--ink-2); font-weight: 600; font-family: var(--font-mono); }
@@ -349,22 +369,22 @@
   cursor: pointer; outline: none;
 }
 .al-stage-sel:focus { border-color: var(--mint); }
-.al-act { width: 96px; white-space: nowrap; display: flex; gap: 6px; align-items: center; }
+.al-act { width: 190px; white-space: nowrap; display: flex; gap: 8px; align-items: center; }
 .al-open-btn {
   display: inline-flex; align-items: center; justify-content: center;
-  width: 44px; height: 36px;
+  min-width: 96px; height: 36px; padding: 0 14px;
   background: var(--navy); color: white;
-  border-radius: var(--r); font-size: 18px;
+  border-radius: var(--r); font-size: 12.5px; font-weight: 600;
   text-decoration: none; transition: background .1s;
   flex-shrink: 0;
 }
 .al-open-btn:hover { background: var(--navy-2); }
 .al-remove-btn {
   display: inline-flex; align-items: center; justify-content: center;
-  width: 32px; height: 36px;
+  min-width: 82px; height: 36px; padding: 0 12px;
   border: 1px solid var(--line); border-radius: var(--r);
   background: var(--surface); color: var(--ink-3);
-  font-size: 16px; cursor: pointer; transition: all .1s;
+  font-size: 12.5px; font-weight: 600; cursor: pointer; transition: all .1s;
   flex-shrink: 0;
 }
 .al-remove-btn:hover { border-color: var(--err); color: var(--err); background: color-mix(in oklab, var(--err) 6%, white); }
@@ -398,10 +418,11 @@
 /* ── Save search + report buttons (topbar) ── */
 .save-search-btn {
   align-self: flex-end;
-  font-size: 16px; color: var(--ink-3);
-  padding: 6px 10px;
+  font-size: 12.5px; font-weight: 600; color: var(--navy);
+  padding: 8px 12px;
   background: var(--surface-2); border: 1px solid var(--line);
   border-radius: var(--r); cursor: pointer; line-height: 1;
+  white-space: nowrap;
   transition: all .12s;
 }
 .save-search-btn:hover { color: var(--warm); border-color: var(--warm); }

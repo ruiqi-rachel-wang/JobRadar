@@ -1,5 +1,6 @@
 import os
 import urllib.robotparser
+import urllib.request
 from pathlib import Path
 from urllib.parse import urljoin, urlparse
 
@@ -9,8 +10,10 @@ DEFAULT_COMPANIES_FILE = BASE_DIR / "companies.json"
 COMPANIES_FILE = Path(os.environ.get("JOBRADAR_COMPANIES_FILE", DEFAULT_COMPANIES_FILE)).expanduser()
 SUMMARY_FILE = DATA_DIR / "scan_summary.json"
 DB_FILE = DATA_DIR / "jobs.db"
+AUTH_DB_FILE = Path(os.environ.get("JOBDROP_AUTH_DB_FILE", DATA_DIR / "users.db")).expanduser()
 DATA_DIR.mkdir(parents=True, exist_ok=True)
 COMPANIES_FILE.parent.mkdir(parents=True, exist_ok=True)
+AUTH_DB_FILE.parent.mkdir(parents=True, exist_ok=True)
 
 HEADERS = {
     "User-Agent": (
@@ -23,6 +26,7 @@ HEADERS = {
 
 REQUESTS_VERIFY_SSL = os.environ.get("JOBRADAR_VERIFY_SSL", "true").lower() not in {"0", "false", "no"}
 RESPECT_ROBOTS = os.environ.get("JOBRADAR_RESPECT_ROBOTS", "true").lower() not in {"0", "false", "no"}
+ROBOTS_TIMEOUT_SECONDS = float(os.environ.get("JOBRADAR_ROBOTS_TIMEOUT_SECONDS", "5"))
 
 _ROBOTS_CACHE = {}
 
@@ -37,9 +41,13 @@ def robots_allowed(url):
     rp = _ROBOTS_CACHE.get(root)
     if rp is None:
         rp = urllib.robotparser.RobotFileParser()
-        rp.set_url(urljoin(root, "/robots.txt"))
+        robots_url = urljoin(root, "/robots.txt")
+        rp.set_url(robots_url)
         try:
-            rp.read()
+            req = urllib.request.Request(robots_url, headers={"User-Agent": HEADERS["User-Agent"]})
+            with urllib.request.urlopen(req, timeout=ROBOTS_TIMEOUT_SECONDS) as resp:
+                text = resp.read(512_000).decode("utf-8", "ignore")
+            rp.parse(text.splitlines())
         except Exception:
             return True
         _ROBOTS_CACHE[root] = rp

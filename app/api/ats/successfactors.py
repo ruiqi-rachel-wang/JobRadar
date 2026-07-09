@@ -9,8 +9,49 @@ _SF_DESC_SELECTORS = [
     'main', 'article',
 ]
 
-def _fetch_sf_description(jurl, timeout=15):
-    """Fetch description text from a SuccessFactors job detail page."""
+def _sf_detail_location(text):
+    if not text:
+        return ""
+
+    def _location_list(raw):
+        locs = []
+        patterns = [
+            r'\b([A-Z][A-Za-z .\'-]+,\s*[A-Z]{2},\s*(?:US|USA|United States(?: of America)?))\b',
+            r'\b(Remote,\s*(?:US|USA|United States(?: of America)?|Canada|India|United Kingdom|UK))\b',
+            r'\b([A-Z][A-Za-z .\'-]+,\s*[A-Z][A-Za-z .\'-]+,\s*(?:Canada|India|United Kingdom|UK|Germany|France|Spain))\b',
+        ]
+        for pattern in patterns:
+            for m in re.finditer(pattern, raw):
+                candidate = normalize_location(m.group(1))
+                if candidate and candidate != "Multiple Locations" and candidate.lower() not in {x.lower() for x in locs}:
+                    locs.append(candidate)
+        return "; ".join(locs)
+
+    m = re.search(r'\bSame job available in\s+\d+\s+locations?\s+(.+?)(?=\s+(?:Apply|Back to search|Share this job|Similar jobs|$))', text, re.I)
+    if m:
+        raw = m.group(1)
+        listed = _location_list(raw)
+        if listed:
+            return listed
+        parts = [p.strip() for p in re.split(r'\s*[;|•]\s*|\s{2,}', raw) if p.strip()]
+        locs = []
+        for part in parts:
+            candidate = normalize_location(part)
+            if candidate and candidate != "Multiple Locations" and candidate.lower() not in {x.lower() for x in locs}:
+                locs.append(candidate)
+        if locs:
+            return "; ".join(locs)
+    m = re.search(r'\bLocation(?:\(s\))?:\s*(.+?)(?=\s+(?:Job Description|Responsibilities|Qualifications|Apply|$))', text, re.I)
+    if m:
+        listed = _location_list(m.group(1))
+        if listed:
+            return listed
+        return normalize_location(m.group(1))
+    return ""
+
+
+def _fetch_sf_detail(jurl, timeout=15):
+    """Fetch description text and expanded location from a SuccessFactors detail page."""
     try:
         try:
             r = requests.get(jurl, headers=HEADERS, timeout=timeout)
@@ -24,10 +65,15 @@ def _fetch_sf_description(jurl, timeout=15):
             if el:
                 text = norm(el.get_text(" ", strip=True))
                 if len(text) > 100:
-                    return text
-        return ""
+                    return {"description": text, "location": _sf_detail_location(text)}
+        text = norm(soup.get_text(" ", strip=True))
+        return {"description": text if len(text) > 100 else "", "location": _sf_detail_location(text)}
     except Exception:
-        return ""
+        return {"description": "", "location": ""}
+
+
+def _fetch_sf_description(jurl, timeout=15):
+    return _fetch_sf_detail(jurl, timeout).get("description", "")
 
 
 def fetch_successfactors(scrape, seen, company):
@@ -90,14 +136,17 @@ def fetch_successfactors(scrape, seen, company):
     for j in jobs.values():
         jid_key = make_id(company, j["url"], j["title"])
         existing = seen.get(jid_key) if isinstance(seen, dict) else None
-        if not (isinstance(existing, dict) and existing.get("has_description")):
+        incomplete_location = (not j.get("location")) or re.search(r'\+\s*\d+\s+more', j.get("location") or "", re.I)
+        if incomplete_location or not (isinstance(existing, dict) and existing.get("has_description")):
             desc_targets.append(j)
     if desc_targets[:max_desc]:
         def _get_desc(j):
-            return j, _fetch_sf_description(j["url"])
+            return j, _fetch_sf_detail(j["url"])
         with concurrent.futures.ThreadPoolExecutor(max_workers=max(1, desc_workers)) as ex:
-            for job, desc in ex.map(_get_desc, desc_targets[:max_desc]):
-                if desc:
-                    job["description"] = desc
+            for job, detail in ex.map(_get_desc, desc_targets[:max_desc]):
+                if detail.get("location"):
+                    job["location"] = detail["location"]
+                if detail.get("description"):
+                    job["description"] = detail["description"]
 
     return list(jobs.values()), None

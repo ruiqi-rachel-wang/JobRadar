@@ -12,19 +12,44 @@ def fetch_html(scrape, seen, company):
     stop_on_seen = bool(scrape.get("stop_on_seen", False))
     use_reader  = bool(scrape.get("reader", False))
     verify_ssl  = bool(scrape.get("verify_ssl", True))
+    headers     = dict(HEADERS)
+    if scrape.get("user_agent"):
+        headers["User-Agent"] = scrape["user_agent"]
     pg_cfg      = scrape.get("pagination") or {"type":"none"}
     pg_type     = pg_cfg.get("type","none")
     max_pages   = int(pg_cfg.get("hard_max_pages") or scrape.get("hard_max_pages") or 100)
+    require_job_path = bool(scrape.get("require_job_path", False))
+    default_location = normalize_location(scrape.get("default_location") or "")
 
     if not list_url: return [], "no list_url"
     if not include:  return [], "no include pattern"
 
     visited: set = set()
 
+    def is_job_detail_url(url):
+        if not require_job_path:
+            return True
+        try:
+            parsed = urlparse(url)
+        except Exception:
+            return False
+        path = parsed.path.rstrip("/")
+        if re.search(r'/(?:jobs?|openings?|positions?|requisitions?)/[^/]+$', path, re.I):
+            return True
+        if re.search(r'/(?:jobs?|openings?|positions?|requisitions?)/[^/]+/[^/]+$', path, re.I):
+            return True
+        if re.search(r'/careers?/[^/]+$', path, re.I):
+            return True
+        query = parse_qs(parsed.query)
+        return any(
+            query.get(key)
+            for key in ("jobId", "jobID", "job_id", "reqId", "requisitionId", "gh_jid")
+        )
+
     def scrape_one(page_url):
         try:
             fetch_url = "https://r.jina.ai/" + page_url if use_reader else page_url
-            r = requests.get(fetch_url, headers=HEADERS, timeout=25, verify=verify_ssl)
+            r = requests.get(fetch_url, headers=headers, timeout=25, verify=verify_ssl)
             r.raise_for_status()
         except Exception as e:
             return {}, str(e), None, False
@@ -36,12 +61,15 @@ def fetch_html(scrape, seen, company):
                 for title, abs_url in re.findall(r"\[([^\]]{4,180})\]\((https?://[^)\s]+)\)", line):
                     if not has_include(abs_url, include):
                         continue
+                    if not is_job_detail_url(abs_url):
+                        continue
                     if url_exclude and any(ex in abs_url.lower() for ex in url_exclude):
                         continue
                     if abs_url in visited:
                         continue
                     visited.add(abs_url)
                     title = norm(re.sub(r"!\[[^\]]*\]", " ", title))
+                    title = re.sub(r'\s+(?:learn more|apply now|view job)$', '', title, flags=re.I).strip()
                     if not title or re.search(r"^(apply|view job|search jobs|saved jobs|learn more)$", title, re.I):
                         continue
                     if title_exclude and any(ex in title.lower() for ex in title_exclude):
@@ -63,7 +91,8 @@ def fetch_html(scrape, seen, company):
                         "url": abs_url,
                         "location": (extract_location_from_text(nearby_clean)
                                      or extract_location_from_text(nearby)
-                                     or extract_location_from_text(title)),
+                                     or extract_location_from_text(title)
+                                     or default_location),
                         "source": "html",
                         "posted": extract_posted_from_text(nearby),
                     }
@@ -81,6 +110,8 @@ def fetch_html(scrape, seen, company):
                 continue
             abs_url = urljoin(page_url, href)
             if not has_include(abs_url, include):
+                continue
+            if not is_job_detail_url(abs_url):
                 continue
             if url_exclude and any(ex in abs_url.lower() for ex in url_exclude):
                 continue
@@ -118,10 +149,14 @@ def fetch_html(scrape, seen, company):
                         title = title[:100].rsplit(" ", 1)[0]
 
             if not title or len(title) < 4:
-                seg   = urlparse(abs_url).path.rstrip("/").split("/")[-1]
+                parts = [p for p in urlparse(abs_url).path.rstrip("/").split("/") if p]
+                seg   = parts[-1] if parts else ""
+                if re.fullmatch(r"\d+", seg or "") and len(parts) >= 2:
+                    seg = parts[-2]
                 title = re.sub(r"[-_]"," ", seg).strip()
             if not title or len(title) < 4:
                 continue
+            title = re.sub(r'\s+(?:learn more|apply now|view job)$', '', title, flags=re.I).strip()
             _NAV = {
                 "view all jobs","view all","all jobs","apply","view job","search jobs",
                 "saved jobs","learn more","see all openings","see all jobs","open positions",
@@ -184,6 +219,8 @@ def fetch_html(scrape, seen, company):
                 loc_candidate = extract_location_from_text(parent_text[:300])
                 if loc_candidate and loc_candidate.lower() == title.lower():
                     loc_candidate = ""
+            if default_location and loc_candidate in ("", "Remote", "Multiple Locations"):
+                loc_candidate = default_location
             found[abs_url] = {
                 "title": title,
                 "url": abs_url,

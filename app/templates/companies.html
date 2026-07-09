@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>{{ title }}</title>
+  <meta name="description" content="{{ description }}">
+  <link rel="canonical" href="{{ canonical_url }}">
+  <style>
+    body{margin:0;background:#f7f4eb;color:#20342f;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+    a{color:#2f6f46;text-decoration:none}a:hover{text-decoration:underline}
+    .top{background:#18322d;color:#fff;padding:18px 24px;display:flex;align-items:center;gap:20px}
+    .brand{font-family:Georgia,serif;font-size:25px;font-weight:700}.brand em{color:#75a46f}
+    .nav{margin-left:auto;display:flex;gap:18px;font-size:14px}.nav a{color:#dbe8db}
+    main{max-width:1040px;margin:0 auto;padding:42px 20px 56px}
+    h1{font-size:38px;line-height:1.05;margin:0 0 10px;font-family:Georgia,serif}
+    .intro{max-width:720px;color:#63706e;font-size:17px;line-height:1.55;margin-bottom:30px}
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px}
+    .company{background:#fff;border:1px solid #ded6c4;border-radius:8px;padding:14px 15px;box-shadow:0 1px 2px rgba(32,52,47,.05)}
+    .company strong{display:block;font-size:15px;margin-bottom:4px}.company span{font-size:12px;color:#76817f}
+  </style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "JobDrop",
+    "url": "{{ url_for('public_view', _external=True) }}"
+  }
+  </script>
+</head>
+<body>
+  <header class="top">
+    <a class="brand" href="/">Job<em>Drop</em></a>
+    <nav class="nav">
+      <a href="/companies">Companies</a>
+      <a href="/jobs/new-grad">New grad</a>
+      <a href="/jobs/software-engineer/remote">Remote software</a>
+    </nav>
+  </header>
+  <main>
+    <h1>Companies hiring now</h1>
+    <p class="intro">{{ description }}</p>
+    <section class="grid" aria-label="Company job pages">
+      {% for company in companies %}
+      <a class="company" href="{{ url_for('company_jobs_page', slug=company.slug) }}">
+        <strong>{{ company.name }}</strong>
+        <span>View current openings</span>
+      </a>
+      {% endfor %}
+    </section>
+  </main>
+</body>
+</html>

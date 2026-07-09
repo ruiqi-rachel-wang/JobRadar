@@ -1,5 +1,6 @@
 import json
 import re
+from collections import Counter
 from datetime import datetime, timedelta
 from functools import lru_cache
 from urllib.parse import parse_qs, unquote, urlencode, urlparse, urlunparse
@@ -22,9 +23,19 @@ def extract_experience(title="", text="", allow_title_fallback=True):
     title = norm(title)
     text = norm(text)
 
+    def parse_year(value):
+        value = float(value)
+        return int(value) if value.is_integer() else value
+
+    def fmt_year(value):
+        if value is None:
+            return ""
+        value = float(value)
+        return str(int(value)) if value.is_integer() else str(value).rstrip("0").rstrip(".")
+
     def result(lo, hi, label, source):
-        lo = int(lo) if lo is not None else None
-        hi = int(hi) if hi is not None else None
+        lo = parse_year(lo) if lo is not None else None
+        hi = parse_year(hi) if hi is not None else None
         if hi is not None and lo is not None and hi < lo:
             hi = lo
         return {"min": lo, "max": hi, "label": label, "source": source}
@@ -66,52 +77,105 @@ def extract_experience(title="", text="", allow_title_fallback=True):
     def text_matches(section):
         # Filter to requirement-context sentences before pattern matching
         filtered = _requirement_sentences(section)
+        year_num = r'(\d{1,2}(?:\.\d)?)'
         range_pattern = re.compile(
-            r'(\d{1,2})\s*(?:[-–—]\s*|to\s+)(\d{1,2})\s*(?:years?|yrs?)'
+            year_num + r'\s*(?:[-–—]\s*|to\s+)' + year_num + r'\s*(?:years?|yrs?)'
             r'(?:\s+[^.;:]{0,100}?\bexperience\b)?'
         )
         minimum_patterns = [
             re.compile(
-                r'(\d{1,2})\s*\+\s*(?:years?|yrs?)'
+                year_num + r'\s*\+\s*(?:years?|yrs?)'
                 r'(?:\s+[^.;:]{0,100}?\bexperience\b)?'
             ),
             # "more than/at least/minimum X years" — require "experience" within 60 chars
             re.compile(
-                r'(?:minimum|min\.?|at least|more than)\s+(\d{1,2})\s*(?:years?|yrs?)'
-                r'\s+[^.;:]{0,60}?\bexperience\b'
+                r'(?:minimum|min\.?|at least|more than)\s+' + year_num + r'\s*(?:years?|yrs?)'
+                r'[\s’\'-]*[^.;:]{0,60}?\bexperience\b'
             ),
             re.compile(
-                r'(\d{1,2})\s*(?:or more|plus)\s*(?:years?|yrs?)'
+                year_num + r'\s*(?:or more|plus)\s*(?:years?|yrs?)'
                 r'(?:\s+[^.;:]{0,100}?\bexperience\b)?'
             ),
             re.compile(
-                r'(?<![-\d])(\d{1,2})\s*(?:years?|yrs?)\s+[^.;:]{0,100}?\bexperience\b'
+                r'(?<![-\d.])' + year_num + r'\s*(?:years?|yrs?)\s+[^.;:]{0,100}?\bexperience\b'
             ),
         ]
         matches = []
         range_spans = []
         for m in range_pattern.finditer(filtered):
-            lo, hi = int(m.group(1)), int(m.group(2))
+            lo, hi = parse_year(m.group(1)), parse_year(m.group(2))
             if lo > 18 or hi > 18:   # implausible job requirement
                 continue
-            matches.append(result(lo, hi, f"{lo}-{hi} years", "text"))
+            matches.append(result(lo, hi, f"{fmt_year(lo)}-{fmt_year(hi)} years", "text"))
             range_spans.append(m.span())
         for pattern in minimum_patterns:
             for m in pattern.finditer(filtered):
                 if any(start <= m.start() < end for start, end in range_spans):
                     continue
-                lo = int(m.group(1))
+                lo = parse_year(m.group(1))
                 if lo > 18:          # implausible job requirement
                     continue
-                matches.append(result(lo, None, f"{lo}+ years", "text"))
+                matches.append(result(lo, None, f"{fmt_year(lo)}+ years", "text"))
         return matches
 
-    baseline = re.split(r'\b(?:preferred qualifications?|desired skills?|nice to have)\b', requirement, maxsplit=1)[0]
-    matches = text_matches(baseline) or text_matches(requirement)
+    baseline = re.split(
+        r'\b(?:preferred qualifications?|preferred|desired skills?|nice to have)\b',
+        requirement,
+        maxsplit=1,
+    )[0]
+    pref_re = re.compile(r'\b(?:preferred|desired|nice to have|bonus|plus)\b', re.I)
+    non_preferred_clauses = [
+        clause.strip()
+        for clause in re.split(r'[;]|(?<=[.!?])\s+', requirement)
+        if clause.strip() and not pref_re.search(clause)
+    ]
+    required_scope = " ".join(non_preferred_clauses) if non_preferred_clauses else baseline
+    required_matches = text_matches(required_scope)
+    all_matches = text_matches(requirement)
+    if required_matches:
+        # Required minimums set the floor. Preferred ranges may widen the ceiling,
+        # but should not raise the floor:
+        #   "Minimum 1 year required; 3-10 preferred" -> "1-10 years".
+        lo_values = [m["min"] for m in required_matches if m.get("min") is not None]
+        lo = min(lo_values) if lo_values else None
+        finite_maxes = [
+            m["max"] for m in all_matches
+            if m.get("max") is not None and (lo is None or m["max"] >= lo)
+        ]
+        if lo is not None and finite_maxes:
+            hi = max(finite_maxes)
+            return result(lo, hi, f"{fmt_year(lo)}-{fmt_year(hi)} years", "text")
+        return max(required_matches, key=lambda x: (x["min"] or -1, x["max"] or -1))
+    matches = all_matches
     if matches:
-        # Multiple baseline requirements are common. Keep the strongest floor;
-        # range requirements beat weaker side requirements by their lower bound.
         return max(matches, key=lambda x: (x["min"] or -1, x["max"] or -1))
+
+    flight_hours = re.search(
+        r'\b(?:logged?|minimum|at least)\s+([\d,]{3,6})'
+        r'[^.;:]{0,80}?\bhours?\b',
+        requirement,
+        re.I,
+    )
+    if flight_hours:
+        hours = flight_hours.group(1)
+        return result(None, None, f"{hours} flight hours", "text")
+
+    # Some postings explicitly require relevant/proven/prior experience without
+    # assigning a numeric year count. Preserve that honest signal instead of
+    # presenting it as if the posting said nothing about experience.
+    if text and re.search(
+        r'\b(?:requires?|must have|minimum qualifications?|requisition qualifications?)'
+        r'[^.;:]{0,120}\bexperience\b'
+        r'|\b(?:relevant|related|prior|previous|proven|demonstrated|hands-on)'
+        r'(?:\s+\w+){0,4}\s+experience\b'
+        r'|\bexperience\s+(?:in|of|with|using|delivering)\b',
+        requirement,
+        re.I,
+    ):
+        return result(None, None, "Experience required", "text")
+
+    if text:
+        return result(None, None, "No minimum stated", "text")
 
     # Title fallback. These are deliberately broad estimates; exact years from
     # requirements text always wins above.
@@ -208,6 +272,66 @@ def extract_skills(title="", description=""):
                 seen_lower.add(key)
     return found
 
+_KEYWORD_STOP_WORDS = {
+    "about", "across", "after", "also", "and", "are", "around", "because",
+    "been", "being", "benefits", "best", "build", "business", "candidate",
+    "company", "customer", "customers", "day", "description", "duties",
+    "equal", "every", "experience", "full", "great", "have", "help", "here",
+    "including", "job", "join", "like", "make", "more", "must", "need",
+    "new", "our", "own", "people", "position", "preferred", "provide",
+    "qualifications", "required", "requirements", "responsibilities", "role",
+    "skills", "team", "teams", "that", "the", "their", "this", "time",
+    "using", "what", "when", "where", "will", "with", "work", "working",
+    "world", "you", "your",
+}
+
+_TITLE_KEYWORD_STOP_WORDS = _KEYWORD_STOP_WORDS | {
+    "associate", "contract", "full", "hybrid", "intern", "internship",
+    "junior", "lead", "manager", "part", "principal", "remote", "senior",
+    "staff", "temporary",
+}
+
+def extract_keywords(title="", description="", skills=None, max_keywords=12):
+    """Return broad job keywords even when no strict skills are detected."""
+    keywords = []
+    seen = set()
+
+    def add(value):
+        value = norm(value).strip(" -_/.,:;()[]{}")
+        if not value:
+            return
+        key = value.lower()
+        if key in seen:
+            return
+        seen.add(key)
+        keywords.append(value)
+
+    for skill in skills or []:
+        add(skill)
+        if len(keywords) >= max_keywords:
+            return keywords[:max_keywords]
+
+    title_tokens = [
+        t for t in re.findall(r"[A-Za-z][A-Za-z0-9+#.-]{2,}", title or "")
+        if t.lower() not in _TITLE_KEYWORD_STOP_WORDS
+    ]
+    for token in title_tokens[:6]:
+        add(token)
+        if len(keywords) >= max_keywords:
+            return keywords[:max_keywords]
+
+    text = norm(description or "")
+    words = [
+        w.lower()
+        for w in re.findall(r"[A-Za-z][A-Za-z0-9+#.-]{3,}", text)
+        if w.lower() not in _KEYWORD_STOP_WORDS and not w.isdigit()
+    ]
+    for word, _count in Counter(words).most_common(30):
+        add(word.title() if word.isupper() else word)
+        if len(keywords) >= max_keywords:
+            break
+    return keywords[:max_keywords]
+
 def experience_match_score(user_years, exp_min, exp_max):
     """Higher is better. Negative means a known requirement is too high."""
     if user_years is None:
@@ -281,15 +405,48 @@ _COUNTRY_ALIASES = {
     'spain':'Spain','italy':'Italy','poland':'Poland','sweden':'Sweden','denmark':'Denmark','norway':'Norway',
     'finland':'Finland','belgium':'Belgium','austria':'Austria','israel':'Israel','uae':'UAE',
     'united arab emirates':'UAE','saudi arabia':'Saudi Arabia',
+    'czech republic':'Czech Republic','czechia':'Czech Republic','portugal':'Portugal',
+    'argentina':'Argentina','chile':'Chile','colombia':'Colombia','costa rica':'Costa Rica',
+    'peru':'Peru','uruguay':'Uruguay','venezuela':'Venezuela','bermuda':'Bermuda',
+    'cayman islands':'Cayman Islands','puerto rico':'Puerto Rico',
+    'south africa':'South Africa','morocco':'Morocco','egypt':'Egypt','kenya':'Kenya',
+    'ghana':'Ghana','nigeria':'Nigeria','uganda':'Uganda','mauritius':'Mauritius',
+    'indonesia':'Indonesia','malaysia':'Malaysia','philippines':'Philippines',
+    'thailand':'Thailand','vietnam':'Vietnam','pakistan':'Pakistan','bangladesh':'Bangladesh',
+    'sri lanka':'Sri Lanka','turkey':'Türkiye','türkiye':'Türkiye',
+    'greece':'Greece','hungary':'Hungary','romania':'Romania','bulgaria':'Bulgaria',
+    'serbia':'Serbia','croatia':'Croatia','slovakia':'Slovakia','slovenia':'Slovenia',
+    'lithuania':'Lithuania','latvia':'Latvia','estonia':'Estonia','ukraine':'Ukraine',
+    'luxembourg':'Luxembourg','iceland':'Iceland','qatar':'Qatar','kuwait':'Kuwait',
+    'bahrain':'Bahrain','oman':'Oman','jordan':'Jordan','lebanon':'Lebanon',
+    'worldwide':'Worldwide',
+    'armenia':'Armenia','azerbaijan':'Azerbaijan',
+    'kazakhstan':'Kazakhstan','uzbekistan':'Uzbekistan','nepal':'Nepal',
+    'cambodia':'Cambodia','laos':'Laos','myanmar':'Myanmar','mongolia':'Mongolia',
+    'cyprus':'Cyprus','malta':'Malta','moldova':'Moldova','north macedonia':'North Macedonia',
+    'bosnia and herzegovina':'Bosnia and Herzegovina','albania':'Albania',
+    'ecuador':'Ecuador','panama':'Panama','guatemala':'Guatemala','honduras':'Honduras',
+    'dominican republic':'Dominican Republic','jamaica':'Jamaica','bahamas':'Bahamas',
+    'macao':'Macao','macau':'Macao',
 }
 
 _COUNTRY_CODES = {
-    'AU':'Australia','AT':'Austria','BE':'Belgium','BR':'Brazil','CA':'Canada','CH':'Switzerland',
-    'CN':'China','DE':'Germany','DK':'Denmark','ES':'Spain','FI':'Finland','FR':'France',
+    'AE':'UAE','AR':'Argentina','AU':'Australia','AT':'Austria','BE':'Belgium','BR':'Brazil',
+    'CA':'Canada','CH':'Switzerland','CL':'Chile','CN':'China','CO':'Colombia','CZ':'Czech Republic',
+    'DE':'Germany','DK':'Denmark','ES':'Spain','FI':'Finland','FR':'France',
     'GB':'UK','HK':'Hong Kong','IE':'Ireland','IL':'Israel','IN':'India','IT':'Italy',
-    'JP':'Japan','KR':'South Korea','MX':'Mexico','NL':'Netherlands','NO':'Norway',
-    'NZ':'New Zealand','PL':'Poland','SE':'Sweden','SG':'Singapore','TW':'Taiwan',
-    'UK':'UK','US':'US',
+    'ID':'Indonesia','JP':'Japan','KR':'South Korea','MY':'Malaysia','MX':'Mexico',
+    'NL':'Netherlands','NO':'Norway','NZ':'New Zealand','PH':'Philippines','PL':'Poland',
+    'PT':'Portugal','SE':'Sweden','SG':'Singapore','TH':'Thailand','TW':'Taiwan',
+    'UK':'UK','US':'US','VN':'Vietnam','ZA':'South Africa',
+    'AM':'Armenia','AZ':'Azerbaijan','GE':'Georgia','RO':'Romania','BG':'Bulgaria',
+    'HR':'Croatia','RS':'Serbia','SK':'Slovakia','SI':'Slovenia','LT':'Lithuania',
+    'LV':'Latvia','EE':'Estonia','UA':'Ukraine','LU':'Luxembourg','IS':'Iceland',
+    'GR':'Greece','HU':'Hungary','TR':'Türkiye','PK':'Pakistan','BD':'Bangladesh',
+    'LK':'Sri Lanka','NG':'Nigeria','KE':'Kenya','GH':'Ghana','UG':'Uganda',
+    'MA':'Morocco','EG':'Egypt','QA':'Qatar','KW':'Kuwait','BH':'Bahrain',
+    'OM':'Oman','JO':'Jordan','LB':'Lebanon','CR':'Costa Rica','PE':'Peru',
+    'UY':'Uruguay','VE':'Venezuela','BM':'Bermuda','KY':'Cayman Islands','PR':'Puerto Rico',
 }
 
 _CITY_DEFAULTS = {
@@ -311,6 +468,30 @@ _CITY_DEFAULTS = {
     'albany': ('Albany','NY','US'), 'warsaw': ('Warsaw','','Poland'),
     'the hague': ('The Hague','','Netherlands'), 'stockholm': ('Stockholm','','Sweden'),
     'sydney': ('Sydney','','Australia'), 'shenzhen': ('Shenzhen','','China'),
+    'amsterdam': ('Amsterdam','','Netherlands'), 'barcelona': ('Barcelona','','Spain'),
+    'beijing': ('Beijing','','China'), 'berlin': ('Berlin','','Germany'),
+    'brussels': ('Brussels','','Belgium'), 'dubai': ('Dubai','','UAE'),
+    'dublin': ('Dublin','','Ireland'), 'frankfurt': ('Frankfurt','','Germany'),
+    'hong kong': ('Hong Kong','','Hong Kong'), 'lisbon': ('Lisbon','','Portugal'),
+    'madrid': ('Madrid','','Spain'), 'melbourne': ('Melbourne','','Australia'),
+    'mexico city': ('Mexico City','','Mexico'), 'munich': ('Munich','','Germany'),
+    'paris': ('Paris','','France'), 'prague': ('Prague','','Czech Republic'),
+    'rome': ('Rome','','Italy'), 'sao paulo': ('Sao Paulo','','Brazil'),
+    'são paulo': ('São Paulo','','Brazil'),
+    'cyberjaya': ('Cyberjaya','','Malaysia'), 'jakarta': ('Jakarta','','Indonesia'),
+    'makati': ('Makati','','Philippines'),
+    'seoul': ('Seoul','','South Korea'), 'shanghai': ('Shanghai','','China'),
+    'taipei': ('Taipei','','Taiwan'), 'tokyo': ('Tokyo','','Japan'),
+    'zurich': ('Zurich','','Switzerland'),
+    'tbilisi': ('Tbilisi','','Georgia'),
+    'bucharest': ('Bucharest','','Romania'), 'budapest': ('Budapest','','Hungary'),
+    'milan': ('Milan','','Italy'), 'tel aviv': ('Tel Aviv','','Israel'),
+    'redondo beach': ('Redondo Beach','CA','US'), 'mountain view': ('Mountain View','CA','US'),
+    'bellevue': ('Bellevue','WA','US'), 'guadalajara': ('Guadalajara','','Mexico'),
+    'abu dhabi': ('Abu Dhabi','','UAE'), 'rehovot': ('Rehovot','','Israel'),
+    'colombo': ('Colombo','','Sri Lanka'), 'phnom penh': ('Phnom Penh','','Cambodia'),
+    'kuala lumpur': ('Kuala Lumpur','','Malaysia'), 'tainan': ('Tainan','','Taiwan'),
+    'hsinchu': ('Hsinchu','','Taiwan'), 'yerevan': ('Yerevan','','Armenia'),
 }
 
 _LOCATION_NOISE = re.compile(
@@ -330,7 +511,8 @@ def _title_case_city(s):
     return " ".join(w if w.isupper() else w.capitalize() for w in (s or "").split())
 
 def _country_code(raw):
-    return _COUNTRY_ALIASES.get((raw or "").strip().lower())
+    raw = (raw or "").strip()
+    return _COUNTRY_ALIASES.get(raw.lower()) or _COUNTRY_CODES.get(raw.upper())
 
 @lru_cache(maxsize=8192)
 def normalize_location(loc):
@@ -344,6 +526,9 @@ def normalize_location(loc):
     loc = re.sub(r'\s*[•|│]\s*', ', ', loc)
     loc = re.sub(r'\s*/\s*', ', ', loc)
     loc = re.sub(r'\s*,\s*', ', ', loc).strip(' ,-')
+    # Repair malformed Workday labels such as "Philadelphia (, PA, US; 90)".
+    loc = re.sub(r'\s*\(\s*,', ',', loc)
+    loc = re.sub(r'[);]\s*\d{1,4}\)?\s*$', '', loc).strip(' ,')
     # Reject raw requisition IDs like "R 104778", "REQ-1234", "WD12345" early
     if re.fullmatch(r'[A-Z]{0,4}[\s-]?\d{4,8}', loc):
         return ''
@@ -360,6 +545,24 @@ def normalize_location(loc):
                 normalized_parts.append(cleaned)
                 seen_parts.add(cleaned.lower())
         if len(normalized_parts) > 1:
+            # Workday often repeats the same office as
+            # "Bucharest, address; Bucharest, address, Romania". Keep the
+            # country-qualified version and discard its unqualified duplicate.
+            qualified = []
+            for part in normalized_parts:
+                part_l = part.lower()
+                if any(
+                    other != part
+                    and (
+                        other.lower().startswith(part_l + ",")
+                        or part_l.startswith(other.lower() + ",")
+                    )
+                    for other in normalized_parts
+                ):
+                    if any(other != part and other.lower().startswith(part_l + ",") for other in normalized_parts):
+                        continue
+                qualified.append(part)
+            normalized_parts = qualified
             normalized_parts = [
                 p for p in normalized_parts
                 if "," in p or not any(other != p and other.endswith(f", {p}") for other in normalized_parts)
@@ -369,6 +572,11 @@ def normalize_location(loc):
 
     if not loc:
         return ''
+
+    if lower in _US_STATE_NAMES:
+        return f"{_US_STATE_NAMES[lower]}, US"
+    if lower in {"puerto rico", "pr"}:
+        return "Puerto Rico, US"
 
     # ATS requisition IDs and internal tracking IDs are common false positives
     # from Workday/Playwright cards. They should never be shown as locations.
@@ -397,6 +605,20 @@ def normalize_location(loc):
         if _country_code(city):
             return f"{state}, US"
         return f"{_title_case_city(city)}, {state}, US"
+
+    # "Italy-Milan" / "Germany - Berlin"
+    m_country_city = re.match(r'^([A-Za-z .]+?)\s*-\s*(.+)$', loc)
+    if m_country_city:
+        country = _country_code(m_country_city.group(1))
+        if country:
+            return normalize_location(f"{m_country_city.group(2)}, {country}")
+
+    # "Massachusetts - Boston" / "California - Pleasanton"
+    m_state_city = re.match(r'^([A-Za-z ]+?)\s*-\s*(.+)$', loc)
+    if m_state_city:
+        state = _US_STATE_NAMES.get(m_state_city.group(1).strip().lower())
+        if state:
+            return normalize_location(f"{m_state_city.group(2)}, {state}, US")
 
     # "Tampa Florida, US"
     m_city_state_name = re.match(r'^(.+?)\s+([A-Za-z ]+),\s*(US|USA|United States)$', loc, re.I)
@@ -450,7 +672,7 @@ def normalize_location(loc):
     if lower in ('remote','anywhere','worldwide','global','distributed',
                  'work from home','wfh','remote / anywhere','remote-first'):
         return 'Remote'
-    m_remote = re.match(r'remote\s*(?:-|,|\(|/)?\s*([^)]+)?\)?$', loc, re.I)
+    m_remote = re.match(r'remote\s*(?:-|,|\(|/|\s)?\s*([^)]+)?\)?$', loc, re.I)
     if m_remote:
         country = _country_code(m_remote.group(1) or "")
         return f"Remote, {country}" if country else 'Remote'
@@ -486,6 +708,12 @@ def normalize_location(loc):
             if second.lower() == first_country.lower():
                 return first_country
             return ", ".join(x for x in (_title_case_city(second), first_country) if x)
+        state = _US_STATE_NAMES.get(second.lower()) or (second if second in _US_STATES else None)
+        if state:
+            return f"{_title_case_city(first)}, {state}, US"
+        province = _CANADA_PROVINCE_NAMES.get(second.lower()) or (second if second in _CANADA_PROVINCES else None)
+        if province:
+            return f"{_title_case_city(first)}, {province}, Canada"
         country = _country_code(second)
         if country:
             if first.lower() == country.lower():
@@ -495,12 +723,6 @@ def normalize_location(loc):
                 city, state, _ = _CITY_DEFAULTS[city_key]
                 return ", ".join(x for x in (city, state, country) if x)
             return ", ".join(x for x in (_title_case_city(first), country) if x)
-        state = _US_STATE_NAMES.get(second.lower()) or (second.upper() if second.upper() in _US_STATES else None)
-        if state:
-            return f"{_title_case_city(first)}, {state}, US"
-        province = _CANADA_PROVINCE_NAMES.get(second.lower()) or (second.upper() if second.upper() in _CANADA_PROVINCES else None)
-        if province:
-            return f"{_title_case_city(first)}, {province}, Canada"
         if first.lower() in _CITY_DEFAULTS and re.search(r'\b(campus|office|center|centre|sez|tower|building|comm(er)?zone|park)\b', second, re.I):
             city, state, country = _CITY_DEFAULTS[first.lower()]
             return ", ".join(x for x in (city, state, country) if x)

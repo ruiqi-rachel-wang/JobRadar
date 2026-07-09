@@ -1,4 +1,10 @@
 from .base import *
+from ..utils import (
+    _CANADA_PROVINCES,
+    _COUNTRY_ALIASES,
+    _COUNTRY_CODES,
+    _US_STATES,
+)
 
 # ── Workday ───────────────────────────────────────────────────────────────────
 
@@ -8,6 +14,17 @@ def _workday_location_parts(raw):
     if isinstance(raw, str):
         return [raw]
     if isinstance(raw, dict):
+        descriptor = raw.get("descriptor") or raw.get("name")
+        nested_country = raw.get("country")
+        if isinstance(nested_country, dict):
+            country_descriptor = nested_country.get("descriptor") or ""
+            nested_country = (
+                nested_country.get("alpha2Code")
+                if country_descriptor.lower() == "georgia"
+                else country_descriptor
+            ) or nested_country.get("alpha2Code") or nested_country.get("id")
+        if descriptor and nested_country:
+            return [f"{descriptor}, {nested_country}"]
         for keys in (
             ("city", "region", "country"),
             ("city", "state", "country"),
@@ -69,7 +86,26 @@ def _workday_location(posting):
         return ""
     if len(normalized) == 1:
         return normalized[0]
-    return "; ".join(normalized[:8])
+    return "; ".join(normalized)
+
+def _workday_location_has_country(location):
+    """Whether a normalized Workday location identifies a country."""
+    location = normalize_location(location or "")
+    if not location:
+        return False
+    parts = [part.strip() for part in location.split(";") if part.strip()]
+    if not parts:
+        return False
+    known_countries = {value.lower() for value in _COUNTRY_ALIASES.values()}
+    for part in parts:
+        lower = part.lower()
+        if any(lower == country or lower.endswith(f", {country}") for country in known_countries):
+            continue
+        codes = re.findall(r"\b[A-Z]{2}\b", part)
+        if any(code in _US_STATES or code in _CANADA_PROVINCES or code in _COUNTRY_CODES for code in codes):
+            continue
+        return False
+    return True
 
 def _workday_detail_location(info):
     if not isinstance(info, dict):
@@ -101,7 +137,7 @@ def _workday_detail_location(info):
         if loc and loc != "Multiple Locations" and loc.lower() not in seen_locs:
             normalized.append(loc)
             seen_locs.add(loc.lower())
-    return "; ".join(normalized[:8])
+    return "; ".join(normalized)
 
 def _fetch_workday_detail(base_url, tenant, board, path):
     if not path:
@@ -200,6 +236,7 @@ def fetch_workday(scrape, seen, company):
     fetch_exp_detail = bool(scrape.get("fetch_experience_details", True))
     fetch_new_exp_only = bool(scrape.get("fetch_new_experience_only", False))
     refresh_experience = bool(scrape.get("refresh_experience", False))
+    refresh_location = bool(scrape.get("refresh_location", False))
     detail_limit    = int(scrape.get("max_posted_details", 1000000))
     detail_delay    = float(scrape.get("posted_detail_delay", 0.05))
     detail_workers  = int(scrape.get("detail_workers", 3))
@@ -249,6 +286,18 @@ def fetch_workday(scrape, seen, company):
                     isinstance(existing, dict)
                     and bool(existing.get("has_description"))
                 )
+                existing_location = (
+                    normalize_location(existing.get("location") or "")
+                    if isinstance(existing, dict)
+                    else ""
+                )
+                if (
+                    not refresh_location
+                    and
+                    not _workday_location_has_country(loc)
+                    and _workday_location_has_country(existing_location)
+                ):
+                    loc = existing_location
                 existing_exp = (
                     isinstance(existing, dict)
                     and bool(existing.get("exp_label"))
@@ -264,11 +313,22 @@ def fetch_workday(scrape, seen, company):
                     and not desc_already_fetched
                     and (not fetch_new_exp_only or not isinstance(existing, dict))
                 )
-                needs_detail = exp_detail_needed or (not posted) or loc == "Multiple Locations"
+                location_detail_needed = refresh_location or not _workday_location_has_country(loc)
+                needs_detail = (
+                    exp_detail_needed
+                    or location_detail_needed
+                    or (not posted)
+                    or loc == "Multiple Locations"
+                )
                 # Always fetch detail for Multiple Locations. In fresh mode, also
                 # fetch detail for brand-new jobs so experience is available now,
                 # while old jobs wait for the next full refresh.
-                fetch_for_this = fetch_details or loc == "Multiple Locations" or exp_detail_needed
+                fetch_for_this = (
+                    fetch_details
+                    or location_detail_needed
+                    or loc == "Multiple Locations"
+                    or exp_detail_needed
+                )
                 if needs_detail and fetch_for_this and detail_count < detail_limit:
                     page_had_missing_posted = True
                 elif not posted:

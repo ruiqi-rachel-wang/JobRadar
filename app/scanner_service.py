@@ -14,6 +14,8 @@ Scan orchestration — two modes, one codebase.
 Both modes share the same fetchers, enrichment pipeline, and DB writes.
 """
 import concurrent.futures
+import logging
+import os
 import threading
 import time
 from datetime import datetime
@@ -22,7 +24,7 @@ from datetime import timedelta
 try:
     from .api.apis import _API_MODES, fetch_jobs
     from .api.job_data import (
-        delete_app_state, delete_expired_jobs, get_app_state, load_seen, set_app_state, upsert_jobs,
+        delete_expired_jobs, get_app_state, load_seen, set_app_state, upsert_jobs,
     )
     from .api.utils import make_id
     from .scan_store import (
@@ -33,7 +35,7 @@ try:
 except ImportError:
     from api.apis import _API_MODES, fetch_jobs
     from api.job_data import (
-        delete_app_state, delete_expired_jobs, get_app_state, load_seen, set_app_state, upsert_jobs,
+        delete_expired_jobs, get_app_state, load_seen, set_app_state, upsert_jobs,
     )
     from api.utils import make_id
     from scan_store import (
@@ -51,6 +53,11 @@ _seen_lock = threading.Lock()
 _API_WORKERS     = 12
 _WORKDAY_WORKERS = 2
 _BROWSER_WORKERS = 2
+
+# A single wedged company must not block the whole scheduler for days. Fresh
+# scans should be quick; full scans get a longer budget for large ATS sources.
+_FRESH_COMPANY_TIMEOUT_S = int(os.environ.get("JOBRADAR_FRESH_COMPANY_TIMEOUT_SECONDS", "1200"))
+_FULL_COMPANY_TIMEOUT_S  = int(os.environ.get("JOBRADAR_FULL_COMPANY_TIMEOUT_SECONDS", "7200"))
 
 
 # ── Public entry point ────────────────────────────────────────────────────────
@@ -70,7 +77,7 @@ def run_scan(companies, scan_type="fresh", progress=None, on_scan_run_id=None, s
     """
     companies   = [c for c in companies if c.get("scan_enabled", True) is not False]
     is_fresh    = scan_type != "full"
-    seen        = _load_seen_with_reset()
+    seen        = load_seen()
     now_str     = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     t_start     = time.monotonic()
     summaries   = []        # per-company summary dicts
@@ -195,12 +202,34 @@ def run_scan(companies, scan_type="fresh", progress=None, on_scan_run_id=None, s
                     error_message="scan cancelled",
                 )
 
+    def _company_timeout_s():
+        return _FULL_COMPANY_TIMEOUT_S if scan_type == "full" else _FRESH_COMPANY_TIMEOUT_S
+
     def _submit_next(executor, iterator, futures):
         try:
             i, c = next(iterator)
         except StopIteration:
             return
-        futures[executor.submit(_fetch_one, i, c)] = (executor, iterator)
+        futures[executor.submit(_fetch_one, i, c)] = {
+            "executor": executor,
+            "iterator": iterator,
+            "index": i,
+            "company": c,
+            "started": time.monotonic(),
+        }
+
+    def _mark_timed_out(fut, meta):
+        fut.cancel()
+        i = meta["index"]
+        company = meta["company"]
+        duration = round(time.monotonic() - meta["started"], 1)
+        timeout = _company_timeout_s()
+        err = f"timed out after {timeout}s"
+        logging.warning("scan: %s timed out after %.1fs", company.get("name"), duration)
+        try:
+            _commit_one(i, company, [], err, duration)
+        except Exception as exc:
+            logging.warning("scan: failed to record timeout for %s: %s", company.get("name"), exc)
 
     def _run_bounded(api_ex, workday_ex, pw_ex):
         """Keep only active workers queued so progress and memory stay honest."""
@@ -221,6 +250,16 @@ def run_scan(companies, scan_type="fresh", progress=None, on_scan_run_id=None, s
                     fut.cancel()
                 _mark_cancelled()
                 return "cancelled"
+            timeout_s = _company_timeout_s()
+            for fut, meta in list(futures.items()):
+                if fut.done():
+                    continue
+                if time.monotonic() - meta["started"] <= timeout_s:
+                    continue
+                futures.pop(fut)
+                _mark_timed_out(fut, meta)
+                if not _cancel_requested():
+                    _submit_next(meta["executor"], meta["iterator"], futures)
             done, _pending = concurrent.futures.wait(
                 futures,
                 timeout=1,
@@ -229,7 +268,7 @@ def run_scan(companies, scan_type="fresh", progress=None, on_scan_run_id=None, s
             if not done:
                 continue
             for fut in done:
-                executor, iterator = futures.pop(fut)
+                meta = futures.pop(fut)
                 if fut.cancelled():
                     continue
                 try:
@@ -237,19 +276,20 @@ def run_scan(companies, scan_type="fresh", progress=None, on_scan_run_id=None, s
                 except Exception as exc:
                     # One company's failure (e.g. a transient DB lock) must never
                     # abort the whole scan — log it and keep going.
-                    import logging
                     logging.warning("scan: skipped a company after commit error: %s", exc)
                 if not _cancel_requested():
-                    _submit_next(executor, iterator, futures)
+                    _submit_next(meta["executor"], meta["iterator"], futures)
         return None
 
     try:
-        with (
-            concurrent.futures.ThreadPoolExecutor(max_workers=_API_WORKERS)     as api_ex,
-            concurrent.futures.ThreadPoolExecutor(max_workers=_WORKDAY_WORKERS) as workday_ex,
-            concurrent.futures.ThreadPoolExecutor(max_workers=_BROWSER_WORKERS) as pw_ex,
-        ):
+        api_ex     = concurrent.futures.ThreadPoolExecutor(max_workers=_API_WORKERS)
+        workday_ex = concurrent.futures.ThreadPoolExecutor(max_workers=_WORKDAY_WORKERS)
+        pw_ex      = concurrent.futures.ThreadPoolExecutor(max_workers=_BROWSER_WORKERS)
+        try:
             cancelled = _run_bounded(api_ex, workday_ex, pw_ex)
+        finally:
+            for ex in (api_ex, workday_ex, pw_ex):
+                ex.shutdown(wait=False, cancel_futures=True)
 
         failed  = [s for s in summaries if s["status"] == "error"]
         elapsed = round(time.monotonic() - t_start, 1)
@@ -293,13 +333,6 @@ def run_scan(companies, scan_type="fresh", progress=None, on_scan_run_id=None, s
 
 # ── Private helpers ───────────────────────────────────────────────────────────
 
-def _load_seen_with_reset():
-    """Load the seen-job cache, honouring a one-shot force-reset flag."""
-    if get_app_state("force_all_new_once") == "1":
-        delete_app_state("force_all_new_once")
-        return {}
-    return load_seen()
-
 def _blocked_until(company_name):
     raw = get_app_state(f"crawler_403_until:{company_name}")
     if not raw:
@@ -334,6 +367,7 @@ def _make_seen_entry(job, company_name, now_str):
         "exp_label":   job.get("exp_label", ""),
         "exp_source":  job.get("exp_source", ""),
         "skills":      job.get("skills") or [],
+        "keywords":    job.get("keywords") or [],
         "has_description": bool((job.get("description") or "").strip()),
     }
 
@@ -352,6 +386,8 @@ def _refresh_seen_entry(entry, job):
         })
     if job.get("skills"):
         entry["skills"] = job["skills"]
+    if job.get("keywords"):
+        entry["keywords"] = job["keywords"]
     if job.get("description"):
         entry["has_description"] = True
 

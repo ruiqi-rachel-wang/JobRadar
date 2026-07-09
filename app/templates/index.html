@@ -72,11 +72,11 @@
   <div class="tb-brand">
     <div class="topbar-dot"></div>
     <div class="topbar-logo">Job<em>Drop</em></div>
+    <div class="topbar-tagline">A tidy little place for freshly dropped company jobs.</div>
   </div>
   <span class="tb-spring"></span>
   <div class="topbar-stats">
-    <strong id="hdr-sel">0</strong> selected &nbsp;·&nbsp;
-    <strong id="hdr-total">{{ companies|length }}</strong> companies
+    <strong id="hdr-sel">0</strong> selected
   </div>
 </div>
 
@@ -103,7 +103,6 @@
         <button class="btn btn-clear" onclick="showJobs()">Show Jobs</button>
         <button class="btn btn-scan" id="btn-scan-sidebar" onclick="startScan()" disabled>▶ Scan</button>
       </div>
-      <span class="reset-link" onclick="resetSeen()">↺ Reset "new" tracking</span>
     </div>
   </aside>
 
@@ -681,6 +680,26 @@ function totalPagesLabel(totalPages) {
   return currentTotalExact ? String(totalPages) : `${Math.max(currentPage, totalPages - 1)}+`;
 }
 
+function compactLocationHtml(loc) {
+  const full = loc || '—';
+  const parts = full.split(';').map(s => s.trim()).filter(Boolean);
+  if (parts.length <= 3) return esc2(full);
+  const short = parts.slice(0, 3).join('; ');
+  return `<span class="loc-short">${esc2(short)} <button class="loc-more" onclick="toggleLocationCell(this,event)">+${parts.length - 3} more</button></span>` +
+         `<span class="loc-full" style="display:none">${esc2(full)} <button class="loc-more" onclick="toggleLocationCell(this,event)">less</button></span>`;
+}
+function toggleLocationCell(btn, ev) {
+  ev.stopPropagation();
+  const cell = btn.closest('.td-loc');
+  if (!cell) return;
+  const shortEl = cell.querySelector('.loc-short');
+  const fullEl = cell.querySelector('.loc-full');
+  if (!shortEl || !fullEl) return;
+  const showFull = fullEl.style.display === 'none';
+  shortEl.style.display = showFull ? 'none' : '';
+  fullEl.style.display = showFull ? '' : 'none';
+}
+
 async function goPage(page) {
   const totalPages = Math.max(1, Math.ceil(currentTotal / currentLimit));
   if (page < 1 || page > totalPages) return;
@@ -737,7 +756,7 @@ function renderSection(id, jobs, title, isNew, bucket) {
         ${titleHtml}
         <div class="job-co">${esc2(j.company)}${expLabel}</div>
       </td>
-      <td class="td-loc">${esc2(loc)}</td>
+      <td class="td-loc" title="${escAttr(loc)}">${compactLocationHtml(loc)}</td>
       <td class="td-src"><span class="src-tag ${source}">${source}</span></td>
       <td class="${dateCls}">${dateLabel ? dateLabel + ': ' + dateVal : '—'}</td>
     </tr>`;
@@ -755,12 +774,6 @@ function renderSection(id, jobs, title, isNew, bucket) {
         <tbody>${rows}</tbody>
       </table>
     </div>`;
-}
-
-async function resetSeen() {
-  if (!confirm('Clear all "seen" tracking? Everything will show as NEW on next scan.')) return;
-  await fetch('/api/reset_seen', { method: 'POST' });
-  alert('Done — next scan shows everything as new.');
 }
 
 function esc(s)  { return (s||'').toLowerCase(); }

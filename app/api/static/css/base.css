@@ -60,6 +60,13 @@ a { color: inherit; text-decoration: none; }
   color: white;
 }
 .topbar-logo em { font-style: italic; color: var(--mint); }
+.topbar-tagline {
+  max-width: 330px;
+  color: rgba(255,255,255,.62);
+  font-size: 12px;
+  line-height: 1.2;
+  white-space: nowrap;
+}
 .tb-spring { flex: 1; }
 .nav-pill {
   font-size: 13px;
@@ -81,6 +88,10 @@ a { color: inherit; text-decoration: none; }
   font-variant-numeric: tabular-nums;
 }
 .topbar-stats strong { color: white; font-weight: 600; }
+
+@media (max-width: 980px) {
+  .topbar-tagline { display: none; }
+}
 
 /* ── Layout shell ── */
 .shell { flex: 1; display: flex; overflow: hidden; min-height: 0; }

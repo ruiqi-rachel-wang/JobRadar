@@ -5,7 +5,7 @@ from datetime import datetime
 
 from .common import COMPANIES_FILE, DEFAULT_COMPANIES_FILE
 from .database import IS_POSTGRES, add_column_if_missing, connect_db, initialize_postgres_schema, placeholders
-from .utils import extract_experience, location_matches, make_id, normalize_location, _parse_posted
+from .utils import extract_experience, extract_keywords, location_matches, make_id, normalize_location, _parse_posted
 
 def _backfill_has_description_once(conn):
     """One-time migration flag for the expensive description scan."""
@@ -44,6 +44,7 @@ def init_db():
         if IS_POSTGRES:
             initialize_postgres_schema(conn)
             add_column_if_missing(conn, "jobs", "has_description INTEGER DEFAULT 0")
+            add_column_if_missing(conn, "jobs", "keywords TEXT DEFAULT '[]'")
             _backfill_has_description_once(conn)
             return
         conn.execute("""
@@ -59,8 +60,8 @@ def init_db():
                 posted     TEXT DEFAULT '',
                 last_seen_at TEXT DEFAULT '',
                 is_open    INTEGER DEFAULT 1,
-                exp_min    INTEGER,
-                exp_max    INTEGER,
+                exp_min    REAL,
+                exp_max    REAL,
                 exp_label  TEXT DEFAULT '',
                 exp_source TEXT DEFAULT ''
             )
@@ -104,13 +105,14 @@ def init_db():
             "posted TEXT DEFAULT ''",
             "last_seen_at TEXT DEFAULT ''",
             "is_open INTEGER DEFAULT 1",
-            "exp_min INTEGER",
-            "exp_max INTEGER",
+            "exp_min REAL",
+            "exp_max REAL",
             "exp_label TEXT DEFAULT ''",
             "exp_source TEXT DEFAULT ''",
             "description TEXT DEFAULT ''",
             "has_description INTEGER DEFAULT 0",
             "skills TEXT DEFAULT '[]'",
+            "keywords TEXT DEFAULT '[]'",
             "employment_type TEXT DEFAULT ''",
         ):
             add_column_if_missing(conn, "jobs", column_sql)
@@ -194,15 +196,23 @@ def upsert_jobs(job_list):
     with connect_db() as conn:
         conn.executemany(
             "INSERT INTO jobs "
-            "(id, title, url, company, location, source, categories, first_seen, posted, last_seen_at, is_open, exp_min, exp_max, exp_label, exp_source, description, has_description, skills, employment_type) "
-            "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) "
+            "(id, title, url, company, location, source, categories, first_seen, posted, last_seen_at, is_open, exp_min, exp_max, exp_label, exp_source, description, has_description, skills, keywords, employment_type) "
+            "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) "
             "ON CONFLICT(id) DO UPDATE SET "
             "title=excluded.title, "
             "location=CASE WHEN excluded.location != '' THEN excluded.location ELSE jobs.location END, "
             "source=excluded.source, "
             "categories=excluded.categories, "
             # first_seen intentionally excluded — never overwrite the original discovery date
-            "posted=CASE WHEN excluded.posted != '' THEN excluded.posted ELSE jobs.posted END, "
+            # A stable job URL can be refreshed or re-published by an ATS. Do
+            # not let that make an already-known job look newly posted. Keep
+            # the first valid source date; if it was initially missing, only
+            # accept a later-discovered date that is not after first_seen.
+            "posted=CASE "
+            "WHEN jobs.posted != '' THEN jobs.posted "
+            "WHEN excluded.posted != '' AND excluded.posted <= substr(jobs.first_seen,1,10) "
+            "THEN excluded.posted "
+            "ELSE jobs.posted END, "
             "last_seen_at=excluded.last_seen_at, "
             "is_open=excluded.is_open, "
             "exp_min=CASE WHEN excluded.exp_label != '' THEN excluded.exp_min WHEN jobs.exp_source='title' THEN NULL ELSE jobs.exp_min END, "
@@ -212,6 +222,7 @@ def upsert_jobs(job_list):
             "description=CASE WHEN excluded.description != '' THEN excluded.description ELSE jobs.description END, "
             "has_description=CASE WHEN excluded.has_description != 0 THEN excluded.has_description ELSE jobs.has_description END, "
             "skills=CASE WHEN excluded.skills != '[]' THEN excluded.skills ELSE jobs.skills END, "
+            "keywords=CASE WHEN excluded.keywords != '[]' THEN excluded.keywords ELSE jobs.keywords END, "
             "employment_type=CASE WHEN excluded.employment_type != '' THEN excluded.employment_type ELSE jobs.employment_type END",
             [(j["id"], j["title"], j.get("url",""), j["company"],
               j.get("location",""), j.get("source",""),
@@ -219,7 +230,9 @@ def upsert_jobs(job_list):
               j.get("posted",""), now_str, True, j.get("exp_min"), j.get("exp_max"),
               j.get("exp_label",""), j.get("exp_source",""),
               j.get("description",""), int(bool((j.get("description") or "").strip())),
-              json.dumps(j.get("skills",[])), j.get("employment_type",""))
+              json.dumps(j.get("skills",[])),
+              json.dumps(j.get("keywords") or extract_keywords(j.get("title", ""), j.get("description", ""), j.get("skills") or [])),
+              j.get("employment_type",""))
              for j in job_list],
         )
         if not IS_POSTGRES:
@@ -334,7 +347,7 @@ def load_seen():
         with connect_db(rows=True) as conn:
             rows = conn.execute(
                 "SELECT company, url, title, location, source, first_seen, posted, "
-                "exp_min, exp_max, exp_label, exp_source, skills, has_description "
+                "exp_min, exp_max, exp_label, exp_source, skills, keywords, has_description "
                 "FROM jobs WHERE is_open = 1"
             ).fetchall()
         return {
@@ -351,6 +364,7 @@ def load_seen():
                 "exp_label":  r["exp_label"] or "",
                 "exp_source": r["exp_source"] or "",
                 "skills":     json.loads(r["skills"] or "[]"),
+                "keywords":   json.loads(r["keywords"] or "[]"),
                 "has_description": bool(r["has_description"]),
             }
             for r in rows

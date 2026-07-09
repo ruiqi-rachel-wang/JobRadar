@@ -4,7 +4,16 @@ from functools import lru_cache
 from urllib.parse import unquote
 
 from .database import IS_POSTGRES
-from .utils import _COUNTRY_CODES, _US_STATE_NAMES, _US_STATES, norm, normalize_location
+from .utils import (
+    _CANADA_PROVINCES,
+    _CITY_DEFAULTS,
+    _COUNTRY_ALIASES,
+    _COUNTRY_CODES,
+    _US_STATE_NAMES,
+    _US_STATES,
+    norm,
+    normalize_location,
+)
 
 # ── Display constants ─────────────────────────────────────────────────────────
 
@@ -113,8 +122,9 @@ def keyword_where(groups):
         for term in group:
             title_bits, title_params = _keyword_term_clauses("LOWER(title)", term)
             company_bits, company_params = _keyword_term_clauses("LOWER(company)", term)
-            bits.extend(title_bits + company_bits)
-            params.extend(title_params + company_params)
+            keyword_bits, keyword_params = _keyword_term_clauses("LOWER(keywords)", term)
+            bits.extend(title_bits + company_bits + keyword_bits)
+            params.extend(title_params + company_params + keyword_params)
         clauses.append("(" + " OR ".join(bits) + ")")
     return clauses, params
 
@@ -125,10 +135,14 @@ _ROLE_INTENTS = [
         "fts": "engineer*",
         "patterns": [
             "%software engineer%", "%software developer%", "%software development engineer%",
-            "%swe%", "%sde%", "%backend engineer%", "%back end engineer%",
-            "%frontend engineer%", "%front end engineer%", "%full stack engineer%",
-            "%fullstack engineer%", "%platform engineer%", "%infrastructure engineer%",
+            "%software development%", "%swe%", "%sde%", "%backend engineer%",
+            "%backend developer%", "%back end engineer%", "%back end developer%",
+            "%frontend engineer%", "%frontend developer%", "%front end engineer%",
+            "%front end developer%", "%full stack engineer%", "%full stack developer%",
+            "%fullstack engineer%", "%fullstack developer%", "%platform engineer%",
+            "%platform developer%", "%infrastructure engineer%",
             "%product engineer%", "%application engineer%", "%systems engineer%",
+            "%application developer%", "%web developer%",
             "%data engineer%", "%machine learning engineer%", "%ml engineer%",
             "%ai engineer%", "%devops engineer%", "%site reliability engineer%",
             "%reliability engineer%", "%security engineer%",
@@ -354,15 +368,139 @@ def display_title(title, url=""):
 def display_location(raw_location, title, url=""):
     loc = _display_location_from_dash_list(raw_location) or normalize_location(raw_location or "")
     title_loc = _location_from_title_noise(title, url)
-    url_loc = _location_from_job_url(url)
+    url_loc = _location_from_job_url(url, title)
+    loc = _qualify_remote_parts(loc, url_loc)
+    if not loc:
+        loc = _explicit_country_location(title, url_loc)
+    if loc in {"Remote", "Multiple Locations"}:
+        qualified = _qualify_generic_location(loc, title, url_loc)
+        if qualified:
+            loc = qualified
     if loc == "Multiple Locations":
-        return title_loc or url_loc or ""
+        return _mark_location_country(title_loc or url_loc or loc)
     if _bad_display_location(loc, title):
-        return title_loc or url_loc or ""
-    return loc or title_loc or url_loc
+        return _mark_location_country(title_loc or url_loc)
+    return _mark_location_country(loc or title_loc or url_loc)
+
+def _qualify_remote_parts(location, url_location=""):
+    """Qualify bare Remote segments when every explicit location agrees."""
+    if ";" not in (location or ""):
+        return location
+    parts = [norm(part) for part in location.split(";") if norm(part)]
+    countries = {
+        _country_from_location(part)
+        for part in parts
+        if part.lower() != "remote" and _country_from_location(part)
+    }
+    url_country = _country_from_location(url_location)
+    if url_country:
+        countries.add(url_country)
+    if len(countries) != 1:
+        return location
+    country = next(iter(countries))
+    return "; ".join(f"Remote, {country}" if part.lower() == "remote" else part for part in parts)
+
+def _explicit_country_location(title, url_location=""):
+    """Use a country explicitly written in the job title or URL."""
+    for candidate in (url_location, title):
+        candidate = norm(candidate)
+        if not candidate:
+            continue
+        for alias, canonical in sorted(_COUNTRY_ALIASES.items(), key=lambda item: len(item[0]), reverse=True):
+            if re.search(rf'\b{re.escape(alias)}\b', candidate, re.I):
+                if re.search(r'\bremote\b', candidate, re.I):
+                    return f"Remote, {canonical}"
+                return canonical
+    return ""
+
+def _qualify_generic_location(location, title, url_location):
+    """Attach country only when the title or URL explicitly supplies it."""
+    for candidate in (url_location, title):
+        candidate = norm(candidate)
+        if not candidate:
+            continue
+        country = _country_from_location(normalize_location(candidate))
+        if not country:
+            for alias, canonical in sorted(_COUNTRY_ALIASES.items(), key=lambda item: len(item[0]), reverse=True):
+                if re.search(rf'\b{re.escape(alias)}\b', candidate, re.I):
+                    country = canonical
+                    break
+        if country:
+            return f"{location}, {country}"
+    return ""
+
+def _mark_location_country(location):
+    """Ensure every displayed job location has an honest country marker."""
+    location = norm(location)
+    if not location:
+        return "Country not listed"
+    if location.lower().endswith("country not listed"):
+        return location
+    if ";" in location:
+        parts = [norm(part) for part in location.split(";") if norm(part)]
+        countries = {_country_from_location(part) for part in parts}
+        countries.discard("")
+        if len(countries) == 1:
+            country = next(iter(countries))
+            return "; ".join(
+                part if _country_from_location(part) else f"{part}, {country}"
+                for part in parts
+            )
+        return "; ".join(
+            _mark_location_country(part)
+            for part in parts
+        )
+
+    country = _country_from_location(location)
+    if country and (
+        location.lower() == country.lower()
+        or location.lower().endswith(f", {country.lower()}")
+        or location.lower().endswith(f" {country.lower()}")
+    ):
+        return location
+    if country:
+        return f"{location}, {country}"
+    return f"{location}, Country not listed"
+
+def _country_from_location(location):
+    location = norm(location)
+    lower = location.lower()
+    if not location:
+        return ""
+
+    countries = sorted(
+        set(_COUNTRY_ALIASES.values()) | set(_COUNTRY_CODES.values()),
+        key=len,
+        reverse=True,
+    )
+    for country in countries:
+        if (
+            lower == country.lower()
+            or lower.endswith(f", {country.lower()}")
+            or lower.endswith(f" {country.lower()}")
+        ):
+            return country
+
+    codes = re.findall(r"\b[A-Z]{2}\b", location)
+    if any(code in _US_STATES for code in codes):
+        return "US"
+    if any(code in _CANADA_PROVINCES for code in codes):
+        return "Canada"
+    if codes:
+        country = _COUNTRY_CODES.get(codes[-1])
+        if country:
+            return country
+
+    city = lower.replace("greater ", "").removesuffix(" area").strip()
+    for city_name, (_, _, country) in _CITY_DEFAULTS.items():
+        if city == city_name or city.startswith(f"{city_name} ") or city.startswith(f"{city_name},"):
+            return country
+    return ""
 
 def _display_location_from_dash_list(raw_location):
     raw = norm(raw_location or "")
+    if ";" in raw:
+        return ""
     m = re.search(r'([A-Z][A-Za-z .\'-]+?)\s+-\s+[^-]+?\s+-\s+([A-Z][A-Za-z ]+)', raw)
     if not m:
         return ""
@@ -372,7 +510,10 @@ def _bad_display_location(loc, title=""):
     loc = norm(loc)
     if not loc:
         return False
-    if re.search(r'\b(?:deloitte|llp|inc\.?|corp\.?|corporation)\b', loc, re.I):
+    if (
+        re.search(r'\b(?:deloitte|llp|inc\.?|corp\.?|corporation)\b', loc, re.I)
+        and not _country_from_location(loc)
+    ):
         return True
     if re.fullmatch(r'(?:ATCI[-\w]*|(?:REQ|JR|WD|EB|R|S)[-_]?\d[\w-]*|\d{5,})', loc, re.I):
         return True
@@ -380,6 +521,7 @@ def _bad_display_location(loc, title=""):
     loc_l = loc.lower()
     has_geo_signal = (
         loc_l in {"remote", "multiple locations", "us", "uk", "india", "canada"}
+        or loc_l in {country.lower() for country in _COUNTRY_ALIASES.values()}
         or any(city.lower() in loc_l for city in _DISPLAY_CITIES)
         or any(code in _US_STATES or code in _COUNTRY_CODES for code in re.findall(r'\b[A-Z]{2}\b', loc))
     )
@@ -428,12 +570,47 @@ def _location_from_title_noise(title, url=""):
             return normalize_location(city)
     return ""
 
-def _location_from_job_url(url):
+def _location_from_job_url(url, title=""):
     try:
         path = url.split("?", 1)[0]
     except Exception:
         return ""
     m = re.search(r'/job/([^/]+)/', path)
+    if not m:
+        # Clinch-style URLs put title + location + UUID in one /jobs/ slug.
+        m = re.search(r'/jobs/([^/]+?)-[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}/?$', path, re.I)
+        if m:
+            slug = unquote(m.group(1)).replace("_", "-").strip("-")
+            title_slug = re.sub(r"[^a-z0-9]+", "-", norm(title).lower()).strip("-")
+            if title_slug and slug.lower().startswith(title_slug + "-"):
+                slug = slug[len(title_slug) + 1:]
+
+            country_slugs = {
+                "united-states": "US",
+                "united-kingdom": "United Kingdom",
+                "australia": "Australia",
+                "canada": "Canada",
+                "india": "India",
+                "mexico": "Mexico",
+            }
+            for country_slug, country in country_slugs.items():
+                if slug.lower() == country_slug:
+                    return country
+                suffix = "-" + country_slug
+                if not slug.lower().endswith(suffix):
+                    continue
+                place = slug[:-len(suffix)].strip("-")
+                if country == "US":
+                    for state_name, state_code in sorted(
+                        _US_STATE_NAMES.items(), key=lambda item: len(item[0]), reverse=True
+                    ):
+                        state_slug = state_name.replace(" ", "-")
+                        if place.lower().endswith("-" + state_slug):
+                            city = place[:-(len(state_slug) + 1)].replace("-", " ").title()
+                            return normalize_location(f"{city}, {state_code}, US")
+                place = place.replace("-", " ").title()
+                return normalize_location(f"{place}, {country}")
+            return normalize_location(slug.replace("-", " ").title())
     if not m:
         return ""
     slug = unquote(m.group(1)).replace("_", "-")
@@ -455,6 +632,14 @@ def _location_from_job_url(url):
     raw = re.sub(r'^(?:usa|us|united states)\s+', '', raw, flags=re.I).strip()
     if not raw:
         return ""
+    remote_region = re.match(r'^remote\s+(.+)$', raw, re.I)
+    if remote_region:
+        region = re.sub(r'\s+us$', '', remote_region.group(1), flags=re.I).strip()
+        if region.lower() in _US_STATE_NAMES:
+            return "Remote, US"
+        country = _COUNTRY_ALIASES.get(region.lower()) or _COUNTRY_CODES.get(region.upper())
+        if country:
+            return f"Remote, {country}"
     for city in sorted(_DISPLAY_CITIES, key=len, reverse=True):
         if raw.lower().startswith(city.lower()):
             return normalize_location(city)

@@ -107,6 +107,11 @@ def fetch_ashby(scrape, seen, company):
         return [], "no ashby_slug"
 
     public_jobs, public_err = _fetch_ashby_public_api(slug, company)
+    default_location = normalize_location(scrape.get("default_location") or "")
+    if default_location:
+        for job in public_jobs or []:
+            if (job.get("location") or "") in ("", "Remote", "Multiple Locations", "Austin HQ"):
+                job["location"] = default_location
     if public_jobs:
         return public_jobs, None
 
