@@ -660,6 +660,16 @@ function _renderDrawerPills(id, items) {
   document.getElementById(id + '-sec').style.display = values.length ? '' : 'none';
 }
 
+function _combinedKeywordTerms(skills, keywords) {
+  const seen = new Set();
+  return [...(skills || []), ...(keywords || [])].filter(term => {
+    const key = String(term || '').trim().toLowerCase();
+    if (!key || seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
+
 const MODE_DOT_COLORS = {
   greenhouse:'#22c55e',lever:'#3b82f6',ashby:'#a855f7',workday:'#f59e0b',
   bamboohr:'#14b8a6',icims:'#6366f1',html:'#9ca3af',playwright:'#cf923a',
@@ -692,8 +702,7 @@ function openJobDrawer(id) {
   document.getElementById('jd-exp').textContent  = job.exp_label || 'Not listed';
   document.getElementById('jd-type').textContent = job.employment_type || '—';
 
-  _renderDrawerPills('jd-keywords', job.keywords);
-  _renderDrawerPills('jd-skills', job.skills);
+  _renderDrawerPills('jd-keywords', _combinedKeywordTerms(job.skills, job.keywords));
 
   document.getElementById('jd-d-company').textContent  = job.company || '—';
   document.getElementById('jd-d-location').textContent = job.location || '—';
@@ -714,12 +723,14 @@ function openJobDrawer(id) {
       if (data.employment_type) document.getElementById('jd-type').textContent = data.employment_type;
       if (Array.isArray(data.keywords)) {
         currentDrawerJob.keywords = data.keywords;
-        _renderDrawerPills('jd-keywords', data.keywords);
       }
       if (Array.isArray(data.skills)) {
         currentDrawerJob.skills = data.skills;
-        _renderDrawerPills('jd-skills', data.skills);
       }
+      _renderDrawerPills(
+        'jd-keywords',
+        _combinedKeywordTerms(currentDrawerJob.skills, currentDrawerJob.keywords)
+      );
       if (data.interview) {
         const iv = data.interview;
         const ivText = (typeof iv === 'string') ? iv : (iv.process || (iv.no_whiteboard ? 'No whiteboard' : '') || '—');
@@ -1094,10 +1105,6 @@ document.addEventListener('DOMContentLoaded', () => {
     <div class="jd-sec" id="jd-keywords-sec">
       <div class="jd-sec-h">Keywords</div>
       <div class="jd-skills" id="jd-keywords"></div>
-    </div>
-    <div class="jd-sec" id="jd-skills-sec">
-      <div class="jd-sec-h">Skills</div>
-      <div class="jd-skills" id="jd-skills"></div>
     </div>
     <div class="jd-sec">
       <div class="jd-sec-h">At a glance</div>
