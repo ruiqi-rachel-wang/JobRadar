@@ -5,13 +5,19 @@ import secrets
 import threading
 import time
 from datetime import datetime
+from html import escape as html_escape
 from urllib.parse import urlsplit
 
-from flask import Flask, jsonify, redirect, render_template, request, session, url_for
+from flask import Flask, Response, jsonify, redirect, render_template, request, session, url_for
 from werkzeug.middleware.proxy_fix import ProxyFix
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from .database import IS_POSTGRES, connect_db, placeholders
+try:
+    import stripe
+except ModuleNotFoundError:
+    stripe = None
+
+from .database import IS_POSTGRES, connect_auth_db, connect_db, init_auth_db, placeholders
 try:
     from scanner_service import run_scan
     from scan_store import latest_scan as latest_scan_record, scan_companies as scan_company_records
@@ -24,7 +30,7 @@ from .job_data import (
     set_app_state,
 )
 from .apis import fetch_jobs
-from .utils import experience_match_score
+from .utils import experience_match_score, extract_keywords
 from .search import (
     display_location, display_title,
     experience_score_sql, fts_match_query, keyword_groups, keyword_relevance_sql, keyword_where,
@@ -42,8 +48,14 @@ app.config["SESSION_COOKIE_SECURE"] = (
     or bool(os.environ.get("RENDER"))
 )
 init_db()
+init_auth_db()
 
 ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD") or os.environ.get("JOBRADAR_ADMIN_PASSWORD")
+STRIPE_PRICE_ID = os.environ.get("STRIPE_PRICE_ID") or os.environ.get("JOBDROP_STRIPE_PRICE_ID")
+STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY") or os.environ.get("JOBDROP_STRIPE_SECRET_KEY")
+STRIPE_WEBHOOK_SECRET = os.environ.get("STRIPE_WEBHOOK_SECRET") or os.environ.get("JOBDROP_STRIPE_WEBHOOK_SECRET")
+if stripe and STRIPE_SECRET_KEY:
+    stripe.api_key = STRIPE_SECRET_KEY
 
 def _is_admin():
     return bool(session.get("admin_ok"))
@@ -85,6 +97,44 @@ def _user_required():
         return jsonify({"error": "Login required"}), 401
     return redirect(url_for("login", next=request.full_path))
 
+def _crawler_locks():
+    try:
+        with connect_db(rows=True) as conn:
+            rows = conn.execute(
+                "SELECT REPLACE(key, 'crawler_403_until:', '') AS company, value "
+                "FROM app_state WHERE key LIKE 'crawler_403_until:%'"
+            ).fetchall()
+        return {row["company"]: row["value"] for row in rows}
+    except Exception:
+        return {}
+
+def _company_is_public(company, locks=None):
+    locks = locks or {}
+    name = company.get("name")
+    return (
+        bool(name)
+        and company.get("scan_enabled", True) is not False
+        and not company.get("policy")
+        and name not in locks
+    )
+
+def _admin_companies():
+    locks = _crawler_locks()
+    annotated = []
+    for company in current_companies():
+        item = dict(company)
+        name = item.get("name")
+        if name in locks:
+            item["crawler_locked_until"] = locks[name]
+        if not _company_is_public(item, locks):
+            item["admin_only"] = True
+        annotated.append(item)
+    return annotated
+
+def _public_companies():
+    locks = _crawler_locks()
+    return [dict(company) for company in current_companies() if _company_is_public(company, locks)]
+
 @app.before_request
 def protect_routes():
     if request.path == "/app":
@@ -95,10 +145,102 @@ def protect_routes():
         or request.path.startswith("/api/reset")
         or request.path.startswith("/api/reenrich")
         or request.path.startswith("/api/backfill")
+        or request.path.startswith("/api/admin/")
         or request.path in {"/api/clear_data", "/api/detect_ats", "/api/add_detected_company"}
     )
     if protected:
         return _admin_required()
+    return None
+
+def _now_db():
+    return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+def _parse_db_dt(value):
+    if not value:
+        return None
+    text = str(value).replace("T", " ").replace("Z", "").split(".")[0]
+    for fmt in ("%Y-%m-%d %H:%M:%S%z", "%Y-%m-%d %H:%M:%S", "%Y-%m-%d"):
+        try:
+            return datetime.strptime(text, fmt)
+        except ValueError:
+            continue
+    return None
+
+def _days_since(value):
+    dt = _parse_db_dt(value)
+    if not dt:
+        return None
+    return max(0, (datetime.now() - dt.replace(tzinfo=None)).days)
+
+def _ts_to_db(value):
+    if not value:
+        return ""
+    return datetime.fromtimestamp(int(value)).strftime("%Y-%m-%d %H:%M:%S")
+
+def _stripe_ready(require_webhook=False):
+    if not stripe:
+        return False, "Stripe Python package is not installed."
+    if not STRIPE_SECRET_KEY:
+        return False, "STRIPE_SECRET_KEY is not configured."
+    if not STRIPE_PRICE_ID:
+        return False, "STRIPE_PRICE_ID is not configured."
+    if require_webhook and not STRIPE_WEBHOOK_SECRET:
+        return False, "STRIPE_WEBHOOK_SECRET is not configured."
+    return True, ""
+
+def _plan_from_subscription_status(status):
+    if status in {"active", "trialing"}:
+        return "pro" if status == "active" else "trial"
+    if status in {"past_due", "unpaid", "incomplete", "incomplete_expired"}:
+        return status
+    return "free"
+
+def _update_user_subscription(uid, *, customer_id="", subscription_id="", status="", period_end="", started_at=""):
+    plan_status = _plan_from_subscription_status(status)
+    with connect_auth_db() as conn:
+        if plan_status == "free":
+            conn.execute(
+                "UPDATE users SET plan_status='free', plan_current_period_end=?, "
+                "stripe_customer_id=COALESCE(NULLIF(?, ''), stripe_customer_id), "
+                "stripe_subscription_id='' WHERE id=?",
+                (period_end or "", customer_id or "", uid),
+            )
+        else:
+            conn.execute(
+                "UPDATE users SET plan_status=?, "
+                "plan_started_at=CASE WHEN COALESCE(plan_started_at, '') = '' THEN ? ELSE plan_started_at END, "
+                "plan_current_period_end=?, "
+                "stripe_customer_id=COALESCE(NULLIF(?, ''), stripe_customer_id), "
+                "stripe_subscription_id=COALESCE(NULLIF(?, ''), stripe_subscription_id) "
+                "WHERE id=?",
+                (plan_status, started_at or _now_db(), period_end or "", customer_id or "", subscription_id or "", uid),
+            )
+
+def _user_id_for_subscription(subscription):
+    metadata = getattr(subscription, "metadata", None) or {}
+    uid = metadata.get("jobdrop_user_id")
+    if uid:
+        return uid
+    sub_id = getattr(subscription, "id", "") or ""
+    customer_id = getattr(subscription, "customer", "") or ""
+    with connect_auth_db(rows=True) as conn:
+        row = conn.execute(
+            "SELECT id FROM users WHERE stripe_subscription_id=? OR stripe_customer_id=?",
+            (sub_id, customer_id),
+        ).fetchone()
+    return row["id"] if row else None
+
+@app.before_request
+def touch_user_activity():
+    uid = session.get("user_id")
+    if not uid:
+        return None
+    now_ts = int(time.time())
+    if now_ts - int(session.get("_last_active_touch", 0) or 0) < 300:
+        return None
+    session["_last_active_touch"] = now_ts
+    with connect_auth_db() as conn:
+        conn.execute("UPDATE users SET last_active_at=? WHERE id=?", (_now_db(), uid))
     return None
 
 # ── Scan state + schedule ─────────────────────────────────────────────────────
@@ -215,25 +357,195 @@ def _user_ctx():
     """Template context for the current user."""
     uid = session.get("user_id")
     if uid:
-        with connect_db(rows=True) as conn:
-            row = conn.execute("SELECT username, role FROM users WHERE id=?", (uid,)).fetchone()
+        with connect_auth_db(rows=True) as conn:
+            row = conn.execute(
+                "SELECT username, role, plan_status, plan_started_at FROM users WHERE id=?",
+                (uid,)
+            ).fetchone()
         if row:
-            return {"username": row["username"], "is_admin": row["role"] == "admin"}
+            return {
+                "username": row["username"],
+                "is_admin": row["role"] == "admin",
+                "plan_status": row["plan_status"] or "free",
+                "paid_member_days": _days_since(row["plan_started_at"]),
+            }
     if _is_admin():
-        return {"username": "Admin", "is_admin": True}
-    return {"username": None, "is_admin": False}
+        return {"username": "Admin", "is_admin": True, "plan_status": "admin", "paid_member_days": None}
+    return {"username": None, "is_admin": False, "plan_status": "free", "paid_member_days": None}
 
 @app.route("/")
 def public_view():
-    return render_template("user.html", companies=current_companies(),
+    return render_template("user.html", companies=_public_companies(),
                            is_public=True, is_admin=False, username=None)
+
+def _slugify(value):
+    return re.sub(r"[^a-z0-9]+", "-", (value or "").lower()).strip("-")
+
+def _company_for_slug(slug):
+    for company in _public_companies():
+        if _slugify(company.get("name", "")) == slug:
+            return company
+    return None
+
+def _job_query(where_sql="", params=(), limit=60):
+    where = f"WHERE is_open = TRUE {where_sql}"
+    sql = (
+        "SELECT id, title, url, company, location, posted, first_seen, exp_label, "
+        "skills, keywords, description FROM jobs "
+        f"{where} "
+        "ORDER BY COALESCE(NULLIF(posted,''), substr(first_seen,1,10)) DESC "
+        "LIMIT ?"
+    )
+    with connect_db(rows=True) as conn:
+        rows = conn.execute(sql, list(params) + [limit]).fetchall()
+    jobs = []
+    for row in rows:
+        desc = " ".join((row["description"] or "").split())
+        skills = json.loads(row["skills"] or "[]")
+        keywords = json.loads(row["keywords"] or "[]")
+        if not keywords:
+            keywords = extract_keywords(row["title"] or "", desc, skills)
+        jobs.append({
+            "id": row["id"],
+            "title": display_title(row["title"] or "", row["url"] or ""),
+            "url": row["url"] or "",
+            "company": row["company"] or "",
+            "location": display_location(row["location"] or "", row["title"] or "", row["url"] or ""),
+            "posted": (row["posted"] or "")[:10],
+            "first_seen": (row["first_seen"] or "")[:10],
+            "exp_label": row["exp_label"] or "",
+            "skills": skills,
+            "keywords": keywords,
+            "description": desc[:320],
+        })
+    return jobs
+
+@app.route("/companies")
+def companies_page():
+    companies = [dict(c, slug=_slugify(c.get("name", ""))) for c in _public_companies()]
+    return render_template(
+        "companies.html",
+        companies=companies,
+        canonical_url=url_for("companies_page", _external=True),
+        title="Companies hiring now | JobDrop",
+        description="Browse companies with current job openings tracked directly from official career pages by JobDrop.",
+    )
+
+@app.route("/companies/<slug>/jobs")
+def company_jobs_page(slug):
+    company = _company_for_slug(slug)
+    if not company:
+        return "Company not found", 404
+    name = company.get("name", "")
+    jobs = _job_query("AND company = ?", [name])
+    return render_template(
+        "seo_jobs.html",
+        canonical_url=url_for("company_jobs_page", slug=slug, _external=True),
+        title=f"{name} jobs | JobDrop",
+        h1=f"{name} jobs",
+        description=f"Current {name} job openings tracked from the company's official careers page.",
+        intro=f"Browse current {name} openings that JobDrop found directly from the company's careers source.",
+        jobs=jobs,
+        companies=[dict(c, slug=_slugify(c.get("name", ""))) for c in _public_companies()[:24]],
+    )
+
+@app.route("/jobs/new-grad")
+def new_grad_jobs_page():
+    jobs = _job_query(
+        "AND (LOWER(title) LIKE ? OR LOWER(title) LIKE ? OR LOWER(title) LIKE ? OR LOWER(description) LIKE ?)",
+        ["%new grad%", "%entry level%", "%intern%", "%new grad%"],
+    )
+    return render_template(
+        "seo_jobs.html",
+        canonical_url=url_for("new_grad_jobs_page", _external=True),
+        title="New grad jobs | JobDrop",
+        h1="New grad jobs",
+        description="Browse new grad, intern, and entry-level roles found directly from company career pages.",
+        intro="These openings are filtered for new grad, intern, and entry-level signals from current JobDrop listings.",
+        jobs=jobs,
+        companies=[dict(c, slug=_slugify(c.get("name", ""))) for c in _public_companies()[:24]],
+    )
+
+@app.route("/jobs/software-engineer/remote")
+def remote_software_jobs_page():
+    jobs = _job_query(
+        "AND LOWER(title) LIKE ? AND LOWER(location) LIKE ?",
+        ["%engineer%", "%remote%"],
+    )
+    return render_template(
+        "seo_jobs.html",
+        canonical_url=url_for("remote_software_jobs_page", _external=True),
+        title="Remote software engineer jobs | JobDrop",
+        h1="Remote software engineer jobs",
+        description="Browse remote software engineering jobs found directly from official company career pages.",
+        intro="Remote software engineering openings from JobDrop's company-career-page index.",
+        jobs=jobs,
+        companies=[dict(c, slug=_slugify(c.get("name", ""))) for c in _public_companies()[:24]],
+    )
+
+@app.route("/jobs/software-engineer/new-york")
+def new_york_software_jobs_page():
+    jobs = _job_query(
+        "AND LOWER(title) LIKE ? AND LOWER(location) LIKE ?",
+        ["%engineer%", "%new york%"],
+    )
+    return render_template(
+        "seo_jobs.html",
+        canonical_url=url_for("new_york_software_jobs_page", _external=True),
+        title="Software engineer jobs in New York | JobDrop",
+        h1="Software engineer jobs in New York",
+        description="Browse New York software engineering jobs found directly from official company career pages.",
+        intro="Current New York software engineering openings from JobDrop's company-career-page index.",
+        jobs=jobs,
+        companies=[dict(c, slug=_slugify(c.get("name", ""))) for c in _public_companies()[:24]],
+    )
+
+@app.route("/robots.txt")
+def robots_txt():
+    sitemap_url = url_for("sitemap_xml", _external=True)
+    body = (
+        "User-agent: *\n"
+        "Allow: /\n"
+        "Disallow: /admin\n"
+        "Disallow: /app\n"
+        "Disallow: /login\n"
+        "Disallow: /signup\n"
+        "Disallow: /api/\n"
+        f"Sitemap: {sitemap_url}\n"
+    )
+    return Response(body, content_type="text/plain; charset=utf-8")
+
+@app.route("/sitemap.xml")
+def sitemap_xml():
+    urls = [
+        url_for("public_view", _external=True),
+        url_for("companies_page", _external=True),
+        url_for("new_grad_jobs_page", _external=True),
+        url_for("remote_software_jobs_page", _external=True),
+        url_for("new_york_software_jobs_page", _external=True),
+    ]
+    urls.extend(
+        url_for("company_jobs_page", slug=_slugify(c.get("name", "")), _external=True)
+        for c in _public_companies()[:200]
+        if c.get("name")
+    )
+    lastmod = datetime.now().strftime("%Y-%m-%d")
+    body = '<?xml version="1.0" encoding="UTF-8"?>\n'
+    body += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+    for loc in urls:
+        body += f"  <url><loc>{html_escape(loc)}</loc><lastmod>{lastmod}</lastmod></url>\n"
+    body += "</urlset>\n"
+    return Response(body, content_type="application/xml; charset=utf-8")
 
 @app.route("/app")
 def app_view():
     ctx = _user_ctx()
-    return render_template("user.html", companies=current_companies(),
+    companies = _admin_companies() if ctx["is_admin"] else _public_companies()
+    return render_template("user.html", companies=companies,
                            is_public=False, is_admin=ctx["is_admin"],
-                           username=ctx["username"])
+                           username=ctx["username"],
+                           plan_status=ctx.get("plan_status", "free"),
+                           paid_member_days=ctx.get("paid_member_days"))
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -246,7 +558,7 @@ def login():
             session["admin_ok"] = True
             return redirect(_safe_next("admin"))
         # Regular user lookup
-        with connect_db(rows=True) as conn:
+        with connect_auth_db(rows=True) as conn:
             row = conn.execute(
                 "SELECT id, username, password_hash, role FROM users WHERE username=?",
                 (username,)
@@ -255,6 +567,13 @@ def login():
             session.clear()
             session["user_id"]  = row["id"]
             session["username"] = row["username"]
+            now = _now_db()
+            session["_last_active_touch"] = int(time.time())
+            with connect_auth_db() as conn:
+                conn.execute(
+                    "UPDATE users SET last_login_at=?, last_active_at=? WHERE id=?",
+                    (now, now, row["id"]),
+                )
             if row["role"] == "admin":
                 session["admin_ok"] = True
                 return redirect(_safe_next("admin"))
@@ -286,21 +605,31 @@ def signup():
             return render_template("auth.html", mode="signup",
                                    error="Passwords do not match."), 400
         pw_hash = generate_password_hash(password)
+        now = _now_db()
         try:
-            with connect_db() as conn:
+            with connect_auth_db() as conn:
                 conn.execute(
-                    "INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?)",
-                    (username, email, pw_hash)
+                    "INSERT INTO users (username, email, password_hash, last_login_at, last_active_at) "
+                    "VALUES (?, ?, ?, ?, ?)",
+                    (username, email, pw_hash, now, now)
                 )
-        except Exception:
-            return render_template("auth.html", mode="signup",
-                                   error="Username already taken."), 400
+        except Exception as exc:
+            detail = str(exc).lower()
+            if "unique" in detail or "duplicate" in detail:
+                return render_template("auth.html", mode="signup",
+                                       error="Username already taken."), 400
+            app.logger.exception("Could not create signup account for %r", username)
+            return render_template(
+                "auth.html", mode="signup",
+                error="Could not create your account right now. Please try again."
+            ), 503
         # Auto-login after signup
-        with connect_db(rows=True) as conn:
+        with connect_auth_db(rows=True) as conn:
             row = conn.execute("SELECT id FROM users WHERE username=?", (username,)).fetchone()
         session.clear()
         session["user_id"]  = row["id"]
         session["username"] = username
+        session["_last_active_touch"] = int(time.time())
         return redirect(url_for("app_view"))
     return render_template("auth.html", mode="signup", error="")
 
@@ -309,13 +638,182 @@ def logout():
     session.clear()
     return redirect(url_for("public_view"))
 
+@app.route("/billing/checkout", methods=["POST"])
+def billing_checkout():
+    guard = _user_required()
+    if guard:
+        return guard
+    uid = _current_user_id()
+    ready, message = _stripe_ready()
+    if not ready:
+        return message, 503
+    with connect_auth_db(rows=True) as conn:
+        row = conn.execute(
+            "SELECT id, username, email, stripe_customer_id FROM users WHERE id=?",
+            (uid,),
+        ).fetchone()
+    if not row:
+        return "Login required", 401
+    customer_id = row["stripe_customer_id"] or ""
+    if not customer_id:
+        customer_args = {
+            "metadata": {"jobdrop_user_id": str(uid), "username": row["username"] or ""},
+        }
+        if row["email"]:
+            customer_args["email"] = row["email"]
+        if row["username"]:
+            customer_args["name"] = row["username"]
+        customer = stripe.Customer.create(**customer_args)
+        customer_id = customer.id
+        with connect_auth_db() as conn:
+            conn.execute("UPDATE users SET stripe_customer_id=? WHERE id=?", (customer_id, uid))
+    checkout = stripe.checkout.Session.create(
+        customer=customer_id,
+        mode="subscription",
+        line_items=[{"price": STRIPE_PRICE_ID, "quantity": 1}],
+        success_url=url_for("billing_success", _external=True) + "?session_id={CHECKOUT_SESSION_ID}",
+        cancel_url=url_for("app_view", _external=True) + "?billing=cancelled",
+        client_reference_id=str(uid),
+        metadata={"jobdrop_user_id": str(uid)},
+        subscription_data={"metadata": {"jobdrop_user_id": str(uid)}},
+        allow_promotion_codes=True,
+    )
+    return redirect(checkout.url, code=303)
+
+@app.route("/billing/portal", methods=["POST"])
+def billing_portal():
+    guard = _user_required()
+    if guard:
+        return guard
+    uid = _current_user_id()
+    ready, message = _stripe_ready()
+    if not ready:
+        return message, 503
+    with connect_auth_db(rows=True) as conn:
+        row = conn.execute("SELECT stripe_customer_id FROM users WHERE id=?", (uid,)).fetchone()
+    customer_id = (row["stripe_customer_id"] or "") if row else ""
+    if not customer_id:
+        return redirect(url_for("app_view", billing="no_customer"))
+    portal = stripe.billing_portal.Session.create(
+        customer=customer_id,
+        return_url=url_for("app_view", _external=True),
+    )
+    return redirect(portal.url, code=303)
+
+@app.route("/billing/success")
+def billing_success():
+    return redirect(url_for("app_view", billing="success"))
+
+@app.route("/stripe/webhook", methods=["POST"])
+def stripe_webhook():
+    ready, message = _stripe_ready(require_webhook=True)
+    if not ready:
+        return jsonify({"error": message}), 503
+    payload = request.get_data()
+    sig = request.headers.get("Stripe-Signature", "")
+    try:
+        event = stripe.Webhook.construct_event(payload, sig, STRIPE_WEBHOOK_SECRET)
+    except Exception as exc:
+        return jsonify({"error": str(exc)}), 400
+
+    event_type = event["type"]
+    obj = event["data"]["object"]
+
+    if event_type == "checkout.session.completed":
+        uid = obj.get("client_reference_id") or (obj.get("metadata") or {}).get("jobdrop_user_id")
+        customer_id = obj.get("customer") or ""
+        subscription_id = obj.get("subscription") or ""
+        if uid and subscription_id:
+            subscription = stripe.Subscription.retrieve(subscription_id)
+            _update_user_subscription(
+                uid,
+                customer_id=customer_id,
+                subscription_id=subscription_id,
+                status=subscription.status,
+                period_end=_ts_to_db(getattr(subscription, "current_period_end", None)),
+                started_at=_ts_to_db(getattr(subscription, "start_date", None)),
+            )
+
+    elif event_type in {"customer.subscription.updated", "customer.subscription.deleted"}:
+        uid = _user_id_for_subscription(obj)
+        if uid:
+            _update_user_subscription(
+                uid,
+                customer_id=obj.get("customer") or "",
+                subscription_id=obj.get("id") or "",
+                status="canceled" if event_type.endswith(".deleted") else (obj.get("status") or ""),
+                period_end=_ts_to_db(obj.get("current_period_end")),
+                started_at=_ts_to_db(obj.get("start_date")),
+            )
+
+    elif event_type == "invoice.payment_failed":
+        subscription_id = obj.get("subscription") or ""
+        customer_id = obj.get("customer") or ""
+        with connect_auth_db() as conn:
+            conn.execute(
+                "UPDATE users SET plan_status='past_due' "
+                "WHERE stripe_subscription_id=? OR stripe_customer_id=?",
+                (subscription_id, customer_id),
+            )
+
+    return jsonify({"received": True})
+
 @app.route("/admin")
 def admin():
-    return render_template("admin.html", companies=current_companies())
+    return render_template("admin.html", companies=_admin_companies())
+
+@app.route("/api/admin/users")
+def api_admin_users():
+    with connect_auth_db(rows=True) as conn:
+        rows = conn.execute(
+            "SELECT id, username, email, role, plan_status, plan_started_at, "
+            "plan_current_period_end, last_login_at, last_active_at, created_at "
+            "FROM users ORDER BY created_at DESC"
+        ).fetchall()
+    users = []
+    for row in rows:
+        users.append({
+            "id": row["id"],
+            "username": row["username"] or "",
+            "email": row["email"] or "",
+            "role": row["role"] or "user",
+            "plan_status": row["plan_status"] or "free",
+            "plan_started_at": str(row["plan_started_at"] or ""),
+            "plan_current_period_end": str(row["plan_current_period_end"] or ""),
+            "last_login_at": str(row["last_login_at"] or ""),
+            "last_active_at": str(row["last_active_at"] or ""),
+            "created_at": str(row["created_at"] or ""),
+            "member_days": _days_since(row["created_at"]),
+            "paid_member_days": _days_since(row["plan_started_at"]),
+        })
+    return jsonify(users)
+
+@app.route("/api/admin/users/<int:uid>/plan", methods=["PATCH"])
+def api_admin_user_plan(uid):
+    d = request.get_json(silent=True) or {}
+    status = (d.get("plan_status") or "").strip().lower()
+    if status not in {"free", "pro", "trial"}:
+        return jsonify({"error": "invalid plan_status"}), 400
+    now = _now_db()
+    with connect_auth_db() as conn:
+        if status == "free":
+            conn.execute(
+                "UPDATE users SET plan_status='free', plan_started_at='', "
+                "plan_current_period_end='', stripe_subscription_id='' WHERE id=?",
+                (uid,),
+            )
+        else:
+            conn.execute(
+                "UPDATE users SET plan_status=?, "
+                "plan_started_at=CASE WHEN COALESCE(plan_started_at, '') = '' THEN ? ELSE plan_started_at END, "
+                "plan_current_period_end='' WHERE id=?",
+                (status, now, uid),
+            )
+    return jsonify({"ok": True})
 
 @app.route("/legacy")
 def legacy():
-    return render_template("index.html", companies=current_companies())
+    return render_template("index.html", companies=_public_companies())
 
 # ── Apply list API ─────────────────────────────────────────────────────────────
 
@@ -324,7 +822,7 @@ def get_apply():
     uid = _current_user_id()
     if not uid:
         return jsonify([])
-    with connect_db(rows=True) as conn:
+    with connect_auth_db(rows=True) as conn:
         rows = conn.execute(
             "SELECT job_id, stage, job_title, job_company, job_location, "
             "job_url, job_exp_label, job_posted, added_at FROM user_apply_list "
@@ -341,7 +839,7 @@ def add_apply():
     job_id = (d.get("job_id") or "").strip()
     if not job_id:
         return jsonify({"error": "job_id required"}), 400
-    with connect_db() as conn:
+    with connect_auth_db() as conn:
         conn.execute(
             "INSERT INTO user_apply_list "
             "(user_id, job_id, stage, job_title, job_company, job_location, job_url, job_exp_label, job_posted) "
@@ -361,7 +859,7 @@ def update_apply(job_id):
     valid = {"to-apply","applied","interview","offer","closed"}
     if stage not in valid:
         return jsonify({"error": "invalid stage"}), 400
-    with connect_db() as conn:
+    with connect_auth_db() as conn:
         conn.execute("UPDATE user_apply_list SET stage=? WHERE user_id=? AND job_id=?",
                      (stage, uid, job_id))
     return jsonify({"ok": True})
@@ -371,7 +869,7 @@ def remove_apply(job_id):
     uid = _current_user_id()
     if not uid:
         return jsonify({"error": "not logged in"}), 401
-    with connect_db() as conn:
+    with connect_auth_db() as conn:
         conn.execute("DELETE FROM user_apply_list WHERE user_id=? AND job_id=?", (uid, job_id))
     return jsonify({"ok": True})
 
@@ -420,11 +918,6 @@ def get_progress():
         "new_count":   scan_state["new_count"],
         "scan_run_id": scan_state.get("scan_run_id"),
     })
-
-@app.route("/api/reset_seen", methods=["POST"])
-def reset_seen():
-    set_app_state("force_all_new_once", "1")
-    return jsonify({"ok":True})
 
 @app.route("/api/reenrich", methods=["POST"])
 def reenrich_jobs():
@@ -637,7 +1130,7 @@ def add_detected_company_route():
 
 @app.route("/api/companies")
 def api_companies():
-    return jsonify(current_companies())
+    return jsonify(_admin_companies() if _is_admin() else _public_companies())
 
 @app.route("/api/summary")
 def api_summary():
@@ -772,23 +1265,30 @@ def update_feedback(fid):
 
 @app.route("/api/jobs/<job_id>")
 def api_job_detail(job_id):
-    interview_map = {c["name"]: c.get("interview") for c in current_companies() if c.get("interview")}
+    company_configs = _admin_companies() if _is_admin() else _public_companies()
+    allowed_company_names = {c.get("name") for c in company_configs}
+    interview_map = {c["name"]: c.get("interview") for c in company_configs if c.get("interview")}
     with connect_db(rows=True) as conn:
         row = conn.execute(
             "SELECT id, title, url, company, location, source, posted, first_seen, "
-            "exp_label, exp_min, exp_max, skills, categories, employment_type, description "
+            "exp_label, exp_min, exp_max, skills, keywords, categories, employment_type, description "
             "FROM jobs WHERE id = ?",
             (job_id,)
         ).fetchone()
     if not row:
         return jsonify({"error": "Job not found"}), 404
+    if row["company"] not in allowed_company_names:
+        return jsonify({"error": "Job not found"}), 404
     skills = json.loads(row["skills"] or "[]") if row["skills"] else []
+    keywords = json.loads(row["keywords"] or "[]") if row["keywords"] else []
+    if not keywords:
+        keywords = extract_keywords(row["title"] or "", row["description"] or "", skills)
     cats   = json.loads(row["categories"] or "[]") if row["categories"] else []
     return jsonify({
         "id":              row["id"],
         "title":           row["title"] or "",
         "company":         row["company"] or "",
-        "location":        row["location"] or "",
+        "location":        display_location(row["location"] or "", row["title"] or "", row["url"] or ""),
         "source":          row["source"] or "",
         "posted":          (row["posted"] or "")[:10],
         "first_seen":      (row["first_seen"] or "")[:10],
@@ -796,6 +1296,7 @@ def api_job_detail(job_id):
         "exp_label":       row["exp_label"] or "",
         "employment_type": row["employment_type"] or "",
         "skills":          skills,
+        "keywords":        keywords,
         "categories":      cats,
         "interview":       interview_map.get(row["company"] or ""),
         "description":     row["description"] or "",
@@ -818,14 +1319,15 @@ def api_jobs():
     if not companies:
         raw_companies = (request.args.get("companies") or "").strip()
         companies = [c.strip() for c in raw_companies.split(",") if c.strip()]
-    company_configs = current_companies()
-    active_company_names = {
-        company.get("name")
-        for company in company_configs
-        if company.get("scan_enabled", True) is not False
-    }
+    requested_company_filter = bool(companies)
+    all_company_names = {company.get("name") for company in current_companies() if company.get("name")}
+    company_configs = _admin_companies() if _is_admin() else _public_companies()
+    active_company_names = {company.get("name") for company in company_configs if company.get("name")}
+    hidden_company_names = sorted(all_company_names - active_company_names)
+    no_visible_company_match = False
     if companies:
         companies = [name for name in companies if name in active_company_names]
+        no_visible_company_match = requested_company_filter and not companies
     try:
         limit = min(int(request.args.get("limit", 100) or 100), 5000)
     except (ValueError, TypeError):
@@ -835,9 +1337,24 @@ def api_jobs():
     except (ValueError, TypeError):
         page = 1
     offset   = (page - 1) * limit
+    if no_visible_company_match:
+        return jsonify({
+            "jobs": [],
+            "total": 0,
+            "total_lower_bound": 0,
+            "total_exact": True,
+            "has_more": False,
+            "page": page,
+            "limit": limit,
+        })
 
     kw_groups = keyword_groups(keyword)
-    fts_query = fts_match_query(keyword, location, kw_groups) if (not IS_POSTGRES and keyword and location) else ""
+    # Role-intent searches ("software engineer", "product manager", etc.) are
+    # broader than raw FTS terms. Let the expanded LIKE patterns drive those;
+    # otherwise FTS can accidentally require only one token such as "engineer*"
+    # and drop valid "developer"/"SDE" roles.
+    has_role_intent = bool(role_intent_where(kw_groups, "title")[0]) if kw_groups else False
+    fts_query = fts_match_query(keyword, "", kw_groups) if (not IS_POSTGRES and keyword and not has_role_intent) else ""
     use_fts = bool(fts_query)
 
     if use_fts:
@@ -857,7 +1374,7 @@ def api_jobs():
             clauses.extend(keyword_clauses)
             params.extend(keyword_params)
 
-    if location and not use_fts:
+    if location:
         if location in ("united states", "usa", "u.s.", "u.s.a.", "america"):
             clauses.append("(LOWER(location) = ? OR LOWER(location) LIKE ?)")
             params.extend(["us", "%, us%"])
@@ -882,6 +1399,10 @@ def api_jobs():
         company_marks = placeholders(len(companies))
         clauses.append(f"{field('company')} IN ({company_marks})")
         params.extend(companies)
+    elif hidden_company_names:
+        hidden_marks = placeholders(len(hidden_company_names))
+        clauses.append(f"{field('company')} NOT IN ({hidden_marks})")
+        params.extend(hidden_company_names)
 
     where = ("WHERE " + " AND ".join(clauses)) if clauses else ""
     company_interviews = {
@@ -906,10 +1427,10 @@ def api_jobs():
     select_cols = (
         "jobs.id, jobs.title, jobs.url, jobs.company, jobs.location, jobs.source, "
         "jobs.categories, jobs.first_seen, jobs.posted, jobs.exp_min, jobs.exp_max, "
-        "jobs.exp_label, jobs.exp_source, jobs.skills, jobs.employment_type"
+        "jobs.exp_label, jobs.exp_source, jobs.skills, jobs.keywords, jobs.employment_type"
         if use_fts else
         "id, title, url, company, location, source, categories, first_seen, posted, "
-        "exp_min, exp_max, exp_label, exp_source, skills, employment_type"
+        "exp_min, exp_max, exp_label, exp_source, skills, keywords, employment_type"
     )
     sql   = (f"SELECT {select_cols}{select_rank}{select_exp} "
              f"FROM {from_sql} {where} ORDER BY {order_sql} LIMIT ? OFFSET ?")
@@ -953,12 +1474,19 @@ def api_jobs():
                 "exp_source": r["exp_source"] or "",
                 "exp_score":  experience_match_score(exp_years, r["exp_min"], r["exp_max"]) if exp_years is not None else 0,
                 "skills":           json.loads(r["skills"] or "[]"),
+                "keywords":         json.loads(r["keywords"] or "[]") or extract_keywords(r["title"] or "", "", json.loads(r["skills"] or "[]")),
                 "employment_type":  r["employment_type"] or "",
                 "interview":        company_interviews.get(r["company"]),
                 "is_new":     fs == today,
             })
         if not jobs and total == 0:
             jobs, total = jobs_from_seen_fallback(keyword, location, since, category, companies, limit, offset, today)
+            for job in jobs:
+                job["location"] = display_location(
+                    job.get("location", ""),
+                    job.get("title", ""),
+                    job.get("url", ""),
+                )
         return jsonify({
             "jobs": jobs,
             "total": total,

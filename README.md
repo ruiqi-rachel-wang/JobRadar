@@ -29,6 +29,9 @@ Set these in Render:
 - `SECRET_KEY`: generated automatically by `render.yaml`.
 - `JOBRADAR_DATA_DIR`: `/var/data`
 - `JOBRADAR_COMPANIES_FILE`: `/var/data/companies.json`
+- `STRIPE_PRICE_ID`: recurring Stripe price ID for JobDrop Pro.
+- `STRIPE_SECRET_KEY`: Stripe secret key, stored only on the server.
+- `STRIPE_WEBHOOK_SECRET`: Stripe webhook signing secret for `/stripe/webhook`.
 
 The Render disk keeps `jobs.db`, `seen_jobs.json`, `scan_summary.json`, and
 runtime company edits across deploys. On first boot, `companies.json` is copied

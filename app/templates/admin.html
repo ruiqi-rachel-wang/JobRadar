@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
 <title>JobDrop — Scan Board</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -97,6 +98,11 @@
 .apply-pill.is-on { background:var(--navy); color:white; border-color:var(--navy); }
 .exp-chip { display:inline-block; font-size:11px; padding:2px 8px; border-radius:8px; background:var(--navy-050); color:var(--navy); border:1px solid var(--navy-100); font-weight:600; font-family:var(--font-mono); }
 .exp-chip-muted { background:transparent; color:var(--ink-4); border-color:var(--line); }
+.co-item.co-admin-only { opacity:.68; }
+.co-item.co-admin-only .co-check { background:transparent; border-color:var(--line-3); color:var(--ink-4); font-size:10px; }
+.co-item.co-admin-only.selected .co-check { background:transparent; border-color:var(--line-3); color:var(--ink-4); }
+.co-lock-label { font-size:9px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; color:var(--ink-4); border:1px solid var(--line-2); border-radius:6px; padding:1px 5px; flex-shrink:0; }
+.co-lock-label.limit { color:var(--warm-2); border-color:var(--warm-100); background:var(--warm-050); }
 .shell { position: relative; }
 .kpi-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; margin-bottom: 18px; }
 .kpi {
@@ -243,6 +249,7 @@ button.kpi:hover { border-color: var(--line-3); }
     Feedback
     <span id="fb-new-badge" style="display:none;background:var(--warm);color:white;border-radius:8px;padding:1px 6px;font-size:10px;margin-left:3px"></span>
   </button>
+  <button class="nav-pill"       id="atab-users" onclick="setAdminTab('users')">Users</button>
   <span class="tb-spring"></span>
   <a href="/app" class="nav-pill" style="color:rgba(255,255,255,.5);font-size:12px">Browse Jobs →</a>
   <a href="/logout" class="tb-logout-btn">Sign out</a>
@@ -272,7 +279,6 @@ button.kpi:hover { border-color: var(--line-3); }
         <button class="btn btn-stop" id="btn-stop" onclick="forceStop()" style="display:none">⏹ Stop</button>
       </div>
       <div id="scan-type-label" style="font-size:11px;color:var(--ink-4);text-align:center;margin-top:4px;display:none"></div>
-      <button class="reset-link" onclick="resetSeen()">↺ Reset "new" tracking</button>
       <button class="reset-link" id="btn-reenrich" onclick="reEnrich()">⟳ Re-enrich descriptions</button>
       <button class="reset-link" id="btn-backfill-desc" onclick="backfillDescriptions()">⬇ Fetch missing descriptions</button>
       <div id="backfill-status" style="font-size:11px;color:var(--ink-4);margin-top:2px;display:none"></div>
@@ -500,6 +506,28 @@ button.kpi:hover { border-color: var(--line-3); }
         </div>
       </div>
     </div>
+
+    <div id="users-panel" style="display:none;flex:1;min-height:0;overflow:auto;padding:22px">
+      <div style="display:flex;align-items:flex-end;gap:14px;margin-bottom:14px">
+        <div>
+          <div style="font-size:20px;font-weight:700;color:var(--ink);letter-spacing:-.015em;font-family:var(--font-display);margin-bottom:3px">Users</div>
+          <div style="font-size:12px;color:var(--ink-4)" id="users-subtitle">Loading...</div>
+        </div>
+        <button class="adm-pill" style="margin-left:auto" onclick="loadUsers()">Refresh</button>
+      </div>
+      <table class="sum-table">
+        <thead><tr>
+          <th>User</th>
+          <th style="width:140px">Plan</th>
+          <th style="width:130px">Member</th>
+          <th style="width:150px">Paid member</th>
+          <th style="width:170px">Last active</th>
+          <th style="width:170px">Last login</th>
+          <th style="width:210px">Plan control</th>
+        </tr></thead>
+        <tbody id="users-tbody"></tbody>
+      </table>
+    </div>
   </div>
 
 </div>
@@ -563,16 +591,25 @@ function buildSidebar() {
   COMPANIES.forEach((c, i) => {
     const mode = (c.scrape||{}).mode || 'html';
     const div = document.createElement('div');
-    div.className = 'co-item'; div.dataset.idx = i;
-    div.innerHTML = `<div class="co-check">✓</div>
+    const isAdminOnly = !!c.admin_only || c.scan_enabled === false || !!c.policy || !!c.crawler_locked_until;
+    const lockLabel = c.crawler_locked_until ? 'limit' : (isAdminOnly ? 'lock' : '');
+    div.className = 'co-item' + (isAdminOnly ? ' co-admin-only' : '');
+    div.dataset.idx = i;
+    if (isAdminOnly) div.dataset.locked = '1';
+    div.title = c.crawler_locked_until
+      ? `Temporarily rate-limited until ${c.crawler_locked_until}`
+      : (c.policy?.note || c.policy?.reason || (isAdminOnly ? 'Admin-only company' : ''));
+    div.innerHTML = `<div class="co-check">${isAdminOnly ? '!' : '✓'}</div>
       <div class="co-name">${esc2(c.name)}</div>
+      ${lockLabel ? `<div class="co-lock-label ${lockLabel}">${lockLabel}</div>` : ''}
       <div class="co-mode ${mode}"></div>`;
-    div.onclick = () => toggleCo(i, div);
+    div.onclick = () => { if (!isAdminOnly) toggleCo(i, div); };
     list.appendChild(div);
   });
 }
 
 function toggleCo(idx, el) {
+  if (el.dataset.locked === '1') return;
   if (selected.has(idx)) { selected.delete(idx); el.classList.remove('selected'); }
   else { selected.add(idx); el.classList.add('selected'); }
   updateCounts();
@@ -587,7 +624,7 @@ function filterSidebar() {
   });
 }
 function selectAllVisible() {
-  document.querySelectorAll('.co-item:not(.hidden)').forEach(el => { selected.add(+el.dataset.idx); el.classList.add('selected'); });
+  document.querySelectorAll('.co-item:not(.hidden):not(.co-admin-only)').forEach(el => { selected.add(+el.dataset.idx); el.classList.add('selected'); });
   updateCounts();
 }
 function deselectAll() {
@@ -774,12 +811,6 @@ function _applyTableFilter(progress) {
       if (!matchQ || !matchSrc) row.style.display = 'none';
     });
   }
-}
-
-async function resetSeen() {
-  if (!confirm('Clear all "seen" tracking? Everything will show as NEW on next scan.')) return;
-  await fetch('/api/reset_seen', { method: 'POST' });
-  alert('Done — next scan marks everything as new.');
 }
 
 async function reEnrich() {
@@ -1002,12 +1033,67 @@ function renderAdminApply() {
 }
 
 function setAdminTab(tab) {
-  ['scan','feedback'].forEach(t =>
+  ['scan','feedback','users'].forEach(t =>
     document.getElementById('atab-'+t)?.classList.toggle('active', t === tab));
   document.getElementById('summary-area').style.display   = tab === 'scan'     ? 'flex' : 'none';
   document.getElementById('feedback-panel').style.display = tab === 'feedback' ? 'flex' : 'none';
+  document.getElementById('users-panel').style.display    = tab === 'users'    ? 'block' : 'none';
   if (tab === 'feedback') loadFeedback();
+  if (tab === 'users') loadUsers();
   if (tab === 'scan') { loadSchedule(); loadPastScans(); }
+}
+
+function _fmtAgoOrDate(value) {
+  if (!value) return '—';
+  const d = new Date(String(value).replace(' ', 'T'));
+  if (Number.isNaN(d.getTime())) return value;
+  const days = Math.floor((Date.now() - d.getTime()) / 86400000);
+  if (days <= 0) return 'today';
+  if (days === 1) return '1d ago';
+  if (days < 30) return `${days}d ago`;
+  return d.toISOString().slice(0,10);
+}
+
+function _fmtDays(days, fallback='—') {
+  if (days === null || days === undefined) return fallback;
+  if (days === 0) return 'today';
+  if (days === 1) return '1 day';
+  return `${days} days`;
+}
+
+async function loadUsers() {
+  const users = await fetch('/api/admin/users').then(r => r.json()).catch(() => []);
+  document.getElementById('users-subtitle').textContent = `${users.length} accounts`;
+  document.getElementById('users-tbody').innerHTML = users.map(u => {
+    const plan = u.plan_status || 'free';
+    const paid = plan === 'free' ? '—' : _fmtDays(u.paid_member_days);
+    return `<tr>
+      <td><div style="font-weight:650;color:var(--ink)">${esc2(u.username || '—')}</div><div style="font-size:12px;color:var(--ink-4)">${esc2(u.email || '')}</div></td>
+      <td><span class="exp-chip">${esc2(plan)}</span></td>
+      <td>${esc2(_fmtDays(u.member_days))}</td>
+      <td>${esc2(paid)}</td>
+      <td>${esc2(_fmtAgoOrDate(u.last_active_at))}</td>
+      <td>${esc2(_fmtAgoOrDate(u.last_login_at))}</td>
+      <td style="display:flex;gap:5px;flex-wrap:wrap">
+        <button class="adm-pill${plan === 'free' ? ' is-on' : ''}" onclick="setUserPlan(${u.id}, 'free')">Free</button>
+        <button class="adm-pill${plan === 'pro' ? ' is-on' : ''}" onclick="setUserPlan(${u.id}, 'pro')">Pro</button>
+        <button class="adm-pill${plan === 'trial' ? ' is-on' : ''}" onclick="setUserPlan(${u.id}, 'trial')">Trial</button>
+      </td>
+    </tr>`;
+  }).join('') || '<tr><td colspan="7" style="text-align:center;color:var(--ink-4);padding:32px">No users yet</td></tr>';
+}
+
+async function setUserPlan(uid, plan) {
+  const resp = await fetch(`/api/admin/users/${uid}/plan`, {
+    method: 'PATCH',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({plan_status: plan})
+  });
+  if (!resp.ok) {
+    alert('Could not update plan');
+    return;
+  }
+  await loadUsers();
 }
 
 // ── Feedback inbox ────────────────────────────────────────────────────────────

@@ -4,6 +4,29 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>JobDrop — Jobs</title>
+{% if is_public %}
+<meta name="description" content="Search current job openings pulled directly from company career pages. Filter JobDrop by company, title, location, experience, and posting date.">
+<link rel="canonical" href="{{ url_for('public_view', _external=True) }}">
+<meta property="og:title" content="JobDrop — Search direct company job listings">
+<meta property="og:description" content="Browse current jobs pulled directly from company career pages.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="{{ url_for('public_view', _external=True) }}">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "JobDrop",
+  "url": "{{ url_for('public_view', _external=True) }}",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "{{ url_for('public_view', _external=True) }}?keyword={search_term_string}",
+    "query-input": "required name=search_term_string"
+  }
+}
+</script>
+{% else %}
+<meta name="robots" content="noindex,nofollow">
+{% endif %}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,500&family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -18,6 +41,7 @@
   <div class="tb-brand">
     <div class="topbar-dot"></div>
     <div class="topbar-logo">Job<em>Drop</em></div>
+    <div class="topbar-tagline">A tidy little place for freshly dropped company jobs.</div>
   </div>
   {% if not is_public %}
   <button class="nav-pill active" id="tab-jobs" onclick="setTab('jobs')">Jobs</button>
@@ -26,8 +50,7 @@
   {% endif %}
   <span class="tb-spring"></span>
   <div class="topbar-stats">
-    <strong id="hdr-sel">0</strong> selected &nbsp;·&nbsp;
-    <strong id="hdr-total">{{ companies|length }}</strong> companies
+    <strong id="hdr-sel">0</strong> selected
   </div>
   <button class="tb-report-btn" onclick="openFeedback()">🏳 Report</button>
   {% if is_public %}
@@ -38,6 +61,15 @@
     <span class="tb-avatar">{{ username[0].upper() }}</span>
     <span>{{ username }}</span>
   </div>
+  {% endif %}
+  {% if plan_status in ["pro", "trial"] %}
+  <form method="post" action="/billing/portal" style="margin:0">
+    <button class="tb-login-btn" type="submit">Manage {{ plan_status|title }}</button>
+  </form>
+  {% else %}
+  <form method="post" action="/billing/checkout" style="margin:0">
+    <button class="tb-login-btn" type="submit">Upgrade</button>
+  </form>
   {% endif %}
   <a href="/logout" class="tb-logout-btn">Sign out</a>
   {% endif %}
@@ -61,9 +93,6 @@
       <div class="btn-row">
         <button class="btn btn-show" id="btn-show" onclick="showJobs()" disabled>Show Jobs</button>
       </div>
-      {% if not is_public %}
-      <button class="reset-link" onclick="resetSeen()">↺ Reset "new" tracking</button>
-      {% endif %}
     </div>
   </aside>
 
@@ -99,7 +128,7 @@
         </div>
       </div>
       <button class="scan-go" id="filter-btn" onclick="applyFilters(null,1)">⌕ Filter</button>
-      {% if not is_public %}<button class="save-search-btn" id="save-search-btn" onclick="saveSearch()" title="Save this search">★</button>{% endif %}
+      {% if not is_public %}<button class="save-search-btn" id="save-search-btn" onclick="saveSearch()">＋ Save Search</button>{% endif %}
       <div class="result-counts" id="result-counts" style="display:none">
         <strong id="stat-tracked">—</strong> tracked &nbsp;/&nbsp;
         <strong id="stat-total">—</strong> total
@@ -177,12 +206,6 @@ function onJobClick(id) {
   if (IS_PUBLIC || _applyCache[id]) return;
   const job = jobsById[id];
   if (job) saveToApply(job, 'applied').then(() => _syncApplyBtn(id));
-}
-
-async function resetSeen() {
-  if (!confirm('Clear all "seen" tracking? Everything will show as NEW on next scan.')) return;
-  await fetch('/api/reset_seen', { method: 'POST' });
-  alert('Done — next scan marks everything as new.');
 }
 
 // ── Segmented date filter ──────────────────────────────────────────────────────
@@ -267,6 +290,16 @@ function filterSidebar() {
 function resultsVisible() { return document.getElementById('results-container').style.display !== 'none'; }
 function selectAllVisible() {
   document.querySelectorAll('.co-item:not(.hidden)').forEach(el => { selected.add(+el.dataset.idx); el.classList.add('selected'); });
+  updateCounts();
+}
+function selectAllCompanies() {
+  document.querySelectorAll('.co-item').forEach(el => {
+    const idx = +el.dataset.idx;
+    const company = COMPANIES[idx];
+    if (!company || company.scan_enabled === false) return;
+    selected.add(idx);
+    el.classList.add('selected');
+  });
   updateCounts();
 }
 function deselectAll() {
@@ -509,6 +542,25 @@ function displayTotal() {
 function totalPagesLabel(totalPages) {
   return currentTotalExact ? String(totalPages) : `${Math.max(currentPage, totalPages - 1)}+`;
 }
+function compactLocationHtml(loc) {
+  const full = loc || '—';
+  const parts = full.split(';').map(s => s.trim()).filter(Boolean);
+  if (parts.length <= 3) return esc2(full);
+  const short = parts.slice(0, 3).join('; ');
+  return `<span class="loc-short">${esc2(short)} <button class="loc-more" onclick="toggleLocationCell(this,event)">+${parts.length - 3} more</button></span>` +
+         `<span class="loc-full" style="display:none">${esc2(full)} <button class="loc-more" onclick="toggleLocationCell(this,event)">less</button></span>`;
+}
+function toggleLocationCell(btn, ev) {
+  ev.stopPropagation();
+  const cell = btn.closest('.td-loc, .al-loc');
+  if (!cell) return;
+  const shortEl = cell.querySelector('.loc-short');
+  const fullEl = cell.querySelector('.loc-full');
+  if (!shortEl || !fullEl) return;
+  const showFull = fullEl.style.display === 'none';
+  shortEl.style.display = showFull ? 'none' : '';
+  fullEl.style.display = showFull ? '' : 'none';
+}
 async function goPage(page) {
   const totalPages = Math.max(1, Math.ceil(currentTotal / currentLimit));
   if (page < 1 || page > totalPages) return;
@@ -555,7 +607,7 @@ function renderSection(id, jobs, title, isNew, bucket) {
       <td class="td-new">${dotCell}</td>
       <td class="td-title">${titleHtml}</td>
       <td class="td-co">${esc2(j.company)}</td>
-      <td class="td-loc">${esc2(loc)}</td>
+      <td class="td-loc" title="${escAttr(loc)}">${compactLocationHtml(loc)}</td>
       <td class="td-yrs">${yrsHtml}</td>
       <td class="${dateCls}">${dateVal}</td>
       <td class="td-act">${openBtn}${trackBtnFull}</td>
@@ -601,6 +653,26 @@ function _extractJobType(title, desc) {
   return '';
 }
 
+function _renderDrawerPills(id, items) {
+  const values = Array.isArray(items) ? items.filter(Boolean) : [];
+  const box = document.getElementById(id);
+  box.innerHTML = values.map(s => `<span class="jd-skill">${esc2(s)}</span>`).join('');
+  document.getElementById(id + '-sec').style.display = values.length ? '' : 'none';
+}
+
+function _renderDrawerDescription(text) {
+  const desc = (text || '').replace(/\s+/g, ' ').trim();
+  const sec = document.getElementById('jd-desc-sec');
+  const box = document.getElementById('jd-desc');
+  if (!desc) {
+    sec.style.display = 'none';
+    box.textContent = '';
+    return;
+  }
+  box.textContent = desc.length > 700 ? desc.slice(0, 700).trim() + '...' : desc;
+  sec.style.display = '';
+}
+
 const MODE_DOT_COLORS = {
   greenhouse:'#22c55e',lever:'#3b82f6',ashby:'#a855f7',workday:'#f59e0b',
   bamboohr:'#14b8a6',icims:'#6366f1',html:'#9ca3af',playwright:'#cf923a',
@@ -633,9 +705,9 @@ function openJobDrawer(id) {
   document.getElementById('jd-exp').textContent  = job.exp_label || 'Not listed';
   document.getElementById('jd-type').textContent = job.employment_type || '—';
 
-  const skills = Array.isArray(job.skills) ? job.skills : [];
-  document.getElementById('jd-skills').innerHTML = skills.map(s => `<span class="jd-skill">${esc2(s)}</span>`).join('');
-  document.getElementById('jd-skills-sec').style.display = skills.length ? '' : 'none';
+  _renderDrawerPills('jd-skills', job.skills);
+  _renderDrawerPills('jd-keywords', job.keywords);
+  _renderDrawerDescription(job.description);
 
   document.getElementById('jd-d-company').textContent  = job.company || '—';
   document.getElementById('jd-d-location').textContent = job.location || '—';
@@ -654,6 +726,18 @@ function openJobDrawer(id) {
     .then(data => {
       if (!data || currentDrawerJob?.id !== id) return;
       if (data.employment_type) document.getElementById('jd-type').textContent = data.employment_type;
+      if (Array.isArray(data.skills)) {
+        currentDrawerJob.skills = data.skills;
+        _renderDrawerPills('jd-skills', data.skills);
+      }
+      if (Array.isArray(data.keywords)) {
+        currentDrawerJob.keywords = data.keywords;
+        _renderDrawerPills('jd-keywords', data.keywords);
+      }
+      if (data.description) {
+        currentDrawerJob.description = data.description;
+        _renderDrawerDescription(data.description);
+      }
       if (data.interview) {
         const iv = data.interview;
         const ivText = (typeof iv === 'string') ? iv : (iv.process || (iv.no_whiteboard ? 'No whiteboard' : '') || '—');
@@ -836,9 +920,9 @@ function renderApplyList() {
       `<option value="${s.key}"${j.stage===s.key?' selected':''}>${s.label}</option>`
     ).join('');
     return `<tr class="job-row al-row" data-id="${id}">
-      <td class="al-title"><span style="font-weight:600;font-size:14px;color:var(--navy)">${esc2(j.title)}</span></td>
+      <td class="al-title" title="${escAttr(j.title||'')}"><span class="al-title-text">${esc2(j.title)}</span></td>
       <td class="al-co">${esc2(j.company)}</td>
-      <td class="al-loc">${esc2(j.location||'—')}</td>
+      <td class="al-loc" title="${escAttr(j.location||'—')}">${compactLocationHtml(j.location||'—')}</td>
       <td class="al-stage">
         <select class="al-stage-sel" onchange="updateApplyStage('${id}',this.value)" onclick="event.stopPropagation()">
           ${stageOpts}
@@ -846,8 +930,8 @@ function renderApplyList() {
       </td>
       <td class="al-yrs">${j.exp_label ? esc2(j.exp_label.replace(' years','').replace(' yrs','') + '+') : '—'}</td>
       <td class="al-act">
-        ${j.url ? `<a class="al-open-btn" href="${escAttr(j.url)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">↗</a>` : ''}
-        <button class="al-remove-btn" onclick="event.stopPropagation();removeFromApply('${id}')" title="Remove">×</button>
+        ${j.url ? `<a class="al-open-btn" href="${escAttr(j.url)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">Open Job ↗</a>` : ''}
+        <button class="al-remove-btn" onclick="event.stopPropagation();removeFromApply('${id}')">Remove ×</button>
       </td>
     </tr>`;
   }).join('');
@@ -864,7 +948,7 @@ function renderApplyList() {
         <th style="width:160px">Location</th>
         <th style="width:160px">Stage</th>
         <th style="width:68px">Years</th>
-        <th style="width:96px"></th>
+        <th style="width:190px">Actions</th>
       </tr></thead>
       <tbody>${rows}</tbody>
     </table>
@@ -917,7 +1001,7 @@ function renderSavedBar() {
   if (!bar) return;
   if (!searches.length) { bar.style.display = 'none'; return; }
   bar.style.display = '';
-  bar.innerHTML = '<span class="saved-bar-label">Saved:</span>' + searches.map(s =>
+  bar.innerHTML = '<span class="saved-bar-label">Saved Searches:</span>' + searches.map(s =>
     `<span class="saved-pill">
        <button onclick="applySavedSearch(${JSON.stringify(s).replace(/"/g,'&quot;')})">${esc2(s.name)}</button>
        <button class="saved-pill-del" onclick="deleteSavedSearch(${s.id})" title="Delete">×</button>
@@ -953,9 +1037,10 @@ async function submitFeedback() {
 }
 
 buildSidebar();
-updateCounts();
+selectAllCompanies();
 renderSavedBar();
 _applyFetch().then(() => { _refreshApplyBadge(); });
+showJobs();
 
 document.addEventListener('DOMContentLoaded', () => {
   ['f-keyword','f-location'].forEach(id =>
@@ -1027,6 +1112,14 @@ document.addEventListener('DOMContentLoaded', () => {
     <div class="jd-sec" id="jd-skills-sec">
       <div class="jd-sec-h">Skills</div>
       <div class="jd-skills" id="jd-skills"></div>
+    </div>
+    <div class="jd-sec" id="jd-keywords-sec">
+      <div class="jd-sec-h">Keywords</div>
+      <div class="jd-skills" id="jd-keywords"></div>
+    </div>
+    <div class="jd-sec" id="jd-desc-sec">
+      <div class="jd-sec-h">Description preview</div>
+      <div id="jd-desc" style="font-size:13.5px;line-height:1.5;color:var(--ink-2)"></div>
     </div>
     <div class="jd-sec">
       <div class="jd-sec-h">At a glance</div>
