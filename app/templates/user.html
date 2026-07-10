@@ -195,6 +195,7 @@ let currentTotalLowerBound = 0;
 let currentTotalExact = true;
 let activeTab    = 'jobs';
 let activeApplyStage = 'all';
+let _savedSearches = [];
 
 // ── localStorage helpers ──────────────────────────────────────────────────────
 function _lsGet(key, fallback) {
@@ -202,11 +203,8 @@ function _lsGet(key, fallback) {
 }
 function _lsSet(key, val) { localStorage.setItem(key, JSON.stringify(val)); }
 
-// Auto-add to Apply List with "applied" when the external link is opened
+// External clicks are views only; users add jobs to Apply List deliberately.
 function onJobClick(id) {
-  if (IS_PUBLIC || !HAS_APPLY_ACCESS || _applyCache[id]) return;
-  const job = jobsById[id];
-  if (job) saveToApply(job, 'applied').then(() => _syncApplyBtn(id));
 }
 
 // ── Segmented date filter ──────────────────────────────────────────────────────
@@ -969,9 +967,39 @@ function renderApplyList() {
 }
 
 // ── Saved searches ────────────────────────────────────────────────────────────
-function getSavedSearches() { return _lsGet(SEARCHES_KEY, []); }
+function getSavedSearches() { return _savedSearches; }
 
-function saveSearch() {
+async function _searchesFetch() {
+  if (IS_PUBLIC) return;
+  const resp = await fetch('/api/searches').catch(() => null);
+  if (!resp || !resp.ok) return;
+  _savedSearches = await resp.json().catch(() => []);
+
+  const oldLocal = _lsGet(SEARCHES_KEY, []);
+  if (!_savedSearches.length && oldLocal.length) {
+    const migrated = [];
+    for (const s of oldLocal.slice(0, 50)) {
+      const saved = await _saveSearchRemote(s).catch(() => null);
+      if (saved) migrated.push(saved);
+    }
+    if (migrated.length) {
+      _savedSearches = migrated;
+      _lsSet(SEARCHES_KEY, []);
+    }
+  }
+}
+
+async function _saveSearchRemote(search) {
+  const resp = await fetch('/api/searches', {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify(search),
+  });
+  if (!resp.ok) return null;
+  return resp.json();
+}
+
+async function saveSearch() {
   const kw  = document.getElementById('f-keyword').value.trim();
   const loc = document.getElementById('f-location').value.trim();
   const exp = document.getElementById('f-exp').value.trim();
@@ -981,9 +1009,12 @@ function saveSearch() {
   }
   const name = prompt('Name this search:');
   if (!name) return;
-  const searches = getSavedSearches();
-  searches.push({ id: Date.now(), name, kw, loc, exp, since: dt, cat: activeSidebarCat });
-  _lsSet(SEARCHES_KEY, searches);
+  const saved = await _saveSearchRemote({ name, kw, loc, exp, since: dt, cat: activeSidebarCat });
+  if (!saved) {
+    alert('Could not save search. Please try again.');
+    return;
+  }
+  _savedSearches = [saved, ..._savedSearches];
   renderSavedBar();
 }
 
@@ -1003,8 +1034,13 @@ function applySavedSearch(s) {
   if (resultsVisible()) applyFilters(null, 1);
 }
 
-function deleteSavedSearch(id) {
-  _lsSet(SEARCHES_KEY, getSavedSearches().filter(s => s.id !== id));
+async function deleteSavedSearch(id) {
+  const resp = await fetch(`/api/searches/${id}`, { method: 'DELETE' }).catch(() => null);
+  if (!resp || !resp.ok) {
+    alert('Could not delete saved search.');
+    return;
+  }
+  _savedSearches = _savedSearches.filter(s => s.id !== id);
   renderSavedBar();
 }
 
@@ -1051,7 +1087,7 @@ async function submitFeedback() {
 
 buildSidebar();
 selectAllCompanies();
-renderSavedBar();
+_searchesFetch().then(renderSavedBar);
 _applyFetch().then(() => { _refreshApplyBadge(); });
 showJobs();
 

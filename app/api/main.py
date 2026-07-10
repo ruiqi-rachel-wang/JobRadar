@@ -37,15 +37,23 @@ from .search import (
     role_intent_where,
 )
 
+SECRET_KEY = os.environ.get("SECRET_KEY") or os.environ.get("JOBRADAR_SECRET_KEY")
+IS_PRODUCTION = (
+    os.environ.get("FLASK_ENV") == "production"
+    or os.environ.get("JOBDROP_ENV") == "production"
+    or bool(os.environ.get("RENDER"))
+)
+if IS_PRODUCTION and not SECRET_KEY:
+    raise RuntimeError("SECRET_KEY or JOBRADAR_SECRET_KEY must be set in production.")
+
 app = Flask(__name__, template_folder="../templates")
 app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1)
-app.secret_key = os.environ.get("SECRET_KEY") or os.environ.get("JOBRADAR_SECRET_KEY") or secrets.token_hex(32)
+app.secret_key = SECRET_KEY or secrets.token_hex(32)
 app.config["SESSION_COOKIE_HTTPONLY"] = True
 app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
 app.config["SESSION_COOKIE_SECURE"] = (
     os.environ.get("SESSION_COOKIE_SECURE", "").lower() in {"1", "true", "yes"}
-    or os.environ.get("FLASK_ENV") == "production"
-    or bool(os.environ.get("RENDER"))
+    or IS_PRODUCTION
 )
 init_db()
 init_auth_db()
@@ -166,7 +174,17 @@ def protect_routes():
         or request.path.startswith("/api/reenrich")
         or request.path.startswith("/api/backfill")
         or request.path.startswith("/api/admin/")
-        or request.path in {"/api/clear_data", "/api/detect_ats", "/api/add_detected_company"}
+        or request.path.startswith("/api/scans/")
+        or request.path in {
+            "/api/clear_data",
+            "/api/detect_ats",
+            "/api/add_detected_company",
+            "/api/progress",
+            "/api/summary",
+            "/api/scans/latest",
+            "/api/scans/recent",
+            "/api/schedule",
+        }
     )
     if protected:
         return _admin_required()
@@ -243,10 +261,21 @@ def _user_id_for_subscription(subscription):
         return uid
     sub_id = getattr(subscription, "id", "") or ""
     customer_id = getattr(subscription, "customer", "") or ""
+    # Match only non-empty ids: '' equals the column default, so an empty id
+    # would match an arbitrary user who has never touched Stripe.
+    clauses, params = [], []
+    if sub_id:
+        clauses.append("stripe_subscription_id=?")
+        params.append(sub_id)
+    if customer_id:
+        clauses.append("stripe_customer_id=?")
+        params.append(customer_id)
+    if not clauses:
+        return None
     with connect_auth_db(rows=True) as conn:
         row = conn.execute(
-            "SELECT id FROM users WHERE stripe_subscription_id=? OR stripe_customer_id=?",
-            (sub_id, customer_id),
+            "SELECT id FROM users WHERE " + " OR ".join(clauses),
+            params,
         ).fetchone()
     return row["id"] if row else None
 
@@ -620,9 +649,9 @@ def signup():
         if not re.match(r'^[a-zA-Z0-9_.-]{3,30}$', username):
             return render_template("auth.html", mode="signup",
                                    error="Username: 3-30 chars, letters/numbers/._- only."), 400
-        if len(password) < 6:
+        if len(password) < 8:
             return render_template("auth.html", mode="signup",
-                                   error="Password must be at least 6 characters."), 400
+                                   error="Password must be at least 8 characters."), 400
         if password != confirm:
             return render_template("auth.html", mode="signup",
                                    error="Passwords do not match."), 400
@@ -771,12 +800,21 @@ def stripe_webhook():
     elif event_type == "invoice.payment_failed":
         subscription_id = obj.get("subscription") or ""
         customer_id = obj.get("customer") or ""
-        with connect_auth_db() as conn:
-            conn.execute(
-                "UPDATE users SET plan_status='past_due' "
-                "WHERE stripe_subscription_id=? OR stripe_customer_id=?",
-                (subscription_id, customer_id),
-            )
+        # Match only non-empty ids: '' equals the column default, so an
+        # invoice without a subscription would mark every non-Stripe user past_due.
+        clauses, params = [], []
+        if subscription_id:
+            clauses.append("stripe_subscription_id=?")
+            params.append(subscription_id)
+        if customer_id:
+            clauses.append("stripe_customer_id=?")
+            params.append(customer_id)
+        if clauses:
+            with connect_auth_db() as conn:
+                conn.execute(
+                    "UPDATE users SET plan_status='past_due' WHERE " + " OR ".join(clauses),
+                    params,
+                )
 
     return jsonify({"received": True})
 
@@ -835,7 +873,7 @@ def api_admin_user_plan(uid):
 
 @app.route("/legacy")
 def legacy():
-    return render_template("index.html", companies=_public_companies())
+    return redirect(url_for("public_view"))
 
 # ── Apply list API ─────────────────────────────────────────────────────────────
 
@@ -861,6 +899,9 @@ def add_apply():
     if guard:
         return guard
     uid = _current_user_id()
+    if not uid:
+        # Password-only admin session has no user row; inserting NULL would 500.
+        return jsonify({"error": "Apply list requires a user account"}), 400
     d = request.get_json(silent=True) or {}
     job_id = (d.get("job_id") or "").strip()
     if not job_id:
@@ -899,6 +940,89 @@ def remove_apply(job_id):
     uid = _current_user_id()
     with connect_auth_db() as conn:
         conn.execute("DELETE FROM user_apply_list WHERE user_id=? AND job_id=?", (uid, job_id))
+    return jsonify({"ok": True})
+
+@app.route("/api/searches", methods=["GET"])
+def get_saved_searches():
+    guard = _user_required()
+    if guard:
+        return guard
+    uid = _current_user_id()
+    if not uid:
+        return jsonify([])
+    with connect_auth_db(rows=True) as conn:
+        rows = conn.execute(
+            "SELECT id, name, kw, loc, exp_yrs, since, category, created_at "
+            "FROM user_saved_searches WHERE user_id=? ORDER BY created_at DESC, id DESC",
+            (uid,),
+        ).fetchall()
+    return jsonify([
+        {
+            "id": row["id"],
+            "name": row["name"] or "",
+            "kw": row["kw"] or "",
+            "loc": row["loc"] or "",
+            "exp": row["exp_yrs"] or "",
+            "since": row["since"] or "",
+            "cat": row["category"] or "All",
+        }
+        for row in rows
+    ])
+
+@app.route("/api/searches", methods=["POST"])
+def add_saved_search():
+    guard = _user_required()
+    if guard:
+        return guard
+    uid = _current_user_id()
+    if not uid:
+        return jsonify({"error": "Saved searches require a user account"}), 400
+    d = request.get_json(silent=True) or {}
+    name = (d.get("name") or "").strip()
+    if not name:
+        return jsonify({"error": "name required"}), 400
+    payload = {
+        "name": name[:80],
+        "kw": (d.get("kw") or "").strip()[:120],
+        "loc": (d.get("loc") or "").strip()[:120],
+        "exp": (d.get("exp") or "").strip()[:12],
+        "since": (d.get("since") or "").strip()[:20],
+        "cat": (d.get("cat") or "All").strip()[:80] or "All",
+    }
+    with connect_auth_db(rows=True) as conn:
+        conn.execute(
+            "INSERT INTO user_saved_searches (user_id, name, kw, loc, exp_yrs, since, category) "
+            "VALUES (?, ?, ?, ?, ?, ?, ?)",
+            (uid, payload["name"], payload["kw"], payload["loc"], payload["exp"], payload["since"], payload["cat"]),
+        )
+        row = conn.execute(
+            "SELECT id, name, kw, loc, exp_yrs, since, category FROM user_saved_searches "
+            "WHERE user_id=? ORDER BY id DESC LIMIT 1",
+            (uid,),
+        ).fetchone()
+    return jsonify({
+        "id": row["id"],
+        "name": row["name"] or "",
+        "kw": row["kw"] or "",
+        "loc": row["loc"] or "",
+        "exp": row["exp_yrs"] or "",
+        "since": row["since"] or "",
+        "cat": row["category"] or "All",
+    })
+
+@app.route("/api/searches/<int:search_id>", methods=["DELETE"])
+def delete_saved_search(search_id):
+    guard = _user_required()
+    if guard:
+        return guard
+    uid = _current_user_id()
+    if not uid:
+        return jsonify({"error": "Saved searches require a user account"}), 400
+    with connect_auth_db() as conn:
+        conn.execute(
+            "DELETE FROM user_saved_searches WHERE id=? AND user_id=?",
+            (search_id, uid),
+        )
     return jsonify({"ok": True})
 
 @app.route("/api/scan", methods=["POST"])

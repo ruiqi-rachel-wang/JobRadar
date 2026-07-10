@@ -152,10 +152,10 @@ input:focus { border-color: #5e8a5e; box-shadow: 0 0 0 3px #e9f1e3; }
         <input name="email" type="email" autocomplete="email"
                value="{{ request.form.get('email', '') if mode == 'signup' else '' }}">
         <label>Password</label>
-        <input name="password" type="password" placeholder="At least 6 characters"
-               autocomplete="new-password" required minlength="6">
+        <input name="password" type="password" placeholder="At least 8 characters"
+               autocomplete="new-password" required minlength="8">
         <label>Confirm password</label>
-        <input name="confirm" type="password" autocomplete="new-password" required minlength="6">
+        <input name="confirm" type="password" autocomplete="new-password" required minlength="8">
         <button class="btn-primary" type="submit">Create account →</button>
       </form>
     </div>

@@ -6,6 +6,8 @@ After=network.target
 User=ubuntu
 WorkingDirectory=/home/ubuntu/jobdrop
 EnvironmentFile=/home/ubuntu/jobdrop/.env
+Environment=FLASK_ENV=production
+# Keep one worker: scan progress, scheduler state, and backfills are process-local.
 ExecStart=/home/ubuntu/jobdrop/venv/bin/gunicorn \
     --chdir app app:app \
     --bind 127.0.0.1:8080 \
