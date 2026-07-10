@@ -45,7 +45,7 @@
   </div>
   {% if not is_public %}
   <button class="nav-pill active" id="tab-jobs" onclick="setTab('jobs')">Jobs</button>
-  <button class="nav-pill" id="tab-apply" onclick="setTab('apply')">Apply List{% if not has_apply_access %} · Pro{% endif %} <span class="apply-badge" id="apply-badge" style="display:none"></span></button>
+  <button class="nav-pill" id="tab-apply" onclick="setTab('apply')">Apply List <span class="apply-badge" id="apply-badge" style="display:none"></span></button>
   {% if is_admin %}<a href="/admin" class="nav-pill" style="color:rgba(255,255,255,.45);font-size:12px">← Admin</a>{% endif %}
   {% endif %}
   <span class="tb-spring"></span>
@@ -62,6 +62,7 @@
     <span>{{ username }}</span>
   </div>
   {% endif %}
+  <a href="/profile" class="tb-logout-btn">Profile</a>
   {% if plan_status in ["pro", "trial"] %}
   <form method="post" action="/billing/portal" style="margin:0">
     <button class="tb-login-btn" type="submit">Manage {{ plan_status|title }}</button>
@@ -184,6 +185,10 @@ const COMPANIES    = {{ companies|tojson }};
 const IS_PUBLIC    = {{ is_public|tojson }};
 const IS_ADMIN     = {{ is_admin|tojson }};
 const HAS_APPLY_ACCESS = {{ has_apply_access|tojson }};
+const IS_PRO       = {{ is_pro|tojson }};
+const APPLY_LIMIT  = {{ apply_limit|tojson }};
+const USER_EMAIL   = {{ email|tojson }};
+const EMAIL_ALERTS_CONFIGURED = {{ email_alerts_configured|tojson }};
 const SEARCHES_KEY = 'jd_searches_{{ username or "anon" }}';
 let selected         = new Set();
 let activeSidebarCat = 'All';
@@ -825,7 +830,15 @@ async function saveToApply(job, stage = 'to-apply') {
       job_exp_label: job.exp_label||'', job_posted: job.posted||'',
     }),
   });
-  if (!resp.ok) return;
+  if (!resp.ok) {
+    const data = await resp.json().catch(() => ({}));
+    if (data.code === 'apply_limit_reached') {
+      alert(`Free Apply List limit is ${data.limit || APPLY_LIMIT}. Upgrade to Pro for unlimited tracking.`);
+    } else {
+      alert(data.error || 'Could not add this job.');
+    }
+    return;
+  }
   _applyCache[job.id] = { stage, title:job.title, company:job.company,
     location:job.location, url:job.url, exp_label:job.exp_label, posted:job.posted };
   _refreshApplyBadge();
@@ -892,11 +905,8 @@ function renderApplyList() {
     if (stagePillBar) stagePillBar.innerHTML = '';
     el.innerHTML = `<div class="empty-state" style="height:360px">
       <div class="icon">🔒</div>
-      <h3>Apply List is a Pro feature</h3>
-      <p>Upgrade to track jobs, organize stages, and keep your application list in one place.</p>
-      <form method="post" action="/billing/checkout" style="margin-top:18px">
-        <button class="scan-go" type="submit">Upgrade to Pro</button>
-      </form>
+      <h3>Log in to use Apply List</h3>
+      <p>Create a free account to track up to 30 jobs.</p>
     </div>`;
     return;
   }
@@ -950,7 +960,7 @@ function renderApplyList() {
   el.innerHTML = `<div class="al-wrap">
     <div class="al-head">
       <span class="al-title-h">All applications</span>
-      <span class="al-count">${entries.length} listing${entries.length!==1?'s':''}</span>
+      <span class="al-count">${entries.length} listing${entries.length!==1?'s':''}${IS_PRO ? ' · unlimited' : ` · free ${all.length}/${APPLY_LIMIT}`}</span>
     </div>
     <table class="al-table">
       <thead><tr>
@@ -997,6 +1007,33 @@ async function _saveSearchRemote(search) {
   });
   if (!resp.ok) return null;
   return resp.json();
+}
+
+async function toggleSearchAlert(id) {
+  if (!IS_PRO) {
+    alert('Daily saved-search email alerts are a Pro feature.');
+    return;
+  }
+  if (!USER_EMAIL) {
+    alert('Add an email address on your Profile page before enabling alerts.');
+    window.location.href = '/profile';
+    return;
+  }
+  const search = _savedSearches.find(s => String(s.id) === String(id));
+  if (!search) return;
+  const next = !search.email_alert_enabled;
+  const resp = await fetch(`/api/searches/${id}`, {
+    method: 'PATCH',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({ email_alert_enabled: next }),
+  }).catch(() => null);
+  if (!resp || !resp.ok) {
+    const data = resp ? await resp.json().catch(() => ({})) : {};
+    alert(data.error || 'Could not update email alert.');
+    return;
+  }
+  search.email_alert_enabled = next;
+  renderSavedBar();
 }
 
 async function saveSearch() {
@@ -1053,6 +1090,7 @@ function renderSavedBar() {
   bar.innerHTML = '<span class="saved-bar-label">Saved Searches:</span>' + searches.map(s =>
     `<span class="saved-pill">
        <button onclick="applySavedSearch(${JSON.stringify(s).replace(/"/g,'&quot;')})">${esc2(s.name)}</button>
+       <button class="saved-alert-toggle${s.email_alert_enabled ? ' is-on' : ''}" onclick="toggleSearchAlert(${s.id})" title="${IS_PRO ? (EMAIL_ALERTS_CONFIGURED ? 'Daily email alert' : 'Alert preference saved; delivery setup pending') : 'Pro email alerts'}">${s.email_alert_enabled ? 'Email on' : (IS_PRO ? 'Email off' : 'Alerts Pro')}</button>
        <button class="saved-pill-del" onclick="deleteSavedSearch(${s.id})" title="Delete">×</button>
      </span>`
   ).join('');
@@ -1092,6 +1130,12 @@ _applyFetch().then(() => { _refreshApplyBadge(); });
 showJobs();
 
 document.addEventListener('DOMContentLoaded', () => {
+  const queryParams = new URLSearchParams(location.search);
+  const linkedKeyword = queryParams.get('keyword') || '';
+  const linkedLocation = queryParams.get('location') || '';
+  const linkedExperience = queryParams.get('experience') || '';
+  const linkedSince = queryParams.get('since') || '';
+  const linkedCategory = queryParams.get('category') || '';
   ['f-keyword','f-location'].forEach(id =>
     document.getElementById(id).addEventListener('input', filterDOM));
   document.getElementById('f-exp').addEventListener('input', filterDOM);
@@ -1105,7 +1149,24 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
   // Support ?tab=apply from admin nav link
-  if (new URLSearchParams(location.search).get('tab') === 'apply') setTab('apply');
+  if (queryParams.get('tab') === 'apply') {
+    setTab('apply');
+  } else if (linkedKeyword || linkedLocation || linkedExperience || linkedSince || linkedCategory) {
+    document.getElementById('f-keyword').value = linkedKeyword;
+    document.getElementById('f-location').value = linkedLocation;
+    document.getElementById('f-exp').value = linkedExperience;
+    document.getElementById('f-begin').value = linkedSince;
+    if (linkedSince) {
+      document.querySelectorAll('#seg-date .fb-seg-btn').forEach(b => b.classList.remove('is-on'));
+    }
+    if (linkedCategory && allCats.includes(linkedCategory)) {
+      activeSidebarCat = linkedCategory;
+      document.querySelectorAll('.cat-btn').forEach(b => b.classList.toggle('active', b.textContent === linkedCategory));
+      filterSidebar();
+      selectAllVisible();
+    }
+    applyFilters(null, 1);
+  }
 });
 </script>
 <!-- Feedback modal -->

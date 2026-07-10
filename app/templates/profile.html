@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>JobDrop - Profile</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@1,9..144,500&family=Inter+Tight:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: "Inter Tight", -apple-system, sans-serif;
+  font-size: 13.5px;
+  background: #eee9dd;
+  color: #1c272d;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+.top {
+  height: 58px;
+  background: #1f3530;
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 0 24px;
+}
+.logo {
+  font-family: "Fraunces", Georgia, serif;
+  font-size: 20px;
+  font-style: italic;
+  font-weight: 500;
+}
+.logo em { color: #7fb07a; }
+.nav {
+  color: rgba(255,255,255,.7);
+  text-decoration: none;
+  font-size: 13px;
+  padding: 7px 12px;
+  border-radius: 8px;
+}
+.nav:hover { background: rgba(255,255,255,.08); color: white; }
+.wrap {
+  width: min(760px, calc(100vw - 32px));
+  margin: 36px auto;
+}
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(240px, .7fr);
+  gap: 16px;
+}
+.card {
+  background: white;
+  border: 1px solid #d8d0b8;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(45,58,63,.05), 0 8px 28px rgba(45,58,63,.06);
+  padding: 22px;
+}
+h1 {
+  font-size: 28px;
+  line-height: 1;
+  letter-spacing: -.02em;
+  margin-bottom: 6px;
+}
+.sub { color: #6a7680; line-height: 1.45; margin-bottom: 22px; }
+label {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  color: #6a7680;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  margin-bottom: 6px;
+}
+input[type="email"] {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #d8d0b8;
+  border-radius: 9px;
+  font-size: 13.5px;
+  outline: none;
+  margin-bottom: 14px;
+}
+input[type="email"]:focus { border-color: #5e8a5e; box-shadow: 0 0 0 3px #e9f1e3; }
+.check {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  margin: 4px 0 18px;
+  color: #344349;
+}
+.check input { margin-top: 3px; }
+.check span { color: #6a7680; font-size: 12.5px; display: block; margin-top: 2px; }
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 9px;
+  background: #1f3530;
+  color: white;
+  font-family: inherit;
+  font-size: 13.5px;
+  font-weight: 650;
+  padding: 10px 16px;
+  cursor: pointer;
+}
+.msg, .err {
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 12.5px;
+  margin-bottom: 16px;
+}
+.msg { color: #3f6f42; background: #eef6ea; border: 1px solid #cfe4c7; }
+.err { color: #b3392a; background: #fbefed; border: 1px solid #ecc7c1; }
+.stat {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #eee7d8;
+  padding: 11px 0;
+}
+.stat:first-child { padding-top: 0; }
+.stat:last-child { border-bottom: none; padding-bottom: 0; }
+.stat span { color: #6a7680; }
+.stat b { color: #1f3530; text-align: right; }
+.note {
+  margin-top: 16px;
+  color: #8b927f;
+  font-size: 12px;
+  line-height: 1.45;
+}
+@media (max-width: 720px) {
+  .grid { grid-template-columns: 1fr; }
+  .top { padding: 0 16px; gap: 10px; }
+}
+</style>
+</head>
+<body>
+<div class="top">
+  <div class="logo">Job<em>Drop</em></div>
+  <a class="nav" href="/app">Jobs</a>
+  <a class="nav" href="/app?tab=apply">Apply List</a>
+</div>
+
+<main class="wrap">
+  <h1>Profile</h1>
+  <p class="sub">Manage the email address JobDrop will use for saved-search alerts.</p>
+
+  <div class="grid">
+    <section class="card">
+      {% if message %}<div class="msg">{{ message }}</div>{% endif %}
+      {% if error %}<div class="err">{{ error }}</div>{% endif %}
+      <form method="post" action="/profile">
+        <label>Email</label>
+        <input name="email" type="email" autocomplete="email" value="{{ user['email'] or '' }}" placeholder="you@example.com">
+        <label class="check" style="text-transform:none;letter-spacing:0;font-size:13.5px;color:#1c272d;margin-bottom:0">
+          <input type="checkbox" name="email_alerts_enabled" {% if user['email_alerts_enabled'] %}checked{% endif %}>
+          <div>
+            Allow saved-search email alerts
+            <span>Each saved search still has its own email toggle.</span>
+          </div>
+        </label>
+        <button class="btn" type="submit">Save profile</button>
+      </form>
+      {% if not email_alerts_configured %}
+      <p class="note">Email delivery is not connected yet. Your alert preferences will be saved, and delivery can start after the sender is configured.</p>
+      {% endif %}
+    </section>
+
+    <aside class="card">
+      <div class="stat"><span>Username</span><b>{{ user['username'] }}</b></div>
+      <div class="stat"><span>Plan</span><b>{{ user['plan_status'] or 'free' }}</b></div>
+      <div class="stat"><span>Apply List</span><b>{% if is_pro %}Unlimited{% else %}{{ free_apply_limit }} jobs{% endif %}</b></div>
+      <div class="stat"><span>Email alerts</span><b>{% if is_pro %}Pro{% else %}Pro only{% endif %}</b></div>
+    </aside>
+  </div>
+</main>
+</body>
+</html>

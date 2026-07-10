@@ -2,11 +2,13 @@ import json
 import os
 import re
 import secrets
+import smtplib
 import threading
 import time
-from datetime import datetime
+from datetime import datetime, timedelta
+from email.message import EmailMessage
 from html import escape as html_escape
-from urllib.parse import urlsplit
+from urllib.parse import urlencode, urlsplit
 
 from flask import Flask, Response, jsonify, redirect, render_template, request, session, url_for
 from werkzeug.middleware.proxy_fix import ProxyFix
@@ -62,6 +64,19 @@ ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD") or os.environ.get("JOBRADAR_AD
 STRIPE_PRICE_ID = os.environ.get("STRIPE_PRICE_ID") or os.environ.get("JOBDROP_STRIPE_PRICE_ID")
 STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY") or os.environ.get("JOBDROP_STRIPE_SECRET_KEY")
 STRIPE_WEBHOOK_SECRET = os.environ.get("STRIPE_WEBHOOK_SECRET") or os.environ.get("JOBDROP_STRIPE_WEBHOOK_SECRET")
+FREE_APPLY_LIMIT = int(os.environ.get("JOBDROP_FREE_APPLY_LIMIT", "30"))
+SMTP_HOST = os.environ.get("JOBDROP_SMTP_HOST", "")
+SMTP_PORT = int(os.environ.get("JOBDROP_SMTP_PORT", "587"))
+SMTP_USER = os.environ.get("JOBDROP_SMTP_USER", "")
+SMTP_PASSWORD = os.environ.get("JOBDROP_SMTP_PASSWORD", "")
+SMTP_USE_TLS = os.environ.get("JOBDROP_SMTP_USE_TLS", "true").lower() not in {"0", "false", "no"}
+EMAIL_FROM = os.environ.get("JOBDROP_EMAIL_FROM", "")
+EMAIL_FROM_NAME = os.environ.get("JOBDROP_EMAIL_FROM_NAME", "JobDrop")
+PUBLIC_BASE_URL = os.environ.get("JOBDROP_PUBLIC_URL", "http://jobdrop.site").rstrip("/")
+ALERT_MIN_HOURS = int(os.environ.get("JOBDROP_ALERT_MIN_HOURS", "20"))
+EMAIL_ALERTS_CONFIGURED = bool(
+    SMTP_HOST and EMAIL_FROM
+)
 if stripe and STRIPE_SECRET_KEY:
     stripe.api_key = STRIPE_SECRET_KEY
 
@@ -86,6 +101,18 @@ def _has_paid_access():
             (uid,),
         ).fetchone()
     return bool(row and (row["role"] == "admin" or row["plan_status"] == "pro"))
+
+def _current_user_profile():
+    uid = _current_user_id()
+    if not uid:
+        return None
+    with connect_auth_db(rows=True) as conn:
+        return conn.execute(
+            "SELECT id, username, email, role, plan_status, plan_started_at, "
+            "plan_current_period_end, email_alerts_enabled "
+            "FROM users WHERE id=?",
+            (uid,),
+        ).fetchone()
 
 def _wants_json():
     return request.path.startswith("/api/") or "application/json" in (request.headers.get("Accept") or "")
@@ -254,6 +281,169 @@ def _update_user_subscription(uid, *, customer_id="", subscription_id="", status
                 (plan_status, started_at or _now_db(), period_end or "", customer_id or "", subscription_id or "", uid),
             )
 
+def _saved_search_url(search_row):
+    params = {}
+    if search_row["kw"]:
+        params["keyword"] = search_row["kw"]
+    if search_row["loc"]:
+        params["location"] = search_row["loc"]
+    if search_row["exp_yrs"]:
+        params["experience"] = search_row["exp_yrs"]
+    if search_row["since"] and search_row["since"] != "any":
+        params["since"] = search_row["since"]
+    if search_row["category"] and search_row["category"] != "All":
+        params["category"] = search_row["category"]
+    return f"{PUBLIC_BASE_URL}/app" + (f"?{urlencode(params)}" if params else "")
+
+def _saved_search_alert_jobs(search_row, cutoff, limit=15):
+    kw = (search_row["kw"] or "").strip().lower()
+    location = (search_row["loc"] or "").strip().lower()
+    since = (search_row["since"] or "").strip()
+    category = (search_row["category"] or "").strip()
+    exp_years_raw = (search_row["exp_yrs"] or "").strip()
+    exp_years = None
+    if exp_years_raw:
+        try:
+            exp_years = max(0.0, float(exp_years_raw))
+        except ValueError:
+            exp_years = None
+
+    kw_groups = keyword_groups(kw)
+    clauses, params = ["is_open = TRUE", "COALESCE(first_seen, '') > ?"], [cutoff]
+    if kw:
+        keyword_clauses, keyword_params = keyword_where(kw_groups)
+        clauses.extend(keyword_clauses)
+        params.extend(keyword_params)
+    if location:
+        if location in ("united states", "usa", "u.s.", "u.s.a.", "america"):
+            clauses.append("(LOWER(location) = ? OR LOWER(location) LIKE ?)")
+            params.extend(["us", "%, us%"])
+        elif location in ("uk", "u.k.", "united kingdom", "england", "scotland", "wales"):
+            clauses.append("(LOWER(location) = ? OR LOWER(location) LIKE ? OR LOWER(location) LIKE ?)")
+            params.extend(["uk", "%, uk%", "%united kingdom%"])
+        else:
+            clauses.append("(' ' || REPLACE(LOWER(location), ', ', ' ') || ' ') LIKE ?")
+            params.append(f"% {location} %")
+    if since and since != "any":
+        clauses.append("COALESCE(NULLIF(posted,''), substr(first_seen,1,10)) >= ?")
+        params.append(since)
+    if exp_years is not None:
+        clauses.append("(exp_min IS NULL OR exp_min <= ?)")
+        params.append(int(exp_years) + 1)
+    if category and category != "All":
+        clauses.append("categories LIKE ?")
+        params.append(f'%"{category}"%')
+
+    active_company_names = {company.get("name") for company in _public_companies() if company.get("name")}
+    hidden_company_names = sorted(
+        company.get("name")
+        for company in current_companies()
+        if company.get("name") and company.get("name") not in active_company_names
+    )
+    if hidden_company_names:
+        hidden_marks = placeholders(len(hidden_company_names))
+        clauses.append(f"company NOT IN ({hidden_marks})")
+        params.extend(hidden_company_names)
+
+    sql = (
+        "SELECT id, title, url, company, location, first_seen, posted, exp_label "
+        f"FROM jobs WHERE {' AND '.join(clauses)} "
+        "ORDER BY first_seen DESC LIMIT ?"
+    )
+    params.append(limit)
+    with connect_db(rows=True) as conn:
+        rows = conn.execute(sql, params).fetchall()
+    return [
+        {
+            "title": display_title(row["title"] or "", row["url"] or ""),
+            "company": row["company"] or "",
+            "location": display_location(row["location"] or "", row["title"] or "", row["url"] or ""),
+            "url": row["url"] or "",
+            "posted": (row["posted"] or "")[:10],
+            "first_seen": (row["first_seen"] or "")[:10],
+            "exp_label": row["exp_label"] or "",
+        }
+        for row in rows
+    ]
+
+def _send_email(to_email, subject, text_body, html_body):
+    if not EMAIL_ALERTS_CONFIGURED:
+        return False
+    msg = EmailMessage()
+    msg["Subject"] = subject
+    msg["From"] = f"{EMAIL_FROM_NAME} <{EMAIL_FROM}>" if EMAIL_FROM_NAME else EMAIL_FROM
+    msg["To"] = to_email
+    msg.set_content(text_body)
+    msg.add_alternative(html_body, subtype="html")
+    with smtplib.SMTP(SMTP_HOST, SMTP_PORT, timeout=20) as smtp:
+        if SMTP_USE_TLS:
+            smtp.starttls()
+        if SMTP_USER or SMTP_PASSWORD:
+            smtp.login(SMTP_USER, SMTP_PASSWORD)
+        smtp.send_message(msg)
+    return True
+
+def _send_saved_search_alerts():
+    if not EMAIL_ALERTS_CONFIGURED:
+        return
+    now = datetime.now()
+    min_gap = timedelta(hours=ALERT_MIN_HOURS)
+    with connect_auth_db(rows=True) as conn:
+        rows = conn.execute(
+            "SELECT s.id, s.name, s.kw, s.loc, s.exp_yrs, s.since, s.category, "
+            "s.last_alert_sent_at, u.username, u.email "
+            "FROM user_saved_searches s JOIN users u ON u.id=s.user_id "
+            "WHERE s.email_alert_enabled=1 "
+            "AND u.email_alerts_enabled=1 "
+            "AND COALESCE(u.email, '') != '' "
+            "AND (u.plan_status IN ('pro', 'trial') OR u.role='admin')"
+        ).fetchall()
+
+    for row in rows:
+        last_sent = _parse_db_dt(row["last_alert_sent_at"])
+        if last_sent and now - last_sent < min_gap:
+            continue
+        cutoff_dt = last_sent or (now - timedelta(days=1))
+        cutoff = cutoff_dt.strftime("%Y-%m-%d %H:%M:%S")
+        jobs = _saved_search_alert_jobs(row, cutoff)
+        sent_at = now.strftime("%Y-%m-%d %H:%M:%S")
+        if not jobs:
+            with connect_auth_db() as conn:
+                conn.execute("UPDATE user_saved_searches SET last_alert_sent_at=? WHERE id=?", (sent_at, row["id"]))
+            continue
+
+        search_url = _saved_search_url(row)
+        lines = [f"New JobDrop matches for {row['name']}:", ""]
+        items_html = []
+        for job in jobs:
+            title = job["title"] or "Untitled role"
+            company = job["company"] or "Unknown company"
+            location = f" - {job['location']}" if job["location"] else ""
+            exp = f" ({job['exp_label']})" if job["exp_label"] else ""
+            lines.append(f"- {title} at {company}{location}{exp}")
+            if job["url"]:
+                lines.append(f"  {job['url']}")
+            items_html.append(
+                "<li>"
+                f"<strong>{html_escape(title)}</strong> at {html_escape(company)}"
+                f"{html_escape(location)}{html_escape(exp)}"
+                + (f"<br><a href=\"{html_escape(job['url'])}\">Open job</a>" if job["url"] else "")
+                + "</li>"
+            )
+        lines.extend(["", f"Open this search: {search_url}", "", "You can turn this off from Profile or the saved-search toggle."])
+        html_body = (
+            f"<p>New JobDrop matches for <strong>{html_escape(row['name'])}</strong>:</p>"
+            f"<ul>{''.join(items_html)}</ul>"
+            f"<p><a href=\"{html_escape(search_url)}\">Open this search</a></p>"
+            "<p>You can turn this off from Profile or the saved-search toggle.</p>"
+        )
+        try:
+            if _send_email(row["email"], f"JobDrop: {len(jobs)} new jobs for {row['name']}", "\n".join(lines), html_body):
+                with connect_auth_db() as conn:
+                    conn.execute("UPDATE user_saved_searches SET last_alert_sent_at=? WHERE id=?", (sent_at, row["id"]))
+        except Exception as exc:
+            print(f"Saved-search alert failed for search {row['id']}: {exc}", flush=True)
+
 def _user_id_for_subscription(subscription):
     metadata = getattr(subscription, "metadata", None) or {}
     uid = metadata.get("jobdrop_user_id")
@@ -398,6 +588,8 @@ def do_scan(selected_names, scan_type="fresh"):
         new_count=result["new_count"],
         scan_run_id=result.get("scan_run_id") or scan_state.get("scan_run_id"),
     )
+    if result.get("new_count", 0) > 0:
+        _send_saved_search_alerts()
 
 
 # ── Routes ────────────────────────────────────────────────────────────────────
@@ -408,25 +600,43 @@ def _user_ctx():
     if uid:
         with connect_auth_db(rows=True) as conn:
             row = conn.execute(
-                "SELECT username, role, plan_status, plan_started_at FROM users WHERE id=?",
+                "SELECT username, email, role, plan_status, plan_started_at, email_alerts_enabled FROM users WHERE id=?",
                 (uid,)
             ).fetchone()
         if row:
             return {
                 "username": row["username"],
+                "email": row["email"] or "",
                 "is_admin": row["role"] == "admin",
                 "plan_status": row["plan_status"] or "free",
                 "paid_member_days": _days_since(row["plan_started_at"]),
+                "email_alerts_enabled": bool(row["email_alerts_enabled"]),
             }
     if _is_admin():
-        return {"username": "Admin", "is_admin": True, "plan_status": "admin", "paid_member_days": None}
-    return {"username": None, "is_admin": False, "plan_status": "free", "paid_member_days": None}
+        return {
+            "username": "Admin",
+            "email": "",
+            "is_admin": True,
+            "plan_status": "admin",
+            "paid_member_days": None,
+            "email_alerts_enabled": False,
+        }
+    return {
+        "username": None,
+        "email": "",
+        "is_admin": False,
+        "plan_status": "free",
+        "paid_member_days": None,
+        "email_alerts_enabled": False,
+    }
 
 @app.route("/")
 def public_view():
     return render_template("user.html", companies=_public_companies(),
                            is_public=True, is_admin=False, username=None,
-                           has_apply_access=False)
+                           has_apply_access=False, is_pro=False,
+                           apply_limit=0, email="", email_alerts_enabled=False,
+                           email_alerts_configured=EMAIL_ALERTS_CONFIGURED)
 
 def _slugify(value):
     return re.sub(r"[^a-z0-9]+", "-", (value or "").lower()).strip("-")
@@ -591,12 +801,18 @@ def sitemap_xml():
 def app_view():
     ctx = _user_ctx()
     companies = _admin_companies() if ctx["is_admin"] else _public_companies()
+    is_pro = _has_paid_access()
     return render_template("user.html", companies=companies,
                            is_public=False, is_admin=ctx["is_admin"],
                            username=ctx["username"],
+                           email=ctx.get("email", ""),
                            plan_status=ctx.get("plan_status", "free"),
                            paid_member_days=ctx.get("paid_member_days"),
-                           has_apply_access=_has_paid_access())
+                           has_apply_access=bool(_current_user_id()),
+                           is_pro=is_pro,
+                           apply_limit=0 if is_pro else FREE_APPLY_LIMIT,
+                           email_alerts_enabled=ctx.get("email_alerts_enabled", False),
+                           email_alerts_configured=EMAIL_ALERTS_CONFIGURED)
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -688,6 +904,39 @@ def signup():
 def logout():
     session.clear()
     return redirect(url_for("public_view"))
+
+@app.route("/profile", methods=["GET", "POST"])
+def profile():
+    guard = _user_required()
+    if guard:
+        return guard
+    row = _current_user_profile()
+    if not row:
+        return redirect(url_for("app_view"))
+    message = ""
+    error = ""
+    if request.method == "POST":
+        email = (request.form.get("email") or "").strip()
+        alerts_enabled = request.form.get("email_alerts_enabled") == "on"
+        if email and not re.match(r"^[^@\s]+@[^@\s]+\.[^@\s]+$", email):
+            error = "Enter a valid email address."
+        else:
+            with connect_auth_db() as conn:
+                conn.execute(
+                    "UPDATE users SET email=?, email_alerts_enabled=? WHERE id=?",
+                    (email, int(alerts_enabled), row["id"]),
+                )
+            message = "Profile updated."
+            row = _current_user_profile()
+    return render_template(
+        "profile.html",
+        user=row,
+        is_pro=_has_paid_access(),
+        free_apply_limit=FREE_APPLY_LIMIT,
+        email_alerts_configured=EMAIL_ALERTS_CONFIGURED,
+        message=message,
+        error=error,
+    )
 
 @app.route("/billing/checkout", methods=["POST"])
 def billing_checkout():
@@ -879,7 +1128,7 @@ def legacy():
 
 @app.route("/api/apply", methods=["GET"])
 def get_apply():
-    guard = _paid_required()
+    guard = _user_required()
     if guard:
         return guard
     uid = _current_user_id()
@@ -895,7 +1144,7 @@ def get_apply():
 
 @app.route("/api/apply", methods=["POST"])
 def add_apply():
-    guard = _paid_required()
+    guard = _user_required()
     if guard:
         return guard
     uid = _current_user_id()
@@ -907,6 +1156,22 @@ def add_apply():
     if not job_id:
         return jsonify({"error": "job_id required"}), 400
     with connect_auth_db() as conn:
+        existing = conn.execute(
+            "SELECT 1 FROM user_apply_list WHERE user_id=? AND job_id=?",
+            (uid, job_id),
+        ).fetchone()
+        if not existing and not _has_paid_access():
+            count_row = conn.execute(
+                "SELECT COUNT(*) FROM user_apply_list WHERE user_id=?",
+                (uid,),
+            ).fetchone()
+            count = count_row[0] if count_row else 0
+            if count >= FREE_APPLY_LIMIT:
+                return jsonify({
+                    "error": f"Free Apply List limit reached ({FREE_APPLY_LIMIT}).",
+                    "code": "apply_limit_reached",
+                    "limit": FREE_APPLY_LIMIT,
+                }), 402
         conn.execute(
             "INSERT INTO user_apply_list "
             "(user_id, job_id, stage, job_title, job_company, job_location, job_url, job_exp_label, job_posted) "
@@ -919,7 +1184,7 @@ def add_apply():
 
 @app.route("/api/apply/<job_id>", methods=["PATCH"])
 def update_apply(job_id):
-    guard = _paid_required()
+    guard = _user_required()
     if guard:
         return guard
     uid = _current_user_id()
@@ -934,7 +1199,7 @@ def update_apply(job_id):
 
 @app.route("/api/apply/<job_id>", methods=["DELETE"])
 def remove_apply(job_id):
-    guard = _paid_required()
+    guard = _user_required()
     if guard:
         return guard
     uid = _current_user_id()
@@ -952,7 +1217,7 @@ def get_saved_searches():
         return jsonify([])
     with connect_auth_db(rows=True) as conn:
         rows = conn.execute(
-            "SELECT id, name, kw, loc, exp_yrs, since, category, created_at "
+            "SELECT id, name, kw, loc, exp_yrs, since, category, email_alert_enabled, created_at "
             "FROM user_saved_searches WHERE user_id=? ORDER BY created_at DESC, id DESC",
             (uid,),
         ).fetchall()
@@ -965,6 +1230,7 @@ def get_saved_searches():
             "exp": row["exp_yrs"] or "",
             "since": row["since"] or "",
             "cat": row["category"] or "All",
+            "email_alert_enabled": bool(row["email_alert_enabled"]),
         }
         for row in rows
     ])
@@ -988,15 +1254,27 @@ def add_saved_search():
         "exp": (d.get("exp") or "").strip()[:12],
         "since": (d.get("since") or "").strip()[:20],
         "cat": (d.get("cat") or "All").strip()[:80] or "All",
+        "email_alert_enabled": bool(d.get("email_alert_enabled")),
     }
+    if payload["email_alert_enabled"]:
+        profile_row = _current_user_profile()
+        if not _has_paid_access():
+            return jsonify({"error": "Email alerts require Pro.", "code": "pro_required"}), 402
+        if not profile_row or not (profile_row["email"] or "").strip():
+            return jsonify({"error": "Add an email address before enabling alerts.", "code": "email_required"}), 400
     with connect_auth_db(rows=True) as conn:
         conn.execute(
-            "INSERT INTO user_saved_searches (user_id, name, kw, loc, exp_yrs, since, category) "
-            "VALUES (?, ?, ?, ?, ?, ?, ?)",
-            (uid, payload["name"], payload["kw"], payload["loc"], payload["exp"], payload["since"], payload["cat"]),
+            "INSERT INTO user_saved_searches "
+            "(user_id, name, kw, loc, exp_yrs, since, category, email_alert_enabled) "
+            "VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+            (
+                uid, payload["name"], payload["kw"], payload["loc"],
+                payload["exp"], payload["since"], payload["cat"],
+                int(payload["email_alert_enabled"]),
+            ),
         )
         row = conn.execute(
-            "SELECT id, name, kw, loc, exp_yrs, since, category FROM user_saved_searches "
+            "SELECT id, name, kw, loc, exp_yrs, since, category, email_alert_enabled FROM user_saved_searches "
             "WHERE user_id=? ORDER BY id DESC LIMIT 1",
             (uid,),
         ).fetchone()
@@ -1008,7 +1286,33 @@ def add_saved_search():
         "exp": row["exp_yrs"] or "",
         "since": row["since"] or "",
         "cat": row["category"] or "All",
+        "email_alert_enabled": bool(row["email_alert_enabled"]),
     })
+
+@app.route("/api/searches/<int:search_id>", methods=["PATCH"])
+def update_saved_search(search_id):
+    guard = _user_required()
+    if guard:
+        return guard
+    uid = _current_user_id()
+    if not uid:
+        return jsonify({"error": "Saved searches require a user account"}), 400
+    d = request.get_json(silent=True) or {}
+    if "email_alert_enabled" not in d:
+        return jsonify({"error": "nothing to update"}), 400
+    enabled = bool(d.get("email_alert_enabled"))
+    if enabled:
+        profile_row = _current_user_profile()
+        if not _has_paid_access():
+            return jsonify({"error": "Email alerts require Pro.", "code": "pro_required"}), 402
+        if not profile_row or not (profile_row["email"] or "").strip():
+            return jsonify({"error": "Add an email address before enabling alerts.", "code": "email_required"}), 400
+    with connect_auth_db() as conn:
+        conn.execute(
+            "UPDATE user_saved_searches SET email_alert_enabled=? WHERE id=? AND user_id=?",
+            (int(enabled), search_id, uid),
+        )
+    return jsonify({"ok": True, "email_alert_enabled": enabled})
 
 @app.route("/api/searches/<int:search_id>", methods=["DELETE"])
 def delete_saved_search(search_id):

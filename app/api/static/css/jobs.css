@@ -408,6 +408,18 @@
   background: none; border: none; cursor: pointer;
 }
 .saved-pill > button:first-child:hover { color: var(--navy); }
+.saved-alert-toggle {
+  font-size: 11px;
+  color: var(--ink-4);
+  padding: 3px 8px;
+  background: var(--surface-2);
+  border: none;
+  border-left: 1px solid var(--line);
+  cursor: pointer;
+  line-height: 1;
+}
+.saved-alert-toggle:hover { color: var(--navy); background: var(--mint-050); }
+.saved-alert-toggle.is-on { color: var(--ok); background: var(--mint-050); }
 .saved-pill-del {
   font-size: 13px; color: var(--ink-4); padding: 3px 8px;
   background: none; border: none; border-left: 1px solid var(--line);

@@ -118,8 +118,14 @@ def init_auth_db():
                 "stripe_subscription_id TEXT DEFAULT ''",
                 "last_login_at TIMESTAMPTZ",
                 "last_active_at TIMESTAMPTZ",
+                "email_alerts_enabled INTEGER DEFAULT 1",
             ):
                 add_column_if_missing(conn, "users", column_sql)
+            for column_sql in (
+                "email_alert_enabled INTEGER DEFAULT 0",
+                "last_alert_sent_at TEXT DEFAULT ''",
+            ):
+                add_column_if_missing(conn, "user_saved_searches", column_sql)
         return
 
     with connect_auth_db() as conn:
@@ -137,6 +143,7 @@ def init_auth_db():
                 stripe_subscription_id TEXT DEFAULT '',
                 last_login_at TEXT DEFAULT '',
                 last_active_at TEXT DEFAULT '',
+                email_alerts_enabled INTEGER DEFAULT 1,
                 created_at    TEXT    DEFAULT (datetime('now'))
             )
         """)
@@ -148,6 +155,7 @@ def init_auth_db():
             "stripe_subscription_id TEXT DEFAULT ''",
             "last_login_at TEXT DEFAULT ''",
             "last_active_at TEXT DEFAULT ''",
+            "email_alerts_enabled INTEGER DEFAULT 1",
         ):
             add_column_if_missing(conn, "users", column_sql)
         conn.execute("""
@@ -176,9 +184,16 @@ def init_auth_db():
                 exp_yrs    TEXT    DEFAULT '',
                 since      TEXT    DEFAULT 'any',
                 category   TEXT    DEFAULT 'All',
+                email_alert_enabled INTEGER DEFAULT 0,
+                last_alert_sent_at TEXT DEFAULT '',
                 created_at TEXT    DEFAULT (datetime('now'))
             )
         """)
+        for column_sql in (
+            "email_alert_enabled INTEGER DEFAULT 0",
+            "last_alert_sent_at TEXT DEFAULT ''",
+        ):
+            add_column_if_missing(conn, "user_saved_searches", column_sql)
         conn.execute("CREATE INDEX IF NOT EXISTS idx_apply_user ON user_apply_list(user_id)")
         conn.execute("CREATE INDEX IF NOT EXISTS idx_searches_user ON user_saved_searches(user_id)")
 

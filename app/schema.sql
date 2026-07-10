@@ -118,6 +118,7 @@ CREATE TABLE IF NOT EXISTS users (
     stripe_subscription_id TEXT DEFAULT '',
     last_login_at TIMESTAMPTZ,
     last_active_at TIMESTAMPTZ,
+    email_alerts_enabled INTEGER DEFAULT 1,
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
@@ -147,6 +148,8 @@ CREATE TABLE IF NOT EXISTS user_saved_searches (
     exp_yrs TEXT DEFAULT '',
     since TEXT DEFAULT 'any',
     category TEXT DEFAULT 'All',
+    email_alert_enabled INTEGER DEFAULT 0,
+    last_alert_sent_at TEXT DEFAULT '',
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
 

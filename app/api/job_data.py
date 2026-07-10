@@ -154,6 +154,7 @@ def init_db():
                 email         TEXT    DEFAULT '',
                 password_hash TEXT    NOT NULL,
                 role          TEXT    DEFAULT 'user',
+                email_alerts_enabled INTEGER DEFAULT 1,
                 created_at    TEXT    DEFAULT (datetime('now'))
             )
         """)
@@ -183,9 +184,20 @@ def init_db():
                 exp_yrs    TEXT    DEFAULT '',
                 since      TEXT    DEFAULT 'any',
                 category   TEXT    DEFAULT 'All',
+                email_alert_enabled INTEGER DEFAULT 0,
+                last_alert_sent_at TEXT DEFAULT '',
                 created_at TEXT    DEFAULT (datetime('now'))
             )
         """)
+        for column_sql in (
+            "email_alerts_enabled INTEGER DEFAULT 1",
+        ):
+            add_column_if_missing(conn, "users", column_sql)
+        for column_sql in (
+            "email_alert_enabled INTEGER DEFAULT 0",
+            "last_alert_sent_at TEXT DEFAULT ''",
+        ):
+            add_column_if_missing(conn, "user_saved_searches", column_sql)
         conn.execute("CREATE INDEX IF NOT EXISTS idx_apply_user ON user_apply_list(user_id)")
         conn.execute("CREATE INDEX IF NOT EXISTS idx_searches_user ON user_saved_searches(user_id)")
 
