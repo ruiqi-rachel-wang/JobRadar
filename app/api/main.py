@@ -66,6 +66,19 @@ def _is_user():
 def _current_user_id():
     return session.get("user_id")
 
+def _has_paid_access():
+    if _is_admin():
+        return True
+    uid = _current_user_id()
+    if not uid:
+        return False
+    with connect_auth_db(rows=True) as conn:
+        row = conn.execute(
+            "SELECT role, plan_status FROM users WHERE id=?",
+            (uid,),
+        ).fetchone()
+    return bool(row and (row["role"] == "admin" or row["plan_status"] == "pro"))
+
 def _wants_json():
     return request.path.startswith("/api/") or "application/json" in (request.headers.get("Accept") or "")
 
@@ -96,6 +109,13 @@ def _user_required():
     if _wants_json():
         return jsonify({"error": "Login required"}), 401
     return redirect(url_for("login", next=request.full_path))
+
+def _paid_required():
+    if not _current_user_id() and not _is_admin():
+        return jsonify({"error": "Login required"}), 401
+    if not _has_paid_access():
+        return jsonify({"error": "Pro required", "code": "pro_required"}), 402
+    return None
 
 def _crawler_locks():
     try:
@@ -376,7 +396,8 @@ def _user_ctx():
 @app.route("/")
 def public_view():
     return render_template("user.html", companies=_public_companies(),
-                           is_public=True, is_admin=False, username=None)
+                           is_public=True, is_admin=False, username=None,
+                           has_apply_access=False)
 
 def _slugify(value):
     return re.sub(r"[^a-z0-9]+", "-", (value or "").lower()).strip("-")
@@ -545,7 +566,8 @@ def app_view():
                            is_public=False, is_admin=ctx["is_admin"],
                            username=ctx["username"],
                            plan_status=ctx.get("plan_status", "free"),
-                           paid_member_days=ctx.get("paid_member_days"))
+                           paid_member_days=ctx.get("paid_member_days"),
+                           has_apply_access=_has_paid_access())
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -819,8 +841,11 @@ def legacy():
 
 @app.route("/api/apply", methods=["GET"])
 def get_apply():
+    guard = _paid_required()
+    if guard:
+        return guard
     uid = _current_user_id()
-    if not uid:
+    if not uid and _is_admin():
         return jsonify([])
     with connect_auth_db(rows=True) as conn:
         rows = conn.execute(
@@ -832,9 +857,10 @@ def get_apply():
 
 @app.route("/api/apply", methods=["POST"])
 def add_apply():
+    guard = _paid_required()
+    if guard:
+        return guard
     uid = _current_user_id()
-    if not uid:
-        return jsonify({"error": "not logged in"}), 401
     d = request.get_json(silent=True) or {}
     job_id = (d.get("job_id") or "").strip()
     if not job_id:
@@ -852,9 +878,10 @@ def add_apply():
 
 @app.route("/api/apply/<job_id>", methods=["PATCH"])
 def update_apply(job_id):
+    guard = _paid_required()
+    if guard:
+        return guard
     uid = _current_user_id()
-    if not uid:
-        return jsonify({"error": "not logged in"}), 401
     stage = (request.get_json(silent=True) or {}).get("stage", "")
     valid = {"to-apply","applied","interview","offer","closed"}
     if stage not in valid:
@@ -866,9 +893,10 @@ def update_apply(job_id):
 
 @app.route("/api/apply/<job_id>", methods=["DELETE"])
 def remove_apply(job_id):
+    guard = _paid_required()
+    if guard:
+        return guard
     uid = _current_user_id()
-    if not uid:
-        return jsonify({"error": "not logged in"}), 401
     with connect_auth_db() as conn:
         conn.execute("DELETE FROM user_apply_list WHERE user_id=? AND job_id=?", (uid, job_id))
     return jsonify({"ok": True})

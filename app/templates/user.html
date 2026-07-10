@@ -45,7 +45,7 @@
   </div>
   {% if not is_public %}
   <button class="nav-pill active" id="tab-jobs" onclick="setTab('jobs')">Jobs</button>
-  <button class="nav-pill" id="tab-apply" onclick="setTab('apply')">Apply List <span class="apply-badge" id="apply-badge" style="display:none"></span></button>
+  <button class="nav-pill" id="tab-apply" onclick="setTab('apply')">Apply List{% if not has_apply_access %} · Pro{% endif %} <span class="apply-badge" id="apply-badge" style="display:none"></span></button>
   {% if is_admin %}<a href="/admin" class="nav-pill" style="color:rgba(255,255,255,.45);font-size:12px">← Admin</a>{% endif %}
   {% endif %}
   <span class="tb-spring"></span>
@@ -183,6 +183,7 @@
 const COMPANIES    = {{ companies|tojson }};
 const IS_PUBLIC    = {{ is_public|tojson }};
 const IS_ADMIN     = {{ is_admin|tojson }};
+const HAS_APPLY_ACCESS = {{ has_apply_access|tojson }};
 const SEARCHES_KEY = 'jd_searches_{{ username or "anon" }}';
 let selected         = new Set();
 let activeSidebarCat = 'All';
@@ -203,7 +204,7 @@ function _lsSet(key, val) { localStorage.setItem(key, JSON.stringify(val)); }
 
 // Auto-add to Apply List with "applied" when the external link is opened
 function onJobClick(id) {
-  if (IS_PUBLIC || _applyCache[id]) return;
+  if (IS_PUBLIC || !HAS_APPLY_ACCESS || _applyCache[id]) return;
   const job = jobsById[id];
   if (job) saveToApply(job, 'applied').then(() => _syncApplyBtn(id));
 }
@@ -595,8 +596,8 @@ function renderSection(id, jobs, title, isNew, bucket) {
     const openBtn = j.url
       ? `<a class="j-open-btn" href="${escAttr(j.url)}" target="_blank" rel="noopener" onclick="event.stopPropagation();onJobClick('${j.id}')">↗</a>`
       : '';
-    const inApply = !IS_PUBLIC && !!getApplyList()[j.id];
-    const trackBtnFull = !IS_PUBLIC
+    const inApply = HAS_APPLY_ACCESS && !!getApplyList()[j.id];
+    const trackBtnFull = HAS_APPLY_ACCESS
       ? `<button class="j-apply-btn j-track-btn${inApply?' is-on':''}" data-jid="${j.id}" onclick="toggleApplyFromRow('${j.id}',event)" title="${inApply?'In apply list':'Add to apply list'}">${inApply?'✓':'+'}</button>`
       : '';
     return `<tr class="job-row"
@@ -627,7 +628,7 @@ function renderSection(id, jobs, title, isNew, bucket) {
         <th style="width:160px">Location</th>
         <th style="width:120px">Experience</th>
         <th style="width:96px">Posted</th>
-        <th style="width:${IS_PUBLIC?'44px':'72px'}"></th>
+        <th style="width:${HAS_APPLY_ACCESS?'72px':'44px'}"></th>
       </tr></thead>
       <tbody>${rows}</tbody>
     </table>
@@ -742,7 +743,7 @@ function openJobDrawer(id) {
 
 function _updateDrawerTrackBtn() {
   const btn = document.getElementById('jd-track-btn');
-  if (!currentDrawerJob || IS_PUBLIC) { btn.style.display = 'none'; return; }
+  if (!currentDrawerJob || !HAS_APPLY_ACCESS) { btn.style.display = 'none'; return; }
   btn.style.display = '';
   const on = !!_applyCache[currentDrawerJob.id];
   btn.textContent = on ? '✓ In Apply List' : '+ Add to apply list';
@@ -750,7 +751,7 @@ function _updateDrawerTrackBtn() {
 }
 
 function drawerToggleTrack() {
-  if (!currentDrawerJob || IS_PUBLIC) return;
+  if (!currentDrawerJob || !HAS_APPLY_ACCESS) return;
   const id = currentDrawerJob.id;
   if (_applyCache[id]) {
     removeFromApply(id).then(() => { _updateDrawerTrackBtn(); _syncApplyBtn(id); });
@@ -795,8 +796,10 @@ let _applyCache = {};  // job_id → {stage, title, company, ...} (in-memory cac
 function getApplyList() { return _applyCache; }
 
 async function _applyFetch() {
-  if (IS_PUBLIC) return;
-  const rows = await fetch('/api/apply').then(r => r.json()).catch(() => []);
+  if (IS_PUBLIC || !HAS_APPLY_ACCESS) return;
+  const resp = await fetch('/api/apply').catch(() => null);
+  if (!resp || !resp.ok) return;
+  const rows = await resp.json().catch(() => []);
   _applyCache = {};
   rows.forEach(r => {
     _applyCache[r.job_id] = {
@@ -813,8 +816,8 @@ async function _applyFetch() {
 }
 
 async function saveToApply(job, stage = 'to-apply') {
-  if (IS_PUBLIC) return;
-  await fetch('/api/apply', {
+  if (IS_PUBLIC || !HAS_APPLY_ACCESS) return;
+  const resp = await fetch('/api/apply', {
     method: 'POST',
     headers: {'Content-Type':'application/json'},
     body: JSON.stringify({
@@ -824,31 +827,35 @@ async function saveToApply(job, stage = 'to-apply') {
       job_exp_label: job.exp_label||'', job_posted: job.posted||'',
     }),
   });
+  if (!resp.ok) return;
   _applyCache[job.id] = { stage, title:job.title, company:job.company,
     location:job.location, url:job.url, exp_label:job.exp_label, posted:job.posted };
   _refreshApplyBadge();
 }
 
 async function removeFromApply(id) {
-  if (IS_PUBLIC) return;
-  await fetch(`/api/apply/${id}`, { method: 'DELETE' });
+  if (IS_PUBLIC || !HAS_APPLY_ACCESS) return;
+  const resp = await fetch(`/api/apply/${id}`, { method: 'DELETE' });
+  if (!resp.ok) return;
   delete _applyCache[id];
   _refreshApplyBadge();
   if (activeTab === 'apply') renderApplyList();
 }
 
 async function updateApplyStage(id, stage) {
-  if (IS_PUBLIC) return;
-  await fetch(`/api/apply/${id}`, {
+  if (IS_PUBLIC || !HAS_APPLY_ACCESS) return;
+  const resp = await fetch(`/api/apply/${id}`, {
     method: 'PATCH',
     headers: {'Content-Type':'application/json'},
     body: JSON.stringify({ stage }),
   });
+  if (!resp.ok) return;
   if (_applyCache[id]) _applyCache[id].stage = stage;
 }
 
 function toggleApplyFromRow(jobId, e) {
   e.stopPropagation();
+  if (!HAS_APPLY_ACCESS) return;
   if (_applyCache[jobId]) {
     removeFromApply(jobId).then(() => _syncApplyBtn(jobId));
   } else {
@@ -882,6 +889,19 @@ function setApplyStage(btn, stage) {
 function renderApplyList() {
   const el = document.getElementById('apply-content');
   if (!el) return;
+  if (!HAS_APPLY_ACCESS) {
+    const stagePillBar = document.getElementById('apply-stage-bar');
+    if (stagePillBar) stagePillBar.innerHTML = '';
+    el.innerHTML = `<div class="empty-state" style="height:360px">
+      <div class="icon">🔒</div>
+      <h3>Apply List is a Pro feature</h3>
+      <p>Upgrade to track jobs, organize stages, and keep your application list in one place.</p>
+      <form method="post" action="/billing/checkout" style="margin-top:18px">
+        <button class="scan-go" type="submit">Upgrade to Pro</button>
+      </form>
+    </div>`;
+    return;
+  }
   const list    = _applyCache;
   const all     = Object.entries(list);
   const entries = activeApplyStage === 'all' ? all : all.filter(([,v]) => v.stage === activeApplyStage);
