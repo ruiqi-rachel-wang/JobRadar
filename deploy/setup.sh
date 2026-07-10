@@ -58,15 +58,10 @@ fi
 
 echo "=== 7. systemd services ==="
 sudo cp "$APP_DIR/deploy/jobdrop.service"         /etc/systemd/system/
-sudo cp "$APP_DIR/deploy/jobdrop-scanner.service" /etc/systemd/system/
-sudo cp "$APP_DIR/deploy/jobdrop-scanner.timer"   /etc/systemd/system/
 sudo systemctl daemon-reload
 
 sudo systemctl enable  jobdrop
 sudo systemctl start   jobdrop
-
-sudo systemctl enable  jobdrop-scanner.timer
-sudo systemctl start   jobdrop-scanner.timer
 
 echo "=== 8. nginx ==="
 sudo cp "$APP_DIR/deploy/nginx.conf" /etc/nginx/sites-available/jobdrop
@@ -86,4 +81,4 @@ echo "=== Done ==="
 echo "Web app:    http://$(curl -s ifconfig.me)"
 echo "App status: sudo systemctl status jobdrop"
 echo "App logs:   sudo journalctl -u jobdrop -f"
-echo "Scanner:    sudo systemctl status jobdrop-scanner.timer"
+echo "Scheduler:  controlled from the web admin Auto-scan panel"
