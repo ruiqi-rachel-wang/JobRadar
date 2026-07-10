@@ -57,12 +57,11 @@
   <a href="/login" class="tb-login-btn">Log in / Sign up</a>
   {% else %}
   {% if username %}
-  <div class="tb-user-pill">
+  <a class="tb-user-pill" href="/profile" title="Profile">
     <span class="tb-avatar">{{ username[0].upper() }}</span>
     <span>{{ username }}</span>
-  </div>
+  </a>
   {% endif %}
-  <a href="/profile" class="tb-logout-btn">Profile</a>
   {% if plan_status in ["pro", "trial"] %}
   <form method="post" action="/billing/portal" style="margin:0">
     <button class="tb-login-btn" type="submit">Manage {{ plan_status|title }}</button>
@@ -1011,7 +1010,11 @@ async function _saveSearchRemote(search) {
 
 async function toggleSearchAlert(id) {
   if (!IS_PRO) {
-    alert('Daily saved-search email alerts are a Pro feature.');
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = '/billing/checkout';
+    document.body.appendChild(form);
+    form.submit();
     return;
   }
   if (!USER_EMAIL) {

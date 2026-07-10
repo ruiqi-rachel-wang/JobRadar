@@ -17,7 +17,10 @@
   padding: 4px 12px 4px 5px;
   border-radius: 20px;
   font-size: 13px; color: white;
+  text-decoration: none;
+  transition: background .12s;
 }
+.tb-user-pill:hover { background: rgba(255,255,255,.14); }
 .tb-avatar {
   width: 26px; height: 26px; border-radius: 50%;
   background: var(--mint); color: white;
