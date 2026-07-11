@@ -75,7 +75,10 @@ def run_scan(companies, scan_type="fresh", progress=None, on_scan_run_id=None, s
         scan_run_id, scan_type, status, progress, results,
         new_count, total_jobs, failed_companies, elapsed_s
     """
-    companies   = [c for c in companies if c.get("scan_enabled", True) is not False]
+    companies   = [
+        c for c in companies
+        if c.get("scan_enabled", True) is not False or c.get("policy")
+    ]
     is_fresh    = scan_type != "full"
     seen        = load_seen()
     now_str     = datetime.now().strftime("%Y-%m-%d %H:%M:%S")

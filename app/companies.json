@@ -24,11 +24,11 @@
     "categories": [
       "Interview Friendly",
       "US / Remote"
-  ],
-  "scrape": {
-    "mode": "workday",
-    "list_url": "https://3m.wd1.myworkdayjobs.com/Search"
-  },
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://3m.wd1.myworkdayjobs.com/Search"
+    },
     "interview": {
       "no_whiteboard": true,
       "source": "Linked source employer target set",
@@ -207,6 +207,19 @@
     }
   },
   {
+    "name": "Adidas",
+    "categories": [
+      "Consumer Goods & Retail",
+      "Sports"
+    ],
+    "scrape": {
+      "mode": "xml_feed",
+      "list_url": "https://careers.adidas-group.com/jobs/feed.xml",
+      "include": "jobs.adidas-group.com/job/",
+      "user_agent": "Mozilla/5.0"
+    }
+  },
+  {
     "name": "ADM",
     "categories": [
       "Interview Friendly",
@@ -262,19 +275,6 @@
       "rounds": "4-5",
       "process": "Coding, system design, and behavioral. Creative product sensibility valued for product roles.",
       "source": "Public knowledge"
-    }
-  },
-  {
-    "name": "Adidas",
-    "categories": [
-      "Consumer Goods & Retail",
-      "Sports"
-    ],
-    "scrape": {
-      "mode": "xml_feed",
-      "list_url": "https://careers.adidas-group.com/jobs/feed.xml",
-      "include": "jobs.adidas-group.com/job/",
-      "user_agent": "Mozilla/5.0"
     }
   },
   {
@@ -576,6 +576,18 @@
     "scrape": {
       "lever_slug": "aledade",
       "mode": "lever"
+    }
+  },
+  {
+    "name": "Alexander Chapman",
+    "categories": [
+      "Recruiting",
+      "Finance"
+    ],
+    "scrape": {
+      "mode": "html",
+      "list_url": "https://www.alexanderchapman.com/jobs",
+      "include": "alexanderchapman.com/jobs"
     }
   },
   {
@@ -1178,13 +1190,13 @@
   {
     "name": "Arctic Wolf",
     "categories": [
-    "Cybersecurity"
-  ],
-  "scrape": {
-    "mode": "workday",
-    "list_url": "https://arcticwolf.wd1.myworkdayjobs.com/External"
-  }
-},
+      "Cybersecurity"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://arcticwolf.wd1.myworkdayjobs.com/External"
+    }
+  },
   {
     "name": "Ares Management",
     "categories": [
@@ -1647,6 +1659,17 @@
     }
   },
   {
+    "name": "BAE Systems",
+    "categories": [
+      "Aerospace & Defense"
+    ],
+    "scrape": {
+      "mode": "html",
+      "list_url": "https://jobs.baesystems.com/global/en/search-results",
+      "include": "jobs.baesystems.com/global/en/job"
+    }
+  },
+  {
     "name": "Bain",
     "categories": [
       "Consulting"
@@ -1809,6 +1832,17 @@
     },
     "interview": {
       "source": "Healthcare / biotech"
+    }
+  },
+  {
+    "name": "Bedrock",
+    "categories": [
+      "AI",
+      "Robotics"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "bedrockrobotics"
     }
   },
   {
@@ -2579,6 +2613,18 @@
     }
   },
   {
+    "name": "Canfield Imaging Systems",
+    "categories": [
+      "HealthTech",
+      "Medical Devices"
+    ],
+    "scrape": {
+      "mode": "html",
+      "list_url": "https://www.canfieldsci.com/about/careers/",
+      "include": "canfieldsci.com"
+    }
+  },
+  {
     "name": "Canva",
     "categories": [
       "Consumer Tech",
@@ -2597,6 +2643,17 @@
     "scrape": {
       "mode": "ashby",
       "ashby_slug": "capchase"
+    }
+  },
+  {
+    "name": "Cape",
+    "categories": [
+      "AI",
+      "Technology"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "cape"
     }
   },
   {
@@ -2888,6 +2945,17 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "San Antonio, TX / Remote",
       "process": "Take-home project & pair on a problem similar to daily work"
+    }
+  },
+  {
+    "name": "Charles River Associates",
+    "categories": [
+      "Consulting",
+      "Finance"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://crai.wd1.myworkdayjobs.com/External_Career_Site"
     }
   },
   {
@@ -3765,6 +3833,16 @@
     }
   },
   {
+    "name": "Condé Nast",
+    "categories": [
+      "Media & Entertainment"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://condenast.wd5.myworkdayjobs.com/CondeCareers"
+    }
+  },
+  {
     "name": "Confluent",
     "categories": [
       "Software & SaaS"
@@ -3983,12 +4061,12 @@
     "categories": [
       "Interview Friendly",
       "US / Remote"
-  ],
-  "scrape": {
-    "mode": "jobsapi",
-    "api_url": "https://careers.costco.com/api/jobs",
-    "job_url_prefix": "https://careers.costco.com/careers-home/jobs/"
-  },
+    ],
+    "scrape": {
+      "mode": "jobsapi",
+      "api_url": "https://careers.costco.com/api/jobs",
+      "job_url_prefix": "https://careers.costco.com/careers-home/jobs/"
+    },
     "interview": {
       "no_whiteboard": true,
       "source": "Linked source employer target set",
@@ -4018,6 +4096,16 @@
     "scrape": {
       "mode": "workday",
       "list_url": "https://cox.wd1.myworkdayjobs.com/Cox_External_Career_Site_1"
+    }
+  },
+  {
+    "name": "Creative Artists Agency",
+    "categories": [
+      "Media & Entertainment"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://caa.wd1.myworkdayjobs.com/CAA"
     }
   },
   {
@@ -4402,6 +4490,17 @@
     }
   },
   {
+    "name": "DeepFin Research",
+    "categories": [
+      "Finance",
+      "Quant"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "deepfin"
+    }
+  },
+  {
     "name": "Deepgram",
     "categories": [
       "AI & Machine Learning"
@@ -4709,6 +4808,17 @@
     "scrape": {
       "mode": "workday",
       "list_url": "https://draftkings.wd1.myworkdayjobs.com/DraftKings"
+    }
+  },
+  {
+    "name": "Dragonfly",
+    "categories": [
+      "Finance",
+      "Crypto"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "dragonfly"
     }
   },
   {
@@ -5330,12 +5440,12 @@
     "name": "Etched",
     "categories": [
       "AI & Machine Learning"
-  ],
-  "scrape": {
-    "mode": "ashby",
-    "ashby_slug": "etched"
-  },
-  "interview": {
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "etched"
+    },
+    "interview": {
       "source": "AI infrastructure"
     }
   },
@@ -5349,6 +5459,16 @@
       "mode": "html",
       "list_url": "https://careers.etsy.com",
       "include": "careers.etsy.com/jobs"
+    }
+  },
+  {
+    "name": "Eulerity",
+    "categories": [
+      "Ad Tech & MarTech"
+    ],
+    "scrape": {
+      "mode": "lever",
+      "lever_slug": "eulerity"
     }
   },
   {
@@ -5841,6 +5961,17 @@
     }
   },
   {
+    "name": "Fluidstack",
+    "categories": [
+      "Cloud",
+      "AI"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "fluidstack"
+    }
+  },
+  {
     "name": "Fluxergy",
     "categories": [
       "Technology"
@@ -6038,6 +6169,17 @@
       "mode": "html",
       "list_url": "https://talent.fmjobs.com/careers?start=0&domain=fcx.com&sort_by=hot",
       "include": "talent.fmjobs.com/careers/job"
+    }
+  },
+  {
+    "name": "FreshDirect",
+    "categories": [
+      "E-commerce",
+      "Retail"
+    ],
+    "scrape": {
+      "mode": "icims",
+      "icims_slug": "https://careers-freshdirect.icims.com"
     }
   },
   {
@@ -6672,6 +6814,18 @@
     }
   },
   {
+    "name": "Goliath Partners",
+    "categories": [
+      "Finance",
+      "Recruiting"
+    ],
+    "scrape": {
+      "mode": "html",
+      "list_url": "https://www.goliathpartners.com/jobs",
+      "include": "goliathpartners.com/job"
+    }
+  },
+  {
     "name": "Gong",
     "categories": [
       "Software & SaaS"
@@ -6815,12 +6969,12 @@
     "categories": [
       "AI & Machine Learning",
       "Software & SaaS"
-  ],
-  "scrape": {
-    "mode": "ashby",
-    "ashby_slug": "grammarly"
-  }
-},
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "grammarly"
+    }
+  },
   {
     "name": "Granola",
     "categories": [
@@ -7240,12 +7394,12 @@
     "categories": [
       "AI",
       "Media & Entertainment"
-  ],
-  "scrape": {
-    "mode": "greenhouse",
-    "board_token": "heygen"
-  }
-},
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "heygen"
+    }
+  },
   {
     "name": "Highspot",
     "categories": [
@@ -7308,6 +7462,17 @@
     }
   },
   {
+    "name": "HOKA / Deckers Brands",
+    "categories": [
+      "Consumer Goods & Retail",
+      "Sports"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://deckers.wd5.myworkdayjobs.com/Deckers"
+    }
+  },
+  {
     "name": "Hologram",
     "categories": [
       "Telecom",
@@ -7323,17 +7488,6 @@
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
       "locations": "Chicago, IL; Remote",
       "process": "Intro call, take-home project taken from production work, pair programming exercise"
-    }
-  },
-  {
-    "name": "HOKA / Deckers Brands",
-    "categories": [
-      "Consumer Goods & Retail",
-      "Sports"
-    ],
-    "scrape": {
-      "mode": "workday",
-      "list_url": "https://deckers.wd5.myworkdayjobs.com/Deckers"
     }
   },
   {
@@ -7519,6 +7673,18 @@
     "scrape": {
       "mode": "greenhouse",
       "board_token": "wehrtyou"
+    }
+  },
+  {
+    "name": "HudsonGray",
+    "categories": [
+      "Finance",
+      "Recruiting"
+    ],
+    "scrape": {
+      "mode": "html",
+      "list_url": "https://www.hudsongray.com/jobs",
+      "include": "hudsongray.com"
     }
   },
   {
@@ -8145,6 +8311,17 @@
     }
   },
   {
+    "name": "Jefferies",
+    "categories": [
+      "Finance",
+      "Investment Banking"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://jefferies.wd5.myworkdayjobs.com/Jefferies"
+    }
+  },
+  {
     "name": "JetBlue Airways",
     "categories": [
       "Interview Friendly",
@@ -8573,6 +8750,17 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Remote / Austin, TX",
       "process": "30-40 minute recruiter screen, 30 minute hiring manager screen, 1.5 hour final interview (discussion only, no coding or whiteboarding)."
+    }
+  },
+  {
+    "name": "Kustomer",
+    "categories": [
+      "Software & SaaS",
+      "Customer Support"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "kustomer"
     }
   },
   {
@@ -9222,6 +9410,17 @@
     }
   },
   {
+    "name": "Maple",
+    "categories": [
+      "HealthTech",
+      "Software & SaaS"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "maple"
+    }
+  },
+  {
     "name": "Marathon Petroleum",
     "categories": [
       "Interview Friendly",
@@ -9663,6 +9862,17 @@
     }
   },
   {
+    "name": "Milk Makeup",
+    "categories": [
+      "Beauty",
+      "Retail"
+    ],
+    "scrape": {
+      "mode": "lever",
+      "lever_slug": "milkmakeup"
+    }
+  },
+  {
     "name": "Millennium",
     "categories": [
       "Finance & Banking",
@@ -10041,6 +10251,18 @@
     }
   },
   {
+    "name": "MTA",
+    "categories": [
+      "Transportation",
+      "Government"
+    ],
+    "scrape": {
+      "mode": "html",
+      "list_url": "https://careers.mta.org/jobs",
+      "include": "careers.mta.org/job"
+    }
+  },
+  {
     "name": "Munters",
     "categories": [
       "Technology"
@@ -10172,6 +10394,16 @@
     "scrape": {
       "mode": "greenhouse",
       "board_token": "tripactions"
+    }
+  },
+  {
+    "name": "NBCUniversal",
+    "categories": [
+      "Media & Entertainment"
+    ],
+    "scrape": {
+      "mode": "smartrecruiters",
+      "smartrecruiters_company": "NBCUniversal3"
     }
   },
   {
@@ -10310,6 +10542,17 @@
     }
   },
   {
+    "name": "Neuberger Berman",
+    "categories": [
+      "Finance",
+      "Asset Management"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://nb.wd1.myworkdayjobs.com/NB_External_Career_Site"
+    }
+  },
+  {
     "name": "Neuralink",
     "categories": [
       "Technology"
@@ -10317,6 +10560,18 @@
     "scrape": {
       "mode": "greenhouse",
       "board_token": "neuralink"
+    }
+  },
+  {
+    "name": "New Balance",
+    "categories": [
+      "Consumer Goods & Retail",
+      "Sports"
+    ],
+    "scrape": {
+      "mode": "phenom",
+      "list_url": "https://jobs.newbalance.com/global/en/search-results",
+      "prefix": "https://jobs.newbalance.com/global/en/job"
     }
   },
   {
@@ -10395,18 +10650,6 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Berlin, Germany / Hannover, Germany / Erfurt, Germany / Boston, MA",
       "process": "Telephone technical interview, code sample submission or takeaway coding exercise, on-site pair programming, design session (1/2 day)"
-    }
-  },
-  {
-    "name": "New Balance",
-    "categories": [
-      "Consumer Goods & Retail",
-      "Sports"
-    ],
-    "scrape": {
-      "mode": "phenom",
-      "list_url": "https://jobs.newbalance.com/global/en/search-results",
-      "prefix": "https://jobs.newbalance.com/global/en/job"
     }
   },
   {
@@ -10835,6 +11078,17 @@
     "scrape": {
       "mode": "workday",
       "list_url": "https://nxp.wd3.myworkdayjobs.com/careers"
+    }
+  },
+  {
+    "name": "NYU Langone",
+    "categories": [
+      "Health Care"
+    ],
+    "scrape": {
+      "mode": "html",
+      "list_url": "https://jobs.nyulangone.org/jobs/",
+      "include": "jobs.nyulangone.org/job"
     }
   },
   {
@@ -11498,6 +11752,16 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Boulder, CO / Denver, CO",
       "process": "Phone screen, take home project, remote and on-site interviews for technical and cultural fit"
+    }
+  },
+  {
+    "name": "Pearson",
+    "categories": [
+      "Education"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://pearson.wd3.myworkdayjobs.com/PearsonJobs"
     }
   },
   {
@@ -12477,6 +12741,17 @@
     }
   },
   {
+    "name": "Ralph Lauren",
+    "categories": [
+      "Retail",
+      "Fashion"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://ralphlauren.wd1.myworkdayjobs.com/RalphLauren"
+    }
+  },
+  {
     "name": "Ramp",
     "categories": [
       "FinTech & Payments"
@@ -12731,12 +13006,12 @@
     "name": "Regions Bank",
     "categories": [
       "Finance & Banking"
-  ],
-  "scrape": {
-    "mode": "workday",
-    "list_url": "https://regions.wd5.myworkdayjobs.com/Regions_Careers"
-  }
-},
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://regions.wd5.myworkdayjobs.com/Regions_Careers"
+    }
+  },
   {
     "name": "REI",
     "categories": [
@@ -13909,18 +14184,6 @@
     }
   },
   {
-    "name": "Skechers",
-    "categories": [
-      "Consumer Goods & Retail",
-      "Sports"
-    ],
-    "scrape": {
-      "mode": "phenom",
-      "list_url": "https://careers.skechers.com/us/en/search-results",
-      "prefix": "https://careers.skechers.com/us/en/job"
-    }
-  },
-  {
     "name": "Siemens",
     "categories": [
       "Industrials & Manufacturing",
@@ -14065,6 +14328,18 @@
     },
     "interview": {
       "source": "Database target list"
+    }
+  },
+  {
+    "name": "Skechers",
+    "categories": [
+      "Consumer Goods & Retail",
+      "Sports"
+    ],
+    "scrape": {
+      "mode": "phenom",
+      "list_url": "https://careers.skechers.com/us/en/search-results",
+      "prefix": "https://careers.skechers.com/us/en/job"
     }
   },
   {
@@ -14475,11 +14750,11 @@
     "name": "StackBlitz",
     "categories": [
       "AI & Machine Learning"
-  ],
-  "scrape": {
-    "mode": "greenhouse",
-    "board_token": "stackblitz"
-  },
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "stackblitz"
+    },
     "interview": {
       "source": "Forbes AI 50"
     }
@@ -15429,6 +15704,17 @@
     }
   },
   {
+    "name": "The RealReal",
+    "categories": [
+      "E-commerce",
+      "Fashion"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "therealreal"
+    }
+  },
+  {
     "name": "The Trade Desk",
     "categories": [
       "Ad Tech & MarTech",
@@ -15487,6 +15773,17 @@
     "scrape": {
       "mode": "greenhouse",
       "board_token": "thinkingmachines"
+    }
+  },
+  {
+    "name": "Thomson Reuters",
+    "categories": [
+      "Media & Entertainment",
+      "Software & SaaS"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://thomsonreuters.wd5.myworkdayjobs.com/External_Career_Site"
     }
   },
   {
@@ -15559,6 +15856,17 @@
     },
     "interview": {
       "source": "Marketplace"
+    }
+  },
+  {
+    "name": "Tiffany",
+    "categories": [
+      "Retail",
+      "Luxury"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://tiffany.wd5.myworkdayjobs.com/TiffanyCareers"
     }
   },
   {
@@ -15693,6 +16001,17 @@
       "list_url": "https://www.tractorsupply.careers/search/?createNewAlert=false&q=&locationsearch=",
       "prefix": "https://www.tractorsupply.careers/job/",
       "validate_prefix": false
+    }
+  },
+  {
+    "name": "Tradeweb",
+    "categories": [
+      "Finance",
+      "FinTech & Payments"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://tradeweb.wd1.myworkdayjobs.com/tradeweb"
     }
   },
   {
@@ -16098,17 +16417,6 @@
     }
   },
   {
-    "name": "Under Armour",
-    "categories": [
-      "Consumer Goods & Retail",
-      "Sports"
-    ],
-    "scrape": {
-      "mode": "successfactors",
-      "list_url": "https://careers.underarmour.com/search/?q=&sortColumn=referencedate&sortDirection=desc"
-    }
-  },
-  {
     "name": "UCLA",
     "categories": [
       "Interview Friendly",
@@ -16223,6 +16531,17 @@
     "scrape": {
       "mode": "ashby",
       "ashby_slug": "uncountable"
+    }
+  },
+  {
+    "name": "Under Armour",
+    "categories": [
+      "Consumer Goods & Retail",
+      "Sports"
+    ],
+    "scrape": {
+      "mode": "successfactors",
+      "list_url": "https://careers.underarmour.com/search/?q=&sortColumn=referencedate&sortDirection=desc"
     }
   },
   {
@@ -16857,6 +17176,17 @@
     "scrape": {
       "mode": "greenhouse",
       "board_token": "verisign"
+    }
+  },
+  {
+    "name": "Verisk",
+    "categories": [
+      "Data & Analytics",
+      "Insurance"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://verisk.wd1.myworkdayjobs.com/verisk"
     }
   },
   {
