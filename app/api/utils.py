@@ -494,6 +494,14 @@ _CITY_DEFAULTS = {
     'hsinchu': ('Hsinchu','','Taiwan'), 'yerevan': ('Yerevan','','Armenia'),
 }
 
+_ISRAEL_CITY_NAMES = {
+    'beer sheva', 'caesarea', 'haifa', 'herzliya', 'kibbutz shefayim',
+    'kiryat gat', 'migdal haemek', "migdal ha'emek", 'ness ziona',
+    'petah tikva', 'petah-tikva', 'raanana', 'ramat gan', 'rehovot',
+    'tel aviv', 'tel aviv yafo', 'tel-aviv', 'tel-aviv-yafo',
+    'tzrifin', 'yavne', 'yokneam',
+}
+
 _LOCATION_NOISE = re.compile(
     r'\b(posted|posting date|date posted|apply|save job|view job|job id|requisition|req\d+)\b',
     re.I,
@@ -612,11 +620,15 @@ def normalize_location(loc):
     m_country_city = re.match(r'^([A-Za-z .]+?)\s*-\s*(.+)$', loc)
     if m_country_city:
         state_code = m_country_city.group(1).upper()
+        city_text = m_country_city.group(2).strip()
+        city_key = re.sub(r'\s+', ' ', city_text.replace("-", " ").lower()).strip()
+        if state_code == "IL" and city_key in _ISRAEL_CITY_NAMES:
+            return normalize_location(f"{_title_case_city(city_text.replace('-', ' '))}, Israel")
         if state_code in _US_STATES:
-            return normalize_location(f"{m_country_city.group(2)}, {state_code}, US")
+            return normalize_location(f"{city_text}, {state_code}, US")
         country = _country_code(m_country_city.group(1))
         if country:
-            return normalize_location(f"{m_country_city.group(2)}, {country}")
+            return normalize_location(f"{city_text}, {country}")
 
     # "Massachusetts - Boston" / "California - Pleasanton"
     m_state_city = re.match(r'^([A-Za-z ]+?)\s*-\s*(.+)$', loc)
