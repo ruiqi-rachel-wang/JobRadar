@@ -84,8 +84,6 @@ EMAIL_FROM = os.environ.get("JOBDROP_EMAIL_FROM", "")
 EMAIL_FROM_NAME = os.environ.get("JOBDROP_EMAIL_FROM_NAME", "JobDrop")
 PUBLIC_BASE_URL = os.environ.get("JOBDROP_PUBLIC_URL", "http://jobdrop.site").rstrip("/")
 ALERT_MIN_HOURS = int(os.environ.get("JOBDROP_ALERT_MIN_HOURS", "20"))
-SCHEDULED_FRESH_COMPANY_LIMIT = int(os.environ.get("JOBDROP_SCHEDULED_FRESH_COMPANY_LIMIT", "250"))
-SCHEDULED_FULL_COMPANY_LIMIT = int(os.environ.get("JOBDROP_SCHEDULED_FULL_COMPANY_LIMIT", "125"))
 EMAIL_ALERTS_CONFIGURED = bool(
     SMTP_HOST and EMAIL_FROM
 )
@@ -531,50 +529,19 @@ def _try_run_scheduled():
         cfg = schedule.get(scan_type, {})
         if cfg.get("enabled") and now in (cfg.get("times") or []):
             _last_schedule_trigger = now
-            names = _scheduled_scan_names(scan_type)
+            names = _scheduled_scan_names()
             if not names:
                 return
             threading.Thread(target=scan_runner, args=(names, scan_type), daemon=True).start()
             break
 
 
-def _scheduled_scan_names(scan_type):
-    """Return a bounded, fair slice of companies due for scheduled scanning."""
-    companies = [
-        c for c in current_companies()
+def _scheduled_scan_names():
+    """Return every company eligible for scheduled scanning."""
+    return [
+        c["name"] for c in current_companies()
         if c.get("name") and (c.get("scan_enabled", True) is not False or c.get("policy"))
     ]
-    limit = SCHEDULED_FULL_COMPANY_LIMIT if scan_type == "full" else SCHEDULED_FRESH_COMPANY_LIMIT
-    if limit <= 0 or len(companies) <= limit:
-        return [c["name"] for c in companies]
-
-    names = [c["name"] for c in companies]
-    marks = ",".join("?" for _ in names)
-    last_success = {}
-    try:
-        with connect_db(rows=True) as conn:
-            rows = conn.execute(
-                f"""
-                SELECT company_name, MAX(finished_at) AS last_success
-                FROM scan_company_status scs
-                JOIN scan_runs sr ON sr.id = scs.scan_run_id
-                WHERE sr.scan_type=?
-                  AND scs.status='success'
-                  AND company_name IN ({marks})
-                GROUP BY company_name
-                """,
-                (scan_type, *names),
-            ).fetchall()
-        last_success = {row["company_name"]: row["last_success"] or "" for row in rows}
-    except Exception:
-        last_success = {}
-
-    def due_key(company):
-        name = company["name"]
-        # Missing entries sort first, then oldest successful scan.
-        return (last_success.get(name) or "", name.lower())
-
-    return [c["name"] for c in sorted(companies, key=due_key)[:limit]]
 
 
 def _schedule_loop():
