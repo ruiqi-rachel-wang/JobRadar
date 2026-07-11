@@ -8317,8 +8317,9 @@
       "Investment Banking"
     ],
     "scrape": {
-      "mode": "workday",
-      "list_url": "https://jefferies.wd5.myworkdayjobs.com/Jefferies"
+      "mode": "oraclecloud",
+      "list_url": "https://careers.jefferies.com/hcmUI/CandidateExperience/en/sites/CX_1/jobs",
+      "site": "CX_1"
     }
   },
   {
@@ -11087,8 +11088,9 @@
     ],
     "scrape": {
       "mode": "html",
-      "list_url": "https://jobs.nyulangone.org/jobs/",
-      "include": "jobs.nyulangone.org/job"
+      "list_url": "https://jobs.silkroad.com/NYULangone/NYULHCareers",
+      "include": "jobs.silkroad.com/NYULangone/NYULHCareers/jobs/",
+      "require_job_path": true
     }
   },
   {
