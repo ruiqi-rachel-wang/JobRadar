@@ -8,12 +8,14 @@ filters by text include rules from the company config.
 
 scan_type controls two fetcher-level behaviours:
   "fresh"  – stop_on_seen injected as True  (fetcher stops on seen pages)
-             detail fetch defaults to new jobs only (fast, but still enriches
-             newly discovered jobs)
+             detail fetch defaults off when JOBRADAR_FAST_SCAN is enabled
+             (the default), so all-company scans stay fast.
   "full"   – stop_on_seen forced to False    (fetcher scans all pages)
-             detail fetch defaults to True    (refresh rich details)
+             detail fetch defaults off when JOBRADAR_FAST_SCAN is enabled;
+             set JOBRADAR_FAST_SCAN=false for deep metadata backfills.
 """
 
+import os
 import re as _re
 from statistics import median
 
@@ -190,6 +192,7 @@ def fetch_jobs(company, seen, scan_type="fresh"):
 def _apply_scan_defaults(scrape, scan_type):
     """Return a copy of scrape with scan-mode defaults injected."""
     scrape = dict(scrape)  # don't mutate the original config
+    fast_scan = os.environ.get("JOBRADAR_FAST_SCAN", "true").lower() in {"1", "true", "yes", "on"}
     if scan_type != "full":
         # stop_on_seen is only useful for paginated API sources (workday, greenhouse, etc.).
         # HTML companies scrape a single page; stopping mid-page on the first known
@@ -197,15 +200,15 @@ def _apply_scan_defaults(scrape, scan_type):
         if scrape.get("mode", "html") != "html":
             scrape.setdefault("stop_on_seen", True)
         scrape.setdefault("fetch_posted_details",  False)
-        scrape.setdefault("fetch_experience_details", True)
+        scrape.setdefault("fetch_experience_details", not fast_scan)
         scrape.setdefault("fetch_new_experience_only", True)
     else:  # full
         # Always override stop_on_seen so a full scan really is complete.
         scrape["stop_on_seen"] = False
-        scrape.setdefault("fetch_posted_details", True)
-        scrape.setdefault("fetch_experience_details", True)
+        scrape.setdefault("fetch_posted_details", not fast_scan)
+        scrape.setdefault("fetch_experience_details", not fast_scan)
         scrape.setdefault("fetch_new_experience_only", False)
-        scrape.setdefault("refresh_experience", True)
+        scrape.setdefault("refresh_experience", not fast_scan)
     return scrape
 
 

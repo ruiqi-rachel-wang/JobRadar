@@ -52,14 +52,14 @@ _seen_lock = threading.Lock()
 # Thread-pool sizes. Workday gets its own small lane because full scans may
 # fetch thousands of detail pages for experience extraction; letting those fill
 # the general API pool makes the whole scan look frozen.
-_API_WORKERS     = 12
-_WORKDAY_WORKERS = 2
-_BROWSER_WORKERS = 2
+_API_WORKERS     = int(os.environ.get("JOBRADAR_API_WORKERS", "24"))
+_WORKDAY_WORKERS = int(os.environ.get("JOBRADAR_WORKDAY_WORKERS", "4"))
+_BROWSER_WORKERS = int(os.environ.get("JOBRADAR_BROWSER_WORKERS", "2"))
 
 # A single wedged company must not block the whole scheduler for days. Fresh
 # scans should be quick; full scans get a longer budget for large ATS sources.
-_FRESH_COMPANY_TIMEOUT_S = int(os.environ.get("JOBRADAR_FRESH_COMPANY_TIMEOUT_SECONDS", "1200"))
-_FULL_COMPANY_TIMEOUT_S  = int(os.environ.get("JOBRADAR_FULL_COMPANY_TIMEOUT_SECONDS", "7200"))
+_FRESH_COMPANY_TIMEOUT_S = int(os.environ.get("JOBRADAR_FRESH_COMPANY_TIMEOUT_SECONDS", "300"))
+_FULL_COMPANY_TIMEOUT_S  = int(os.environ.get("JOBRADAR_FULL_COMPANY_TIMEOUT_SECONDS", "900"))
 
 
 # ── Public entry point ────────────────────────────────────────────────────────

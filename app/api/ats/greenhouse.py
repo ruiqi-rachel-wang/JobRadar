@@ -6,6 +6,11 @@ def fetch_greenhouse(scrape, seen, company):
     token = scrape.get("board_token","")
     if not token:
         return [], "no board_token"
+    include_content = bool(
+        scrape.get("greenhouse_content")
+        or scrape.get("fetch_descriptions")
+        or scrape.get("fetch_experience_details")
+    )
     region = (scrape.get("region") or "").lower()
     if region == "eu":
         bases = ["https://boards-api.eu.greenhouse.io", "https://boards-api.greenhouse.io"]
@@ -17,7 +22,8 @@ def fetch_greenhouse(scrape, seen, company):
     _MAX_RESPONSE_MB = 80  # boards with 2000+ jobs can return 100MB+ — cap to avoid hour-long hangs
     last_err = "board not found"
     for base in bases:
-        url = f"{base}/v1/boards/{token}/jobs?content=true"
+        suffix = "?content=true" if include_content else ""
+        url = f"{base}/v1/boards/{token}/jobs{suffix}"
         try:
             r = requests.get(url, headers=HEADERS, timeout=20, stream=True)
             if r.status_code == 404:
@@ -45,7 +51,9 @@ def fetch_greenhouse(scrape, seen, company):
                 jurl   = j.get("absolute_url") or ""
                 loc    = normalize_location(norm((j.get("location") or {}).get("name") or ""))
                 posted = _parse_posted(j.get("first_published") or j.get("published_at") or j.get("updated_at") or "")
-                desc   = norm(BeautifulSoup(j.get("content") or "", "lxml").get_text(" ", strip=True))
+                desc   = ""
+                if include_content:
+                    desc = norm(BeautifulSoup(j.get("content") or "", "lxml").get_text(" ", strip=True))
                 if title and jurl:
                     jobs.append({"title":title,"url":jurl,"location":loc,"source":"greenhouse","posted":posted,"description":desc})
             return jobs, None

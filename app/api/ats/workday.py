@@ -237,6 +237,7 @@ def fetch_workday(scrape, seen, company):
     fetch_new_exp_only = bool(scrape.get("fetch_new_experience_only", False))
     refresh_experience = bool(scrape.get("refresh_experience", False))
     refresh_location = bool(scrape.get("refresh_location", False))
+    fetch_location_details = bool(scrape.get("fetch_location_details", refresh_location))
     detail_limit    = int(scrape.get("max_posted_details", 1000000))
     detail_delay    = float(scrape.get("posted_detail_delay", 0.05))
     detail_workers  = int(scrape.get("detail_workers", 3))
@@ -313,20 +314,21 @@ def fetch_workday(scrape, seen, company):
                     and not desc_already_fetched
                     and (not fetch_new_exp_only or not isinstance(existing, dict))
                 )
-                location_detail_needed = refresh_location or not _workday_location_has_country(loc)
+                location_detail_needed = fetch_location_details and (
+                    refresh_location or not _workday_location_has_country(loc)
+                )
                 needs_detail = (
                     exp_detail_needed
                     or location_detail_needed
                     or (not posted)
-                    or loc == "Multiple Locations"
+                    or (fetch_location_details and loc == "Multiple Locations")
                 )
-                # Always fetch detail for Multiple Locations. In fresh mode, also
-                # fetch detail for brand-new jobs so experience is available now,
-                # while old jobs wait for the next full refresh.
+                # Fast scans avoid detail pages unless rich metadata was
+                # explicitly requested; those requests dominate Workday runtime.
                 fetch_for_this = (
                     fetch_details
                     or location_detail_needed
-                    or loc == "Multiple Locations"
+                    or (fetch_location_details and loc == "Multiple Locations")
                     or exp_detail_needed
                 )
                 if needs_detail and fetch_for_this and detail_count < detail_limit:
