@@ -575,6 +575,8 @@ def normalize_location(loc):
 
     if lower in _US_STATE_NAMES:
         return f"{_US_STATE_NAMES[lower]}, US"
+    if re.fullmatch(r'[A-Z]{2}', loc) and loc.upper() in _US_STATES:
+        return f"{loc.upper()}, US"
     if lower in {"puerto rico", "pr"}:
         return "Puerto Rico, US"
 
@@ -609,6 +611,9 @@ def normalize_location(loc):
     # "Italy-Milan" / "Germany - Berlin"
     m_country_city = re.match(r'^([A-Za-z .]+?)\s*-\s*(.+)$', loc)
     if m_country_city:
+        state_code = m_country_city.group(1).upper()
+        if state_code in _US_STATES:
+            return normalize_location(f"{m_country_city.group(2)}, {state_code}, US")
         country = _country_code(m_country_city.group(1))
         if country:
             return normalize_location(f"{m_country_city.group(2)}, {country}")
