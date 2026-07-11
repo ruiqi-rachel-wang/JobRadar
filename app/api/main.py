@@ -23,22 +23,22 @@ from .database import IS_POSTGRES, connect_auth_db, connect_db, init_auth_db, pl
 try:
     from scanner_service import run_scan
     from scan_store import (
-        abandon_running_scans,
         latest_scan as latest_scan_record,
         repair_abandoned_scan_totals,
+        running_scan as running_scan_record,
         scan_companies as scan_company_records,
     )
 except ModuleNotFoundError:
     from ..scanner_service import run_scan
     from ..scan_store import (
-        abandon_running_scans,
         latest_scan as latest_scan_record,
         repair_abandoned_scan_totals,
+        running_scan as running_scan_record,
         scan_companies as scan_company_records,
     )
 
 from .job_data import (
-    add_or_update_company, current_companies, init_db, jobs_from_seen_fallback,
+    add_or_update_company, current_companies, get_app_state, init_db, jobs_from_seen_fallback,
     set_app_state,
 )
 from .apis import fetch_jobs
@@ -508,7 +508,6 @@ _last_schedule_trigger: str = ""   # "HH:MM" of last auto-triggered slot
 
 def _get_schedule() -> dict:
     """Load the scan schedule from app_state (persisted JSON)."""
-    from .job_data import get_app_state
     raw = get_app_state("scan_schedule")
     try:
         return json.loads(raw) if raw else {}
@@ -516,11 +515,26 @@ def _get_schedule() -> dict:
         return {}
 
 
+def _queue_scheduled_scan(scan_type):
+    """Remember one missed scheduled slot so it runs after the current scan."""
+    current = (get_app_state("queued_scan_type") or "").strip()
+    # Freshness is the product promise; keep a queued fresh scan if both collide.
+    queued = "fresh" if "fresh" in {current, scan_type} else scan_type
+    set_app_state("queued_scan_type", queued)
+    set_app_state("queued_scan_queued_at", datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+
+
+def _pop_queued_scan_type():
+    queued = (get_app_state("queued_scan_type") or "").strip()
+    if queued:
+        set_app_state("queued_scan_type", "")
+        set_app_state("queued_scan_queued_at", "")
+    return queued if queued in {"fresh", "full"} else ""
+
+
 def _try_run_scheduled():
     """Fire a scheduled scan if the current minute matches a configured slot."""
     global _last_schedule_trigger
-    if scan_state["running"]:
-        return
     now = datetime.now().strftime("%H:%M")
     if now == _last_schedule_trigger:
         return  # already fired this minute
@@ -531,6 +545,9 @@ def _try_run_scheduled():
             _last_schedule_trigger = now
             names = _scheduled_scan_names()
             if not names:
+                return
+            if scan_state["running"] or running_scan_record():
+                _queue_scheduled_scan(scan_type)
                 return
             threading.Thread(target=scan_runner, args=(names, scan_type), daemon=True).start()
             break
@@ -558,15 +575,15 @@ if os.environ.get("JOBRADAR_ENABLE_APP_SCHEDULER", "true").lower() in {"1", "tru
     threading.Thread(target=_schedule_loop, daemon=True).start()
 
 
-def _recover_stale_scans():
-    """On startup, mark any scan_runs stuck in 'running' as abandoned."""
+def _resume_interrupted_scan():
+    """Resume an interrupted scan instead of abandoning the remaining companies."""
     try:
-        abandon_running_scans()
         repair_abandoned_scan_totals()
+        row = running_scan_record()
+        if row:
+            threading.Thread(target=resume_scan_runner, args=(dict(row),), daemon=True).start()
     except Exception:
         pass
-
-_recover_stale_scans()
 
 def scan_runner(selected_names, scan_type="fresh"):
     try:
@@ -576,13 +593,48 @@ def scan_runner(selected_names, scan_type="fresh"):
         for p in scan_state.get("progress", []):
             if p.get("status") in {"pending", "scanning"}:
                 p.update(status="error", error=str(e), count=0, new=0)
+    finally:
+        _start_queued_scan_if_idle()
 
-def do_scan(selected_names, scan_type="fresh"):
+
+def resume_scan_runner(scan_run):
+    scan_run_id = scan_run["id"]
+    scan_type = scan_run.get("scan_type") or "fresh"
+    rows = [dict(row) for row in scan_company_records(scan_run_id)]
+    remaining = [
+        row["company_name"] for row in rows
+        if row.get("status") in {"pending", "scanning"}
+    ]
+    try:
+        do_scan(remaining, scan_type=scan_type, resume_scan_run_id=scan_run_id)
+    except Exception as e:
+        scan_state.update(running=False, done=True, new_count=0)
+        for p in scan_state.get("progress", []):
+            if p.get("status") in {"pending", "scanning"}:
+                p.update(status="error", error=str(e), count=0, new=0)
+    finally:
+        _start_queued_scan_if_idle()
+
+
+def _start_queued_scan_if_idle():
+    if scan_state.get("running"):
+        return
+    if running_scan_record():
+        return
+    queued = _pop_queued_scan_type()
+    if not queued:
+        return
+    names = _scheduled_scan_names()
+    if names:
+        threading.Thread(target=scan_runner, args=(names, queued), daemon=True).start()
+
+
+def do_scan(selected_names, scan_type="fresh", resume_scan_run_id=None):
     _scan_cancel_event.clear()
     scan_state.update(
         running=True, done=False, started_at=time.time(),
         progress=[], new_count=0,
-        scan_run_id=None, scan_type=scan_type,
+        scan_run_id=resume_scan_run_id, scan_type=scan_type,
     )
     companies = current_companies()
     target = [c for c in companies if c["name"] in selected_names]
@@ -598,6 +650,7 @@ def do_scan(selected_names, scan_type="fresh"):
         progress=scan_state["progress"],
         on_scan_run_id=lambda scan_run_id: scan_state.update(scan_run_id=scan_run_id),
         should_cancel=_scan_cancel_event.is_set,
+        resume_scan_run_id=resume_scan_run_id,
     )
     scan_state.update(
         running=False,
@@ -607,6 +660,9 @@ def do_scan(selected_names, scan_type="fresh"):
     )
     if result.get("new_count", 0) > 0:
         _send_saved_search_alerts()
+
+
+_resume_interrupted_scan()
 
 
 # ── Routes ────────────────────────────────────────────────────────────────────

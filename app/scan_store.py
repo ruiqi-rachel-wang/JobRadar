@@ -27,15 +27,21 @@ def create_scan_run(scan_type, total_companies):
 
 
 def finish_scan_run(scan_run_id, status, total_jobs_found=0, new_jobs_found=0,
-                    updated_jobs_found=0, failed_companies=0, error_message=None):
+                    updated_jobs_found=0, failed_companies=0, companies_scanned=None,
+                    error_message=None):
+    scanned_sql = ", companies_scanned=?" if companies_scanned is not None else ""
+    scanned_params = (companies_scanned,) if companies_scanned is not None else ()
     with connect_db() as conn:
         conn.execute(
             "UPDATE scan_runs SET status=?, finished_at=?, total_jobs_found=?, "
             "new_jobs_found=?, updated_jobs_found=?, failed_companies=?, error_message=? "
+            f"{scanned_sql} "
             "WHERE id=?",
             (
                 status, _now(), total_jobs_found, new_jobs_found,
-                updated_jobs_found, failed_companies, error_message, scan_run_id,
+                updated_jobs_found, failed_companies, error_message,
+                *scanned_params,
+                scan_run_id,
             ),
         )
 
@@ -48,47 +54,70 @@ def update_scan_counts(scan_run_id, companies_scanned):
         )
 
 
+def scan_run_totals(scan_run_id):
+    with connect_db(rows=True) as conn:
+        row = conn.execute(
+            """
+            SELECT
+                COUNT(CASE WHEN status NOT IN ('pending', 'scanning') THEN 1 END) AS companies_scanned,
+                COALESCE(SUM(jobs_found), 0) AS total_jobs_found,
+                COALESCE(SUM(new_jobs_found), 0) AS new_jobs_found,
+                COUNT(CASE WHEN status='failed' THEN 1 END) AS failed_companies
+            FROM scan_company_status
+            WHERE scan_run_id=?
+            """,
+            (scan_run_id,),
+        ).fetchone()
+    total_jobs = row["total_jobs_found"] or 0
+    new_jobs = row["new_jobs_found"] or 0
+    return {
+        "companies_scanned": row["companies_scanned"] or 0,
+        "total_jobs_found": total_jobs,
+        "new_jobs_found": new_jobs,
+        "updated_jobs_found": max(0, total_jobs - new_jobs),
+        "failed_companies": row["failed_companies"] or 0,
+    }
+
+
+def finish_scan_run_from_statuses(scan_run_id, status, error_message=None):
+    totals = scan_run_totals(scan_run_id)
+    finish_scan_run(scan_run_id, status=status, error_message=error_message, **totals)
+
+
+def running_scan():
+    with connect_db(rows=True) as conn:
+        return conn.execute(
+            "SELECT * FROM scan_runs WHERE status='running' ORDER BY id DESC LIMIT 1"
+        ).fetchone()
+
+
+def scan_company_status_map(scan_run_id):
+    with connect_db(rows=True) as conn:
+        rows = conn.execute(
+            "SELECT * FROM scan_company_status WHERE scan_run_id=?",
+            (scan_run_id,),
+        ).fetchall()
+    return {row["company_name"]: dict(row) for row in rows}
+
+
+def reset_unfinished_company_statuses(scan_run_id):
+    with connect_db() as conn:
+        conn.execute(
+            """
+            UPDATE scan_company_status
+            SET status='pending', started_at='', finished_at='', error_message=NULL
+            WHERE scan_run_id=? AND status IN ('pending', 'scanning')
+            """,
+            (scan_run_id,),
+        )
+
+
 def abandon_running_scans():
     """Mark interrupted scans abandoned while preserving completed company totals."""
-    now = _now()
     with connect_db(rows=True) as conn:
         rows = conn.execute("SELECT id FROM scan_runs WHERE status='running'").fetchall()
-        for row in rows:
-            scan_run_id = row["id"]
-            totals = conn.execute(
-                """
-                SELECT
-                    COUNT(CASE WHEN status NOT IN ('pending', 'scanning') THEN 1 END) AS companies_scanned,
-                    COALESCE(SUM(jobs_found), 0) AS total_jobs_found,
-                    COALESCE(SUM(new_jobs_found), 0) AS new_jobs_found,
-                    COUNT(CASE WHEN status='failed' THEN 1 END) AS failed_companies
-                FROM scan_company_status
-                WHERE scan_run_id=?
-                """,
-                (scan_run_id,),
-            ).fetchone()
-            conn.execute(
-                """
-                UPDATE scan_runs
-                SET status='abandoned',
-                    finished_at=?,
-                    companies_scanned=?,
-                    total_jobs_found=?,
-                    new_jobs_found=?,
-                    updated_jobs_found=?,
-                    failed_companies=?
-                WHERE id=?
-                """,
-                (
-                    now,
-                    totals["companies_scanned"] or 0,
-                    totals["total_jobs_found"] or 0,
-                    totals["new_jobs_found"] or 0,
-                    max(0, (totals["total_jobs_found"] or 0) - (totals["new_jobs_found"] or 0)),
-                    totals["failed_companies"] or 0,
-                    scan_run_id,
-                ),
-            )
+    for row in rows:
+        finish_scan_run_from_statuses(row["id"], status="abandoned")
 
 
 def repair_abandoned_scan_totals():

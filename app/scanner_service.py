@@ -29,8 +29,9 @@ try:
     from .api.utils import make_id
     from .scan_store import (
         create_company_scan_status, create_scan_run,
-        finish_company_scan_status, finish_scan_run, start_company_scan_status,
-        update_scan_counts,
+        finish_company_scan_status, finish_scan_run_from_statuses,
+        reset_unfinished_company_statuses, scan_company_status_map,
+        scan_run_totals, start_company_scan_status, update_scan_counts,
     )
 except ImportError:
     from api.apis import _API_MODES, fetch_jobs
@@ -40,8 +41,9 @@ except ImportError:
     from api.utils import make_id
     from scan_store import (
         create_company_scan_status, create_scan_run,
-        finish_company_scan_status, finish_scan_run, start_company_scan_status,
-        update_scan_counts,
+        finish_company_scan_status, finish_scan_run_from_statuses,
+        reset_unfinished_company_statuses, scan_company_status_map,
+        scan_run_totals, start_company_scan_status, update_scan_counts,
     )
 
 # Guards concurrent writes to the shared `seen` dict across threads.
@@ -62,7 +64,8 @@ _FULL_COMPANY_TIMEOUT_S  = int(os.environ.get("JOBRADAR_FULL_COMPANY_TIMEOUT_SEC
 
 # ── Public entry point ────────────────────────────────────────────────────────
 
-def run_scan(companies, scan_type="fresh", progress=None, on_scan_run_id=None, should_cancel=None):
+def run_scan(companies, scan_type="fresh", progress=None, on_scan_run_id=None,
+             should_cancel=None, resume_scan_run_id=None):
     """Scan a list of companies and return a summary dict.
 
     Args:
@@ -87,7 +90,17 @@ def run_scan(companies, scan_type="fresh", progress=None, on_scan_run_id=None, s
     total_jobs  = 0
     total_new   = 0
 
-    scan_run_id = create_scan_run(scan_type=scan_type, total_companies=len(companies))
+    resumed_statuses = {}
+    if resume_scan_run_id:
+        scan_run_id = resume_scan_run_id
+        reset_unfinished_company_statuses(scan_run_id)
+        resumed_statuses = scan_company_status_map(scan_run_id)
+        companies = [
+            c for c in companies
+            if (resumed_statuses.get(c["name"]) or {}).get("status") in {"pending", "scanning"}
+        ]
+    else:
+        scan_run_id = create_scan_run(scan_type=scan_type, total_companies=len(companies))
     if on_scan_run_id:
         on_scan_run_id(scan_run_id)
 
@@ -104,10 +117,10 @@ def run_scan(companies, scan_type="fresh", progress=None, on_scan_run_id=None, s
         ]
 
     # Pre-create DB status rows so the polling endpoint can return them immediately.
-    status_ids = {
-        i: create_company_scan_status(scan_run_id, c["name"])
-        for i, c in enumerate(companies)
-    }
+    status_ids = {}
+    for i, company in enumerate(companies):
+        row = resumed_statuses.get(company["name"])
+        status_ids[i] = row["id"] if row else create_company_scan_status(scan_run_id, company["name"])
 
     # ── Per-company helpers (closures so they share outer state) ──────────────
 
@@ -294,21 +307,14 @@ def run_scan(companies, scan_type="fresh", progress=None, on_scan_run_id=None, s
             for ex in (api_ex, workday_ex, pw_ex):
                 ex.shutdown(wait=False, cancel_futures=True)
 
-        failed  = [s for s in summaries if s["status"] == "error"]
         elapsed = round(time.monotonic() - t_start, 1)
         if cancelled:
             status = "cancelled"
         else:
-            status = "partial_success" if failed else "success"
+            totals = scan_run_totals(scan_run_id)
+            status = "partial_success" if totals["failed_companies"] else "success"
 
-        finish_scan_run(
-            scan_run_id,
-            status=status,
-            total_jobs_found=total_jobs,
-            new_jobs_found=total_new,
-            updated_jobs_found=max(0, total_jobs - total_new),
-            failed_companies=len(failed),
-        )
+        finish_scan_run_from_statuses(scan_run_id, status=status)
         return {
             "scan_run_id":      scan_run_id,
             "scan_type":        scan_type,
@@ -317,20 +323,12 @@ def run_scan(companies, scan_type="fresh", progress=None, on_scan_run_id=None, s
             "results":          [],
             "new_count":        total_new,
             "total_jobs":       total_jobs,
-            "failed_companies": len(failed),
+            "failed_companies": scan_run_totals(scan_run_id)["failed_companies"],
             "elapsed_s":        elapsed,
         }
 
     except Exception as exc:
-        finish_scan_run(
-            scan_run_id,
-            status="failed",
-            total_jobs_found=total_jobs,
-            new_jobs_found=total_new,
-            updated_jobs_found=max(0, total_jobs - total_new),
-            failed_companies=len([s for s in summaries if s["status"] == "error"]),
-            error_message=str(exc),
-        )
+        finish_scan_run_from_statuses(scan_run_id, status="failed", error_message=str(exc))
         raise
 
 
