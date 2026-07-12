@@ -263,6 +263,7 @@ def fetch_workday(scrape, seen, company):
     # Full scans read every page anyway, so fetch them concurrently. The
     # stop-on-seen path stays sequential — early stop needs page order.
     pages = None
+    page_errors = {}
     if not stop_early and max_pages > 1:
         try:
             first = _fetch_page(0)
@@ -276,14 +277,22 @@ def fetch_workday(scrape, seen, company):
             if offsets:
                 def _try_fetch_page(offset):
                     try:
-                        return offset, _fetch_page(offset)
-                    except Exception:
-                        return offset, None
+                        return offset, _fetch_page(offset), None
+                    except Exception as e:
+                        return offset, None, str(e)
                 with concurrent.futures.ThreadPoolExecutor(max_workers=page_workers) as ex:
-                    for offset, data in ex.map(_try_fetch_page, offsets):
+                    for offset, data, page_err in ex.map(_try_fetch_page, offsets):
                         pages[offset] = data
+                        if page_err:
+                            page_errors[offset] = page_err
         # total missing/0: fall back to the sequential loop, which paginates
         # until an empty page instead of trusting the reported total.
+
+    # When pagination dies partway, return the partial jobs WITH an error so
+    # the scanner records the fetch as incomplete — a full scan must never run
+    # job expiry against a partial list (it would close every job on the pages
+    # that were never reached).
+    fetch_err = None
 
     for idx in range(max_pages):
         offset = idx * limit
@@ -292,13 +301,19 @@ def fetch_workday(scrape, seen, company):
                 break
             data = pages[offset]
             if data is None:
+                fetch_err = (
+                    f"page fetch failed at offset {offset}: "
+                    f"{page_errors.get(offset, 'unknown error')} (partial results)"
+                )
                 if jobs: break
-                return [], "workday page fetch failed"
+                return [], fetch_err
         else:
             try:
                 data = _fetch_page(offset)
             except Exception as e:
-                if jobs: break
+                if jobs:
+                    fetch_err = f"page fetch failed at offset {offset}: {e} (partial results)"
+                    break
                 return [], str(e)
 
         postings = data.get("jobPostings",[])
@@ -421,4 +436,4 @@ def fetch_workday(scrape, seen, company):
         if pages is None:
             time.sleep(0.2)
 
-    return jobs, None
+    return jobs, fetch_err
