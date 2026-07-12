@@ -58,8 +58,8 @@ _BROWSER_WORKERS = int(os.environ.get("JOBRADAR_BROWSER_WORKERS", "2"))
 
 # A single wedged company must not block the whole scheduler for days. Fresh
 # scans should be quick; full scans get a longer budget for large ATS sources.
-_FRESH_COMPANY_TIMEOUT_S = int(os.environ.get("JOBRADAR_FRESH_COMPANY_TIMEOUT_SECONDS", "300"))
-_FULL_COMPANY_TIMEOUT_S  = int(os.environ.get("JOBRADAR_FULL_COMPANY_TIMEOUT_SECONDS", "900"))
+_FRESH_COMPANY_TIMEOUT_S = int(os.environ.get("JOBRADAR_FRESH_COMPANY_TIMEOUT_SECONDS", "1200"))
+_FULL_COMPANY_TIMEOUT_S  = int(os.environ.get("JOBRADAR_FULL_COMPANY_TIMEOUT_SECONDS", "7200"))
 
 
 # ── Public entry point ────────────────────────────────────────────────────────
