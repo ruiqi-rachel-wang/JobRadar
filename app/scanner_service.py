@@ -49,11 +49,15 @@ except ImportError:
 # Guards concurrent writes to the shared `seen` dict across threads.
 _seen_lock = threading.Lock()
 
-# Thread-pool sizes. Workday gets its own small lane because full scans may
-# fetch thousands of detail pages for experience extraction; letting those fill
-# the general API pool makes the whole scan look frozen.
+# Thread-pool sizes (env-overridable). Four lanes so one slow source type
+# can't starve the rest:
+#   api      — one-shot / lightly paginated JSON APIs (greenhouse, ashby, lever…)
+#   workday  — heavy pagination, kept separate so it can't fill the API pool
+#   html     — requests+BeautifulSoup page scrapes (no browser, cheap)
+#   browser  — real Playwright browsers only; kept narrow for memory
 _API_WORKERS     = int(os.environ.get("JOBRADAR_API_WORKERS", "24"))
 _WORKDAY_WORKERS = int(os.environ.get("JOBRADAR_WORKDAY_WORKERS", "4"))
+_HTML_WORKERS    = int(os.environ.get("JOBRADAR_HTML_WORKERS", "8"))
 _BROWSER_WORKERS = int(os.environ.get("JOBRADAR_BROWSER_WORKERS", "2"))
 
 # A single wedged company must not block the whole scheduler for days. Fresh
@@ -177,7 +181,10 @@ def run_scan(companies, scan_type="fresh", progress=None, on_scan_run_id=None,
         if rows:
             upsert_jobs(rows)
             # Full scan only: soft-delete jobs that vanished from the source.
-            if not is_fresh and raw:
+            # Never expire on an errored fetch — a mid-pagination failure returns
+            # a partial list, and expiring against it would close every job on
+            # the pages that were never reached.
+            if not is_fresh and raw and not err:
                 delete_expired_jobs(name, [r["id"] for r in rows])
 
         entry = _make_summary(name, progress[i]["mode"], raw, err, duration, new_count)
@@ -197,13 +204,17 @@ def run_scan(companies, scan_type="fresh", progress=None, on_scan_run_id=None,
 
     # ── Run fetches concurrently ──────────────────────────────────────────────
 
-    workday_cos = [(i, c) for i, c in enumerate(companies)
-                   if (c.get("scrape") or {}).get("mode", "html") == "workday"]
+    def _mode(c):
+        return (c.get("scrape") or {}).get("mode", "html")
+
+    workday_cos = [(i, c) for i, c in enumerate(companies) if _mode(c) == "workday"]
     api_cos     = [(i, c) for i, c in enumerate(companies)
-                   if (c.get("scrape") or {}).get("mode", "html") in _API_MODES
-                   and (c.get("scrape") or {}).get("mode", "html") != "workday"]
+                   if _mode(c) in _API_MODES and _mode(c) != "workday"]
+    # "html" companies are plain requests+BeautifulSoup — they don't need a
+    # browser, so they get their own wide lane instead of clogging Playwright's.
+    html_cos    = [(i, c) for i, c in enumerate(companies) if _mode(c) == "html"]
     browser_cos = [(i, c) for i, c in enumerate(companies)
-                   if (c.get("scrape") or {}).get("mode", "html") not in _API_MODES]
+                   if _mode(c) not in _API_MODES and _mode(c) != "html"]
 
     def _cancel_requested():
         return bool(should_cancel and should_cancel())
@@ -247,16 +258,19 @@ def run_scan(companies, scan_type="fresh", progress=None, on_scan_run_id=None,
         except Exception as exc:
             logging.warning("scan: failed to record timeout for %s: %s", company.get("name"), exc)
 
-    def _run_bounded(api_ex, workday_ex, pw_ex):
+    def _run_bounded(api_ex, workday_ex, html_ex, pw_ex):
         """Keep only active workers queued so progress and memory stay honest."""
         futures = {}
         api_iter = iter(api_cos)
         workday_iter = iter(workday_cos)
+        html_iter = iter(html_cos)
         pw_iter = iter(browser_cos)
         for _ in range(min(_API_WORKERS, len(api_cos))):
             _submit_next(api_ex, api_iter, futures)
         for _ in range(min(_WORKDAY_WORKERS, len(workday_cos))):
             _submit_next(workday_ex, workday_iter, futures)
+        for _ in range(min(_HTML_WORKERS, len(html_cos))):
+            _submit_next(html_ex, html_iter, futures)
         for _ in range(min(_BROWSER_WORKERS, len(browser_cos))):
             _submit_next(pw_ex, pw_iter, futures)
 
@@ -300,11 +314,12 @@ def run_scan(companies, scan_type="fresh", progress=None, on_scan_run_id=None,
     try:
         api_ex     = concurrent.futures.ThreadPoolExecutor(max_workers=_API_WORKERS)
         workday_ex = concurrent.futures.ThreadPoolExecutor(max_workers=_WORKDAY_WORKERS)
+        html_ex    = concurrent.futures.ThreadPoolExecutor(max_workers=_HTML_WORKERS)
         pw_ex      = concurrent.futures.ThreadPoolExecutor(max_workers=_BROWSER_WORKERS)
         try:
-            cancelled = _run_bounded(api_ex, workday_ex, pw_ex)
+            cancelled = _run_bounded(api_ex, workday_ex, html_ex, pw_ex)
         finally:
-            for ex in (api_ex, workday_ex, pw_ex):
+            for ex in (api_ex, workday_ex, html_ex, pw_ex):
                 ex.shutdown(wait=False, cancel_futures=True)
 
         elapsed = round(time.monotonic() - t_start, 1)

@@ -1,8 +1,12 @@
 import os
+import threading
 import urllib.robotparser
 import urllib.request
 from pathlib import Path
 from urllib.parse import urljoin, urlparse
+
+import requests as _requests
+from requests.adapters import HTTPAdapter
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 DATA_DIR = Path(os.environ.get("JOBRADAR_DATA_DIR", BASE_DIR / "data")).expanduser()
@@ -25,6 +29,21 @@ HEADERS = {
 }
 
 REQUESTS_VERIFY_SSL = os.environ.get("JOBRADAR_VERIFY_SSL", "true").lower() not in {"0", "false", "no"}
+
+# Paginated fetchers make dozens of requests to the same host; a Session reuses
+# the TCP+TLS connection (keep-alive) instead of paying a handshake per request.
+# Sessions are not thread-safe, so each scan thread gets its own.
+_THREAD_HTTP = threading.local()
+
+def http_session():
+    session = getattr(_THREAD_HTTP, "session", None)
+    if session is None:
+        session = _requests.Session()
+        adapter = HTTPAdapter(pool_connections=32, pool_maxsize=32)
+        session.mount("https://", adapter)
+        session.mount("http://", adapter)
+        _THREAD_HTTP.session = session
+    return session
 RESPECT_ROBOTS = os.environ.get("JOBRADAR_RESPECT_ROBOTS", "true").lower() not in {"0", "false", "no"}
 ROBOTS_TIMEOUT_SECONDS = float(os.environ.get("JOBRADAR_ROBOTS_TIMEOUT_SECONDS", "5"))
 

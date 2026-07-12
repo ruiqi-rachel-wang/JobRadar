@@ -242,26 +242,64 @@ def fetch_workday(scrape, seen, company):
     detail_delay    = float(scrape.get("posted_detail_delay", 0.05))
     detail_workers  = int(scrape.get("detail_workers", 3))
     detail_count    = 0
+    stop_early      = bool(scrape.get("stop_on_seen", False) or scrape.get("sort", False))
+    page_workers    = max(1, int(scrape.get("page_workers", 4)))
+
+    def _fetch_page(offset):
+        r = None
+        for attempt in range(3):
+            r = requests.post(
+                api_url,
+                json={"appliedFacets":{},"limit":limit,"offset":offset,"searchText":""},
+                headers={**HEADERS, "Content-Type":"application/json", "Accept":"application/json"},
+                timeout=25,
+            )
+            if r.status_code not in (403, 429):
+                break
+            time.sleep(2.0 * (attempt + 1))
+        r.raise_for_status()
+        return r.json()
+
+    # Full scans read every page anyway, so fetch them concurrently. The
+    # stop-on-seen path stays sequential — early stop needs page order.
+    pages = None
+    if not stop_early and max_pages > 1:
+        try:
+            first = _fetch_page(0)
+        except Exception as e:
+            return [], str(e)
+        total_hint = int(first.get("total") or 0)
+        if total_hint > 0:
+            pages = {0: first}
+            page_count = min(max_pages, max(1, (total_hint + limit - 1) // limit))
+            offsets = [i * limit for i in range(1, page_count)]
+            if offsets:
+                def _try_fetch_page(offset):
+                    try:
+                        return offset, _fetch_page(offset)
+                    except Exception:
+                        return offset, None
+                with concurrent.futures.ThreadPoolExecutor(max_workers=page_workers) as ex:
+                    for offset, data in ex.map(_try_fetch_page, offsets):
+                        pages[offset] = data
+        # total missing/0: fall back to the sequential loop, which paginates
+        # until an empty page instead of trusting the reported total.
 
     for idx in range(max_pages):
         offset = idx * limit
-        try:
-            r = None
-            for attempt in range(3):
-                r = requests.post(
-                    api_url,
-                    json={"appliedFacets":{},"limit":limit,"offset":offset,"searchText":""},
-                    headers={**HEADERS, "Content-Type":"application/json", "Accept":"application/json"},
-                    timeout=25,
-                )
-                if r.status_code not in (403, 429):
-                    break
-                time.sleep(2.0 * (attempt + 1))
-            r.raise_for_status()
-            data = r.json()
-        except Exception as e:
-            if jobs: break
-            return [], str(e)
+        if pages is not None:
+            if offset not in pages:
+                break
+            data = pages[offset]
+            if data is None:
+                if jobs: break
+                return [], "workday page fetch failed"
+        else:
+            try:
+                data = _fetch_page(offset)
+            except Exception as e:
+                if jobs: break
+                return [], str(e)
 
         postings = data.get("jobPostings",[])
         if not postings:
@@ -371,7 +409,7 @@ def fetch_workday(scrape, seen, company):
             job.pop("_detail_path", None)
         jobs.extend(page_jobs)
 
-        if bool(scrape.get("stop_on_seen", False) or scrape.get("sort", False)) and seen and page_jobs:
+        if stop_early and seen and page_jobs:
             all_seen = all(make_id(company, j["url"], j["title"]) in seen for j in page_jobs)
             consec_all_seen = consec_all_seen + 1 if all_seen else 0
             backfilling_dates = fetch_details and page_had_missing_posted and detail_count < detail_limit
@@ -380,6 +418,7 @@ def fetch_workday(scrape, seen, company):
 
         if total and offset + limit >= total:
             break
-        time.sleep(0.2)
+        if pages is None:
+            time.sleep(0.2)
 
     return jobs, None

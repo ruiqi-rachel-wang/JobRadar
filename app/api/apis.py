@@ -17,6 +17,7 @@ scan_type controls two fetcher-level behaviours:
 
 import os
 import re as _re
+import threading as _threading
 from statistics import median
 
 from .utils import (
@@ -337,41 +338,46 @@ def _title_core_tokens(title):
     return set(tokens)
 
 
-# Per-call cache: maps (seen_id, company_name) → list of peer candidate dicts.
-# Building this list is O(344K) — we do it once per company per _enrich batch.
+# Peer index: company (lowercase) → [(title_tokens, job_dict), …]. Built in a
+# single pass over the whole seen dict, then reused by every company in the
+# scan — the old per-company scan re-walked all ~500K seen entries 1,300+ times.
 _peer_cache: dict = {}
 _peer_cache_seen_id: int = 0
+_peer_cache_lock = _threading.Lock()
+
+def _build_peer_index(seen):
+    """Group peer-eligible jobs by company, pre-tokenizing titles once."""
+    for _attempt in range(5):
+        try:
+            snap = list(seen.values())
+            break
+        except RuntimeError:  # dict mutated mid-copy by a scan thread
+            import time as _t; _t.sleep(0.005 * (_attempt + 1))
+    else:
+        snap = []
+    index = {}
+    for item in snap:
+        if not isinstance(item, dict):
+            continue
+        if (item.get("exp_source") or "") not in {"text", "company_peer"}:
+            continue
+        if item.get("exp_min") is None and item.get("exp_max") is None:
+            continue
+        tokens = _title_core_tokens(item.get("title", ""))
+        if not tokens:
+            continue
+        index.setdefault((item.get("company") or "").lower(), []).append((tokens, item))
+    return index
 
 def _get_company_peers(company_name, seen):
-    """Return eligible peer jobs for company_name, cached for the current seen dict."""
+    """Return [(title_tokens, job)] peers for company_name from the cached index."""
     global _peer_cache, _peer_cache_seen_id
-    sid = id(seen)
-    if sid != _peer_cache_seen_id:
-        _peer_cache = {}
-        _peer_cache_seen_id = sid
-    key = (company_name or "").lower()
-    if key not in _peer_cache:
-        peers = []
-        for _attempt in range(5):
-            try:
-                _snap = list(seen.values())
-                break
-            except RuntimeError:
-                import time as _t; _t.sleep(0.005 * (_attempt + 1))
-        else:
-            _snap = []
-        for item in _snap:
-            if not isinstance(item, dict):
-                continue
-            if (item.get("company") or "").lower() != key:
-                continue
-            if (item.get("exp_source") or "") not in {"text", "company_peer"}:
-                continue
-            if item.get("exp_min") is None and item.get("exp_max") is None:
-                continue
-            peers.append(item)
-        _peer_cache[key] = peers
-    return _peer_cache[key]
+    with _peer_cache_lock:
+        sid = id(seen)
+        if sid != _peer_cache_seen_id:
+            _peer_cache = _build_peer_index(seen)
+            _peer_cache_seen_id = sid
+        return _peer_cache.get((company_name or "").lower(), [])
 
 
 def _peer_experience_estimate(company_name, title, seen):
@@ -383,10 +389,7 @@ def _peer_experience_estimate(company_name, title, seen):
         return {"min": None, "max": None, "label": "", "source": ""}
 
     candidates = []
-    for item in _get_company_peers(company_name, seen):
-        peer_tokens = _title_core_tokens(item.get("title", ""))
-        if not peer_tokens:
-            continue
+    for peer_tokens, item in _get_company_peers(company_name, seen):
         overlap = len(query_tokens & peer_tokens)
         score = overlap / max(len(query_tokens | peer_tokens), 1)
         if overlap >= 2 and score >= 0.35:
