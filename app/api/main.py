@@ -516,20 +516,30 @@ def _get_schedule() -> dict:
 
 
 def _queue_scheduled_scan(scan_type):
-    """Remember one missed scheduled slot so it runs after the current scan."""
-    current = (get_app_state("queued_scan_type") or "").strip()
-    # Freshness is the product promise; keep a queued fresh scan if both collide.
-    queued = "fresh" if "fresh" in {current, scan_type} else scan_type
-    set_app_state("queued_scan_type", queued)
+    """Remember missed scheduled slots so they run after the current scan.
+
+    Keep BOTH types when they collide (stored comma-separated). The old
+    keep-fresh-only rule silently discarded a queued full scan whenever a
+    fresh slot also fired while a scan was busy — full scans could starve
+    forever on days with long scans."""
+    queued = set(filter(None, (get_app_state("queued_scan_type") or "").split(",")))
+    queued.add(scan_type)
+    set_app_state("queued_scan_type", ",".join(sorted(queued & {"fresh", "full"})))
     set_app_state("queued_scan_queued_at", datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
 
 
 def _pop_queued_scan_type():
-    queued = (get_app_state("queued_scan_type") or "").strip()
-    if queued:
-        set_app_state("queued_scan_type", "")
+    queued = set(filter(None, (get_app_state("queued_scan_type") or "").split(",")))
+    queued &= {"fresh", "full"}
+    if not queued:
+        return ""
+    # Fresh first (freshness is the product promise); full runs on the next pop.
+    pick = "fresh" if "fresh" in queued else "full"
+    remaining = queued - {pick}
+    set_app_state("queued_scan_type", ",".join(sorted(remaining)))
+    if not remaining:
         set_app_state("queued_scan_queued_at", "")
-    return queued if queued in {"fresh", "full"} else ""
+    return pick
 
 
 def _try_run_scheduled():
@@ -567,6 +577,13 @@ def _schedule_loop():
         time.sleep(30)
         try:
             _try_run_scheduled()
+        except Exception:
+            pass
+        try:
+            # Also drain the missed-slot queue here. Draining only from a
+            # finishing scan's `finally` loses the queued scan whenever that
+            # single check hits a stale running-row or the app restarts.
+            _start_queued_scan_if_idle()
         except Exception:
             pass
 
@@ -617,6 +634,10 @@ def resume_scan_runner(scan_run):
 
 
 def _start_queued_scan_if_idle():
+    # Same staleness rule as start_scan: a scan "running" for 6h+ is wedged,
+    # not running — don't let it block queued scheduled scans forever.
+    if scan_state.get("running") and time.time() - float(scan_state.get("started_at") or 0) > 6 * 60 * 60:
+        scan_state.update(running=False, done=True)
     if scan_state.get("running"):
         return
     if running_scan_record():

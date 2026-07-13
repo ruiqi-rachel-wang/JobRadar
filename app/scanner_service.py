@@ -133,7 +133,12 @@ def run_scan(companies, scan_type="fresh", progress=None, on_scan_run_id=None,
         progress[i]["status"] = "scanning"
         t0 = time.monotonic()
         try:
-            start_company_scan_status(status_ids[i])
+            try:
+                start_company_scan_status(status_ids[i])
+            except Exception as exc:
+                # Bookkeeping write only — a transient SQLite lock here must
+                # not fail the company's whole scan.
+                logging.warning("scan: status write failed for %s: %s", company.get("name"), exc)
             blocked_until = _blocked_until(company["name"])
             if blocked_until and blocked_until > datetime.now():
                 return (
