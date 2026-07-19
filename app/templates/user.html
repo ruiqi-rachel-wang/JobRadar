@@ -73,7 +73,9 @@
     <button class="tb-login-btn" type="submit">Upgrade</button>
   </form>
   {% endif %}
-  <a href="/logout" class="tb-logout-btn">Sign out</a>
+  <form method="post" action="/logout" style="margin:0">
+    <button type="submit" class="tb-logout-btn">Sign out</button>
+  </form>
   {% endif %}
 </div>
 

@@ -91,6 +91,46 @@ _EMAIL_ALERT_LOCK = threading.Lock()
 if stripe and STRIPE_SECRET_KEY:
     stripe.api_key = STRIPE_SECRET_KEY
 
+
+@app.after_request
+def add_security_headers(response):
+    """Apply browser protections without blocking JobDrop's existing inline UI."""
+    response.headers.setdefault("X-Content-Type-Options", "nosniff")
+    response.headers.setdefault("X-Frame-Options", "DENY")
+    response.headers.setdefault("Referrer-Policy", "strict-origin-when-cross-origin")
+    response.headers.setdefault(
+        "Content-Security-Policy",
+        "frame-ancestors 'none'; base-uri 'self'; object-src 'none'",
+    )
+    response.headers.setdefault(
+        "Permissions-Policy",
+        "camera=(), microphone=(), geolocation=()",
+    )
+    if request.is_secure:
+        response.headers.setdefault(
+            "Strict-Transport-Security",
+            "max-age=31536000; includeSubDomains",
+        )
+    return response
+
+
+@app.before_request
+def reject_cross_site_writes():
+    """Reject browser-initiated cross-site mutations while allowing webhooks."""
+    if request.method not in {"POST", "PUT", "PATCH", "DELETE"}:
+        return None
+    if request.path == "/stripe/webhook":
+        return None
+
+    fetch_site = request.headers.get("Sec-Fetch-Site", "").lower()
+    origin = request.headers.get("Origin", "")
+    expected_origin = request.host_url.rstrip("/")
+    if fetch_site == "cross-site" or (
+        origin and origin.rstrip("/") != expected_origin
+    ):
+        return jsonify(error="Cross-site request rejected."), 403
+    return None
+
 def _is_admin():
     return bool(session.get("admin_ok"))
 
@@ -1207,7 +1247,7 @@ def signup():
         return redirect(url_for("app_view"))
     return render_template("auth.html", mode="signup", error="")
 
-@app.route("/logout", methods=["POST", "GET"])
+@app.route("/logout", methods=["POST"])
 def logout():
     session.clear()
     return redirect(url_for("public_view"))

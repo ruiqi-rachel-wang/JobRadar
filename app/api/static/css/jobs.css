@@ -29,12 +29,15 @@
   flex-shrink: 0;
 }
 .tb-logout-btn {
+  background: transparent;
+  font-family: inherit;
   font-size: 12px;
   padding: 5px 12px;
   border-radius: var(--r);
   color: rgba(255,255,255,.6);
   text-decoration: none;
   border: 1px solid rgba(255,255,255,.2);
+  cursor: pointer;
   transition: all .12s;
 }
 .tb-logout-btn:hover { color: white; border-color: rgba(255,255,255,.4); }

@@ -252,7 +252,9 @@ button.kpi:hover { border-color: var(--line-3); }
   <button class="nav-pill"       id="atab-users" onclick="setAdminTab('users')">Users</button>
   <span class="tb-spring"></span>
   <a href="/app" class="nav-pill" style="color:rgba(255,255,255,.5);font-size:12px">Browse Jobs →</a>
-  <a href="/logout" class="tb-logout-btn">Sign out</a>
+  <form method="post" action="/logout" style="margin:0">
+    <button type="submit" class="tb-logout-btn">Sign out</button>
+  </form>
 </div>
 
 <div class="shell" style="position:relative">

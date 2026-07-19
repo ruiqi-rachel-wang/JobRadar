@@ -73,6 +73,39 @@ def _fill_reader_descriptions(jobs, seen, scrape):
             if description:
                 job["description"] = description
 
+
+def _fill_detail_titles(jobs, scrape):
+    """Replace concatenated card labels with titles from public detail pages."""
+    limit = max(0, int(scrape.get("max_title_details", 100)))
+    targets = [job for job in jobs if job.get("url")][:limit]
+    if not targets:
+        return
+
+    def fetch_one(job):
+        try:
+            response = requests.get(job["url"], headers=HEADERS, timeout=25)
+            response.raise_for_status()
+            soup = BeautifulSoup(response.text, "lxml")
+            heading = soup.select_one(scrape.get("detail_title_selector", "h1"))
+            title = norm(heading.get_text(" ", strip=True)) if heading else ""
+            if not title and soup.title:
+                title = norm(soup.title.get_text(" ", strip=True)).split(" | ", 1)[0].strip()
+            if not title or re.search(
+                r"^(apply|view job|search jobs|learn more|see details)$",
+                title,
+                re.I,
+            ):
+                return job, ""
+            return job, title
+        except Exception:
+            return job, ""
+
+    workers = max(1, min(8, int(scrape.get("title_detail_workers", 6))))
+    with concurrent.futures.ThreadPoolExecutor(max_workers=workers) as executor:
+        for job, title in executor.map(fetch_one, targets):
+            if title:
+                job["title"] = title
+
 def _fetch_reader_markdown(scrape, seen, company, source):
     """Fallback for public careers pages that block direct HTTP/browser scraping."""
     list_url = (scrape.get("list_url") or "").strip()
@@ -127,8 +160,13 @@ def _fetch_reader_markdown(scrape, seen, company, source):
                     if not re.search(r"\d{2,}", suffix):
                         continue
                 title = norm(re.sub(r"!\[[^\]]*\]", " ", title))
-                if not title or re.search(r"^(apply|view job|search jobs|saved jobs|learn more)$", title, re.I):
+                if not title or re.search(r"^(apply|apply now|view job|search jobs|saved jobs|learn more|read more|see details|job details)$", title, re.I):
                     continue
+                title_regex = scrape.get("title_regex")
+                if title_regex:
+                    title_match = re.search(title_regex, title)
+                    if title_match:
+                        title = norm(title_match.group(1))
                 nearby = " ".join(lines[idx:idx + 8])
                 loc = ""
                 if line.lstrip().startswith("|"):
@@ -504,7 +542,9 @@ def fetch_playwright(scrape, seen, company):
     if not jobs and scrape.get("list_url"):
         reader_jobs, reader_err = _fetch_reader_markdown(scrape, seen, company, "playwright")
         if reader_jobs:
-            return reader_jobs, None
+            jobs, err = reader_jobs, None
         if err is None:
             err = reader_err
+    if jobs and scrape.get("fetch_titles_from_details"):
+        _fill_detail_titles(jobs, scrape)
     return jobs, err

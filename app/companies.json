@@ -36,7 +36,6 @@
       "source_url": "Linked source employer target set",
       "no_wb_id": null,
       "locations": "",
-      "process": "",
       "employment_type": ""
     },
     "tags": [
@@ -59,8 +58,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Chicago, Illinois",
-      "process": "Collaborative pair-programming exercise done through video chat that's representative of the responsibilities of the job then a take-home programming task."
+      "locations": "Chicago, Illinois"
     },
     "tags": [
       "Interview Friendly"
@@ -80,8 +78,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Chicago, IL / London, UK / Los Angeles, CA / New York, NY",
-      "process": "Take home code challenge, discussion, pair programming session"
+      "locations": "Chicago, IL / London, UK / Los Angeles, CA / New York, NY"
     },
     "tags": [
       "Interview Friendly"
@@ -124,8 +121,7 @@
       "no_whiteboard": true,
       "source": "Hiring Without Whiteboards",
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
-      "locations": "Lima, PE / Remote",
-      "process": "Coding interview, Technical interview (Backlog Refinement + System Design), Leadership interview (Behavioural)"
+      "locations": "Lima, PE / Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -167,8 +163,7 @@
       "no_whiteboard": true,
       "source": "Hiring Without Whiteboards",
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
-      "locations": "San Francisco, CA / Los Angeles, CA / New York, NY / Kuala Lumpur, Malaysia",
-      "process": "Technical phone discussion with architecture manager, followed by behavioral interview focusing on soft skills"
+      "locations": "San Francisco, CA / Los Angeles, CA / New York, NY / Kuala Lumpur, Malaysia"
     },
     "tags": [
       "Interview Friendly"
@@ -189,12 +184,13 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Cambridge, UK / San Francisco, CA / Remote",
-      "process": "Take home project, then a pair-programming and discussion onsite / Skype round."
+      "locations": "Cambridge, UK / San Francisco, CA / Remote"
     },
     "tags": [
       "Interview Friendly"
-    ]
+    ],
+    "scan_enabled": false,
+    "note": "robots.txt on www.accredible.com disallows all crawling (checked 2026-07-18)"
   },
   {
     "name": "AcuityMD",
@@ -222,8 +218,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Remote / Washington, DC",
-      "process": "Technical take-home assignment, followed by multiple video calls that are discussions of technical background and experience."
+      "locations": "Remote / Washington, DC"
     },
     "tags": [
       "Interview Friendly"
@@ -259,7 +254,6 @@
       "source_url": "Linked source employer target set",
       "no_wb_id": null,
       "locations": "",
-      "process": "",
       "employment_type": ""
     },
     "tags": [
@@ -280,8 +274,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Gainesville, FL / Remote",
-      "process": "Intro phone call with hiring manager, take-home assignment, (mostly) non-technical on-site with team/leadership"
+      "locations": "Gainesville, FL / Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -302,7 +295,6 @@
       "no_whiteboard": false,
       "difficulty": "medium",
       "rounds": "4-5",
-      "process": "Coding, system design, and behavioral. Creative product sensibility valued for product roles.",
       "source": "Public knowledge"
     }
   },
@@ -322,7 +314,6 @@
       "source_url": "Linked source employer target set",
       "no_wb_id": null,
       "locations": "",
-      "process": "",
       "employment_type": ""
     },
     "tags": [
@@ -386,7 +377,6 @@
       "source_url": "Linked source employer target set",
       "no_wb_id": null,
       "locations": "",
-      "process": "",
       "employment_type": ""
     },
     "tags": [
@@ -407,8 +397,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Remote / Los Angeles, CA / Florianópolis, Brazil",
-      "process": "Live coding of a task you'd do daily"
+      "locations": "Remote / Los Angeles, CA / Florianópolis, Brazil"
     },
     "tags": [
       "Interview Friendly"
@@ -482,8 +471,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "San Francisco, CA / Bangalore, India / Remote",
-      "process": "Intro Call with HR or EMs, small take-home project, two tech rounds with Airbase Engineers (based on real world engineering problems), followed by a final values round with the Founder or Director of Engineering."
+      "locations": "San Francisco, CA / Bangalore, India / Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -504,7 +492,6 @@
       "no_whiteboard": false,
       "difficulty": "hard",
       "rounds": "5-6",
-      "process": "Coding, system design, cross-functional collaboration, and cultural interviews. Strong emphasis on mission alignment and cross-functional skills.",
       "source": "Public knowledge"
     }
   },
@@ -651,8 +638,7 @@
       "no_whiteboard": true,
       "source": "Hiring Without Whiteboards",
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
-      "locations": "Paris, France / San Francisco, CA",
-      "process": "Takehome project & Onsite discussions and presentation"
+      "locations": "Paris, France / San Francisco, CA"
     },
     "tags": [
       "Interview Friendly"
@@ -747,8 +733,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "London, UK / New York, NY / Remote",
-      "process": "Initial interview, pair programming then final round with general technical questions"
+      "locations": "London, UK / New York, NY / Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -781,7 +766,6 @@
       "source_url": "Linked source employer target set",
       "no_wb_id": null,
       "locations": "",
-      "process": "",
       "employment_type": ""
     },
     "tags": [
@@ -842,7 +826,6 @@
       "no_whiteboard": false,
       "difficulty": "medium",
       "rounds": "4",
-      "process": "Semiconductor/hardware domain knowledge, coding, and behavioral.",
       "source": "Public knowledge"
     }
   },
@@ -964,8 +947,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Remote / Dallas, TX",
-      "process": "Technical discussion about the technologies they are currently using. Going over background and resume."
+      "locations": "Remote / Dallas, TX"
     },
     "tags": [
       "Interview Friendly"
@@ -986,7 +968,6 @@
       "no_whiteboard": false,
       "difficulty": "hard",
       "rounds": "4-5",
-      "process": "Systems-level coding, hardware/embedded knowledge, and national security mission fit. Very high bar.",
       "source": "Public knowledge"
     }
   },
@@ -1040,7 +1021,6 @@
       "no_whiteboard": false,
       "difficulty": "hard",
       "rounds": "4-5",
-      "process": "Technical and ML/safety focused. Research-depth interviews. Mission and safety alignment evaluated.",
       "source": "Public knowledge"
     }
   },
@@ -1315,7 +1295,6 @@
       "source_url": "University target set",
       "no_wb_id": null,
       "locations": "",
-      "process": "",
       "employment_type": ""
     },
     "tags": [
@@ -1373,8 +1352,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Remote",
-      "process": "Take-home project & pair program on a problem similar to daily work"
+      "locations": "Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -1446,8 +1424,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Bangalore, India",
-      "process": "A take-home exercise followed by two rounds of interviews: the first with a team member focusing on technical skills and practical problem-solving, and the second with the Head of Engineering, also centered on technical expertise and real-world challenges."
+      "locations": "Bangalore, India"
     },
     "tags": [
       "Interview Friendly"
@@ -1551,7 +1528,6 @@
       "no_whiteboard": false,
       "difficulty": "medium",
       "rounds": "4",
-      "process": "Coding (accessible), system design, and values-fit interviews. Known for thorough but fair process.",
       "source": "Public knowledge"
     }
   },
@@ -1601,8 +1577,7 @@
       "no_whiteboard": true,
       "source": "Hiring Without Whiteboards",
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
-      "locations": "New York, NY / San Francisco, CA",
-      "process": "Simplified real-world coding task on Coderpad.io, followed by a few hours onsite writing code in our actual codebase."
+      "locations": "New York, NY / San Francisco, CA"
     },
     "tags": [
       "Interview Friendly"
@@ -1655,8 +1630,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Remote",
-      "process": "short take-home code test, then a part-time, paid project."
+      "locations": "Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -1749,8 +1723,7 @@
       "no_whiteboard": true,
       "source": "Hiring Without Whiteboards",
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
-      "locations": "New York, NY",
-      "process": "Take-home exercises and pair-programming with the team."
+      "locations": "New York, NY"
     },
     "tags": [
       "Interview Friendly"
@@ -1788,7 +1761,6 @@
       "no_whiteboard": false,
       "difficulty": "hard",
       "rounds": "2-3",
-      "process": "Case interviews and behavioral/fit interviews. Written case component for some offices. No coding for consulting roles.",
       "source": "Public knowledge"
     }
   },
@@ -1864,8 +1836,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Chelmsford, MA / Remote",
-      "process": "Phone screen, remote pair programming session, technical discussion interview, culture fit interview"
+      "locations": "Chelmsford, MA / Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -1898,7 +1869,6 @@
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
       "locations": "Chicago, IL / Remote",
-      "process": "",
       "difficulty": "easy",
       "rounds": "2-3"
     },
@@ -1999,8 +1969,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Madison, WI",
-      "process": "Interviews and pair programming on personal projects"
+      "locations": "Madison, WI"
     },
     "tags": [
       "Interview Friendly"
@@ -2044,8 +2013,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "New York, NY",
-      "process": "Phone interview followed by on-site pair programming to simulate a Betterment feature build."
+      "locations": "New York, NY"
     },
     "tags": [
       "Interview Friendly"
@@ -2066,8 +2034,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Remote",
-      "process": "Phone discussion with a developer and the CEO"
+      "locations": "Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -2128,8 +2095,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Cracow, Poland / Remote",
-      "process": "HR talk, take-home task, tech interview, culture fit interview"
+      "locations": "Cracow, Poland / Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -2148,8 +2114,7 @@
       "no_whiteboard": true,
       "source": "Hiring Without Whiteboards",
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
-      "locations": "Mexico City, Mexico / Remote",
-      "process": "Intro phone or hangouts/skype call with People team, take home project followed by walkthrough of your code and some tech questions focused on your experience, founders video call with one of the founders"
+      "locations": "Mexico City, Mexico / Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -2223,7 +2188,6 @@
       "no_whiteboard": false,
       "difficulty": "medium",
       "rounds": "4",
-      "process": "Coding, system design, and mission-alignment interviews. Bitcoin/crypto knowledge advantageous.",
       "source": "Public knowledge"
     }
   },
@@ -2252,8 +2216,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Remote",
-      "process": "Discussion, pair-programming exercise"
+      "locations": "Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -2297,8 +2260,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Boston, MA / Remote",
-      "process": "Pair programming with personal laptop on typical problem seen at work"
+      "locations": "Boston, MA / Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -2331,8 +2293,7 @@
       "no_whiteboard": true,
       "source": "Hiring Without Whiteboards",
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
-      "locations": "Boulder, CO",
-      "process": "Values & Tech focused interview - Process: 30 minute with HR, 45 minute Google Meet interview with 2 team members, ~2-4 hour take-home project, on-site interview involving 2 values-alignment interviews and 1 technical interview going over your take home project"
+      "locations": "Boulder, CO"
     },
     "tags": [
       "Interview Friendly"
@@ -2364,8 +2325,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Charleston, SC / Atlanta, GA / Remote",
-      "process": "Conversational in-person interviews with potential team members and managers that revolve around past experience and how that could be applied to future work"
+      "locations": "Charleston, SC / Atlanta, GA / Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -2397,7 +2357,6 @@
       "no_whiteboard": false,
       "difficulty": "hard",
       "rounds": "2-3",
-      "process": "Case interviews, written case (Casey), and behavioral. No coding for consulting roles.",
       "source": "Public knowledge"
     }
   },
@@ -2515,7 +2474,6 @@
       "no_whiteboard": false,
       "difficulty": "medium",
       "rounds": "4",
-      "process": "Coding, system design, and behavioral. Fast growth startup culture assessed.",
       "source": "Public knowledge"
     }
   },
@@ -2568,7 +2526,6 @@
       "source_url": "University target set",
       "no_wb_id": null,
       "locations": "",
-      "process": "",
       "employment_type": ""
     },
     "tags": [
@@ -2600,8 +2557,7 @@
       "no_whiteboard": true,
       "source": "Hiring Without Whiteboards",
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
-      "locations": "Remote",
-      "process": "Interviews over video call, code walkthrough of real code focussing on decisions and reasoning, then a 45 day full time, fully paid contract project working on production code."
+      "locations": "Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -2621,8 +2577,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "San Francisco, CA / Sydney, NSW",
-      "process": "Take home exercise, half-day onsite walking through code, and pair programming."
+      "locations": "San Francisco, CA / Sydney, NSW"
     },
     "tags": [
       "Interview Friendly"
@@ -2643,8 +2598,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Remote",
-      "process": "No CV required. Anonymized writing assessments. Video chat with founder and future team member about you, the job, and the company. Last video chat is a pair programming for technical roles or more in-depth chat for non-technical roles. Offer."
+      "locations": "Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -2674,8 +2628,7 @@
       "no_whiteboard": true,
       "source": "Hiring Without Whiteboards",
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
-      "locations": "New York City, NY / Remote",
-      "process": "Half day pair programming on a task for production or one of our Open Source projects. We'll also buy you lunch with the team."
+      "locations": "New York City, NY / Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -2853,7 +2806,9 @@
     "scrape": {
       "mode": "avature",
       "list_url": "https://carlyle.avature.net/externalcareers/SearchJobs"
-    }
+    },
+    "scan_enabled": false,
+    "note": "robots.txt on carlyle.avature.net disallows all crawling (checked 2026-07-18)"
   },
   {
     "name": "Carnegie Mellon University",
@@ -2871,7 +2826,6 @@
       "source_url": "University target set",
       "no_wb_id": null,
       "locations": "",
-      "process": "",
       "employment_type": ""
     },
     "tags": [
@@ -2895,7 +2849,6 @@
       "source_url": "Linked source employer target set",
       "no_wb_id": null,
       "locations": "",
-      "process": "",
       "employment_type": ""
     },
     "tags": [
@@ -3111,8 +3064,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "San Antonio, TX / Remote",
-      "process": "Take-home project & pair on a problem similar to daily work"
+      "locations": "San Antonio, TX / Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -3173,8 +3125,7 @@
       "no_whiteboard": true,
       "source": "Hiring Without Whiteboards",
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
-      "locations": "San Francisco, CA / Denver, CO / Orlando, FL / Remote",
-      "process": "1 hour CoderPad problem, if pass, then four 1 hour interviews: API Design using your computer and languages, Refactoring in language of your choice, Object Design (no coding), System Architecture (no coding) and sometimes a 30 minute manager chat [read more](https://medium.com/checkr/an-engineers-guide-to-interviewing-at-checkr-fc28f9e8014b)"
+      "locations": "San Francisco, CA / Denver, CO / Orlando, FL / Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -3195,8 +3146,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Seattle, WA / Remote",
-      "process": "Take home small project testing the ability to implement real world problems. Phone/Zoom interviews discussing the said project. Checking if the candidate would be a good cultural fit."
+      "locations": "Seattle, WA / Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -3217,8 +3167,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Denver, CO / Santa Barbara, CA / Camarillo, CA / Dulles, VA / California, MD / Remote",
-      "process": "Phone screen (30 minutes), take home at leisure question based on real development followed by in person review of solution and general technical questions with actual team and opportunity for you to ask questions and provide feedback ( 2-3 hours)"
+      "locations": "Denver, CO / Santa Barbara, CA / Camarillo, CA / Dulles, VA / California, MD / Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -3252,10 +3201,11 @@
       "Food & Beverage"
     ],
     "scrape": {
-      "mode": "icims",
-      "icims_slug": "https://careers-chickfila.icims.com",
-      "list_url": "https://careers-chickfila.icims.com/jobs/search",
-      "include": "careers-chickfila.icims.com/jobs/"
+      "mode": "jobsapi",
+      "api_url": "https://careers.chick-fil-a.com/api/jobs",
+      "job_url_prefix": "https://careers.chick-fil-a.com/corporate/jobs/",
+      "page_param": "page",
+      "list_url": "https://careers.chick-fil-a.com/corporate/jobs"
     },
     "interview": {
       "no_whiteboard": true,
@@ -3263,12 +3213,12 @@
       "source_url": "Linked source employer target set",
       "no_wb_id": null,
       "locations": "",
-      "process": "",
       "employment_type": ""
     },
     "tags": [
       "Interview Friendly"
-    ]
+    ],
+    "note": "Moved off direct iCIMS (robots-blocked) to careers.chick-fil-a.com Jibe API 2026-07-18"
   },
   {
     "name": "Chime",
@@ -3283,7 +3233,6 @@
       "no_whiteboard": false,
       "difficulty": "medium",
       "rounds": "4",
-      "process": "Coding and system design. Fast-moving startup culture evaluated.",
       "source": "Public knowledge"
     }
   },
@@ -3346,8 +3295,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "New York, NY / London, UK / Tokyo, Japan / Campinas, Brazil / Shanghai, China / Medellín, Colombia / Lisbon, Portugal / Melbourne, Australia / Remote",
-      "process": "Video screening followed by a technical interview focusing on software engineering skills and finally, a feedback interview with the hiring manager."
+      "locations": "New York, NY / London, UK / Tokyo, Japan / Campinas, Brazil / Shanghai, China / Medellín, Colombia / Lisbon, Portugal / Melbourne, Australia / Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -3413,8 +3361,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "San Francisco, CA / Remote",
-      "process": "Take-home project and discussion, followed by on-site interview that includes pair programming on actual CircleCI bugs/feature requests."
+      "locations": "San Francisco, CA / Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -3455,7 +3402,6 @@
       "no_whiteboard": false,
       "difficulty": "hard",
       "rounds": "3-4",
-      "process": "Coding, quantitative problem solving, and trading-focused questions. Extremely competitive.",
       "source": "Public knowledge"
     },
     "scan_enabled": false,
@@ -3513,8 +3459,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Boston, MA",
-      "process": "Take-home project and in-person or phone/Skype interviews"
+      "locations": "Boston, MA"
     },
     "tags": [
       "Interview Friendly"
@@ -3534,8 +3479,7 @@
       "no_whiteboard": true,
       "source": "Hiring Without Whiteboards",
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
-      "locations": "Chicago, IL",
-      "process": "Take-home project and discussion via Skype, followed by pair programming exercise"
+      "locations": "Chicago, IL"
     },
     "tags": [
       "Interview Friendly"
@@ -3555,8 +3499,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Los Angeles / CA & Westlake Village, CA",
-      "process": "Phone coding design exercise (no algorithms), followed by an on-site final interview that includes pair programming on a realistic object-oriented design problem"
+      "locations": "Los Angeles / CA & Westlake Village, CA"
     },
     "tags": [
       "Interview Friendly"
@@ -3576,8 +3519,7 @@
       "no_whiteboard": true,
       "source": "Hiring Without Whiteboards",
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
-      "locations": "San Francisco, CA",
-      "process": "Phone conversation around technical background and experience, followed by take-home project, pair programming and discussion"
+      "locations": "San Francisco, CA"
     },
     "tags": [
       "Interview Friendly"
@@ -3597,8 +3539,7 @@
       "no_whiteboard": true,
       "source": "Hiring Without Whiteboards",
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
-      "locations": "Bangalore, India / Remote",
-      "process": "Culture fit Interview, Basic Tech Round, Design Interview"
+      "locations": "Bangalore, India / Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -3712,8 +3653,7 @@
       "no_whiteboard": true,
       "source": "Hiring Without Whiteboards",
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
-      "locations": "Remote",
-      "process": "Interviews and take home project."
+      "locations": "Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -3733,8 +3673,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Remote",
-      "process": "Multiple interviews, discussion of technical background and experiences."
+      "locations": "Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -3754,7 +3693,6 @@
       "no_whiteboard": false,
       "difficulty": "medium",
       "rounds": "4",
-      "process": "Coding, networking/systems knowledge, and behavioral. Values curiosity and depth.",
       "source": "Public knowledge"
     }
   },
@@ -3911,8 +3849,7 @@
       "no_whiteboard": true,
       "source": "Hiring Without Whiteboards",
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
-      "locations": "Cambridge, UK / Montreal, Canada / Remote",
-      "process": "On-site or video interview, discussion of technical experience and sometimes approach for tackling a hypothetical problem."
+      "locations": "Cambridge, UK / Montreal, Canada / Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -4099,8 +4036,7 @@
       "no_whiteboard": true,
       "source": "Hiring Without Whiteboards",
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
-      "locations": "Berlin, Germany & SF, USA",
-      "process": "Multiple interviews, discussion of technical background & live coding challenge (you can use the internet)."
+      "locations": "Berlin, Germany & SF, USA"
     },
     "tags": [
       "Interview Friendly"
@@ -4206,7 +4142,6 @@
       "source_url": "University target set",
       "no_wb_id": null,
       "locations": "",
-      "process": "",
       "employment_type": ""
     },
     "tags": [
@@ -4250,8 +4185,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "London, UK / Kyiv, UA / Remote",
-      "process": "Initial screening video call, technical take-home challenge, technical interview with the team about real-world tasks and candidates' day-to-day work (programming, networking, OS, SSDLC, security)."
+      "locations": "London, UK / Kyiv, UA / Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -4360,7 +4294,6 @@
       "no_whiteboard": false,
       "difficulty": "medium",
       "rounds": "4-5",
-      "process": "Technical coding and security-domain knowledge, behavioral rounds.",
       "source": "Public knowledge"
     }
   },
@@ -4413,8 +4346,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Austin, TX",
-      "process": "Paid take-home project"
+      "locations": "Austin, TX"
     },
     "tags": [
       "Interview Friendly"
@@ -4486,7 +4418,6 @@
       "no_whiteboard": false,
       "difficulty": "hard",
       "rounds": "4-5",
-      "process": "Technical coding, quantitative reasoning, and systems design. Known for rigorous selection.",
       "source": "Public knowledge"
     },
     "scan_enabled": false,
@@ -4558,7 +4489,9 @@
         "all_jobs.atom"
       ],
       "verify_ssl": false
-    }
+    },
+    "scan_enabled": false,
+    "note": "robots.txt on searchjobs.dartmouth.edu (PeopleAdmin) disallows all crawling (checked 2026-07-18)"
   },
   {
     "name": "Data Theorem",
@@ -4575,8 +4508,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Palo Alto, CA / Paris, Fr / London, United Kingdom / Remote",
-      "process": "Phone interview, then a take home project and finally in-person interview."
+      "locations": "Palo Alto, CA / Paris, Fr / London, United Kingdom / Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -4597,7 +4529,6 @@
       "no_whiteboard": false,
       "difficulty": "hard",
       "rounds": "4-5",
-      "process": "Technical phone screens, live coding, system design. High engineering bar, data-focused roles emphasise distributed systems.",
       "source": "Public knowledge"
     }
   },
@@ -4615,7 +4546,6 @@
       "no_whiteboard": false,
       "difficulty": "medium",
       "rounds": "4-5",
-      "process": "Technical coding (medium difficulty), observability/systems knowledge, and behavioral rounds.",
       "source": "Public knowledge"
     }
   },
@@ -4644,8 +4574,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Chicago, IL",
-      "process": "After submitting an application, selected applicants are moved on to a round of interviews and will be asked to submit a piece of code for review. If you don’t have any code you can share, DataMade will provide a short exercise for you to complete. An in-person (or remote) interview will be scheduled to go over your background, what draws you to DataMade, and your code sample."
+      "locations": "Chicago, IL"
     },
     "tags": [
       "Interview Friendly"
@@ -4792,7 +4721,6 @@
       "no_whiteboard": false,
       "difficulty": "medium",
       "rounds": "2-3",
-      "process": "Case interviews (for consulting), technical assessment for tech roles, and behavioral. Varies heavily by practice.",
       "source": "Public knowledge"
     }
   },
@@ -4922,7 +4850,6 @@
       "no_whiteboard": false,
       "difficulty": "medium",
       "rounds": "4",
-      "process": "Coding, system design, and behavioral. Values community and product-mindedness.",
       "source": "Public knowledge"
     }
   },
@@ -4999,7 +4926,6 @@
       "no_whiteboard": false,
       "difficulty": "medium",
       "rounds": "4-5",
-      "process": "Coding, system design (operations/logistics-heavy), and behavioral. Strong analytical bar.",
       "source": "Public knowledge"
     }
   },
@@ -5072,8 +4998,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Mountain View, CA",
-      "process": "Hackerrank test (but not CS trivia, it's real product problems) & on-site/take-home project w/ presentation"
+      "locations": "Mountain View, CA"
     },
     "tags": [
       "Interview Friendly"
@@ -5094,8 +5019,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "San Francisco, CA",
-      "process": "Pair program on a problem similar to daily work"
+      "locations": "San Francisco, CA"
     },
     "tags": [
       "Interview Friendly"
@@ -5115,7 +5039,6 @@
       "no_whiteboard": false,
       "difficulty": "hard",
       "rounds": "4-5",
-      "process": "Live coding (above-average difficulty), system design, and product sense. High bar.",
       "source": "Public knowledge"
     }
   },
@@ -5144,8 +5067,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Dubai, UAE / Sindh, Pakistan / Cluj County, Romania",
-      "process": "Take home assignment, general technical questions, pair programming with engineers or tech leads"
+      "locations": "Dubai, UAE / Sindh, Pakistan / Cluj County, Romania"
     },
     "tags": [
       "Interview Friendly"
@@ -5252,9 +5174,12 @@
       "Developer Tools"
     ],
     "scrape": {
-      "mode": "successfactors",
-      "list_url": "https://career41.sapsf.com/careers?company=dynatracel"
-    }
+      "mode": "playwright",
+      "list_url": "https://www.dynatrace.com/careers/jobs/",
+      "include": "dynatrace.com/careers/jobs/",
+      "fetch_titles_from_details": true
+    },
+    "note": "SuccessFactors host robots-blocked; scrape own careers site instead 2026-07-18"
   },
   {
     "name": "eBay",
@@ -5282,8 +5207,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Boston, MA / Remote",
-      "process": "Meet the entire team, share examples of previous work and pair with one team member"
+      "locations": "Boston, MA / Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -5405,8 +5329,7 @@
       "no_whiteboard": true,
       "source": "Hiring Without Whiteboards",
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
-      "locations": "Reston, VA, USA",
-      "process": "Discussion of real world problems (from resume, if possible)"
+      "locations": "Reston, VA, USA"
     },
     "tags": [
       "Interview Friendly"
@@ -5437,8 +5360,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Minneapolis, MN",
-      "process": "Phone intro, discuss recent project, short take home project (4h max) with code review, real world open ended questions"
+      "locations": "Minneapolis, MN"
     },
     "tags": [
       "Interview Friendly"
@@ -5488,7 +5410,6 @@
       "source_url": "University target set",
       "no_wb_id": null,
       "locations": "",
-      "process": "",
       "employment_type": ""
     },
     "tags": [
@@ -5535,8 +5456,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "New York, NY / Johnson City, TN / Remote",
-      "process": "Video interview with senior technical management followed by 2-hour scheduled take-home project similar to work done for our clients."
+      "locations": "New York, NY / Johnson City, TN / Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -5557,8 +5477,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Hamburg, Germany",
-      "process": "Remote technical interview with an Engineering Manager, followed by a practical coding challenge implemented in 5 hours, ending with a technical discussion with the team on the produced code either remotely or on-site based on geographical practicality."
+      "locations": "Hamburg, Germany"
     },
     "tags": [
       "Interview Friendly"
@@ -5578,8 +5497,7 @@
       "no_whiteboard": true,
       "source": "Hiring Without Whiteboards",
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
-      "locations": "New York, NY",
-      "process": "2-part takehome project, followed by a pair programming exercise"
+      "locations": "New York, NY"
     },
     "tags": [
       "Interview Friendly"
@@ -5699,7 +5617,9 @@
       "list_url": "https://careers.elcompanies.com/careers",
       "eightfold_domain": "elcompanies.com",
       "fallback": "playwright",
-      "include": "careers.elcompanies.com/careers"
+      "include": "careers.elcompanies.com/careers/job/",
+      "try_load_more": true,
+      "fetch_titles_from_details": true
     }
   },
   {
@@ -5830,8 +5750,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "San Francisco, CA / Dallas, TX / Remote",
-      "process": "Phone call, a take home project similar to making a PR at work, then a meet & greet with the team."
+      "locations": "San Francisco, CA / Dallas, TX / Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -5876,8 +5795,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Milan, Italy / Cagliari, Italy / Remote",
-      "process": "Initial call/Skype interview with HR. Tech interview about OOP concepts, HTTP and REST API design questions with 2 engineers. Brief talk with VP of Engineering or CTO."
+      "locations": "Milan, Italy / Cagliari, Italy / Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -5930,8 +5848,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Remote",
-      "process": "Start with a brief talk with CTO or VP of Engineering, take home coding challenge, then remote interviews with several people on the engineering team"
+      "locations": "Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -5965,7 +5882,6 @@
       "source_url": "Linked source employer target set",
       "no_wb_id": null,
       "locations": "",
-      "process": "",
       "employment_type": ""
     },
     "tags": [
@@ -6076,7 +5992,6 @@
       "no_whiteboard": false,
       "difficulty": "hard",
       "rounds": "4-5",
-      "process": "Technical take-home project, live coding, system design, and craft portfolio review for design roles. High craft bar.",
       "source": "Public knowledge"
     }
   },
@@ -6253,8 +6168,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Cambridge, UK / Berlin, Germany / Remote",
-      "process": "Reach out to us by email or on Slack with your CV. You'll receive a written interview which should take 15min to 30min to complete, after which we'll schedule at most 2x technical video interviews with a potential take-home assignment in between. Alternatively, you share the Open-Source code you have written so we can discuss that."
+      "locations": "Cambridge, UK / Berlin, Germany / Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -6296,8 +6210,7 @@
       "no_whiteboard": true,
       "source": "Hiring Without Whiteboards",
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
-      "locations": "Remote",
-      "process": "Phone call, async questions regarding expectations and past experience, interview regarding communication and principles, async work sample, interview and AMA with CTO, interview with one of the founders"
+      "locations": "Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -6340,8 +6253,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Remote",
-      "process": "Preliminary call, take-home project, three stage interview (code review, technical assessment and debugging exercise)"
+      "locations": "Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -6371,8 +6283,7 @@
       "no_whiteboard": true,
       "source": "Hiring Without Whiteboards",
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
-      "locations": "Seattle, WA; London, UK; Remote",
-      "process": "Take-home project, remote pair programming, discussion on-site or remote"
+      "locations": "Seattle, WA; London, UK; Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -6427,8 +6338,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Mumbai, India / Remote",
-      "process": "Take-home project, a short pair programming exercise, discussion and interview with members of the Engineering team."
+      "locations": "Mumbai, India / Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -6450,7 +6360,6 @@
       "source_url": "Linked source employer target set",
       "no_wb_id": null,
       "locations": "",
-      "process": "",
       "employment_type": ""
     },
     "tags": [
@@ -6498,7 +6407,9 @@
     "scrape": {
       "mode": "icims",
       "icims_slug": "https://careers-freshdirect.icims.com"
-    }
+    },
+    "scan_enabled": false,
+    "note": "Left iCIMS (careers-freshdirect.icims.com 404); freshdirect.com blocks bots; no public feed found (2026-07-18)"
   },
   {
     "name": "Freshworks",
@@ -6666,8 +6577,7 @@
       "no_whiteboard": true,
       "source": "Hiring Without Whiteboards",
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
-      "locations": "Remote",
-      "process": "Non-technical screening, 2 hours technical and soft skills interview including architecture discussion"
+      "locations": "Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -6886,7 +6796,6 @@
       "source_url": "Linked source employer target set",
       "no_wb_id": null,
       "locations": "",
-      "process": "",
       "employment_type": ""
     },
     "tags": [
@@ -6909,7 +6818,6 @@
       "source_url": "University target set",
       "no_wb_id": null,
       "locations": "",
-      "process": "",
       "employment_type": ""
     },
     "tags": [
@@ -7004,8 +6912,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Remote / San Francisco, CA / Boulder, CO",
-      "process": "Take-home exercise, code review and technical discussions."
+      "locations": "Remote / San Francisco, CA / Boulder, CO"
     },
     "tags": [
       "Interview Friendly"
@@ -7026,8 +6933,7 @@
       "no_whiteboard": true,
       "source": "Hiring Without Whiteboards",
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
-      "locations": "Remote",
-      "process": "A series of video calls, and a coding exercise involving working on a Merge Request that is like a real work task"
+      "locations": "Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -7092,8 +6998,7 @@
       "no_whiteboard": true,
       "source": "Hiring Without Whiteboards",
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
-      "locations": "Remote",
-      "process": "Virtual interviews with recruiter, sr engineer, and hiring manager. Short real-world take-home project w/ follow-up conversation. Final interviews w/ CEO/Founder and Product team lead."
+      "locations": "Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -7156,7 +7061,8 @@
     "policy": {
       "message": "Goldman Sachs restricts automated access to their job listings per their usage policy.",
       "careers_url": "https://higher.gs.com/results"
-    }
+    },
+    "note": "robots.txt on higher.gs.com disallows all crawling (checked 2026-07-18)"
   },
   {
     "name": "Goliath Partners",
@@ -7210,7 +7116,6 @@
       "source_url": "Linked source employer target set",
       "no_wb_id": null,
       "locations": "",
-      "process": "",
       "employment_type": ""
     },
     "tags": [
@@ -7273,8 +7178,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Remote / London, UK",
-      "process": "Initial telephone chat, then either a) work with us, fully paid, for a day on real code with the team; or b) pair-programming on a code kata with the team members for four pomodoros. Your choice."
+      "locations": "Remote / London, UK"
     },
     "tags": [
       "Interview Friendly"
@@ -7325,8 +7229,9 @@
     ],
     "scrape": {
       "mode": "ashby",
-      "ashby_slug": "grammarly"
-    }
+      "ashby_slug": "Superhuman Platform Inc"
+    },
+    "note": "Grammarly rebranded to Superhuman; ashby board is 'Superhuman Platform Inc' (2026-07-18)"
   },
   {
     "name": "Granola",
@@ -7353,8 +7258,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "San Francisco, CA / Remote",
-      "process": "Discuss product/market, engineering, and culture, review past code/project, and for junior developers, choice of take home or code review."
+      "locations": "San Francisco, CA / Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -7409,8 +7313,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Remote",
-      "process": "Paid, take-home project with pair coding"
+      "locations": "Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -7491,7 +7394,6 @@
       "source_url": "Linked source employer target set",
       "no_wb_id": null,
       "locations": "",
-      "process": "",
       "employment_type": ""
     },
     "tags": [
@@ -7555,8 +7457,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Cambridge, MA",
-      "process": "Take home project that mirrors work we might do on a [Sketch](https://lil.law.harvard.edu/sketches/) and follow up discussion after."
+      "locations": "Cambridge, MA"
     },
     "tags": [
       "Interview Friendly"
@@ -7569,7 +7470,7 @@
       "Research"
     ],
     "scrape": {
-      "mode": "html",
+      "mode": "playwright",
       "list_url": "https://hr.harvard.edu/search-jobs",
       "include": "hr.harvard.edu"
     },
@@ -7579,12 +7480,13 @@
       "source_url": "University target set",
       "no_wb_id": null,
       "locations": "",
-      "process": "",
       "employment_type": ""
     },
     "tags": [
       "Interview Friendly"
-    ]
+    ],
+    "note": "hr.harvard.edu WAF-blocked; listings live in BrassRing/PeopleSoft with no scrapeable public URL (2026-07-18)",
+    "scan_enabled": false
   },
   {
     "name": "Harvey",
@@ -7612,8 +7514,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Chicago, IL / Jacksonville Beach, FL",
-      "process": "Remote pairing session, paid week pair programming with everyone on the team"
+      "locations": "Chicago, IL / Jacksonville Beach, FL"
     },
     "tags": [
       "Interview Friendly"
@@ -7625,10 +7526,12 @@
       "Healthcare & Biotech"
     ],
     "scrape": {
-      "mode": "html",
+      "mode": "playwright",
       "list_url": "https://careers.hcahealthcare.com/jobs",
       "include": "careers.hcahealthcare.com/jobs"
-    }
+    },
+    "note": "Cloudflare challenge blocks even headless browsers (checked 2026-07-18)",
+    "scan_enabled": false
   },
   {
     "name": "Headway",
@@ -7711,8 +7614,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "San Francisco, CA / Remote",
-      "process": "Take-home project with code review, multiple (non-technical) interviews with different areas of the company about past projects and experience"
+      "locations": "San Francisco, CA / Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -7833,8 +7735,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Portland, OR / San Francisco, CA / Seattle, WA / Austin, TX / Denver, CO / Montreal, Québec & Remote",
-      "process": "Resume deep dive, take-home exercise on GitHub, (virtual) in-person including review of the take-home exercise (1hr), product collaboration, meet the team, and AMA with leadership"
+      "locations": "Portland, OR / San Francisco, CA / Seattle, WA / Austin, TX / Denver, CO / Montreal, Québec & Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -7865,8 +7766,7 @@
       "no_whiteboard": true,
       "source": "Hiring Without Whiteboards",
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
-      "locations": "Chicago, IL; Remote",
-      "process": "Intro call, take-home project taken from production work, pair programming exercise"
+      "locations": "Chicago, IL; Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -7885,8 +7785,7 @@
       "no_whiteboard": true,
       "source": "Hiring Without Whiteboards",
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
-      "locations": "Chicago, IL; Remote",
-      "process": "Get-to-know-you meeting with the team, followed by a half-day collaborative coding session"
+      "locations": "Chicago, IL; Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -7920,8 +7819,7 @@
       "no_whiteboard": true,
       "source": "Hiring Without Whiteboards",
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
-      "locations": "San Francisco, CA; Scottsdale, AZ; Seattle, WA",
-      "process": "Phone screen, take home that is close to production code, onsite with pair programming"
+      "locations": "San Francisco, CA; Scottsdale, AZ; Seattle, WA"
     },
     "tags": [
       "Interview Friendly"
@@ -7964,8 +7862,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Remote",
-      "process": "Short introduction call -> Technical interview with engineers on real-world problems/system design -> Paid short take-home task -> Team fit interview, EMEA timezones preferred"
+      "locations": "Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -8051,7 +7948,6 @@
       "no_whiteboard": false,
       "difficulty": "medium",
       "rounds": "4",
-      "process": "Coding, system design, and cultural fit. HEART values evaluated. Generally considered accessible.",
       "source": "Public knowledge"
     }
   },
@@ -8103,8 +7999,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Redwood City, CA",
-      "process": "Technical phone interview, then on-site pair programming and design discussion"
+      "locations": "Redwood City, CA"
     },
     "tags": [
       "Interview Friendly"
@@ -8187,8 +8082,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "San Francisco, CA / New York, NY / Chicago, IL / Cambridge, MA",
-      "process": "Take home project that resembles a problem IDEO solves for, then pairing session in person or over video chat."
+      "locations": "San Francisco, CA / New York, NY / Chicago, IL / Cambridge, MA"
     },
     "tags": [
       "Interview Friendly"
@@ -8268,8 +8162,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Berlin, Germany",
-      "process": "Take-home project, discussion on-site"
+      "locations": "Berlin, Germany"
     },
     "tags": [
       "Interview Friendly"
@@ -8369,8 +8262,7 @@
       "no_whiteboard": true,
       "source": "Hiring Without Whiteboards",
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
-      "locations": "Winston-Salem, NC; Austin, TX & Remote",
-      "process": "Take-home project and conversation-style interviews"
+      "locations": "Winston-Salem, NC; Austin, TX & Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -8390,8 +8282,7 @@
       "no_whiteboard": true,
       "source": "Hiring Without Whiteboards",
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
-      "locations": "New York, NY",
-      "process": "Short phone interview, then come in and meet the team, check out our space, and have a discussion with team members about real-world problems"
+      "locations": "New York, NY"
     },
     "tags": [
       "Interview Friendly"
@@ -8434,7 +8325,6 @@
       "no_whiteboard": false,
       "difficulty": "medium",
       "rounds": "4",
-      "process": "Coding, system design, and behavioral. Retail/operations domain knowledge valued.",
       "source": "Public knowledge"
     }
   },
@@ -8485,8 +8375,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Detroit, MI",
-      "process": "3-step process (100% remote): tech-screening with an engineer for 30 minutes, remote pair-programming and test driven development exercise for 1 hour, conversation with engineering leadership for 30 minutes."
+      "locations": "Detroit, MI"
     },
     "tags": [
       "Interview Friendly"
@@ -8506,7 +8395,6 @@
       "no_whiteboard": false,
       "difficulty": "medium",
       "rounds": "4-5",
-      "process": "Hardware/silicon knowledge, coding, and behavioral. Domain-heavy interviews.",
       "source": "Public knowledge"
     }
   },
@@ -8517,6 +8405,7 @@
     ],
     "scrape": {
       "mode": "playwright",
+      "reader_only": true,
       "list_url": "https://jobs.dayforcehcm.com/en-US/ibgllc/CANDIDATEPORTAL",
       "include": "jobs.dayforcehcm.com/en-US/ibgllc/CANDIDATEPORTAL/jobs/"
     }
@@ -8560,7 +8449,6 @@
       "no_whiteboard": false,
       "difficulty": "medium",
       "rounds": "4-5",
-      "process": "Coding, system design, and behavioral. Customer-centric focus in behavioral rounds.",
       "source": "Public knowledge"
     }
   },
@@ -8694,8 +8582,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Portland, OR",
-      "process": "Initial phone screen with hiring manager. In person pairing on project similar to day-to-day work with a separate cultural interview"
+      "locations": "Portland, OR"
     },
     "tags": [
       "Interview Friendly"
@@ -8728,7 +8615,6 @@
       "no_whiteboard": false,
       "difficulty": "hard",
       "rounds": "3-4",
-      "process": "Math/probability puzzles, OCaml coding, trading problem-solving. Extremely selective. Known for unconventional technical questions.",
       "source": "Public knowledge"
     }
   },
@@ -8759,7 +8645,6 @@
       "source_url": "Linked source employer target set",
       "no_wb_id": null,
       "locations": "",
-      "process": "",
       "employment_type": ""
     },
     "tags": [
@@ -8852,8 +8737,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Los Angeles, CA",
-      "process": "Mini take-home project, phone interview, discussion on-site"
+      "locations": "Los Angeles, CA"
     },
     "tags": [
       "Interview Friendly"
@@ -8874,8 +8758,7 @@
       "source": "LinkedIn Top Companies 2026",
       "source_url": "https://careers.jpmorgan.com/us/en/home",
       "difficulty": "medium",
-      "rounds": "3-4",
-      "process": "Coding or technical screen, behavioral, and domain knowledge (finance/banking)."
+      "rounds": "3-4"
     },
     "tags": [
       "Interview Friendly"
@@ -8916,8 +8799,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Tel Aviv, Israel",
-      "process": "Phone screening to discuss technical background and past experience. Take-home assignment followed by on-site code review and interview. Cultural fit assessment"
+      "locations": "Tel Aviv, Israel"
     },
     "tags": [
       "Interview Friendly"
@@ -9014,8 +8896,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Remote",
-      "process": "Culture fit interview, take home assignmentv, discussion on-site, technical interview discussing past real world experiences as well as knowledge of tools that will be used for position"
+      "locations": "Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -9093,8 +8974,7 @@
       "no_whiteboard": true,
       "source": "Hiring Without Whiteboards",
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
-      "locations": "San Francisco, CA / New York, NY / Remote",
-      "process": "Phone Interview, Take-home project, On-site technical conversation relating to the tech stack you would be hired to build with"
+      "locations": "San Francisco, CA / New York, NY / Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -9136,8 +9016,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "San Francisco, CA",
-      "process": "Phone interview. Pairing and technical interviews. Take home assignment."
+      "locations": "San Francisco, CA"
     },
     "tags": [
       "Interview Friendly"
@@ -9157,8 +9036,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Portland, OR",
-      "process": "Phone screening. Take home project. On-site pairing and conversational technical interviews."
+      "locations": "Portland, OR"
     },
     "tags": [
       "Interview Friendly"
@@ -9198,8 +9076,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Remote / Austin, TX",
-      "process": "30-40 minute recruiter screen, 30 minute hiring manager screen, 1.5 hour final interview (discussion only, no coding or whiteboarding)."
+      "locations": "Remote / Austin, TX"
     },
     "tags": [
       "Interview Friendly"
@@ -9244,8 +9121,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "New York, NY / Washington, DC / London, UK / Sydney, AU",
-      "process": "First interview - Pairing interview using Codility. Final interviews that include a coding challenge."
+      "locations": "New York, NY / Washington, DC / London, UK / Sydney, AU"
     },
     "tags": [
       "Interview Friendly"
@@ -9313,8 +9189,7 @@
       "no_whiteboard": true,
       "source": "Hiring Without Whiteboards",
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
-      "locations": "San Francisco, CA; New York, NY; Remote",
-      "process": "Technical exercises based on work we do at Lattice, discussion of a new architecture to solve a real world problem"
+      "locations": "San Francisco, CA; New York, NY; Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -9334,8 +9209,7 @@
       "no_whiteboard": true,
       "source": "Hiring Without Whiteboards",
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
-      "locations": "Oakland, CA",
-      "process": "Informational phone screen with Eng leadership, take home project, onsite interviews"
+      "locations": "Oakland, CA"
     },
     "tags": [
       "Interview Friendly"
@@ -9389,8 +9263,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Berlin, Germany",
-      "process": "Initial chat with the HR continued with 1-2 rounds chat with the team; followed by a technical test and finally a chat with the CTO/MD. [Jobs page](https://leverton-jobs.personio.de)"
+      "locations": "Berlin, Germany"
     },
     "tags": [
       "Interview Friendly"
@@ -9588,8 +9461,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "San Francisco, CA",
-      "process": "Initial phone screen followed by an on-site interview. Technical problems discussed during the interview are all simplified versions of problems we've had to solve in production. Our entire interview process and what we're looking for is described in our blog post [How We Interview Engineers](https://lob.com/blog/how-we-interview-engineers)."
+      "locations": "San Francisco, CA"
     },
     "tags": [
       "Interview Friendly"
@@ -9623,8 +9495,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "San Francisco, CA",
-      "process": "Google Hangouts resume dive on past experience, take-home project OR architectural phone screen, on-site interviews (2 technical architecture related to work, 1 or 2 non-technical)"
+      "locations": "San Francisco, CA"
     },
     "tags": [
       "Interview Friendly"
@@ -9666,7 +9537,6 @@
       "source_url": "Linked source employer target set",
       "no_wb_id": null,
       "locations": "",
-      "process": "",
       "employment_type": ""
     },
     "tags": [
@@ -9736,7 +9606,6 @@
       "no_whiteboard": false,
       "difficulty": "hard",
       "rounds": "4-5",
-      "process": "Live coding, system design, and behavioral. FAANG-comparable difficulty.",
       "source": "Public knowledge"
     }
   },
@@ -9754,8 +9623,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "San Francisco, CA / Seattle, WA / New York, NY / Minsk, Belarus / Mexico City, Mexico",
-      "process": "On-site project, discussion of candidate's completed project afterwards"
+      "locations": "San Francisco, CA / Seattle, WA / New York, NY / Minsk, Belarus / Mexico City, Mexico"
     },
     "tags": [
       "Interview Friendly"
@@ -9829,8 +9697,7 @@
       "no_whiteboard": true,
       "source": "Hiring Without Whiteboards",
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
-      "locations": "New York, NY",
-      "process": "Phone interview + short take home project, which is daily work focused. In person interview could involve discussing past projects or pair programming."
+      "locations": "New York, NY"
     },
     "tags": [
       "Interview Friendly"
@@ -9851,8 +9718,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Boulder, CO / Denver, CO",
-      "process": "Phone screen, take home project, remote and on-site interviews for technical and cultural fit"
+      "locations": "Boulder, CO / Denver, CO"
     },
     "tags": [
       "Interview Friendly"
@@ -9894,8 +9760,7 @@
       "no_whiteboard": true,
       "source": "Hiring Without Whiteboards",
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
-      "locations": "San Francisco, CA; Washington, DC; Ayacucho, Peru; Bangalore, India; Berlin, Germany; Remote",
-      "process": "Conversational interviews, paid onsite project with team."
+      "locations": "San Francisco, CA; Washington, DC; Ayacucho, Peru; Bangalore, India; Berlin, Germany; Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -9927,7 +9792,6 @@
       "source_url": "Linked source employer target set",
       "no_wb_id": null,
       "locations": "",
-      "process": "",
       "employment_type": ""
     },
     "tags": [
@@ -10015,7 +9879,6 @@
       "no_whiteboard": false,
       "difficulty": "medium",
       "rounds": "3-4",
-      "process": "Technical coding, system design, and behavioral. Fintech domain knowledge valued.",
       "source": "Public knowledge"
     }
   },
@@ -10069,7 +9932,6 @@
       "source_url": "Linked source employer target set",
       "no_wb_id": null,
       "locations": "",
-      "process": "",
       "employment_type": ""
     },
     "tags": [
@@ -10090,8 +9952,7 @@
       "no_whiteboard": true,
       "source": "Hiring Without Whiteboards",
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
-      "locations": "Remote",
-      "process": "Follow-up questions over email, a couple of video calls, audition (paid real-world “try out” project), video call to discuss audtion, and then a video call with the CTO"
+      "locations": "Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -10132,8 +9993,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "San Francisco, CA / Irvine, CA / Salt Lake City, UT",
-      "process": "On-site pairing with multiple engineers. Pairing exercises and pairing on company code."
+      "locations": "San Francisco, CA / Irvine, CA / Salt Lake City, UT"
     },
     "tags": [
       "Interview Friendly"
@@ -10172,7 +10032,6 @@
       "no_whiteboard": false,
       "difficulty": "hard",
       "rounds": "2-3",
-      "process": "Case interviews (business problem-solving) and Personal Experience Interviews. No coding for most roles.",
       "source": "Public knowledge"
     }
   },
@@ -10372,7 +10231,9 @@
     "scrape": {
       "mode": "lever",
       "lever_slug": "milkmakeup"
-    }
+    },
+    "scan_enabled": false,
+    "note": "Lever board removed; milkmakeup.com serves 503 to non-browsers; no public board found (2026-07-18)"
   },
   {
     "name": "Millennium",
@@ -10463,8 +10324,7 @@
       "no_whiteboard": true,
       "source": "Hiring Without Whiteboards",
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
-      "locations": "San Francisco, CA",
-      "process": "Takehome assignment purely based on their platform, followed by phone interview"
+      "locations": "San Francisco, CA"
     },
     "tags": [
       "Interview Friendly"
@@ -10624,8 +10484,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "London, UK & Remote",
-      "process": "Phone interview with another engineer. Take-home assignment. Call to debrief on take-home assignment. Half-day interview (on-site or Hangouts) with three conversational sessions: (1) building on take-home test & real-world system design (verbal and collaborative); (2) digging into knowledge & understanding in 1-2 other relevant technical areas; (3) general background, teams and ways of working."
+      "locations": "London, UK & Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -10742,8 +10601,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "San Francisco, US / Portland, US / Toronta, CA / Vancouver, CA / Berlin, DE / Remote",
-      "process": "Deep-dive discussions on technical and mentorship problems solved in the past. No live coding. Total of 3 rounds."
+      "locations": "San Francisco, US / Portland, US / Toronta, CA / Vancouver, CA / Berlin, DE / Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -10767,10 +10625,18 @@
       "Transportation & Mobility"
     ],
     "scrape": {
-      "mode": "html",
-      "list_url": "https://careers.mta.org/jobs",
-      "include": "careers.mta.org/job"
-    }
+      "mode": "playwright",
+      "list_url": "https://careers.mta.org/search/jobs",
+      "include": "careers.mta.org/jobs/",
+      "url_exclude": [
+        "/jobs/search",
+        "/search/jobs",
+        "saved-jobs",
+        "talentcommunity"
+      ]
+    },
+    "scan_enabled": false,
+    "note": "WAF blocks browser fetches; public reader reports 357 jobs but exposes no job links (verified 2026-07-18)"
   },
   {
     "name": "Munters",
@@ -10809,8 +10675,7 @@
       "no_whiteboard": true,
       "source": "Hiring Without Whiteboards",
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
-      "locations": "San Francisco, CA; London, UK & Remote",
-      "process": "Hands-on software engineer and system-design interviews that focus on collaboratively building practical applications at scale."
+      "locations": "San Francisco, CA; London, UK & Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -11010,7 +10875,6 @@
       "no_whiteboard": false,
       "difficulty": "medium",
       "rounds": "3-5",
-      "process": "Heavy cultural/behavioral emphasis (Freedom & Responsibility). Technical depth expected but fewer LeetCode-style puzzles. Strong culture-fit bar.",
       "source": "Public knowledge"
     }
   },
@@ -11028,8 +10892,7 @@
       "no_whiteboard": true,
       "source": "Hiring Without Whiteboards",
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
-      "locations": "Warsaw, Poland; Remote",
-      "process": "Takehome exercise & pair programming session"
+      "locations": "Warsaw, Poland; Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -11049,8 +10912,7 @@
       "no_whiteboard": true,
       "source": "Hiring Without Whiteboards",
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
-      "locations": "San Francisco, CA / Remote",
-      "process": "Takehome project and online/onsite discussion"
+      "locations": "San Francisco, CA / Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -11138,7 +11000,6 @@
       "source_url": "University target set",
       "no_wb_id": null,
       "locations": "",
-      "process": "",
       "employment_type": ""
     },
     "tags": [
@@ -11182,8 +11043,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Berlin, Germany / Hannover, Germany / Erfurt, Germany / Boston, MA",
-      "process": "Telephone technical interview, code sample submission or takeaway coding exercise, on-site pair programming, design session (1/2 day)"
+      "locations": "Berlin, Germany / Hannover, Germany / Erfurt, Germany / Boston, MA"
     },
     "tags": [
       "Interview Friendly"
@@ -11279,8 +11139,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Dublin, Ireland / San Francisco, CA",
-      "process": "Phone Call, Take Home Test, Hiring Manager Phone Interview followed by an onsite discussion"
+      "locations": "Dublin, Ireland / San Francisco, CA"
     },
     "tags": [
       "Interview Friendly"
@@ -11335,8 +11194,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "San Francisco, CA",
-      "process": "Take-home exercise & pair programming session"
+      "locations": "San Francisco, CA"
     },
     "tags": [
       "Interview Friendly"
@@ -11382,7 +11240,6 @@
       "source_url": "University target set",
       "no_wb_id": null,
       "locations": "",
-      "process": "",
       "employment_type": ""
     },
     "tags": [
@@ -11433,7 +11290,9 @@
       "list_url": "https://careers.northwestern.edu/cw/en-us/listing/",
       "include": "careers.northwestern.edu/cw",
       "verify_ssl": false
-    }
+    },
+    "scan_enabled": false,
+    "note": "Jobs moved into PeopleSoft candidate gateway (careers.northwestern.edu/psc/...); no scrapeable public listing (2026-07-18)"
   },
   {
     "name": "Northwood Space",
@@ -11458,7 +11317,6 @@
       "no_whiteboard": false,
       "difficulty": "medium",
       "rounds": "4",
-      "process": "Technical coding, system design, and strong emphasis on product thinking and collaboration.",
       "source": "Public knowledge"
     }
   },
@@ -11488,8 +11346,7 @@
       "no_whiteboard": true,
       "source": "Hiring Without Whiteboards",
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
-      "locations": "San Francisco, CA",
-      "process": "Choose between a take home assignment or two interviews on CoderPad, CodePen, or your local dev env while screensharing. Final round is onsite working on a small project"
+      "locations": "San Francisco, CA"
     },
     "tags": [
       "Interview Friendly"
@@ -11578,12 +11435,13 @@
       "no_whiteboard": true,
       "source": "Hiring Without Whiteboards",
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
-      "locations": "San Francisco, CA; Remote",
-      "process": "Phone screen with recruiter and/or hiring manager, tech assessment with multiple options (full take home, partial take home, no take home), and then virtual on-site with a pair coding session, peer review of a technical document, architecture design, and exec loop"
+      "locations": "San Francisco, CA; Remote"
     },
     "tags": [
       "Interview Friendly"
-    ]
+    ],
+    "scan_enabled": false,
+    "note": "Thirty Madison greenhouse board (thirtymadison) removed; no public board found (2026-07-18)"
   },
   {
     "name": "Nutanix",
@@ -11622,7 +11480,6 @@
       "no_whiteboard": false,
       "difficulty": "hard",
       "rounds": "4-5",
-      "process": "GPU/CUDA knowledge, systems coding, and deep technical depth expected. High bar for hardware/ML roles.",
       "source": "Public knowledge"
     }
   },
@@ -11662,8 +11519,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Sebastopol, CA / Boston, MA / Remote",
-      "process": "Phone conversation, take-home exercise or pair programming session, team interview, all via Google Hangout"
+      "locations": "Sebastopol, CA / Boston, MA / Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -11705,8 +11561,7 @@
       "no_whiteboard": true,
       "source": "Hiring Without Whiteboards",
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
-      "locations": "London, UK; Sydney, Australia; Remote",
-      "process": "Take-home exercise and phone or on-site interview/discussion with potential team"
+      "locations": "London, UK; Sydney, Australia; Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -11727,8 +11582,7 @@
       "no_whiteboard": true,
       "source": "Hiring Without Whiteboards",
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
-      "locations": "Remote; New York, NY; Dublin, IE",
-      "process": "Take-home project (2 hours) related to role, follow-up technical interview where you discuss your project implementation (may perform pair-programming session instead of technical interview)."
+      "locations": "Remote; New York, NY; Dublin, IE"
     },
     "tags": [
       "Interview Friendly"
@@ -11761,7 +11615,6 @@
       "source_url": "University target set",
       "no_wb_id": null,
       "locations": "",
-      "process": "",
       "employment_type": ""
     },
     "tags": [
@@ -11804,7 +11657,6 @@
       "no_whiteboard": false,
       "difficulty": "medium",
       "rounds": "4",
-      "process": "Technical coding, security fundamentals, and behavioral rounds.",
       "source": "Public knowledge"
     }
   },
@@ -11833,8 +11685,7 @@
       "no_whiteboard": true,
       "source": "Hiring Without Whiteboards",
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
-      "locations": "San Francisco, CA",
-      "process": "Take home exercise and/or pair programming session."
+      "locations": "San Francisco, CA"
     },
     "tags": [
       "Interview Friendly"
@@ -11864,8 +11715,7 @@
       "no_whiteboard": true,
       "source": "Hiring Without Whiteboards",
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
-      "locations": "Chicago, IL; Remote",
-      "process": "Take-home exercise and on-site interview/discussion with potential team"
+      "locations": "Chicago, IL; Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -11886,8 +11736,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "San Mateo, CA",
-      "process": "Intro call with recruiting, second conversation with OneSignal engineer, onsite pairing via screenshare"
+      "locations": "San Mateo, CA"
     },
     "tags": [
       "Interview Friendly"
@@ -11907,7 +11756,6 @@
       "no_whiteboard": false,
       "difficulty": "hard",
       "rounds": "4-5",
-      "process": "Technical coding, ML/AI knowledge, system design, and research-depth rounds. Very high bar; research background valued.",
       "source": "Public knowledge"
     }
   },
@@ -11979,7 +11827,6 @@
       "no_whiteboard": false,
       "difficulty": "medium",
       "rounds": "4",
-      "process": "Coding, database/systems knowledge, and behavioral.",
       "source": "Public knowledge"
     }
   },
@@ -12071,8 +11918,7 @@
       "no_whiteboard": true,
       "source": "Hiring Without Whiteboards",
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
-      "locations": "New York, NY; Remote",
-      "process": "Short phone interview, conversational interviews, take-home exercise & discussion"
+      "locations": "New York, NY; Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -12093,8 +11939,7 @@
       "no_whiteboard": true,
       "source": "Hiring Without Whiteboards",
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
-      "locations": "San Francisco, CA / Toronto, Canada / Atlanta, GA",
-      "process": "Zoom / on-site pair programming and tasks"
+      "locations": "San Francisco, CA / Toronto, Canada / Atlanta, GA"
     },
     "tags": [
       "Interview Friendly"
@@ -12115,7 +11960,6 @@
       "no_whiteboard": false,
       "difficulty": "hard",
       "rounds": "4",
-      "process": "Unique \"Decomp\" problem-solving exercise, coding, and culture fit. Heavily evaluates structured thinking.",
       "source": "Public knowledge"
     }
   },
@@ -12133,7 +11977,6 @@
       "no_whiteboard": false,
       "difficulty": "medium",
       "rounds": "4-5",
-      "process": "Technical security rounds, coding, and behavioral. Strong network/security fundamentals expected.",
       "source": "Public knowledge"
     }
   },
@@ -12194,10 +12037,13 @@
       "Industrials & Manufacturing"
     ],
     "scrape": {
-      "mode": "html",
+      "mode": "playwright",
       "list_url": "https://parkercareers.ttcportals.com/jobs",
-      "include": "parkercareers.ttcportals.com/jobs"
-    }
+      "include": "parkercareers.ttcportals.com/jobs",
+      "nav_timeout": 30000
+    },
+    "note": "parkercareers.ttcportals.com WAF blocks plain, headless, and reader fetches (2026-07-18)",
+    "scan_enabled": false
   },
   {
     "name": "Parsons",
@@ -12242,8 +12088,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Durham, NC / Raleigh, NC / Chapel Hill, NC / Remote",
-      "process": "3 conversational interviews (Manager, Team, Founder). No homework. We look for a candidate to be \"culture add\" instead of \"culture fit\""
+      "locations": "Durham, NC / Raleigh, NC / Chapel Hill, NC / Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -12287,7 +12132,6 @@
       "no_whiteboard": false,
       "difficulty": "medium",
       "rounds": "4",
-      "process": "Coding, system design, and behavioral. Fintech knowledge valued.",
       "source": "Public knowledge"
     }
   },
@@ -12340,8 +12184,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Boulder, CO / Denver, CO",
-      "process": "Phone screen, take home project, remote and on-site interviews for technical and cultural fit"
+      "locations": "Boulder, CO / Denver, CO"
     },
     "tags": [
       "Interview Friendly"
@@ -12397,7 +12240,6 @@
       "source_url": "University target set",
       "no_wb_id": null,
       "locations": "",
-      "process": "",
       "employment_type": ""
     },
     "tags": [
@@ -12491,8 +12333,7 @@
       "no_whiteboard": true,
       "source": "Hiring Without Whiteboards",
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
-      "locations": "New York, NY",
-      "process": "Phone screen, take home project, remote meeting with team member to discuss the project, remote meeting with team manager to discuss role and go over statistical concepts relevant to the role"
+      "locations": "New York, NY"
     },
     "tags": [
       "Interview Friendly"
@@ -12511,8 +12352,7 @@
       "no_whiteboard": true,
       "source": "Hiring Without Whiteboards",
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
-      "locations": "San Francisco, CA",
-      "process": "Tech interview (technical background and experiences), pair programming, and culture fit"
+      "locations": "San Francisco, CA"
     },
     "tags": [
       "Interview Friendly"
@@ -12533,8 +12373,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Los Angeles, CA / Remote",
-      "process": "3 sessions: brief phone conversation (30 min); take home assignment (2 hours); on-site or video discussion without any coding (2 hours)"
+      "locations": "Los Angeles, CA / Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -12575,8 +12414,7 @@
       "no_whiteboard": true,
       "source": "Hiring Without Whiteboards",
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
-      "locations": "San Francisco, CA; Cambridge, MA",
-      "process": "Initial screen with deep-dive into one of your recent projects (30 mins) ; take-home coding exercise tailored your skills (4 hours); on-site with take-home code review, architecture interview, design interview and \"soft skills\" interview (4 hours)"
+      "locations": "San Francisco, CA; Cambridge, MA"
     },
     "tags": [
       "Interview Friendly"
@@ -12625,8 +12463,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Denver, CO / Washington, D.C. / Remote",
-      "process": "Phone; remote technical screen paired with another engineer; remote multi-round interview to demonstrate basic backend/frontend skills (no bizarre Leetcode questions), behavioral/culture fit, design skills"
+      "locations": "Denver, CO / Washington, D.C. / Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -12722,7 +12559,6 @@
       "no_whiteboard": false,
       "difficulty": "medium",
       "rounds": "4-5",
-      "process": "Coding and system design. Visual/creative product sensibility expected.",
       "source": "Public knowledge"
     }
   },
@@ -12740,8 +12576,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Remote / Bristol, UK / Austin, TX / Singapore, Singapore",
-      "process": "Initial and quick screening with recruiters from hr department, remote general technical discussion with tech lead and team members, take home assessment (choose between Java and/or Golang), remote pair programming."
+      "locations": "Remote / Bristol, UK / Austin, TX / Singapore, Singapore"
     },
     "tags": [
       "Interview Friendly"
@@ -12761,7 +12596,6 @@
       "no_whiteboard": false,
       "difficulty": "medium",
       "rounds": "4",
-      "process": "Technical coding, API/systems design, and behavioral. Fintech infrastructure depth expected.",
       "source": "Public knowledge"
     }
   },
@@ -12806,8 +12640,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Remote, Copenhagen / Denmark / London, UK / Berlin, Germany / Stockholm, Sweden / Madrid, Spain",
-      "process": "Intro interview (30m-45m), take home assignment, interview with discussion on the assignment + technical questions with the team (90m) and interview with managers (60m)."
+      "locations": "Remote, Copenhagen / Denmark / London, UK / Berlin, Germany / Stockholm, Sweden / Madrid, Spain"
     },
     "tags": [
       "Interview Friendly"
@@ -12870,8 +12703,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Remote",
-      "process": "Introduction call, 1 hour take home technical assessment, pairing session with Designer and Engineer to enhance technical challenge submission, Meeting with CTO and hiring manager."
+      "locations": "Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -12922,8 +12754,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Remote",
-      "process": "Video calls with recruiter then engineering management, take home project, video call for code review with engineering lead"
+      "locations": "Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -12996,7 +12827,6 @@
       "source_url": "University target set",
       "no_wb_id": null,
       "locations": "",
-      "process": "",
       "employment_type": ""
     },
     "tags": [
@@ -13060,8 +12890,7 @@
       "no_whiteboard": true,
       "source": "Hiring Without Whiteboards",
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
-      "locations": "Remote",
-      "process": "Take-home project, informal chat with managers."
+      "locations": "Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -13139,7 +12968,6 @@
       "source_url": "Linked source employer target set",
       "no_wb_id": null,
       "locations": "",
-      "process": "",
       "employment_type": ""
     },
     "tags": [
@@ -13236,8 +13064,7 @@
       "no_whiteboard": true,
       "source": "Hiring Without Whiteboards",
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
-      "locations": "Paris, France / Berlin, Germany / Milan, Italy / Barcelona, Spain / Belgrade, Serbia / Remote",
-      "process": "Take-home project, code review and discussions with our engineers."
+      "locations": "Paris, France / Berlin, Germany / Milan, Italy / Barcelona, Spain / Belgrade, Serbia / Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -13322,7 +13149,6 @@
       "source_url": "Linked source employer target set",
       "no_wb_id": null,
       "locations": "",
-      "process": "",
       "employment_type": ""
     },
     "tags": [
@@ -13410,9 +13236,12 @@
       "Fashion"
     ],
     "scrape": {
-      "mode": "workday",
-      "list_url": "https://ralphlauren.wd1.myworkdayjobs.com/RalphLauren"
-    }
+      "mode": "avature",
+      "list_url": "https://careers.ralphlauren.com/en_US/CareersCorporate/SearchJobs",
+      "include": "/CareersCorporate/JobDetail/"
+    },
+    "note": "Left Workday for Avature; careers.ralphlauren.com WAF blocks plain and headless fetches (2026-07-18)",
+    "scan_enabled": false
   },
   {
     "name": "Ramp",
@@ -13427,8 +13256,7 @@
       "no_whiteboard": true,
       "source": "Hiring Without Whiteboards",
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
-      "locations": "New York, NY",
-      "process": "Phone interview on a basic applied problem, followed by 2-3 onsite programming interviews that test practical day-to-day software skills."
+      "locations": "New York, NY"
     },
     "tags": [
       "Interview Friendly"
@@ -13491,8 +13319,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "New York, NY / Amsterdam, The Netherlands / Helsinki, Finland / Tokyo, Japan",
-      "process": "Discussion, work samples from previous projects (work or hobby), take-home exercise if needed for further info"
+      "locations": "New York, NY / Amsterdam, The Netherlands / Helsinki, Finland / Tokyo, Japan"
     },
     "tags": [
       "Interview Friendly"
@@ -13525,8 +13352,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Chicago, IL / Carmel, IN / Remote",
-      "process": "Quick phone interview, then a take home project and finally in person interview (open discussions instead of quizzes - anything technical are real-world problems)."
+      "locations": "Chicago, IL / Carmel, IN / Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -13568,8 +13394,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "New York City, USA",
-      "process": "A rather educational week long hacking challenge with a monetary reward upon finding solution. On-site with team members, real job related problems, a few open-ended questions."
+      "locations": "New York City, USA"
     },
     "tags": [
       "Interview Friendly"
@@ -13611,7 +13436,6 @@
       "no_whiteboard": false,
       "difficulty": "medium",
       "rounds": "4-5",
-      "process": "Coding (medium), system design, and behavioral. Values community understanding.",
       "source": "Public knowledge"
     }
   },
@@ -13666,8 +13490,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "San Francisco, CA / Bengaluru, India",
-      "process": "A short take home project/assignment, followed by a couple of technical and non-technical discussions online and offline."
+      "locations": "San Francisco, CA / Bengaluru, India"
     },
     "tags": [
       "Interview Friendly"
@@ -13709,7 +13532,6 @@
       "source_url": "Linked source employer target set",
       "no_wb_id": null,
       "locations": "",
-      "process": "",
       "employment_type": ""
     },
     "tags": [
@@ -13801,7 +13623,6 @@
       "no_whiteboard": false,
       "difficulty": "hard",
       "rounds": "3-4",
-      "process": "Heavy mathematics and statistics. Very selective. Favours PhDs and strong quantitative backgrounds.",
       "source": "Public knowledge"
     }
   },
@@ -13818,8 +13639,7 @@
       "no_whiteboard": true,
       "source": "Hiring Without Whiteboards",
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
-      "locations": "San Francisco, CA; Remote",
-      "process": "Phone screen followed by an onsite project based on our day-to-day, real world challenges."
+      "locations": "San Francisco, CA; Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -13923,8 +13743,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Remote / Chicago, IL",
-      "process": "Phone conversation, take home project, virtual interview with project review and live coding, discussion with engineers and product, interview with VP of Engineering"
+      "locations": "Remote / Chicago, IL"
     },
     "tags": [
       "Interview Friendly"
@@ -13969,7 +13788,6 @@
       "source_url": "University target set",
       "no_wb_id": null,
       "locations": "",
-      "process": "",
       "employment_type": ""
     },
     "tags": [
@@ -14032,7 +13850,6 @@
       "no_whiteboard": false,
       "difficulty": "medium",
       "rounds": "4",
-      "process": "Coding, blockchain/crypto knowledge, and behavioral.",
       "source": "Public knowledge"
     }
   },
@@ -14070,7 +13887,6 @@
       "no_whiteboard": false,
       "difficulty": "medium",
       "rounds": "4",
-      "process": "Technical coding/design and automotive/EV domain knowledge. Mission alignment assessed.",
       "source": "Public knowledge"
     }
   },
@@ -14098,7 +13914,6 @@
       "no_whiteboard": false,
       "difficulty": "medium",
       "rounds": "4",
-      "process": "Coding, system design, and behavioral. Fintech domain knowledge advantageous.",
       "source": "Public knowledge"
     }
   },
@@ -14116,7 +13931,6 @@
       "no_whiteboard": false,
       "difficulty": "medium",
       "rounds": "4",
-      "process": "Coding, system design, and behavioral. Product-focused interviews for some roles.",
       "source": "Public knowledge"
     }
   },
@@ -14292,8 +14106,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "San Francisco, CA",
-      "process": "Take-home project, then an on-site or remote interview with a review, pair programming, and culture fit discussions"
+      "locations": "San Francisco, CA"
     },
     "tags": [
       "Interview Friendly"
@@ -14314,8 +14127,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Bangalore, India / Chennai, India / Pune, India / Melbourne, Australia / London, UK / San Jose, CA",
-      "process": "Take home code + Pairing + Discussion"
+      "locations": "Bangalore, India / Chennai, India / Pune, India / Melbourne, Australia / London, UK / San Jose, CA"
     },
     "tags": [
       "Interview Friendly"
@@ -14386,8 +14198,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "San Francisco, CA",
-      "process": "Phone screen, programming assignment related to Sakari business (communications) with pair programming element, team and culture fit"
+      "locations": "San Francisco, CA"
     },
     "tags": [
       "Interview Friendly"
@@ -14406,7 +14217,6 @@
       "no_whiteboard": false,
       "difficulty": "medium",
       "rounds": "4-5",
-      "process": "Mix of technical and behavioral. Coding at medium difficulty. Values customer success orientation.",
       "source": "Public knowledge"
     }
   },
@@ -14523,7 +14333,6 @@
       "no_whiteboard": false,
       "difficulty": "medium",
       "rounds": "3-4",
-      "process": "Technical assessment, system design, and behavioral. Enterprise software domain knowledge valued.",
       "source": "Public knowledge"
     }
   },
@@ -14576,7 +14385,6 @@
       "no_whiteboard": false,
       "difficulty": "hard",
       "rounds": "4",
-      "process": "Coding, system design, and analytical problem solving. Fast-paced culture evaluated.",
       "source": "Public knowledge"
     }
   },
@@ -14652,8 +14460,7 @@
       "no_whiteboard": true,
       "source": "Hiring Without Whiteboards",
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
-      "locations": "Remote",
-      "process": "Technical challenges based on real world problems"
+      "locations": "Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -14698,8 +14505,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "San Francisco, CA",
-      "process": "Phone call, on-site interview including discussion about projects/skills and a short real-world programming challenge"
+      "locations": "San Francisco, CA"
     },
     "tags": [
       "Interview Friendly"
@@ -14754,8 +14560,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Austin, TX / Remote",
-      "process": "Skype core value and culture interview, review of contributions on GitHub or other platforms, and take-home project if online contributions are not enough."
+      "locations": "Austin, TX / Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -14784,7 +14589,6 @@
       "no_whiteboard": false,
       "difficulty": "medium",
       "rounds": "4",
-      "process": "Coding, system design, and behavioral. Enterprise workflow knowledge advantageous.",
       "source": "Public knowledge"
     }
   },
@@ -14859,8 +14663,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Remote",
-      "process": "Discussion about software development and past experience, code samples, paid trial period."
+      "locations": "Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -14884,7 +14687,6 @@
       "no_whiteboard": false,
       "difficulty": "medium",
       "rounds": "4",
-      "process": "Take-home or live coding, system design, and values alignment. Developer-centric culture.",
       "source": "Public knowledge"
     }
   },
@@ -14902,8 +14704,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "New York, NY & Remote",
-      "process": "Phone interview, followed by onsite discussions and pair programming"
+      "locations": "New York, NY & Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -14917,10 +14718,10 @@
     ],
     "scrape": {
       "mode": "avature",
-      "list_url": "https://jobs.siemens.com/en_US/externaljobs/SearchJobs/?listFilterMode=1&folderSort=postedDate&folderSortDirection=DESC&folderRecordsPerPage=6&folderOffset=0",
+      "list_url": "https://jobs.siemens.com/en_US/externaljobs/SearchJobs/?listFilterMode=1&folderSort=postedDate&folderSortDirection=DESC&folderRecordsPerPage=18&folderOffset=0",
       "offset_param": "folderOffset",
       "size_param": "folderRecordsPerPage",
-      "page_size": 6,
+      "page_size": 18,
       "fetch_posted_details": false
     }
   },
@@ -14993,8 +14794,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "London, UK",
-      "process": "Phone screen; take home code exercise; on-site code extension with pair programming and discussion"
+      "locations": "London, UK"
     },
     "tags": [
       "Interview Friendly"
@@ -15014,8 +14814,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Bangalore, India / Remote",
-      "process": "Intro round to explore interests, 1-2 Technical interviews that resembles a problem SigNoz solves for, then product round to discuss on industry and problems which SigNoz is solving."
+      "locations": "Bangalore, India / Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -15044,8 +14843,7 @@
       "no_whiteboard": true,
       "source": "Hiring Without Whiteboards",
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
-      "locations": "London, UK / Remote",
-      "process": "Three stage, one day interview with quick feedback. One of the stages is 1.5h pair-programming session, where interviewee is assigned a task and interviewing developer plays role of Product Owner."
+      "locations": "London, UK / Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -15103,8 +14901,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Remote",
-      "process": "Screening call to determine general interest, 1.5 hour pair programming exercise based on realistic scenario, EQ interview."
+      "locations": "Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -15124,8 +14921,7 @@
       "no_whiteboard": true,
       "source": "Hiring Without Whiteboards",
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
-      "locations": "San Francisco, CA",
-      "process": "Call with recruiter, 1 week take-home project, call with hiring manager, on-site interview covering high-level system design, best software development practices and culture-fit"
+      "locations": "San Francisco, CA"
     },
     "tags": [
       "Interview Friendly"
@@ -15169,7 +14965,6 @@
       "no_whiteboard": false,
       "difficulty": "medium",
       "rounds": "4-5",
-      "process": "Coding (medium LeetCode), system design, and behavioral. Product sense expected for some roles.",
       "source": "Public knowledge"
     }
   },
@@ -15211,7 +15006,6 @@
       "no_whiteboard": false,
       "difficulty": "hard",
       "rounds": "4-5",
-      "process": "Coding (LeetCode medium-hard), system design (cloud/distributed), and behavioral. Strong technical bar.",
       "source": "Public knowledge"
     }
   },
@@ -15290,8 +15084,7 @@
       "no_whiteboard": true,
       "source": "Hiring Without Whiteboards",
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
-      "locations": "San Francisco, CA & Remote",
-      "process": "Tailored to the candidate, often consists of take-home work, discussion of real-world eng challenges, and product familiarity."
+      "locations": "San Francisco, CA & Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -15326,7 +15119,6 @@
       "source_url": "Linked source employer target set",
       "no_wb_id": null,
       "locations": "",
-      "process": "",
       "employment_type": ""
     },
     "tags": [
@@ -15347,7 +15139,6 @@
       "no_whiteboard": false,
       "difficulty": "hard",
       "rounds": "5-6",
-      "process": "Rigorous technical interview with domain-specific engineering questions. Fast iteration and mission commitment assessed.",
       "source": "Public knowledge"
     }
   },
@@ -15411,8 +15202,7 @@
       "no_whiteboard": true,
       "source": "Hiring Without Whiteboards",
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
-      "locations": "New York, NY; Remote",
-      "process": "Call with recruiter, 4 hr take-home project, video interview w two engs on take-home exercise, video call with hiring manager, video call w VPE & principal eng to talk about architecture."
+      "locations": "New York, NY; Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -15444,8 +15234,7 @@
       "no_whiteboard": true,
       "source": "Hiring Without Whiteboards",
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
-      "locations": "Durham, NC",
-      "process": "Take-home project [related to business](https://engineering.spreedly.com/blog/programming-puzzles-are-not-the-answer-how-spreedly-does-work-samples.html)"
+      "locations": "Durham, NC"
     },
     "tags": [
       "Interview Friendly"
@@ -15526,8 +15315,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "London, UK / New York, US / Trivandrum, India / Remote",
-      "process": "Real-world take-home project, video interviews with HR and the engineering team."
+      "locations": "London, UK / New York, US / Trivandrum, India / Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -15549,7 +15337,6 @@
       "source_url": "University target set",
       "no_wb_id": null,
       "locations": "",
-      "process": "",
       "employment_type": ""
     },
     "tags": [
@@ -15677,8 +15464,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Seattle, WA / Remote",
-      "process": "Phone/skype screen --> Take-home coding assignment --> on-site/skype interview loop to discuss assignment; meet-and-greet with other teams --> +1/-1 based on team consensus"
+      "locations": "Seattle, WA / Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -15709,7 +15495,6 @@
       "no_whiteboard": false,
       "difficulty": "hard",
       "rounds": "4-5",
-      "process": "Live coding or take-home, system design, and past-work deep-dive. Extremely high engineering bar.",
       "source": "Public knowledge"
     }
   },
@@ -15728,8 +15513,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Prague, Czech Republic / Brno, Czech Republic / Remote",
-      "process": "A social interview with a recruiter + take-home coding challenge followed by a technical interview session discussing your approach in solving the take-home assignment + a culture-fit interview with the head of engineering."
+      "locations": "Prague, Czech Republic / Brno, Czech Republic / Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -15795,8 +15579,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "New York, NY / Remote",
-      "process": "Interview over video call for cultural fit first, if you pass we proceed with technical interview that doesn't include coding games or challenges"
+      "locations": "New York, NY / Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -15831,8 +15614,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "London, UK",
-      "process": "Five-stages interview process. The first stage is with HR. The second stage is with the Engineering manager - discussion about general engineering knowledge and past projects. The third stage is take-home assignment. The fourth stage is a discussion of the take-home assignment solution with two engineers. The fifth stage is a behavioural interview structured around company values."
+      "locations": "London, UK"
     },
     "tags": [
       "Interview Friendly"
@@ -15920,8 +15702,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Remote",
-      "process": "Take home project, an interview to discuss the project, and a cultural fit interview."
+      "locations": "Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -15942,8 +15723,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Seattle, WA / San Francisco, CA",
-      "process": "Take-home coding project, design principles discussions, collaborative problem solving"
+      "locations": "Seattle, WA / San Francisco, CA"
     },
     "tags": [
       "Interview Friendly"
@@ -16102,8 +15882,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Bengaluru, India / Vancouver, Canada / London, UK / Singapore / Singapore, CA / NY, WA: United States",
-      "process": "Data Engineering, Recruiter screening, followed by 1 round of fitment discussion, followed by a take home assignment(similar to actual work), followed by 1 round involving assignment solution discussion, programming language specific questions, and other role specific technical questions, followed by hiring manager discussion."
+      "locations": "Bengaluru, India / Vancouver, Canada / London, UK / Singapore / Singapore, CA / NY, WA: United States"
     },
     "tags": [
       "Interview Friendly"
@@ -16123,8 +15902,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Chicago, IL / San Francisco, CA",
-      "process": "Introductory phone screen, take-home project, take-home project phone review, a few hour-long pairing sessions on real projects."
+      "locations": "Chicago, IL / San Francisco, CA"
     },
     "tags": [
       "Interview Friendly"
@@ -16169,7 +15947,6 @@
       "source_url": "Linked source employer target set",
       "no_wb_id": null,
       "locations": "",
-      "process": "",
       "employment_type": ""
     },
     "tags": [
@@ -16399,8 +16176,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Remote",
-      "process": "Initial conversation, Consulting interview, Technical interview, Pair programming, Takehome exercise."
+      "locations": "Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -16422,7 +16198,6 @@
       "source_url": "University target set",
       "no_wb_id": null,
       "locations": "",
-      "process": "",
       "employment_type": ""
     },
     "tags": [
@@ -16461,7 +16236,6 @@
       "source_url": "Linked source employer target set",
       "no_wb_id": null,
       "locations": "",
-      "process": "",
       "employment_type": ""
     },
     "tags": [
@@ -16483,8 +16257,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Seattle, WA",
-      "process": "Initial screen to discuss experience and interest in a role at Textio; then a take-home programming task is discussed during a 1-hour tech screen (on-site or remote); finally a larger take-home project, simulating real work, is discussed during an on-site presentation plus 1-1s; [How we hire](https://textio.ai/how-we-hire-a74cdbadd1e8)"
+      "locations": "Seattle, WA"
     },
     "tags": [
       "Interview Friendly"
@@ -16563,8 +16336,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Austin, TX",
-      "process": "Take-home coding challenge with in-person review and pair programming."
+      "locations": "Austin, TX"
     },
     "tags": [
       "Interview Friendly"
@@ -16627,8 +16399,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "San Francisco, CA / London, UK",
-      "process": "[Our interview process](https://thoughtbot.com/playbook/our-company/hiring#interviewing)"
+      "locations": "San Francisco, CA / London, UK"
     },
     "tags": [
       "Interview Friendly"
@@ -16649,8 +16420,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "San Francisco, CA",
-      "process": "Interviews with ThoughtWorkers of diverse backgrounds and roles; take home assignment followed by in person pairing session."
+      "locations": "San Francisco, CA"
     },
     "tags": [
       "Interview Friendly"
@@ -16768,8 +16538,7 @@
       "no_whiteboard": true,
       "source": "Hiring Without Whiteboards",
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
-      "locations": "Remote / Toronto, Canada",
-      "process": "Short coding challenge inspired from the day-to-day problem space followed by a longer frontend or backend pairing design and implementation exercise"
+      "locations": "Remote / Toronto, Canada"
     },
     "tags": [
       "Interview Friendly"
@@ -16851,7 +16620,9 @@
     "scrape": {
       "mode": "workday",
       "list_url": "https://tradeweb.wd1.myworkdayjobs.com/tradeweb"
-    }
+    },
+    "scan_enabled": false,
+    "note": "Left Workday (tenant dead); tradeweb.com careers is WAF-blocked; no public board found (2026-07-18)"
   },
   {
     "name": "TrainingPeaks",
@@ -16867,8 +16638,7 @@
       "no_whiteboard": true,
       "source": "Hiring Without Whiteboards",
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
-      "locations": "Boulder, CO; Denver, CO",
-      "process": "Phone screen, take home project, remote and on-site interviews for technical and cultural fit"
+      "locations": "Boulder, CO; Denver, CO"
     },
     "tags": [
       "Interview Friendly"
@@ -16999,8 +16769,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Pittsburgh, PA",
-      "process": "Phone screen, Take-home project, In-person interview with the team that you would join"
+      "locations": "Pittsburgh, PA"
     },
     "tags": [
       "Interview Friendly"
@@ -17030,8 +16799,7 @@
       "no_whiteboard": true,
       "source": "Hiring Without Whiteboards",
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
-      "locations": "San Francisco, CA; Remote",
-      "process": "Phone screen/ Take-home project that resembles a problem Truss has seen many times before / Followup interview about the project / Closing Interview, all interviews done remotely"
+      "locations": "San Francisco, CA; Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -17095,7 +16863,6 @@
       "no_whiteboard": false,
       "difficulty": "medium",
       "rounds": "4",
-      "process": "Coding, system design, and behavioral. Values builder mindset.",
       "source": "Public knowledge"
     }
   },
@@ -17124,7 +16891,6 @@
       "no_whiteboard": false,
       "difficulty": "medium",
       "rounds": "4",
-      "process": "Similar to Amazon (shared Leadership Principles). Coding and systems focused. Gaming/streaming domain knowledge valued.",
       "source": "Public knowledge"
     }
   },
@@ -17144,7 +16910,6 @@
       "no_whiteboard": false,
       "difficulty": "hard",
       "rounds": "4-5",
-      "process": "Coding (Python/C++), quantitative problem solving, and systems design. High math and CS bar.",
       "source": "Public knowledge"
     }
   },
@@ -17215,7 +16980,6 @@
       "no_whiteboard": false,
       "difficulty": "hard",
       "rounds": "4-5",
-      "process": "Similar to FAANG. Coding (medium-hard), system design, and behavioral. High technical bar.",
       "source": "Public knowledge"
     }
   },
@@ -17243,7 +17007,9 @@
       "mode": "html",
       "list_url": "https://jobs.berkeley.edu/jobs/",
       "include": "jobs.berkeley.edu"
-    }
+    },
+    "scan_enabled": false,
+    "note": "jobs.berkeley.edu listing removed; jobs now in UC PeopleSoft gateway; no scrapeable public listing (2026-07-18)"
   },
   {
     "name": "UC San Diego",
@@ -17262,7 +17028,6 @@
       "source_url": "University target set",
       "no_wb_id": null,
       "locations": "",
-      "process": "",
       "employment_type": ""
     },
     "tags": [
@@ -17285,7 +17050,6 @@
       "source_url": "University target set",
       "no_wb_id": null,
       "locations": "",
-      "process": "",
       "employment_type": ""
     },
     "tags": [
@@ -17310,7 +17074,6 @@
       "source_url": "University target set",
       "no_wb_id": null,
       "locations": "",
-      "process": "",
       "employment_type": ""
     },
     "tags": [
@@ -17382,7 +17145,9 @@
         "all_jobs.atom"
       ],
       "verify_ssl": false
-    }
+    },
+    "scan_enabled": false,
+    "note": "robots.txt on unc.peopleadmin.com disallows all crawling (checked 2026-07-18)"
   },
   {
     "name": "Uncountable",
@@ -17555,7 +17320,6 @@
       "source_url": "University target set",
       "no_wb_id": null,
       "locations": "",
-      "process": "",
       "employment_type": ""
     },
     "tags": [
@@ -17583,7 +17347,11 @@
     "scrape": {
       "mode": "html",
       "list_url": "https://uiowa.referrals.selectminds.com/jobs/search",
-      "include": "uiowa.referrals.selectminds.com"
+      "include": "uiowa.referrals.selectminds.com/jobs/",
+      "user_agent": "Mozilla/5.0",
+      "url_exclude": [
+        "/jobs/search"
+      ]
     },
     "interview": {
       "no_whiteboard": true,
@@ -17591,7 +17359,6 @@
       "source_url": "University target set",
       "no_wb_id": null,
       "locations": "",
-      "process": "",
       "employment_type": ""
     },
     "tags": [
@@ -17615,7 +17382,6 @@
       "source_url": "University target set",
       "no_wb_id": null,
       "locations": "",
-      "process": "",
       "employment_type": ""
     },
     "tags": [
@@ -17652,7 +17418,6 @@
       "source_url": "University target set",
       "no_wb_id": null,
       "locations": "",
-      "process": "",
       "employment_type": ""
     },
     "tags": [
@@ -17675,7 +17440,6 @@
       "source_url": "University target set",
       "no_wb_id": null,
       "locations": "",
-      "process": "",
       "employment_type": ""
     },
     "tags": [
@@ -17698,7 +17462,6 @@
       "source_url": "University target set",
       "no_wb_id": null,
       "locations": "",
-      "process": "",
       "employment_type": ""
     },
     "tags": [
@@ -17764,8 +17527,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Wilmington, NC / New York, NY / Los Angeles, CA",
-      "process": "Review portfolio - What projects have you worked on? + personality assessment, + interview"
+      "locations": "Wilmington, NC / New York, NY / Los Angeles, CA"
     },
     "tags": [
       "Interview Friendly"
@@ -17786,8 +17548,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "New York, NY",
-      "process": "Begin-at-home assignment highly relevant to role, presented and discussed during on-site."
+      "locations": "New York, NY"
     },
     "tags": [
       "Interview Friendly"
@@ -17829,8 +17590,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Boston, MA / New York, NY / Remote",
-      "process": "Phone screen, take home project relevant to our work, first round interview to discuss background and take home implementation, second round interview to meet more employees and share some of your and our recent work."
+      "locations": "Boston, MA / New York, NY / Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -17872,8 +17632,7 @@
       "no_whiteboard": true,
       "source": "Hiring Without Whiteboards",
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
-      "locations": "Atlanta, GA; San Francisco, CA; Mountain View, CA",
-      "process": "Initial interview, pair programming, and offer"
+      "locations": "Atlanta, GA; San Francisco, CA; Mountain View, CA"
     },
     "tags": [
       "Interview Friendly"
@@ -17893,8 +17652,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Seattle, WA / San Francisco, CA / Lansing, MI / Hamburg, Germany",
-      "process": "Phone screen, on-site interview with group, paired whiteboard problem solving and discussion, take-home project and follow-up review"
+      "locations": "Seattle, WA / San Francisco, CA / Lansing, MI / Hamburg, Germany"
     },
     "tags": [
       "Interview Friendly"
@@ -17917,7 +17675,6 @@
       "source_url": "University target set",
       "no_wb_id": null,
       "locations": "",
-      "process": "",
       "employment_type": ""
     },
     "tags": [
@@ -17969,8 +17726,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Remote",
-      "process": "Take home assignment, presentation of assignment, live code review with team. Advanced / high-level chat with team based on skillset and role."
+      "locations": "Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -18027,8 +17783,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Remote",
-      "process": "Zoom interview, take-home project followed by technical interview with ICs with opportunities to discuss the project, interview with team leaders."
+      "locations": "Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -18148,8 +17903,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Madison, WI / Remote",
-      "process": "Phone screen, project discussion and tooling experience overview in panel interview with team, practical shared-editor coding problem and relevant architectural challenge in hands-on interview"
+      "locations": "Madison, WI / Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -18224,7 +17978,6 @@
       "no_whiteboard": false,
       "difficulty": "medium",
       "rounds": "4",
-      "process": "Coding, system design, and behavioral. Payments infrastructure knowledge valued.",
       "source": "Public knowledge"
     }
   },
@@ -18318,7 +18071,6 @@
       "source_url": "University target set",
       "no_wb_id": null,
       "locations": "",
-      "process": "",
       "employment_type": ""
     },
     "tags": [
@@ -18364,9 +18116,9 @@
       "Food & Beverage"
     ],
     "scrape": {
-      "mode": "html",
-      "list_url": "https://www.wawa.com/careers",
-      "include": "www.wawa.com"
+      "mode": "phenom",
+      "list_url": "https://careers.wawa.com/us/en/search-results",
+      "include": "careers.wawa.com/us/en/job/"
     },
     "interview": {
       "no_whiteboard": true,
@@ -18374,12 +18126,12 @@
       "source_url": "Linked source employer target set",
       "no_wb_id": null,
       "locations": "",
-      "process": "",
       "employment_type": ""
     },
     "tags": [
       "Interview Friendly"
-    ]
+    ],
+    "note": "www.wawa.com/careers became a JS shell; jobs moved to Phenom at careers.wawa.com 2026-07-18"
   },
   {
     "name": "Wayfair",
@@ -18421,7 +18173,6 @@
       "no_whiteboard": false,
       "difficulty": "hard",
       "rounds": "5",
-      "process": "Autonomous driving domain knowledge, coding, and systems design. Computer vision and ML knowledge expected for technical roles.",
       "source": "Public knowledge"
     }
   },
@@ -18481,8 +18232,7 @@
       "no_whiteboard": true,
       "source": "Hiring Without Whiteboards",
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
-      "locations": "San Francisco, CA & Remote",
-      "process": "Short take-home challenge, followed by a paid 3-5 day freelance contract project"
+      "locations": "San Francisco, CA & Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -18536,7 +18286,6 @@
       "source_url": "Linked source employer target set",
       "no_wb_id": null,
       "locations": "",
-      "process": "",
       "employment_type": ""
     },
     "tags": [
@@ -18596,7 +18345,11 @@
     ],
     "scrape": {
       "mode": "eightfold",
-      "list_url": "https://whirlpool.eightfold.ai/careers"
+      "list_url": "https://whirlpool.eightfold.ai/careers",
+      "fallback": "playwright",
+      "include": "whirlpool.eightfold.ai/careers/job/",
+      "try_load_more": true,
+      "fetch_titles_from_details": true
     }
   },
   {
@@ -18625,8 +18378,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Remote",
-      "process": "Cultural fit interview, about one hour of discussing possible solutions for real problems the team you are applying to could face. Not right or wrong answers, more of a brainstorming with two engineers who will evaluate how your problem solving workflow works."
+      "locations": "Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -18701,7 +18453,6 @@
       "no_whiteboard": false,
       "difficulty": "medium",
       "rounds": "4",
-      "process": "Coding, system design, and behavioral. Enterprise HR/finance domain knowledge valued.",
       "source": "Public knowledge"
     }
   },
@@ -18852,7 +18603,6 @@
       "source_url": "University target set",
       "no_wb_id": null,
       "locations": "",
-      "process": "",
       "employment_type": ""
     },
     "tags": [
@@ -18899,8 +18649,7 @@
       "no_whiteboard": true,
       "source": "Hiring Without Whiteboards",
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
-      "locations": "London, UK; Lisbon, PT; Porto, PT & Remote",
-      "process": "Take home-code challenge, pair-programming session and discussion about past experience"
+      "locations": "London, UK; Lisbon, PT; Porto, PT & Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -18935,8 +18684,7 @@
       "no_whiteboard": true,
       "source": "Hiring Without Whiteboards",
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
-      "locations": "Remote",
-      "process": "Recruiter interview, take-home project, code review of the take-home project, technical discussions with hiring manager and engineers from the team, and a values interview."
+      "locations": "Remote"
     },
     "tags": [
       "Interview Friendly"
@@ -18977,8 +18725,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "San Francisco, CA",
-      "process": "One technical phone screen focused on JS fundamentals and/or one timeboxed take-home challenge. The onsite is a series of interviews designed to test your understanding of JS, HTML/CSS, design, etc."
+      "locations": "San Francisco, CA"
     },
     "tags": [
       "Interview Friendly"
@@ -19131,8 +18878,7 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs",
       "source_url": "https://www.no-wb.org/",
-      "locations": "Münster, Germany & Remote",
-      "process": "Get-to-know call, take-home task representative to our problems, on-site pairing and discussion, and mentoring throughout the process with talks for aligning expectations."
+      "locations": "Münster, Germany & Remote"
     },
     "tags": [
       "Interview Friendly"

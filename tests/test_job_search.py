@@ -56,6 +56,27 @@ class JobSearchTests(unittest.TestCase):
             )
         )
 
+    def test_software_engineer_abbreviations_require_word_boundaries(self):
+        groups = keyword_groups("software engineer")
+        clauses, params = keyword_where(groups)
+
+        self.assertFalse(keyword_matches("Retail Sportswear Ambassador", "Example Co", [], groups))
+        self.assert_matches("software engineer", "Senior SWE - Backend")
+
+        conn = sqlite3.connect(":memory:")
+        self.addCleanup(conn.close)
+        conn.execute("CREATE TABLE jobs (title TEXT)")
+        conn.executemany(
+            "INSERT INTO jobs VALUES (?)",
+            [("Retail Sportswear Ambassador",), ("Senior SWE - Backend",)],
+        )
+        rows = conn.execute(
+            f"SELECT title FROM jobs WHERE {' AND '.join(clauses)}",
+            params,
+        ).fetchall()
+
+        self.assertEqual([row[0] for row in rows], ["Senior SWE - Backend"])
+
     def test_jobs_order_by_posted_date_then_first_seen_fallback(self):
         self.assertEqual(
             JOB_DATE_ORDER_SQL,

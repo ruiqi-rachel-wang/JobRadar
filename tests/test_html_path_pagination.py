@@ -47,6 +47,26 @@ class HtmlPathPaginationTests(unittest.TestCase):
         self.assertEqual(["Operator"], [job["title"] for job in jobs])
         self.assertEqual(["Waco, TX, US"], [job["location"] for job in jobs])
 
+    @patch("app.api.ats.html.requests.get")
+    def test_job_path_filter_rejects_detail_cta_titles(self, get):
+        get.return_value = _Response(
+            "<a href='/jobs/101'>Read more</a>"
+            "<a href='/jobs/102'>See details</a>"
+            "<a href='/jobs/103'>Platform Engineer</a>"
+        )
+
+        jobs, error = fetch_html(
+            {
+                "list_url": "https://careers.example/jobs",
+                "include": "careers.example/jobs/",
+            },
+            {},
+            "Example",
+        )
+
+        self.assertIsNone(error)
+        self.assertEqual(["Platform Engineer"], [job["title"] for job in jobs])
+
     @patch("app.api.ats.html.time.sleep", return_value=None)
     @patch("app.api.ats.html.requests.get")
     def test_path_pages_are_combined_until_empty(self, get, _sleep):

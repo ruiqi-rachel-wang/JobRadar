@@ -101,7 +101,8 @@ def keyword_groups(keyword):
 def keyword_where(groups):
     intent = role_intent(groups)
     if intent:
-        return [_role_where("title", intent)], list(intent["patterns"])
+        clause, params = _role_where("title", intent)
+        return [clause], params
     clauses, params = [], []
     for group in groups:
         bits = []
@@ -260,10 +261,32 @@ def role_intent_where(groups, field="title"):
     intent = role_intent(groups)
     if not intent:
         return "", []
-    return _role_where(field, intent), list(intent["patterns"])
+    return _role_where(field, intent)
 
 def _role_where(field, intent):
-    return "(" + " OR ".join(f"LOWER({field}) LIKE ?" for _ in intent["patterns"]) + ")"
+    clauses, params = [], []
+    for pattern in intent["patterns"]:
+        term = pattern.strip("%").lower()
+        if _is_standalone_role_abbreviation(pattern, term):
+            clauses.append(f"{_sql_word_boundary_field(field)} LIKE ?")
+            params.append(f"% {term} %")
+        else:
+            clauses.append(f"LOWER({field}) LIKE ?")
+            params.append(pattern)
+    return "(" + " OR ".join(clauses) + ")", params
+
+
+def _sql_word_boundary_field(field):
+    """Return portable SQL that turns common title punctuation into spaces."""
+    expression = f"LOWER({field})"
+    for delimiter in ("-", "/", "_", "(", ")", ",", ".", ":", ";", "+", "|"):
+        escaped = delimiter.replace("'", "''")
+        expression = f"REPLACE({expression}, '{escaped}', ' ')"
+    return f"(' ' || {expression} || ' ')"
+
+
+def _is_standalone_role_abbreviation(pattern, term):
+    return pattern == f"%{term}%" and term.isalnum() and len(term) <= 3
 
 def _groups_have_buckets(groups, buckets):
     term_sets = [set(group) for group in groups]
@@ -274,7 +297,10 @@ def keyword_matches(title, company, keywords, groups):
     intent = role_intent(groups)
     title_haystack = (title or "").lower()
     if intent:
-        return any(pattern.strip("%").lower() in title_haystack for pattern in intent["patterns"])
+        return any(
+            _role_pattern_matches(title_haystack, pattern)
+            for pattern in intent["patterns"]
+        )
 
     keyword_text = (
         keywords if isinstance(keywords, str)
@@ -284,8 +310,15 @@ def keyword_matches(title, company, keywords, groups):
     return all(any(_term_matches_text(haystack, term) for term in group) for group in groups)
 
 
-def _term_matches_text(text, term):
-    if len(term) <= 2 and term.isalnum():
+def _role_pattern_matches(title, pattern):
+    term = pattern.strip("%").lower()
+    if _is_standalone_role_abbreviation(pattern, term):
+        return _term_matches_text(title, term, exact=True)
+    return term in title
+
+
+def _term_matches_text(text, term, exact=False):
+    if exact or (len(term) <= 2 and term.isalnum()):
         return re.search(rf"(?:^|[^a-z0-9]){re.escape(term)}(?:[^a-z0-9]|$)", text) is not None
     return term in text
 

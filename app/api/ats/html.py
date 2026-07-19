@@ -137,7 +137,7 @@ def fetch_html(scrape, seen, company):
                     visited.add(abs_url)
                     title = norm(re.sub(r"!\[[^\]]*\]", " ", title))
                     title = re.sub(r'\s+(?:learn more|apply now|view job)$', '', title, flags=re.I).strip()
-                    if not title or re.search(r"^(apply|view job|search jobs|saved jobs|learn more)$", title, re.I):
+                    if not title or re.search(r"^(apply|apply now|view job|search jobs|saved jobs|learn more|read more|see details|job details)$", title, re.I):
                         continue
                     if title_exclude and any(ex in title.lower() for ex in title_exclude):
                         continue
@@ -259,6 +259,7 @@ def fetch_html(scrape, seen, company):
                 "company","workplace","services","explore","service","explore entry level",
                 "explore our application steps","jobs per page","back to top page navigation",
                 "unknown title","view all openings","see all","all openings",
+                "read more","see details","job details",
             }
             t_lower = title.lower().strip()
             if t_lower in _NAV:

@@ -30,12 +30,16 @@ ordering, reliable saved-search delivery, and a more resilient ingestion
 pipeline. Failed or partial scans cannot silently expire valid jobs, and
 scheduled scans survive contention or restarts.
 
-Codex with GPT-5.6 Sol was the primary engineering collaborator. It helped audit
-the pre-event codebase, trace behavior across SQL and browser paths, implement
-and verify cross-layer changes, verify the product's ordering contract, and
-build the regression suite. Human product decisions defined the date-ordering
-contract, search-recall goals, source-safety boundaries, and the decision not to
-auto-apply on a user's behalf.
+Codex with GPT-5.6 Sol is the verified engineering collaborator for the final
+Build Week submission-hardening and verification pass. It audited the pre-event
+baseline, traced search across SQL and fallback paths, corrected abbreviation
+boundaries, verified the ordering contract, removed copied interview-process
+prose, upgraded vulnerable dependencies, added low-risk browser hardening, and
+ran the regression suite. Earlier eligible-period changes are demonstrated by
+their Git diff, commit dates, and tests without assigning an unverified model
+version to those earlier sessions. Human product decisions defined the
+date-ordering contract, search-recall goals, source-safety boundaries, and the
+decision not to auto-apply on a user's behalf.
 
 ## What is new versus the pre-event project
 
@@ -50,7 +54,7 @@ Build Week work to demonstrate:
    missing, and added time within the same date—without hidden relevance ranking.
 4. Save the search, add a result to the application list, and show the daily
    alert control.
-5. Briefly show the 54-test suite and the source/scheduling reliability work.
+5. Briefly show the 60-test suite and the source/scheduling reliability work.
 
 ## Demonstration video script
 
@@ -90,12 +94,12 @@ retry.
 
 Show the Build Week Git commits or a concise diff and the test output.
 
-“I used Codex with GPT-5.6 Sol as my primary engineering collaborator. It traced
-the search flow from SQL through fallbacks and both interfaces, verified my
-posted-date and added-time ordering decision, aligned the documentation and
-tests, and helped verify 54 scenarios across search, alerts, scheduling, and
-source reliability. I made the product decisions; Codex accelerated the audit,
-implementation, and verification.”
+“I used Codex with GPT-5.6 Sol for my final Build Week engineering and
+verification pass. It traced search from SQL through the fallback path, fixed
+abbreviation boundaries, verified my posted-date and added-time ordering
+decision, removed submission-risk data, hardened the app, aligned the
+documentation, and ran the regression suite. I made the product decisions;
+Codex accelerated implementation and verification.”
 
 ### 2:25–2:35 — Close
 

@@ -33,19 +33,30 @@ Week submission period. The last pre-event baseline is commit `3c2ce52`.
   job identity across supported ATS sources
 - Safer scan expiry: partial or failed source reads cannot incorrectly close jobs
 - Persistent scheduling and queue recovery for interrupted scans
-- 54 automated tests covering search, alerts, scheduling, taxonomy, source
+- 60 automated tests covering search, alerts, scheduling, taxonomy, security, source
   pagination, robots rules, job identity, and data repair
 
 ### How Codex and GPT-5.6 were used
 
-Codex with GPT-5.6 Sol was used as the primary engineering collaborator to:
+Codex with GPT-5.6 Sol is the verified engineering collaborator for the final
+Build Week submission-hardening and verification pass. In that thread it was
+used to:
 
 - Audit the existing repository against the pre-event Git baseline
 - Trace behavior across Flask routes, SQL queries, fallbacks, templates, and tests
 - Verify the posted-date-first ordering contract across SQL, fallbacks, date
   filters, interface labels, and regression tests
+- Correct abbreviation matching so `SWE` is treated as a standalone term
+- Remove tracked interview-process prose and update vulnerable dependencies
+- Add browser security headers and cross-site write protection
 - Run targeted tests before the complete suite and inspect the resulting diff
 - Prepare the submission documentation and reproducible judging instructions
+
+Earlier eligible-period changes are evidenced by the Git diff, commit dates,
+and regression tests. This statement does not assign an unverified model version
+to those earlier development sessions. See
+[docs/build-week-evidence.md](docs/build-week-evidence.md) for the before/after
+record.
 
 The product decisions remained human-directed. In particular, JobDrop uses
 an explicit date-based order rather than model relevance, uses added time when a
@@ -75,6 +86,8 @@ cd JobRadar
 python3 -m venv venv
 source venv/bin/activate
 python3 -m pip install -r requirements.txt
+# Required only when testing or scanning browser-backed company sources:
+python3 -m playwright install chromium
 cp .env.example .env
 python3 app/app.py
 ```
@@ -117,7 +130,8 @@ Run the primary search regression suite:
 python3 -m unittest tests.test_job_search -v
 ```
 
-The Build Week checkpoint passes all 54 tests.
+The Build Week checkpoint passes all 60 tests from a clean Python 3.10
+environment installed directly from `requirements.txt`.
 
 ## Judging and submission materials
 
@@ -128,7 +142,8 @@ are in [docs/build-week-submission.md](docs/build-week-submission.md).
 
 - Runtime state is ignored: `.env`, databases, seen-job state, and scan summaries
   are not committed.
-- Higher-risk source configurations remain in ignored `app/private/`.
+- Higher-risk source configurations remain in ignored `app/private/`, and
+  copied interview-process prose is excluded from the tracked company list.
 - The public company list favors public ATS APIs and direct career-page feeds.
 - JobDrop includes configurable robots enforcement, throttling, and backoff.
 - Operators remain responsible for reviewing source terms, robots policies, data
