@@ -46,7 +46,7 @@ from .common import DATA_DIR
 from .apis import fetch_jobs
 from .utils import experience_match_score, extract_keywords
 from .search import (
-    ADDED_TIME_ORDER_SQL, display_location, display_title, keyword_groups, keyword_where,
+    JOB_DATE_ORDER_SQL, display_location, display_title, keyword_groups, keyword_where,
 )
 from .taxonomy import migrate_saved_filter
 
@@ -389,7 +389,7 @@ def _saved_search_alert_jobs(search_row, cutoff, window_end):
             clauses.append("(' ' || REPLACE(LOWER(location), ', ', ' ') || ' ') LIKE ?")
             params.append(f"% {location} %")
     if since and since != "any":
-        clauses.append("substr(first_seen,1,10) >= ?")
+        clauses.append("COALESCE(NULLIF(posted,''), substr(first_seen,1,10)) >= ?")
         params.append(since)
     if exp_years is not None:
         clauses.append("(exp_min IS NULL OR exp_min <= ?)")
@@ -424,7 +424,7 @@ def _saved_search_alert_jobs(search_row, cutoff, window_end):
     sql = (
         "SELECT id, title, url, company, location, first_seen, posted, exp_label "
         f"FROM jobs WHERE {' AND '.join(clauses)} "
-        f"ORDER BY {ADDED_TIME_ORDER_SQL}"
+        f"ORDER BY {JOB_DATE_ORDER_SQL}"
     )
     with connect_db(rows=True) as conn:
         rows = conn.execute(sql, params).fetchall()
@@ -951,7 +951,7 @@ def _job_query(where_sql="", params=(), limit=60):
         "SELECT id, title, url, company, location, posted, first_seen, exp_label, "
         "skills, keywords, description FROM jobs "
         f"{where} "
-        f"ORDER BY {ADDED_TIME_ORDER_SQL} "
+        f"ORDER BY {JOB_DATE_ORDER_SQL} "
         "LIMIT ?"
     )
     with connect_db(rows=True) as conn:
@@ -2148,7 +2148,7 @@ def api_jobs():
             clauses.append("(' ' || REPLACE(LOWER(location), ', ', ' ') || ' ') LIKE ?")
             params.append(f"% {location} %")
     if since:
-        clauses.append("substr(first_seen,1,10) >= ?")
+        clauses.append("COALESCE(NULLIF(posted,''), substr(first_seen,1,10)) >= ?")
         params.append(since)
     if exp_years is not None:
         # Keep unknowns, exact/close matches, and junior-ish roles. Drop known
@@ -2178,7 +2178,7 @@ def api_jobs():
         "exp_min, exp_max, exp_label, exp_source, skills, keywords, employment_type"
     )
     sql = (f"SELECT {select_cols} FROM {from_sql} {where} "
-           f"ORDER BY {ADDED_TIME_ORDER_SQL} LIMIT ? OFFSET ?")
+           f"ORDER BY {JOB_DATE_ORDER_SQL} LIMIT ? OFFSET ?")
     count_sql = f"SELECT COUNT(*) FROM {from_sql} {where}"
     query_params = list(params) + [limit, offset]
     exact_count = not (keyword or location or since or exp_years is not None or category or tag or companies)

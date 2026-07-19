@@ -26,7 +26,9 @@ _DISPLAY_CITIES = (
 
 # ── Keyword aliases ───────────────────────────────────────────────────────────
 
-ADDED_TIME_ORDER_SQL = "first_seen DESC"
+JOB_DATE_ORDER_SQL = (
+    "COALESCE(NULLIF(posted,''), substr(first_seen,1,10)) DESC, first_seen DESC"
+)
 
 _KEYWORD_ALIASES = {
     "admin": {"administrative", "administrator"},

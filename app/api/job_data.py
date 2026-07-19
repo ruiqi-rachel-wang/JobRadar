@@ -448,7 +448,7 @@ def jobs_from_seen_fallback(keyword, location, since, category, companies, limit
             continue
         if location and not location_matches(location, loc):
             continue
-        if since and first_seen[:10] < since:
+        if since and (posted or first_seen) < since:
             continue
         if category and category not in cats:
             continue

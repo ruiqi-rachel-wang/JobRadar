@@ -124,7 +124,7 @@
       </div>
       <div class="filter-divider"></div>
       <div class="filter-group">
-        <div class="filter-label">Added after</div>
+        <div class="filter-label">Posted / seen after</div>
         <input class="filter-input" id="f-begin" type="date">
       </div>
       <button class="scan-go" id="filter-btn" onclick="applyFilters()">⌕ Filter</button>
@@ -651,7 +651,7 @@ function renderResults(jobs) {
   document.getElementById('results-container').style.display = 'block';
 
   document.getElementById('new-section').innerHTML = '';
-  renderSection('old-section',     visibleJobs, 'Jobs by added time', false, 'old');
+  renderSection('old-section',     visibleJobs, 'Jobs by posted date', false, 'old');
   renderPagination(startRow, endRow, totalPages);
   renderSection('clicked-section', clickedJs, '✓ Applied / Opened',  false, 'clicked');
 
@@ -739,10 +739,11 @@ function renderSection(id, jobs, title, isNew, bucket) {
 
   const rows = jobs.map((j, idx) => {
     const loc        = j.location || '—';
+    const postedDate = (j.posted || '').slice(0, 10);
     const seenDate   = (j.first_seen || '').slice(0, 10);
-    const dateVal    = seenDate;
+    const dateVal    = postedDate.length >= 8 ? postedDate : seenDate;
     const hasDate    = dateVal.length >= 8;
-    const dateLabel  = hasDate ? 'Added' : '';
+    const dateLabel  = hasDate ? 'Posted' : '';
     const dateCls    = hasDate ? 'td-date has-posted' : 'td-date';
     const source   = j.source || 'html';
     const expLabel = j.exp_label ? ` · ${esc2(j.exp_label)}` : ' · Exp not listed';
@@ -830,10 +831,10 @@ async function openDetail(id, title, company, url, jobObj) {
 
     document.getElementById('dm-co-loc').textContent = data.location || '';
 
-    const addedStr = (data.first_seen||'').slice(0,10);
-    const ago = _daysAgo(addedStr);
-    document.getElementById('dm-posted').innerHTML = addedStr
-      ? `<strong>Added ${esc2(addedStr)}</strong>${ago ? ' · ' + ago : ''}` : '';
+    const postedStr = data.posted || (data.first_seen||'').slice(0,10);
+    const ago = _daysAgo(postedStr);
+    document.getElementById('dm-posted').innerHTML = postedStr
+      ? `<strong>Posted ${esc2(postedStr)}</strong>${ago ? ' · ' + ago : ''}` : '';
 
     const cards = [];
     if (data.exp_label) cards.push({label:'Experience', value: data.exp_label});
