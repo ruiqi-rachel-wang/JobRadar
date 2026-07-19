@@ -1,6 +1,6 @@
 import os
+import re
 import threading
-import urllib.robotparser
 import urllib.request
 from pathlib import Path
 from urllib.parse import urljoin, urlparse
@@ -49,6 +49,89 @@ ROBOTS_TIMEOUT_SECONDS = float(os.environ.get("JOBRADAR_ROBOTS_TIMEOUT_SECONDS",
 
 _ROBOTS_CACHE = {}
 
+
+def _parse_robots_groups(text):
+    """Parse robots.txt groups without urllib.robotparser's first-rule bug.
+
+    RFC 9309 resolves overlapping Allow/Disallow rules using the most specific
+    matching path.  Python's stdlib parser instead returns the first matching
+    rule, which incorrectly blocks common policies such as `Disallow: /`
+    followed by `Allow: /careers`.
+    """
+    groups = []
+    agents = []
+    rules = []
+    saw_rule = False
+    for raw in (text or "").splitlines():
+        line = raw.split("#", 1)[0].strip()
+        if not line or ":" not in line:
+            continue
+        key, value = (part.strip() for part in line.split(":", 1))
+        key = key.lower()
+        if key == "user-agent":
+            if saw_rule:
+                groups.append((tuple(agents), tuple(rules)))
+                agents, rules, saw_rule = [], [], False
+            agents.append(value.lower())
+        elif key in {"allow", "disallow"} and agents:
+            # An empty Disallow means no restriction and cannot match a path.
+            if value or key == "allow":
+                rules.append((key == "allow", value))
+            saw_rule = True
+    if agents:
+        groups.append((tuple(agents), tuple(rules)))
+    return tuple(groups)
+
+
+def _robots_rule_match(pattern, target):
+    if not pattern:
+        return False
+    end_anchored = pattern.endswith("$")
+    if end_anchored:
+        pattern = pattern[:-1]
+    expression = "^" + re.escape(pattern).replace(r"\*", ".*")
+    if end_anchored:
+        expression += "$"
+    return re.search(expression, target) is not None
+
+
+def _robots_can_fetch(groups, user_agent, url):
+    """Apply RFC 9309 user-agent and longest-path rule selection."""
+    product = (user_agent or "*").split(None, 1)[0].split("/", 1)[0].lower()
+    specific = []
+    best_agent_length = 0
+    wildcard = []
+    for agents, rules in groups:
+        matches = [agent for agent in agents if agent != "*" and agent in product]
+        if matches:
+            length = max(len(agent) for agent in matches)
+            if length > best_agent_length:
+                specific = [rules]
+                best_agent_length = length
+            elif length == best_agent_length:
+                specific.append(rules)
+        elif "*" in agents:
+            wildcard.append(rules)
+    selected = specific if specific else wildcard
+    if not selected:
+        return True
+
+    parsed = urlparse(url)
+    target = parsed.path or "/"
+    if parsed.query:
+        target += "?" + parsed.query
+    matches = []
+    for rules in selected:
+        for is_allow, pattern in rules:
+            if _robots_rule_match(pattern, target):
+                specificity = len(pattern.rstrip("$").replace("*", ""))
+                matches.append((specificity, is_allow))
+    if not matches:
+        return True
+    longest = max(specificity for specificity, _ in matches)
+    # Allow wins a tie, as required by RFC 9309.
+    return any(is_allow for specificity, is_allow in matches if specificity == longest)
+
 def robots_allowed(url):
     """Return False when robots.txt disallows fetching url for our user agent."""
     if not RESPECT_ROBOTS or not url:
@@ -57,17 +140,15 @@ def robots_allowed(url):
     if not parsed.scheme or not parsed.netloc:
         return True
     root = f"{parsed.scheme}://{parsed.netloc}"
-    rp = _ROBOTS_CACHE.get(root)
-    if rp is None:
-        rp = urllib.robotparser.RobotFileParser()
+    groups = _ROBOTS_CACHE.get(root)
+    if groups is None:
         robots_url = urljoin(root, "/robots.txt")
-        rp.set_url(robots_url)
         try:
             req = urllib.request.Request(robots_url, headers={"User-Agent": HEADERS["User-Agent"]})
             with urllib.request.urlopen(req, timeout=ROBOTS_TIMEOUT_SECONDS) as resp:
                 text = resp.read(512_000).decode("utf-8", "ignore")
-            rp.parse(text.splitlines())
+            groups = _parse_robots_groups(text)
         except Exception:
             return True
-        _ROBOTS_CACHE[root] = rp
-    return rp.can_fetch(HEADERS["User-Agent"], url)
+        _ROBOTS_CACHE[root] = groups
+    return _robots_can_fetch(groups, HEADERS["User-Agent"], url)

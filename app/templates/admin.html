@@ -333,6 +333,7 @@ button.kpi:hover { border-color: var(--line-3); }
           </div>
 
           <div id="last-scan-info" class="last-scan-info" style="display:none"></div>
+          <div id="scan-timing" class="last-scan-info" style="display:none"></div>
 
           <!-- Search + filter + actions row -->
           <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap">
@@ -566,44 +567,58 @@ const MODE_COLORS = {
 
 let selected         = new Set();
 let activeSidebarCat = 'All';
+let activeSidebarKind = 'category';
 let scanInterval     = null;
 
 // ── Sidebar ───────────────────────────────────────────────────────────────────
 const allCats = ['All', ...new Set(COMPANIES.flatMap(c => c.categories||[]))].sort(
   (a,b) => a==='All' ? -1 : b==='All' ? 1 : a.localeCompare(b)
 );
+const allTags = [...new Set(COMPANIES.flatMap(c => c.tags||[]))].sort((a,b) => a.localeCompare(b));
 
 function buildSidebar() {
   const cw = document.getElementById('cat-wrap');
-  allCats.forEach(cat => {
+  const addFilter = (cat, kind) => {
     const b = document.createElement('button');
     b.className = 'cat-btn' + (cat==='All' ? ' active' : '');
     b.textContent = cat;
+    b.dataset.filterKind = kind;
+    b.dataset.filterValue = cat;
     b.onclick = () => {
       activeSidebarCat = cat;
+      activeSidebarKind = kind;
       document.querySelectorAll('.cat-btn').forEach(x => x.classList.remove('active'));
       b.classList.add('active');
       filterSidebar();
     };
     cw.appendChild(b);
-  });
+  };
+  allCats.forEach(cat => addFilter(cat, 'category'));
+  if (allTags.length) {
+    const label = document.createElement('span');
+    label.textContent = 'Attributes';
+    label.style.cssText = 'width:100%;font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-4);margin:5px 2px 1px';
+    cw.appendChild(label);
+    allTags.forEach(tag => addFilter(tag, 'tag'));
+  }
   const list = document.getElementById('company-list');
   COMPANIES.forEach((c, i) => {
     const mode = (c.scrape||{}).mode || 'html';
     const div = document.createElement('div');
     const isAdminOnly = !!c.admin_only || c.scan_enabled === false || !!c.policy || !!c.crawler_locked_until;
+    const isTemporarilyLocked = !!c.crawler_locked_until;
     const lockLabel = c.crawler_locked_until ? 'limit' : (isAdminOnly ? 'lock' : '');
     div.className = 'co-item' + (isAdminOnly ? ' co-admin-only' : '');
     div.dataset.idx = i;
-    if (isAdminOnly) div.dataset.locked = '1';
+    if (isTemporarilyLocked) div.dataset.locked = '1';
     div.title = c.crawler_locked_until
       ? `Temporarily rate-limited until ${c.crawler_locked_until}`
-      : (c.policy?.note || c.policy?.reason || (isAdminOnly ? 'Admin-only company' : ''));
+      : (c.policy?.message || c.policy?.note || c.policy?.reason || (isAdminOnly ? 'Admin-only company' : ''));
     div.innerHTML = `<div class="co-check">${isAdminOnly ? '!' : '✓'}</div>
       <div class="co-name">${esc2(c.name)}</div>
       ${lockLabel ? `<div class="co-lock-label ${lockLabel}">${lockLabel}</div>` : ''}
       <div class="co-mode ${mode}"></div>`;
-    div.onclick = () => { if (!isAdminOnly) toggleCo(i, div); };
+    div.onclick = () => { if (!isTemporarilyLocked) toggleCo(i, div); };
     list.appendChild(div);
   });
 }
@@ -618,13 +633,14 @@ function filterSidebar() {
   const q = document.getElementById('sidebar-search').value.toLowerCase();
   document.querySelectorAll('.co-item').forEach(el => {
     const c = COMPANIES[el.dataset.idx];
-    const matchCat = activeSidebarCat==='All' || (c.categories||[]).includes(activeSidebarCat);
+    const values = activeSidebarKind === 'tag' ? (c.tags||[]) : (c.categories||[]);
+    const matchCat = activeSidebarCat==='All' || values.includes(activeSidebarCat);
     const matchQ   = !q || c.name.toLowerCase().includes(q);
     el.classList.toggle('hidden', !(matchCat && matchQ));
   });
 }
 function selectAllVisible() {
-  document.querySelectorAll('.co-item:not(.hidden):not(.co-admin-only)').forEach(el => { selected.add(+el.dataset.idx); el.classList.add('selected'); });
+  document.querySelectorAll('.co-item:not(.hidden):not([data-locked="1"])').forEach(el => { selected.add(+el.dataset.idx); el.classList.add('selected'); });
   updateCounts();
 }
 function deselectAll() {
@@ -660,7 +676,7 @@ async function startScan(scanType) {
   if (selected.size === 0) return;
   const names = [...selected]
     .map(i => COMPANIES[i])
-    .filter(c => c && c.scan_enabled !== false)
+    .filter(c => c && !c.crawler_locked_until)
     .map(c => c.name);
   setScanningUI(true, scanType);
   document.getElementById('company-chips').innerHTML = '';
@@ -712,7 +728,20 @@ async function pollProgress() {
   const done     = progress.filter(p => p.status !== 'scanning' && p.status !== 'pending').length;
 
   document.getElementById('progress-fill').style.width = `${total ? Math.round(done/total*100) : 0}%`;
-  document.getElementById('progress-text').textContent  = `Scanning ${done}/${total} companies…`;
+  const timing = data.timing || {};
+  const phaseLabel = {
+    select_companies: 'selecting companies',
+    load_seen: 'loading known jobs',
+    create_scan_run: 'creating scan run',
+    create_status_rows: 'preparing company records',
+    scan_companies: 'fetching and saving jobs',
+    finalize: 'finalizing totals',
+    done: 'done',
+  }[timing.phase] || 'starting';
+  document.getElementById('progress-text').textContent = data.done
+    ? `Completed ${done}/${total} companies in ${Number(timing.total_s || 0).toFixed(1)}s`
+    : `Scanning ${done}/${total} companies… · ${phaseLabel}`;
+  renderScanTiming(timing, data.done);
   document.getElementById('company-chips').innerHTML = progress.map(p => {
     const cls = p.status==='done' ? 'ok' : p.status==='error' ? 'err' : 'scanning';
     const suf = p.status==='done' ? ` (${p.count})` : p.status==='error' ? ' ✗' : '…';
@@ -725,6 +754,29 @@ async function pollProgress() {
     setScanningUI(false, scanType);
     showSummary(progress, true, scanType);
   }
+}
+
+function renderScanTiming(timing, isFinal) {
+  const el = document.getElementById('scan-timing');
+  if (!el || !timing || !Object.keys(timing).length) return;
+  const labels = {
+    select_companies: 'Select', load_seen: 'Load known jobs',
+    create_scan_run: 'Create run', create_status_rows: 'Prepare rows',
+    scan_companies: 'Scan companies', finalize: 'Finalize',
+    status_start: 'Start-status DB', fetch_enrich: 'Fetch + enrich',
+    prepare_rows: 'Prepare jobs', save_jobs: 'Save jobs',
+    status_finish: 'Finish-status DB', progress_write: 'Progress DB',
+  };
+  const wall = Object.entries(timing.steps_percent || {})
+    .map(([k,p]) => `${labels[k] || k}: ${Number(p).toFixed(1)}%`)
+    .join(' · ');
+  const work = Object.entries(timing.work_percent || {})
+    .map(([k,p]) => `${labels[k] || k}: ${Number(p).toFixed(1)}%`)
+    .join(' · ');
+  el.style.display = '';
+  el.innerHTML = `<strong>${isFinal ? 'Exact timing' : 'Timing so far'}</strong>`
+    + (wall ? `<br>Wall clock — ${wall}` : '')
+    + (work ? `<br>Active work — ${work}` : '');
 }
 
 function showSummary(progress, isFinal, scanType) {
@@ -1044,14 +1096,24 @@ function setAdminTab(tab) {
 }
 
 function _fmtAgoOrDate(value) {
-  if (!value) return '—';
+  if (!value) return 'not recorded yet';
   const d = new Date(String(value).replace(' ', 'T'));
   if (Number.isNaN(d.getTime())) return value;
-  const days = Math.floor((Date.now() - d.getTime()) / 86400000);
-  if (days <= 0) return 'today';
-  if (days === 1) return '1d ago';
-  if (days < 30) return `${days}d ago`;
-  return d.toISOString().slice(0,10);
+  const elapsed = Math.max(0, Date.now() - d.getTime());
+  const mins = Math.floor(elapsed / 60000);
+  const days = Math.floor(elapsed / 86400000);
+  const time = new Intl.DateTimeFormat(undefined, {
+    hour: 'numeric', minute: '2-digit'
+  }).format(d);
+  const date = new Intl.DateTimeFormat(undefined, {
+    month: 'short', day: 'numeric', year: 'numeric'
+  }).format(d);
+  if (mins < 1) return `just now · ${time}`;
+  if (mins < 60) return `${mins}m ago · ${time}`;
+  if (days < 1) return `today · ${time}`;
+  if (days === 1) return `1d ago · ${date}, ${time}`;
+  if (days < 30) return `${days}d ago · ${date}, ${time}`;
+  return `${date}, ${time}`;
 }
 
 function _fmtDays(days, fallback='—') {
@@ -1063,7 +1125,7 @@ function _fmtDays(days, fallback='—') {
 
 async function loadUsers() {
   const users = await fetch('/api/admin/users').then(r => r.json()).catch(() => []);
-  document.getElementById('users-subtitle').textContent = `${users.length} accounts`;
+  document.getElementById('users-subtitle').textContent = `${users.length} accounts · activity updates within 1 min`;
   document.getElementById('users-tbody').innerHTML = users.map(u => {
     const plan = u.plan_status || 'free';
     const paid = plan === 'free' ? '—' : _fmtDays(u.paid_member_days);
@@ -1074,10 +1136,12 @@ async function loadUsers() {
       <td>${esc2(paid)}</td>
       <td>${esc2(_fmtAgoOrDate(u.last_active_at))}</td>
       <td>${esc2(_fmtAgoOrDate(u.last_login_at))}</td>
-      <td style="display:flex;gap:5px;flex-wrap:wrap">
-        <button class="adm-pill${plan === 'free' ? ' is-on' : ''}" onclick="setUserPlan(${u.id}, 'free')">Free</button>
-        <button class="adm-pill${plan === 'pro' ? ' is-on' : ''}" onclick="setUserPlan(${u.id}, 'pro')">Pro</button>
-        <button class="adm-pill${plan === 'trial' ? ' is-on' : ''}" onclick="setUserPlan(${u.id}, 'trial')">Trial</button>
+      <td>
+        <div style="display:flex;gap:5px;flex-wrap:wrap">
+          <button class="adm-pill${plan === 'free' ? ' is-on' : ''}" onclick="setUserPlan(${u.id}, 'free')">Free</button>
+          <button class="adm-pill${plan === 'pro' ? ' is-on' : ''}" onclick="setUserPlan(${u.id}, 'pro')">Pro</button>
+          <button class="adm-pill${plan === 'trial' ? ' is-on' : ''}" onclick="setUserPlan(${u.id}, 'trial')">Trial</button>
+        </div>
       </td>
     </tr>`;
   }).join('') || '<tr><td colspan="7" style="text-align:center;color:var(--ink-4);padding:32px">No users yet</td></tr>';
@@ -1227,7 +1291,7 @@ let ajPage = 1, ajTotal = 0, ajLimit = 100, ajJobs = [];
 
 async function adminLoadJobs(page) {
   page = page || 1;
-  const names = [...selected].map(i => COMPANIES[i]).filter(c => c?.scan_enabled !== false).map(c => c.name);
+  const names = [...selected].map(i => COMPANIES[i]).filter(Boolean).map(c => c.name);
   if (!names.length) {
     document.getElementById('admin-jobs-area').innerHTML =
       '<div style="text-align:center;padding:60px 0;color:var(--ink-4)">Select at least one company first.</div>';
@@ -1397,14 +1461,25 @@ async function saveSchedule() {
   _schedule.fresh.enabled = document.getElementById('fresh-enabled')?.checked;
   _schedule.full.enabled  = document.getElementById('full-enabled')?.checked;
   renderSchedule();
-  const resp = await fetch('/api/schedule', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(_schedule),
-  });
-  if (!resp.ok) {
+  try {
+    const resp = await fetch('/api/schedule', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(_schedule),
+    });
     const data = await resp.json().catch(() => ({}));
-    alert(data.error || `Failed to save schedule (${resp.status})`);
+    if (!resp.ok) {
+      await loadSchedule();
+      alert(data.error || `Failed to save schedule (${resp.status})`);
+      return;
+    }
+    if (data.schedule) {
+      _schedule = data.schedule;
+      renderSchedule();
+    }
+  } catch (error) {
+    await loadSchedule();
+    alert('Failed to save schedule. Please try again.');
   }
 }
 

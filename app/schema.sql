@@ -62,7 +62,9 @@ CREATE TABLE IF NOT EXISTS scan_runs (
     new_jobs_found INTEGER DEFAULT 0,
     updated_jobs_found INTEGER DEFAULT 0,
     failed_companies INTEGER DEFAULT 0,
-    error_message TEXT
+    error_message TEXT,
+    scheduled_for TEXT DEFAULT '',
+    send_alerts_after INTEGER DEFAULT 0
 );
 
 CREATE TABLE IF NOT EXISTS scan_company_status (
@@ -148,7 +150,9 @@ CREATE TABLE IF NOT EXISTS user_saved_searches (
     exp_yrs TEXT DEFAULT '',
     since TEXT DEFAULT 'any',
     category TEXT DEFAULT 'All',
+    tag TEXT DEFAULT '',
     email_alert_enabled INTEGER DEFAULT 0,
+    alert_cursor_at TEXT DEFAULT '',
     last_alert_sent_at TEXT DEFAULT '',
     created_at TIMESTAMPTZ DEFAULT NOW()
 );

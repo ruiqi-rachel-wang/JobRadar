@@ -1,4 +1,5 @@
 from .base import *
+from urllib.parse import urlunparse
 
 # ── HTML ──────────────────────────────────────────────────────────────────────
 
@@ -7,6 +8,7 @@ def fetch_html(scrape, seen, company):
     list_url    = scrape.get("list_url","")
     include     = scrape.get("include","")
     title_param = scrape.get("title_param","")
+    title_suffix_regex = scrape.get("title_suffix_regex", "")
     url_exclude = [str(s).lower() for s in (scrape.get("url_exclude") or [])]
     title_exclude = [str(s).lower() for s in (scrape.get("title_exclude") or [])]
     stop_on_seen = bool(scrape.get("stop_on_seen", False))
@@ -18,13 +20,77 @@ def fetch_html(scrape, seen, company):
     pg_cfg      = scrape.get("pagination") or {"type":"none"}
     pg_type     = pg_cfg.get("type","none")
     max_pages   = int(pg_cfg.get("hard_max_pages") or scrape.get("hard_max_pages") or 100)
+    page_delay  = max(0.0, float(scrape.get("page_delay_s", 0.35)))
     require_job_path = bool(scrape.get("require_job_path", False))
     default_location = normalize_location(scrape.get("default_location") or "")
+    expected_total = None
 
     if not list_url: return [], "no list_url"
     if not include:  return [], "no include pattern"
 
     visited: set = set()
+
+    def extract_embedded_next_jobs(soup, page_url):
+        """Decode job objects embedded in Next.js Flight script chunks.
+
+        Some official career pages render job data into ``self.__next_f`` but
+        do not emit ordinary anchors until client-side hydration. Reading that
+        already-delivered data avoids browser automation and extra API calls.
+        """
+        if not scrape.get("embedded_next_jobs"):
+            return {}
+        found = {}
+        decoder = json.JSONDecoder()
+        marker = '"attributes":'
+        for script in soup.find_all("script"):
+            text = script.string or script.get_text() or ""
+            if "self.__next_f.push(" not in text or "ashby_jid" not in text:
+                continue
+            call_start = text.find("self.__next_f.push(") + len("self.__next_f.push(")
+            call_end = text.rfind(")")
+            if call_end <= call_start:
+                continue
+            try:
+                payload = json.loads(text[call_start:call_end])
+            except Exception:
+                continue
+            chunks = [value for value in payload if isinstance(value, str)] if isinstance(payload, list) else []
+            for chunk in chunks:
+                pos = 0
+                while True:
+                    pos = chunk.find(marker, pos)
+                    if pos < 0:
+                        break
+                    obj_start = pos + len(marker)
+                    try:
+                        attrs, obj_end = decoder.raw_decode(chunk, obj_start)
+                    except Exception:
+                        pos = obj_start
+                        continue
+                    pos = obj_end
+                    if not isinstance(attrs, dict) or not attrs.get("title"):
+                        continue
+                    slug = norm(attrs.get("slug") or "")
+                    if "ashby_jid=" not in slug or attrs.get("is_listed") is False:
+                        continue
+                    job_url = urljoin(page_url, slug)
+                    if not has_include(job_url, include) or job_url in visited:
+                        continue
+                    visited.add(job_url)
+                    job = {
+                        "title": norm(attrs.get("title") or ""),
+                        "url": job_url,
+                        "location": normalize_location(norm(attrs.get("location_name") or "")),
+                        "source": "html",
+                        "posted": _parse_posted(attrs.get("ashby_published_date") or ""),
+                    }
+                    description = attrs.get("full_job_description") or attrs.get("description")
+                    if description:
+                        job["description"] = description
+                    if attrs.get("employment_type"):
+                        job["employment_type"] = attrs["employment_type"]
+                    found[job_url] = job
+        return found
 
     def is_job_detail_url(url):
         if not require_job_path:
@@ -47,6 +113,7 @@ def fetch_html(scrape, seen, company):
         )
 
     def scrape_one(page_url):
+        nonlocal expected_total
         try:
             fetch_url = "https://r.jina.ai/" + page_url if use_reader else page_url
             r = requests.get(fetch_url, headers=headers, timeout=25, verify=verify_ssl)
@@ -101,14 +168,32 @@ def fetch_html(scrape, seen, company):
             return found, None, None, stop
 
         soup  = BeautifulSoup(r.text, "lxml")
-        found = {}
+        if scrape.get("verify_reported_total"):
+            page_text = norm(soup.get_text(" ", strip=True))
+            total_match = (
+                re.search(
+                    r"\bShowing\s+\d[\d,]*\s*-\s*\d[\d,]*\s+of\s+([\d,]+)\s+jobs\b",
+                    page_text,
+                    re.I,
+                )
+                or re.search(r"\b([\d,]+)\s+open positions?\b", page_text, re.I)
+                or re.search(r"\b([\d,]+)\s+open roles?\b", page_text, re.I)
+            )
+            if total_match:
+                expected_total = int(total_match.group(1).replace(",", ""))
+        found = extract_embedded_next_jobs(soup, page_url)
         stop  = False
 
         for a in soup.find_all("a", href=True):
             href = (a.get("href") or "").strip()
             if not href or href.startswith(("#","javascript:","mailto:")):
                 continue
-            abs_url = urljoin(page_url, href)
+            try:
+                abs_url = urljoin(page_url, href)
+            except ValueError:
+                # A malformed third-party link must not fail every valid job on
+                # the page (for example, an invalid ConvertKit form hostname).
+                continue
             if not has_include(abs_url, include):
                 continue
             if not is_job_detail_url(abs_url):
@@ -157,6 +242,8 @@ def fetch_html(scrape, seen, company):
             if not title or len(title) < 4:
                 continue
             title = re.sub(r'\s+(?:learn more|apply now|view job)$', '', title, flags=re.I).strip()
+            if title_suffix_regex:
+                title = re.sub(title_suffix_regex, "", title, flags=re.I).strip()
             _NAV = {
                 "view all jobs","view all","all jobs","apply","view job","search jobs",
                 "saved jobs","learn more","see all openings","see all jobs","open positions",
@@ -256,7 +343,32 @@ def fetch_html(scrape, seen, company):
             new = {k:v for k,v in found.items() if k not in all_jobs}
             all_jobs.update(new)
             if stop or (not new and not found): break
-            time.sleep(0.35)
+            time.sleep(page_delay)
+
+    elif pg_type == "path_page":
+        segment = (pg_cfg.get("segment") or "page").strip()
+        start = int(pg_cfg.get("start", 1))
+        step = int(pg_cfg.get("step", 1))
+        trailing_slash = bool(pg_cfg.get("trailing_slash", True))
+        base_parts = list(urlparse(list_url))
+        base_path = base_parts[2].rstrip("/")
+        for idx in range(max_pages):
+            value = start + idx * step
+            suffix = "/" if trailing_slash else ""
+            if idx == 0:
+                purl = list_url
+            else:
+                parts = list(base_parts)
+                parts[2] = f"{base_path}/{segment}/{value}{suffix}"
+                purl = urlunparse(parts)
+            found, err, _, stop = scrape_one(purl)
+            if err and not first_err:
+                first_err = err
+            new = {k: v for k, v in found.items() if k not in all_jobs}
+            all_jobs.update(new)
+            if stop or (not new and not found):
+                break
+            time.sleep(page_delay)
 
     elif pg_type == "next_link":
         current = list_url
@@ -266,6 +378,9 @@ def fetch_html(scrape, seen, company):
             all_jobs.update(found)
             if stop or not next_url: break
             current = next_url
-            time.sleep(0.35)
+            time.sleep(page_delay)
 
+    if expected_total is not None and len(all_jobs) < expected_total:
+        partial_err = f"partial listing: fetched {len(all_jobs)} of {expected_total} jobs"
+        first_err = f"{first_err}; {partial_err}" if first_err else partial_err
     return list(all_jobs.values()), first_err

@@ -2,7 +2,8 @@
   {
     "name": "160over90",
     "categories": [
-      "Consumer Goods & Retail"
+      "Ad Tech & MarTech",
+      "Consulting"
     ],
     "scrape": {
       "list_url": "https://wmeimg.wd1.myworkdayjobs.com/160over90US",
@@ -22,8 +23,8 @@
   {
     "name": "3M",
     "categories": [
-      "Interview Friendly",
-      "US / Remote"
+      "Industrials & Manufacturing",
+      "Materials & Chemicals"
     ],
     "scrape": {
       "mode": "workday",
@@ -37,7 +38,10 @@
       "locations": "",
       "process": "",
       "employment_type": ""
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "4Degrees",
@@ -57,7 +61,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Chicago, Illinois",
       "process": "Collaborative pair-programming exercise done through video chat that's representative of the responsibilities of the job then a take-home programming task."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "8th Light",
@@ -75,7 +82,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Chicago, IL / London, UK / Los Angeles, CA / New York, NY",
       "process": "Take home code challenge, discussion, pair programming session"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Abbott",
@@ -96,7 +106,8 @@
     "scrape": {
       "mode": "html",
       "list_url": "https://careers.abbvie.com/jobs",
-      "include": "careers.abbvie.com"
+      "include": "careers.abbvie.com",
+      "require_job_path": true
     }
   },
   {
@@ -115,13 +126,16 @@
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
       "locations": "Lima, PE / Remote",
       "process": "Coding interview, Technical interview (Backlog Refinement + System Design), Leadership interview (Behavioural)"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Abnormal Security",
     "categories": [
-      "Cybersecurity",
-      "AI"
+      "AI & Machine Learning",
+      "Cybersecurity"
     ],
     "scrape": {
       "mode": "greenhouse",
@@ -155,7 +169,10 @@
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
       "locations": "San Francisco, CA / Los Angeles, CA / New York, NY / Kuala Lumpur, Malaysia",
       "process": "Technical phone discussion with architecture manager, followed by behavioral interview focusing on soft skills"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Accredible",
@@ -174,7 +191,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Cambridge, UK / San Francisco, CA / Remote",
       "process": "Take home project, then a pair-programming and discussion onsite / Skype round."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "AcuityMD",
@@ -204,7 +224,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Remote / Washington, DC",
       "process": "Technical take-home assignment, followed by multiple video calls that are discussions of technical background and experience."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Adidas",
@@ -222,8 +245,8 @@
   {
     "name": "ADM",
     "categories": [
-      "Interview Friendly",
-      "US / Remote"
+      "Food & Beverage",
+      "Industrials & Manufacturing"
     ],
     "scrape": {
       "mode": "html",
@@ -238,7 +261,10 @@
       "locations": "",
       "process": "",
       "employment_type": ""
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Admiral",
@@ -256,7 +282,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Gainesville, FL / Remote",
       "process": "Intro phone call with hiring manager, take-home assignment, (mostly) non-technical on-site with team/leadership"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Adobe",
@@ -280,8 +309,8 @@
   {
     "name": "Advance Auto Parts",
     "categories": [
-      "Interview Friendly",
-      "US / Remote"
+      "Automotive",
+      "Consumer Goods & Retail"
     ],
     "scrape": {
       "mode": "phenom",
@@ -295,7 +324,10 @@
       "locations": "",
       "process": "",
       "employment_type": ""
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Adyen",
@@ -323,7 +355,10 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs / Hiring Without Whiteboards",
       "source_url": "https://www.no-wb.org/"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Affirm",
@@ -338,8 +373,8 @@
   {
     "name": "Aflac",
     "categories": [
-      "Interview Friendly",
-      "US / Remote"
+      "Finance & Banking",
+      "Insurance"
     ],
     "scrape": {
       "mode": "successfactors",
@@ -353,13 +388,16 @@
       "locations": "",
       "process": "",
       "employment_type": ""
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Agency Enterprise Studio",
     "categories": [
-      "Software & SaaS",
-      "Consulting"
+      "Consulting",
+      "Software & SaaS"
     ],
     "scrape": {
       "mode": "greenhouse",
@@ -371,7 +409,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Remote / Los Angeles, CA / Florianópolis, Brazil",
       "process": "Live coding of a task you'd do daily"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Agilent",
@@ -443,7 +484,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "San Francisco, CA / Bangalore, India / Remote",
       "process": "Intro Call with HR or EMs, small take-home project, two tech rounds with Airbase Engineers (based on real world engineering problems), followed by a final values round with the Founder or Director of Engineering."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Airbnb",
@@ -490,7 +534,6 @@
   {
     "name": "Airtable",
     "categories": [
-      "Software & SaaS",
       "Software & SaaS"
     ],
     "scrape": {
@@ -501,7 +544,10 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs / Hiring Without Whiteboards",
       "source_url": "https://www.no-wb.org/"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Airwallex",
@@ -550,7 +596,8 @@
   {
     "name": "Alation",
     "categories": [
-      "Technology"
+      "Data & Analytics",
+      "Software & SaaS"
     ],
     "scrape": {
       "mode": "workday",
@@ -581,8 +628,8 @@
   {
     "name": "Alexander Chapman",
     "categories": [
-      "Recruiting",
-      "Finance"
+      "Finance & Banking",
+      "Recruiting"
     ],
     "scrape": {
       "mode": "html",
@@ -606,7 +653,10 @@
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
       "locations": "Paris, France / San Francisco, CA",
       "process": "Takehome project & Onsite discussions and presentation"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Allegion",
@@ -699,12 +749,16 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "London, UK / New York, NY / Remote",
       "process": "Initial interview, pair programming then final round with general technical questions"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Alteryx",
     "categories": [
-      "Technology"
+      "Data & Analytics",
+      "Software & SaaS"
     ],
     "scrape": {
       "mode": "workday",
@@ -714,8 +768,7 @@
   {
     "name": "Altria",
     "categories": [
-      "Interview Friendly",
-      "US / Remote"
+      "Consumer Goods & Retail"
     ],
     "scrape": {
       "mode": "html",
@@ -730,7 +783,10 @@
       "locations": "",
       "process": "",
       "employment_type": ""
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "AMAROK Security",
@@ -745,9 +801,8 @@
   {
     "name": "Amazon",
     "categories": [
-      "E-commerce",
-      "Cloud",
-      "Technology"
+      "Cloud & Infrastructure",
+      "E-commerce & Marketplace"
     ],
     "scrape": {
       "mode": "jobsapi",
@@ -823,8 +878,8 @@
   {
     "name": "American Express",
     "categories": [
-      "Finance",
-      "Payments"
+      "Finance & Banking",
+      "FinTech & Payments"
     ],
     "scrape": {
       "mode": "oraclecloud",
@@ -835,8 +890,8 @@
   {
     "name": "Ameriprise Financial",
     "categories": [
-      "Finance",
-      "Wealth Management"
+      "Finance & Banking",
+      "Investment & Asset Management"
     ],
     "scrape": {
       "mode": "workday",
@@ -878,7 +933,7 @@
   {
     "name": "Ancestry",
     "categories": [
-      "Technology"
+      "Consumer Tech"
     ],
     "scrape": {
       "mode": "workday",
@@ -911,13 +966,16 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Remote / Dallas, TX",
       "process": "Technical discussion about the technologies they are currently using. Going over background and resume."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Anduril",
     "categories": [
-      "AI & Machine Learning",
       "Aerospace & Defense",
+      "AI & Machine Learning",
       "Robotics & Automation"
     ],
     "scrape": {
@@ -959,7 +1017,9 @@
   {
     "name": "Anterior",
     "categories": [
-      "Technology"
+      "AI & Machine Learning",
+      "Healthcare & Biotech",
+      "Software & SaaS"
     ],
     "scrape": {
       "mode": "ashby",
@@ -1021,7 +1081,9 @@
   {
     "name": "Apex",
     "categories": [
-      "Technology"
+      "Aerospace & Defense",
+      "Industrials & Manufacturing",
+      "Space"
     ],
     "scrape": {
       "mode": "ashby",
@@ -1066,7 +1128,6 @@
   {
     "name": "Apple",
     "categories": [
-      "Technology",
       "Consumer Electronics"
     ],
     "scrape": {
@@ -1095,7 +1156,8 @@
   {
     "name": "Applied Materials",
     "categories": [
-      "Technology"
+      "Industrials & Manufacturing",
+      "Semiconductors & Hardware"
     ],
     "scrape": {
       "mode": "workday",
@@ -1149,8 +1211,8 @@
   {
     "name": "Aramark",
     "categories": [
-      "Food & Beverage",
-      "Business Services"
+      "Business Services",
+      "Food & Beverage"
     ],
     "scrape": {
       "mode": "successfactors",
@@ -1211,7 +1273,8 @@
   {
     "name": "Arine",
     "categories": [
-      "Technology"
+      "Healthcare & Biotech",
+      "Software & SaaS"
     ],
     "scrape": {
       "mode": "greenhouse",
@@ -1239,8 +1302,8 @@
   {
     "name": "Arizona State University",
     "categories": [
-      "Interview Friendly",
-      "US / Remote"
+      "Education & Academia",
+      "Research"
     ],
     "scrape": {
       "mode": "workday",
@@ -1254,12 +1317,15 @@
       "locations": "",
       "process": "",
       "employment_type": ""
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Arkansas Children's",
     "categories": [
-      "Technology"
+      "Healthcare & Biotech"
     ],
     "scrape": {
       "mode": "workday",
@@ -1283,7 +1349,9 @@
   {
     "name": "Artefact",
     "categories": [
-      "Technology"
+      "AI & Machine Learning",
+      "Consulting",
+      "Data & Analytics"
     ],
     "scrape": {
       "mode": "greenhouse",
@@ -1307,12 +1375,16 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Remote",
       "process": "Take-home project & pair program on a problem similar to daily work"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Artsy",
     "categories": [
-      "Consumer Goods & Retail"
+      "E-commerce & Marketplace",
+      "Media & Entertainment"
     ],
     "scrape": {
       "mode": "ashby",
@@ -1322,7 +1394,10 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs / Hiring Without Whiteboards",
       "source_url": "https://www.no-wb.org/"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Asana",
@@ -1373,7 +1448,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Bangalore, India",
       "process": "A take-home exercise followed by two rounds of interviews: the first with a team member focusing on technical skills and practical problem-solving, and the second with the Head of Engineering, also centered on technical expertise and real-world challenges."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "AssemblyAI",
@@ -1399,7 +1477,8 @@
   {
     "name": "Astera",
     "categories": [
-      "Technology"
+      "Data & Analytics",
+      "Software & SaaS"
     ],
     "scrape": {
       "mode": "ashby",
@@ -1431,7 +1510,10 @@
       "no_whiteboard": true,
       "source": "Wellfound active startups",
       "source_url": "https://www.astranis.com/careers"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Astronomer",
@@ -1480,7 +1562,7 @@
     ],
     "scrape": {
       "mode": "workday",
-      "list_url": "https://atmosenergy.wd5.myworkdayjobs.com/external_career_site"
+      "list_url": "https://atmosenergy.wd108.myworkdayjobs.com/External_Career_Site"
     }
   },
   {
@@ -1521,7 +1603,10 @@
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
       "locations": "New York, NY / San Francisco, CA",
       "process": "Simplified real-world coding task on Coderpad.io, followed by a few hours onsite writing code in our actual codebase."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Aurora",
@@ -1537,7 +1622,8 @@
   {
     "name": "Authorium",
     "categories": [
-      "Technology"
+      "Government",
+      "Software & SaaS"
     ],
     "scrape": {
       "mode": "ashby",
@@ -1557,8 +1643,8 @@
   {
     "name": "Automattic",
     "categories": [
-      "Software & SaaS",
-      "Consumer Tech"
+      "Consumer Tech",
+      "Software & SaaS"
     ],
     "scrape": {
       "mode": "html",
@@ -1571,7 +1657,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Remote",
       "process": "short take-home code test, then a part-time, paid project."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "AutoZone",
@@ -1611,7 +1700,10 @@
       "no_whiteboard": true,
       "source": "YC recent SWE jobs",
       "source_url": "https://www.aviator.co/careers"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Axios",
@@ -1626,7 +1718,10 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs / Hiring Without Whiteboards",
       "source_url": "https://www.no-wb.org/"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Axon",
@@ -1643,8 +1738,8 @@
   {
     "name": "B12",
     "categories": [
-      "Software & SaaS",
-      "Consulting"
+      "Consulting",
+      "Software & SaaS"
     ],
     "scrape": {
       "mode": "greenhouse",
@@ -1656,7 +1751,10 @@
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
       "locations": "New York, NY",
       "process": "Take-home exercises and pair-programming with the team."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "BAE Systems",
@@ -1768,7 +1866,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Chelmsford, MA / Remote",
       "process": "Phone screen, remote pair programming session, technical discussion interview, culture fit interview"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Base Power",
@@ -1787,8 +1888,10 @@
     ],
     "scrape": {
       "mode": "html",
-      "list_url": "https://basecamp.com/about/jobs",
-      "include": "basecamp.com"
+      "list_url": "https://37signals.com/jobs",
+      "include": "37signals.com",
+      "require_job_path": true,
+      "allow_empty_full_scan": true
     },
     "interview": {
       "no_whiteboard": true,
@@ -1798,7 +1901,10 @@
       "process": "",
       "difficulty": "easy",
       "rounds": "2-3"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Baseten",
@@ -1814,7 +1920,8 @@
   {
     "name": "Baton Corporation",
     "categories": [
-      "Technology"
+      "Crypto",
+      "Software & SaaS"
     ],
     "scrape": {
       "mode": "ashby",
@@ -1837,12 +1944,12 @@
   {
     "name": "Bedrock",
     "categories": [
-      "AI",
-      "Robotics"
+      "AI & Machine Learning",
+      "Robotics & Automation"
     ],
     "scrape": {
       "mode": "ashby",
-      "ashby_slug": "bedrockrobotics"
+      "ashby_slug": "bedrock-robotics"
     }
   },
   {
@@ -1869,7 +1976,6 @@
   {
     "name": "Benchling",
     "categories": [
-      "Consumer Goods & Retail",
       "Healthcare & Biotech",
       "Software & SaaS"
     ],
@@ -1895,7 +2001,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Madison, WI",
       "process": "Interviews and pair programming on personal projects"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Berkshire Hathaway",
@@ -1914,11 +2023,8 @@
       "Consumer Goods & Retail"
     ],
     "scrape": {
-      "mode": "brassring",
-      "list_url": "https://sjobs.brassring.com/TGnewUI/Search/home/HomeWithPreLoad?partnerid=25632&siteid=5649",
-      "prefix": "https://sjobs.brassring.com/",
-      "validate_prefix": false,
-      "scroll_rounds": 8
+      "mode": "smartrecruiters",
+      "smartrecruiters_company": "BestBuy2"
     }
   },
   {
@@ -1940,7 +2046,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "New York, NY",
       "process": "Phone interview followed by on-site pair programming to simulate a Betterment feature build."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "BigBinary",
@@ -1959,7 +2068,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Remote",
       "process": "Phone discussion with a developer and the CEO"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "BILL Holdings",
@@ -1974,7 +2086,7 @@
   {
     "name": "BillionToOne",
     "categories": [
-      "Technology"
+      "Healthcare & Biotech"
     ],
     "scrape": {
       "mode": "greenhouse",
@@ -2004,8 +2116,8 @@
   {
     "name": "Bitpanda",
     "categories": [
-      "FinTech & Payments",
-      "Finance & Banking"
+      "Finance & Banking",
+      "FinTech & Payments"
     ],
     "scrape": {
       "mode": "greenhouse",
@@ -2018,7 +2130,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Cracow, Poland / Remote",
       "process": "HR talk, take-home task, tech interview, culture fit interview"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Bitso",
@@ -2035,7 +2150,10 @@
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
       "locations": "Mexico City, Mexico / Remote",
       "process": "Intro phone or hangouts/skype call with People team, take home project followed by walkthrough of your code and some tech questions focused on your experience, founders video call with one of the founders"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Bitwarden",
@@ -2051,7 +2169,8 @@
   {
     "name": "Black Box",
     "categories": [
-      "Technology"
+      "Cloud & Infrastructure",
+      "IT Services"
     ],
     "scrape": {
       "mode": "oraclecloud",
@@ -2135,7 +2254,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Remote",
       "process": "Discussion, pair-programming exercise"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Bloomberg",
@@ -2177,7 +2299,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Boston, MA / Remote",
       "process": "Pair programming with personal laptop on typical problem seen at work"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Boeing",
@@ -2208,7 +2333,10 @@
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
       "locations": "Boulder, CO",
       "process": "Values & Tech focused interview - Process: 30 minute with HR, 45 minute Google Meet interview with 2 team members, ~2-4 hour take-home project, on-site interview involving 2 values-alignment interviews and 1 technical interview going over your take home project"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Booking Holdings",
@@ -2224,8 +2352,8 @@
   {
     "name": "BoomTown",
     "categories": [
-      "Software & SaaS",
-      "Real Estate"
+      "Real Estate & Construction",
+      "Software & SaaS"
     ],
     "scrape": {
       "mode": "html",
@@ -2238,7 +2366,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Charleston, SC / Atlanta, GA / Remote",
       "process": "Conversational in-person interviews with potential team members and managers that revolve around past experience and how that could be applied to future work"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Booz Allen Hamilton",
@@ -2273,7 +2404,7 @@
   {
     "name": "Boston Properties",
     "categories": [
-      "Technology"
+      "Real Estate & Construction"
     ],
     "scrape": {
       "mode": "oraclecloud",
@@ -2300,16 +2431,22 @@
   {
     "name": "Boston University",
     "categories": [
-      "Academia",
+      "Education & Academia",
       "Research"
     ],
     "scrape": {
-      "mode": "workday",
-      "list_url": "https://bu.wd1.myworkdayjobs.com/en-US/BUMSC",
-      "allow_browser_fallback": true,
-      "prefix": "https://bu.wd1.myworkdayjobs.com/en-US/BUMSC/job/",
-      "validate_prefix": false,
-      "scroll_rounds": 10
+      "mode": "html",
+      "list_url": "https://jobs.silkroad.com/BU/External",
+      "include": "jobs.silkroad.com/BU/External/jobs/",
+      "require_job_path": true,
+      "title_suffix_regex": "\\s+BOSTON, MA\\s*$",
+      "page_delay_s": 10,
+      "pagination": {
+        "type": "query_page",
+        "param": "page",
+        "start": 1,
+        "hard_max_pages": 100
+      }
     }
   },
   {
@@ -2325,7 +2462,8 @@
   {
     "name": "Boys Town",
     "categories": [
-      "Technology"
+      "Healthcare & Biotech",
+      "Research"
     ],
     "scrape": {
       "mode": "workday",
@@ -2366,8 +2504,8 @@
   {
     "name": "Brex",
     "categories": [
-      "FinTech & Payments",
-      "Finance & Banking"
+      "Finance & Banking",
+      "FinTech & Payments"
     ],
     "scrape": {
       "mode": "greenhouse",
@@ -2417,8 +2555,8 @@
   {
     "name": "Brown University",
     "categories": [
-      "Interview Friendly",
-      "US / Remote"
+      "Education & Academia",
+      "Research"
     ],
     "scrape": {
       "mode": "workday",
@@ -2432,12 +2570,16 @@
       "locations": "",
       "process": "",
       "employment_type": ""
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Brunswick",
     "categories": [
-      "Technology"
+      "Consumer Goods & Retail",
+      "Industrials & Manufacturing"
     ],
     "scrape": {
       "mode": "workday",
@@ -2447,8 +2589,8 @@
   {
     "name": "Buffer",
     "categories": [
-      "Software & SaaS",
-      "Ad Tech & MarTech"
+      "Ad Tech & MarTech",
+      "Software & SaaS"
     ],
     "scrape": {
       "mode": "ashby",
@@ -2460,7 +2602,10 @@
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
       "locations": "Remote",
       "process": "Interviews over video call, code walkthrough of real code focussing on decisions and reasoning, then a 45 day full time, fully paid contract project working on production code."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Bugcrowd",
@@ -2478,7 +2623,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "San Francisco, CA / Sydney, NSW",
       "process": "Take home exercise, half-day onsite walking through code, and pair programming."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Buildkite",
@@ -2497,13 +2645,16 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Remote",
       "process": "No CV required. Anonymized writing assessments. Video chat with founder and future team member about you, the job, and the company. Last video chat is a pair programming for technical roles or more in-depth chat for non-technical roles. Offer."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Bumble",
     "categories": [
-      "Consumer",
-      "Social"
+      "Consumer Tech",
+      "Social Media"
     ],
     "scrape": {
       "mode": "lever",
@@ -2525,7 +2676,10 @@
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
       "locations": "New York City, NY / Remote",
       "process": "Half day pair programming on a task for production or one of our Open Source projects. We'll also buy you lunch with the team."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "C3 AI",
@@ -2574,13 +2728,16 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs / Hiring Without Whiteboards",
       "source_url": "https://www.no-wb.org/"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Calm",
     "categories": [
-      "Healthcare & Biotech",
-      "Consumer"
+      "Consumer Tech",
+      "Healthcare & Biotech"
     ],
     "scrape": {
       "mode": "greenhouse",
@@ -2590,9 +2747,8 @@
   {
     "name": "Caltech",
     "categories": [
-      "Academia",
-      "Research",
-      "Technology"
+      "Education & Academia",
+      "Research"
     ],
     "scrape": {
       "mode": "taleo",
@@ -2615,13 +2771,13 @@
   {
     "name": "Canfield Imaging Systems",
     "categories": [
-      "HealthTech",
+      "Healthcare & Biotech",
       "Medical Devices"
     ],
     "scrape": {
       "mode": "html",
-      "list_url": "https://www.canfieldsci.com/about/careers/",
-      "include": "canfieldsci.com"
+      "list_url": "https://www.canfieldsci.com/careers/",
+      "include": "canfieldsci.com/careers/jobs"
     }
   },
   {
@@ -2648,8 +2804,7 @@
   {
     "name": "Cape",
     "categories": [
-      "AI",
-      "Technology"
+      "AI & Machine Learning"
     ],
     "scrape": {
       "mode": "ashby",
@@ -2659,8 +2814,8 @@
   {
     "name": "Capital One",
     "categories": [
-      "FinTech & Payments",
-      "Finance & Banking"
+      "Finance & Banking",
+      "FinTech & Payments"
     ],
     "scrape": {
       "mode": "workday",
@@ -2670,7 +2825,9 @@
   {
     "name": "Captivation",
     "categories": [
-      "Technology"
+      "Aerospace & Defense",
+      "Cybersecurity",
+      "Software & SaaS"
     ],
     "scrape": {
       "mode": "greenhouse",
@@ -2701,8 +2858,8 @@
   {
     "name": "Carnegie Mellon University",
     "categories": [
-      "Interview Friendly",
-      "US / Remote"
+      "Education & Academia",
+      "Research"
     ],
     "scrape": {
       "mode": "workday",
@@ -2716,13 +2873,16 @@
       "locations": "",
       "process": "",
       "employment_type": ""
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Carnival Cruise Line",
     "categories": [
-      "Interview Friendly",
-      "US / Remote"
+      "Transportation & Mobility",
+      "Travel & Hospitality"
     ],
     "scrape": {
       "mode": "talentbrew",
@@ -2737,7 +2897,10 @@
       "locations": "",
       "process": "",
       "employment_type": ""
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Carrier",
@@ -2801,6 +2964,9 @@
       "mode": "phenom",
       "list_url": "https://careers.cboe.com/us/en/search-results",
       "prefix": "https://careers.cboe.com/us/en/job/",
+      "fetch_descriptions": true,
+      "max_description_details": 100,
+      "description_workers": 2,
       "try_load_more": true,
       "validate_prefix": false,
       "scroll_rounds": 80
@@ -2823,7 +2989,7 @@
     "name": "Cencora",
     "categories": [
       "Healthcare & Biotech",
-      "Industrials & Manufacturing"
+      "Logistics & Supply Chain"
     ],
     "scrape": {
       "mode": "workday",
@@ -2858,7 +3024,7 @@
   {
     "name": "Centerfield",
     "categories": [
-      "Technology"
+      "Ad Tech & MarTech"
     ],
     "scrape": {
       "mode": "ashby",
@@ -2879,7 +3045,9 @@
   {
     "name": "CesiumAstro",
     "categories": [
-      "Technology"
+      "Aerospace & Defense",
+      "Semiconductors & Hardware",
+      "Space"
     ],
     "scrape": {
       "mode": "lever",
@@ -2900,7 +3068,7 @@
     "name": "Chainalysis",
     "categories": [
       "Crypto",
-      "Fintech"
+      "FinTech & Payments"
     ],
     "scrape": {
       "mode": "ashby",
@@ -2921,7 +3089,7 @@
     "name": "Character.AI",
     "categories": [
       "AI & Machine Learning",
-      "Consumer Goods & Retail"
+      "Consumer Tech"
     ],
     "scrape": {
       "mode": "ashby",
@@ -2931,8 +3099,8 @@
   {
     "name": "Chargify",
     "categories": [
-      "Software & SaaS",
-      "FinTech & Payments"
+      "FinTech & Payments",
+      "Software & SaaS"
     ],
     "scrape": {
       "mode": "html",
@@ -2945,17 +3113,20 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "San Antonio, TX / Remote",
       "process": "Take-home project & pair on a problem similar to daily work"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Charles River Associates",
     "categories": [
       "Consulting",
-      "Finance"
+      "Finance & Banking"
     ],
     "scrape": {
-      "mode": "workday",
-      "list_url": "https://crai.wd1.myworkdayjobs.com/External_Career_Site"
+      "mode": "greenhouse",
+      "board_token": "charlesriverassociates"
     }
   },
   {
@@ -2976,21 +3147,6 @@
     "scrape": {
       "mode": "lever",
       "lever_slug": "charmindustrial"
-    }
-  },
-  {
-    "name": "Charter Communications",
-    "categories": [
-      "Media & Entertainment",
-      "Telecom"
-    ],
-    "scrape": {
-      "mode": "talentbrew",
-      "list_url": "https://jobs.spectrum.com/search-jobs",
-      "include": "https://jobs.spectrum.com/job/"
-    },
-    "interview": {
-      "source": "Telecom / media"
     }
   },
   {
@@ -3019,7 +3175,10 @@
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
       "locations": "San Francisco, CA / Denver, CO / Orlando, FL / Remote",
       "process": "1 hour CoderPad problem, if pass, then four 1 hour interviews: API Design using your computer and languages, Refactoring in language of your choice, Object Design (no coding), System Architecture (no coding) and sometimes a 30 minute manager chat [read more](https://medium.com/checkr/an-engineers-guide-to-interviewing-at-checkr-fc28f9e8014b)"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Chef",
@@ -3038,7 +3197,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Seattle, WA / Remote",
       "process": "Take home small project testing the ability to implement real world problems. Phone/Zoom interviews discussing the said project. Checking if the candidate would be a good cultural fit."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Chesapeake Technology",
@@ -3057,7 +3219,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Denver, CO / Santa Barbara, CA / Camarillo, CA / Dulles, VA / California, MD / Remote",
       "process": "Phone screen (30 minutes), take home at leisure question based on real development followed by in person review of solution and general technical questions with actual team and opportunity for you to ask questions and provide feedback ( 2-3 hours)"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Chevron",
@@ -3083,8 +3248,8 @@
   {
     "name": "Chick-fil-A",
     "categories": [
-      "Interview Friendly",
-      "US / Remote"
+      "Consumer Goods & Retail",
+      "Food & Beverage"
     ],
     "scrape": {
       "mode": "icims",
@@ -3100,7 +3265,10 @@
       "locations": "",
       "process": "",
       "employment_type": ""
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Chime",
@@ -3180,12 +3348,15 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "New York, NY / London, UK / Tokyo, Japan / Campinas, Brazil / Shanghai, China / Medellín, Colombia / Lisbon, Portugal / Melbourne, Australia / Remote",
       "process": "Video screening followed by a technical interview focusing on software engineering skills and finally, a feedback interview with the hiring manager."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "CIBC",
     "categories": [
-      "Technology"
+      "Finance & Banking"
     ],
     "scrape": {
       "mode": "workday",
@@ -3216,7 +3387,7 @@
   {
     "name": "Cintas",
     "categories": [
-      "Consulting",
+      "Business Services",
       "Industrials & Manufacturing"
     ],
     "scrape": {
@@ -3234,8 +3405,9 @@
     ],
     "scrape": {
       "mode": "html",
-      "list_url": "https://circleci.com/careers",
-      "include": "circleci.com"
+      "list_url": "https://circleci.com/careers/jobs/",
+      "include": "circleci.com/careers/jobs/",
+      "require_job_path": true
     },
     "interview": {
       "no_whiteboard": true,
@@ -3243,7 +3415,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "San Francisco, CA / Remote",
       "process": "Take-home project and discussion, followed by on-site interview that includes pair programming on actual CircleCI bugs/feature requests."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Cisco",
@@ -3327,8 +3502,8 @@
   {
     "name": "City of Boston's Analytics Team",
     "categories": [
-      "Data & Analytics",
-      "Consulting"
+      "Consulting",
+      "Data & Analytics"
     ],
     "scrape": {
       "mode": "icims",
@@ -3340,13 +3515,16 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Boston, MA",
       "process": "Take-home project and in-person or phone/Skype interviews"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Civis Analytics",
     "categories": [
-      "Data & Analytics",
-      "Consulting"
+      "Consulting",
+      "Data & Analytics"
     ],
     "scrape": {
       "mode": "greenhouse",
@@ -3358,7 +3536,10 @@
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
       "locations": "Chicago, IL",
       "process": "Take-home project and discussion via Skype, followed by pair programming exercise"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "CJ Affiliate",
@@ -3376,13 +3557,16 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Los Angeles / CA & Westlake Village, CA",
       "process": "Phone coding design exercise (no algorithms), followed by an on-site final interview that includes pair programming on a realistic object-oriented design problem"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Clara Lending",
     "categories": [
       "FinTech & Payments",
-      "Real Estate"
+      "Real Estate & Construction"
     ],
     "scrape": {
       "mode": "greenhouse",
@@ -3394,7 +3578,10 @@
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
       "locations": "San Francisco, CA",
       "process": "Phone conversation around technical background and experience, followed by take-home project, pair programming and discussion"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Clarisights",
@@ -3412,12 +3599,16 @@
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
       "locations": "Bangalore, India / Remote",
       "process": "Culture fit Interview, Basic Tech Round, Design Interview"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Clarity Innovations",
     "categories": [
-      "Technology"
+      "Consulting",
+      "EdTech"
     ],
     "scrape": {
       "mode": "greenhouse",
@@ -3448,12 +3639,15 @@
       "no_whiteboard": true,
       "source": "Developer tools/startup",
       "source_url": "https://clerk.com/careers"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Clever",
     "categories": [
-      "Consumer Goods & Retail",
+      "EdTech",
       "Software & SaaS"
     ],
     "scrape": {
@@ -3485,7 +3679,8 @@
   {
     "name": "Clinical Architecture",
     "categories": [
-      "Technology"
+      "Healthcare & Biotech",
+      "Software & SaaS"
     ],
     "scrape": {
       "mode": "greenhouse",
@@ -3495,8 +3690,9 @@
   {
     "name": "Clipboard",
     "categories": [
-      "Consumer Goods & Retail",
-      "Healthcare & Biotech"
+      "E-commerce & Marketplace",
+      "Healthcare & Biotech",
+      "HR Tech"
     ],
     "scrape": {
       "mode": "ashby",
@@ -3518,7 +3714,10 @@
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
       "locations": "Remote",
       "process": "Interviews and take home project."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "CloudBees",
@@ -3536,7 +3735,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Remote",
       "process": "Multiple interviews, discussion of technical background and experiences."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Cloudflare",
@@ -3596,19 +3798,19 @@
   {
     "name": "Coda",
     "categories": [
-      "Software & SaaS",
-      "Developer Tools"
+      "Developer Tools",
+      "Software & SaaS"
     ],
     "scrape": {
-      "mode": "ashby",
-      "ashby_slug": "coda"
+      "mode": "lever",
+      "lever_slug": "Coda"
     }
   },
   {
     "name": "Coffee 'n Clothes",
     "categories": [
-      "Consumer Goods & Retail",
-      "Developer Tools"
+      "Ad Tech & MarTech",
+      "Consulting"
     ],
     "scrape": {
       "mode": "html",
@@ -3711,12 +3913,17 @@
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
       "locations": "Cambridge, UK / Montreal, Canada / Remote",
       "process": "On-site or video interview, discussion of technical experience and sometimes approach for tackling a hypothetical problem."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Collective",
     "categories": [
-      "Technology"
+      "Finance & Banking",
+      "FinTech & Payments",
+      "Software & SaaS"
     ],
     "scrape": {
       "mode": "ashby",
@@ -3726,13 +3933,14 @@
   {
     "name": "Columbia University",
     "categories": [
-      "Academia",
+      "Education & Academia",
       "Research"
     ],
     "scrape": {
       "mode": "html",
       "list_url": "https://opportunities.columbia.edu/jobs/search",
-      "include": "opportunities.columbia.edu"
+      "include": "opportunities.columbia.edu",
+      "require_job_path": true
     }
   },
   {
@@ -3789,7 +3997,8 @@
   {
     "name": "Compa",
     "categories": [
-      "Technology"
+      "HR Tech",
+      "Software & SaaS"
     ],
     "scrape": {
       "mode": "ashby",
@@ -3799,7 +4008,8 @@
   {
     "name": "Compass",
     "categories": [
-      "Consumer Goods & Retail"
+      "Real Estate & Construction",
+      "Software & SaaS"
     ],
     "scrape": {
       "mode": "html",
@@ -3824,8 +4034,8 @@
   {
     "name": "Concentrix",
     "categories": [
-      "IT Services",
-      "Business Services"
+      "Business Services",
+      "IT Services"
     ],
     "scrape": {
       "mode": "workday",
@@ -3878,8 +4088,8 @@
   {
     "name": "Contentful",
     "categories": [
-      "Software & SaaS",
-      "Developer Tools"
+      "Developer Tools",
+      "Software & SaaS"
     ],
     "scrape": {
       "mode": "greenhouse",
@@ -3891,7 +4101,10 @@
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
       "locations": "Berlin, Germany & SF, USA",
       "process": "Multiple interviews, discussion of technical background & live coding challenge (you can use the internet)."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Contentstack",
@@ -3910,7 +4123,8 @@
   {
     "name": "Continental",
     "categories": [
-      "Technology"
+      "Automotive",
+      "Industrials & Manufacturing"
     ],
     "scrape": {
       "mode": "smartrecruiters",
@@ -3920,8 +4134,8 @@
   {
     "name": "Copart",
     "categories": [
-      "Consulting",
-      "Industrials & Manufacturing"
+      "Automotive",
+      "E-commerce & Marketplace"
     ],
     "scrape": {
       "mode": "workday",
@@ -3932,7 +4146,6 @@
     "name": "CoreOS",
     "categories": [
       "Cloud & Infrastructure",
-      "Consumer Goods & Retail",
       "Developer Tools"
     ],
     "scrape": {
@@ -3972,13 +4185,16 @@
       "no_whiteboard": true,
       "source": "YC hiring",
       "source_url": "https://www.corgi.insure/careers"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Cornell University",
     "categories": [
-      "Interview Friendly",
-      "US / Remote"
+      "Education & Academia",
+      "Research"
     ],
     "scrape": {
       "mode": "workday",
@@ -3992,13 +4208,16 @@
       "locations": "",
       "process": "",
       "employment_type": ""
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Corpay",
     "categories": [
-      "FinTech & Payments",
-      "Finance & Banking"
+      "Finance & Banking",
+      "FinTech & Payments"
     ],
     "scrape": {
       "mode": "workday",
@@ -4024,7 +4243,8 @@
     "scrape": {
       "mode": "html",
       "list_url": "https://www.cossacklabs.com/job/",
-      "include": "www.cossacklabs.com"
+      "include": "www.cossacklabs.com",
+      "require_job_path": true
     },
     "interview": {
       "no_whiteboard": true,
@@ -4032,12 +4252,15 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "London, UK / Kyiv, UA / Remote",
       "process": "Initial screening video call, technical take-home challenge, technical interview with the team about real-world tasks and candidates' day-to-day work (programming, networking, OS, SSDLC, security)."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "CoStar Group",
     "categories": [
-      "Real Estate"
+      "Real Estate & Construction"
     ],
     "scrape": {
       "mode": "workday",
@@ -4053,28 +4276,9 @@
       "mode": "jobsapi",
       "api_url": "https://careers.costco.com/api/jobs",
       "job_url_prefix": "https://careers.costco.com/jobs/",
+      "page_param": "page",
+      "page_start": 1,
       "sort": true
-    }
-  },
-  {
-    "name": "Costco Wholesale",
-    "categories": [
-      "Interview Friendly",
-      "US / Remote"
-    ],
-    "scrape": {
-      "mode": "jobsapi",
-      "api_url": "https://careers.costco.com/api/jobs",
-      "job_url_prefix": "https://careers.costco.com/careers-home/jobs/"
-    },
-    "interview": {
-      "no_whiteboard": true,
-      "source": "Linked source employer target set",
-      "source_url": "Linked source employer target set",
-      "no_wb_id": null,
-      "locations": "",
-      "process": "",
-      "employment_type": ""
     }
   },
   {
@@ -4091,7 +4295,8 @@
   {
     "name": "Cox",
     "categories": [
-      "Technology"
+      "Media & Entertainment",
+      "Telecom"
     ],
     "scrape": {
       "mode": "workday",
@@ -4105,13 +4310,14 @@
     ],
     "scrape": {
       "mode": "workday",
-      "list_url": "https://caa.wd1.myworkdayjobs.com/CAA"
+      "list_url": "https://caa.wd1.myworkdayjobs.com/Careers"
     }
   },
   {
     "name": "Cresta",
     "categories": [
-      "Technology"
+      "AI & Machine Learning",
+      "Software & SaaS"
     ],
     "scrape": {
       "mode": "greenhouse",
@@ -4209,7 +4415,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Austin, TX",
       "process": "Paid take-home project"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Cummins",
@@ -4253,7 +4462,8 @@
   {
     "name": "d-Matrix",
     "categories": [
-      "Technology"
+      "AI & Machine Learning",
+      "Semiconductors & Hardware"
     ],
     "scrape": {
       "mode": "ashby",
@@ -4288,7 +4498,8 @@
   {
     "name": "D3",
     "categories": [
-      "Technology"
+      "Crypto",
+      "Software & SaaS"
     ],
     "scrape": {
       "mode": "greenhouse",
@@ -4336,7 +4547,7 @@
   {
     "name": "Dartmouth College",
     "categories": [
-      "Universities"
+      "Education & Academia"
     ],
     "scrape": {
       "mode": "html",
@@ -4366,7 +4577,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Palo Alto, CA / Paris, Fr / London, United Kingdom / Remote",
       "process": "Phone interview, then a take home project and finally in-person interview."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Databricks",
@@ -4418,8 +4632,8 @@
   {
     "name": "DataMade",
     "categories": [
-      "Data & Analytics",
-      "Consulting"
+      "Consulting",
+      "Data & Analytics"
     ],
     "scrape": {
       "mode": "html",
@@ -4432,7 +4646,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Chicago, IL",
       "process": "After submitting an application, selected applicants are moved on to a round of interviews and will be asked to submit a piece of code for review. If you don’t have any code you can share, DataMade will provide a short exercise for you to complete. An in-person (or remote) interview will be scheduled to go over your background, what draws you to DataMade, and your code sample."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "DaVita",
@@ -4478,22 +4695,23 @@
   {
     "name": "Deel",
     "categories": [
-      "Consulting",
-      "Consumer Goods & Retail",
-      "Developer Tools",
       "FinTech & Payments",
+      "HR Tech",
       "Software & SaaS"
     ],
     "scrape": {
-      "mode": "ashby",
-      "ashby_slug": "deel"
+      "mode": "html",
+      "list_url": "https://www.deel.com/careers/",
+      "include": "deel.com/careers/position/",
+      "embedded_next_jobs": true,
+      "verify_reported_total": true
     }
   },
   {
     "name": "DeepFin Research",
     "categories": [
-      "Finance",
-      "Quant"
+      "Finance & Banking",
+      "Quant Trading"
     ],
     "scrape": {
       "mode": "ashby",
@@ -4527,7 +4745,8 @@
   {
     "name": "Deeplocal",
     "categories": [
-      "Consumer Goods & Retail"
+      "Ad Tech & MarTech",
+      "Consulting"
     ],
     "scrape": {
       "board_token": "deeplocal",
@@ -4537,7 +4756,9 @@
   {
     "name": "Deliveroo",
     "categories": [
-      "Technology"
+      "E-commerce & Marketplace",
+      "Food & Beverage",
+      "Logistics & Supply Chain"
     ],
     "scrape": {
       "mode": "ashby",
@@ -4589,7 +4810,8 @@
   {
     "name": "Delta Dental",
     "categories": [
-      "Technology"
+      "Healthcare & Biotech",
+      "Insurance"
     ],
     "scrape": {
       "mode": "workday",
@@ -4718,7 +4940,9 @@
   {
     "name": "Docugami",
     "categories": [
-      "Technology"
+      "AI & Machine Learning",
+      "Data & Analytics",
+      "Software & SaaS"
     ],
     "scrape": {
       "mode": "greenhouse",
@@ -4813,8 +5037,8 @@
   {
     "name": "Dragonfly",
     "categories": [
-      "Finance",
-      "Crypto"
+      "Crypto",
+      "Finance & Banking"
     ],
     "scrape": {
       "mode": "ashby",
@@ -4850,13 +5074,16 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Mountain View, CA",
       "process": "Hackerrank test (but not CS trivia, it's real product problems) & on-site/take-home project w/ presentation"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "DroneDeploy",
     "categories": [
-      "Software & SaaS",
-      "Industrials & Manufacturing"
+      "Industrials & Manufacturing",
+      "Software & SaaS"
     ],
     "scrape": {
       "mode": "html",
@@ -4869,13 +5096,16 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "San Francisco, CA",
       "process": "Pair program on a problem similar to daily work"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Dropbox",
     "categories": [
-      "Consumer Goods & Retail",
-      "Developer Tools"
+      "Cloud & Infrastructure",
+      "Software & SaaS"
     ],
     "scrape": {
       "mode": "greenhouse",
@@ -4904,7 +5134,7 @@
     "name": "dubizzle",
     "categories": [
       "E-commerce & Marketplace",
-      "Real Estate"
+      "Real Estate & Construction"
     ],
     "scrape": {
       "mode": "workable",
@@ -4916,7 +5146,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Dubai, UAE / Sindh, Pakistan / Cluj County, Romania",
       "process": "Take home assignment, general technical questions, pair programming with engineers or tech leads"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "DuckDuckGo",
@@ -4931,7 +5164,10 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs / Hiring Without Whiteboards",
       "source_url": "https://www.no-wb.org/"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Duke Energy",
@@ -4947,10 +5183,9 @@
   {
     "name": "Duke University",
     "categories": [
-      "Academia",
-      "Research",
+      "Education & Academia",
       "Healthcare & Biotech",
-      "Universities"
+      "Research"
     ],
     "scrape": {
       "mode": "html",
@@ -5013,8 +5248,8 @@
   {
     "name": "Dynatrace",
     "categories": [
-      "Developer Tools",
-      "Cloud"
+      "Cloud & Infrastructure",
+      "Developer Tools"
     ],
     "scrape": {
       "mode": "successfactors",
@@ -5049,7 +5284,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Boston, MA / Remote",
       "process": "Meet the entire team, share examples of previous work and pair with one team member"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Ecolab",
@@ -5075,7 +5313,8 @@
   {
     "name": "Egis Group",
     "categories": [
-      "Technology"
+      "Consulting",
+      "Real Estate & Construction"
     ],
     "scrape": {
       "mode": "smartrecruiters",
@@ -5143,7 +5382,8 @@
   {
     "name": "Ellipsis Labs",
     "categories": [
-      "Technology"
+      "Crypto",
+      "Software & SaaS"
     ],
     "scrape": {
       "mode": "ashby",
@@ -5167,7 +5407,10 @@
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
       "locations": "Reston, VA, USA",
       "process": "Discussion of real world problems (from resume, if possible)"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "EMCOR",
@@ -5196,7 +5439,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Minneapolis, MN",
       "process": "Phone intro, discuss recent project, short take home project (4h max) with code review, real world open ended questions"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Emerson",
@@ -5216,8 +5462,8 @@
   {
     "name": "Emory University",
     "categories": [
-      "Interview Friendly",
-      "US / Remote"
+      "Education & Academia",
+      "Research"
     ],
     "scrape": {
       "mode": "multi",
@@ -5244,7 +5490,10 @@
       "locations": "",
       "process": "",
       "employment_type": ""
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Enbridge",
@@ -5260,7 +5509,8 @@
   {
     "name": "Encore Global",
     "categories": [
-      "Consumer Goods & Retail"
+      "Business Services",
+      "Media & Entertainment"
     ],
     "scrape": {
       "include": "https://jobs.encoreglobal.com/job/",
@@ -5277,7 +5527,9 @@
     "scrape": {
       "mode": "html",
       "list_url": "https://www.endpointdev.com/careers",
-      "include": "www.endpointdev.com"
+      "include": "www.endpointdev.com",
+      "require_job_path": true,
+      "allow_empty_full_scan": true
     },
     "interview": {
       "no_whiteboard": true,
@@ -5285,12 +5537,15 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "New York, NY / Johnson City, TN / Remote",
       "process": "Video interview with senior technical management followed by 2-hour scheduled take-home project similar to work done for our clients."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Engel & Völkers Technology",
     "categories": [
-      "Real Estate",
+      "Real Estate & Construction",
       "Software & SaaS"
     ],
     "scrape": {
@@ -5304,7 +5559,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Hamburg, Germany",
       "process": "Remote technical interview with an Engineering Manager, followed by a practical coding challenge implemented in 5 hours, ending with a technical discussion with the team on the produced code either remotely or on-site based on geographical practicality."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Enigma",
@@ -5322,7 +5580,10 @@
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
       "locations": "New York, NY",
       "process": "2-part takehome project, followed by a pair programming exercise"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Ensemble Health Partners",
@@ -5373,7 +5634,9 @@
   {
     "name": "Epic Kids",
     "categories": [
-      "Technology"
+      "Consumer Tech",
+      "EdTech",
+      "Media & Entertainment"
     ],
     "scrape": {
       "mode": "greenhouse",
@@ -5393,8 +5656,8 @@
   {
     "name": "Equifax",
     "categories": [
-      "Consulting",
-      "Industrials & Manufacturing"
+      "Data & Analytics",
+      "Finance & Banking"
     ],
     "scrape": {
       "mode": "workday",
@@ -5405,7 +5668,7 @@
     "name": "Equinix",
     "categories": [
       "Cloud & Infrastructure",
-      "Real Estate"
+      "Real Estate & Construction"
     ],
     "scrape": {
       "mode": "workday",
@@ -5428,12 +5691,15 @@
   {
     "name": "Estee Lauder",
     "categories": [
-      "Consumer Goods & Retail",
-      "Beauty"
+      "Beauty",
+      "Consumer Goods & Retail"
     ],
     "scrape": {
-      "mode": "workday",
-      "list_url": "https://esteelauder.wd5.myworkdayjobs.com/en-US/ELC_External"
+      "mode": "eightfold",
+      "list_url": "https://careers.elcompanies.com/careers",
+      "eightfold_domain": "elcompanies.com",
+      "fallback": "playwright",
+      "include": "careers.elcompanies.com/careers"
     }
   },
   {
@@ -5452,8 +5718,7 @@
   {
     "name": "Etsy",
     "categories": [
-      "E-commerce",
-      "Marketplace"
+      "E-commerce & Marketplace"
     ],
     "scrape": {
       "mode": "html",
@@ -5467,14 +5732,15 @@
       "Ad Tech & MarTech"
     ],
     "scrape": {
-      "mode": "lever",
-      "lever_slug": "eulerity"
+      "mode": "greenhouse",
+      "board_token": "eulerity"
     }
   },
   {
     "name": "Eurofins",
     "categories": [
-      "Technology"
+      "Healthcare & Biotech",
+      "Research"
     ],
     "scrape": {
       "mode": "smartrecruiters",
@@ -5496,7 +5762,8 @@
   {
     "name": "Evolver",
     "categories": [
-      "Technology"
+      "Consulting",
+      "IT Services"
     ],
     "scrape": {
       "mode": "greenhouse",
@@ -5526,7 +5793,8 @@
   {
     "name": "EXL",
     "categories": [
-      "Technology"
+      "Consulting",
+      "Data & Analytics"
     ],
     "scrape": {
       "mode": "oraclecloud",
@@ -5564,7 +5832,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "San Francisco, CA / Dallas, TX / Remote",
       "process": "Phone call, a take home project similar to making a PR at work, then a meet & greet with the team."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "ExxonMobil",
@@ -5607,7 +5878,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Milan, Italy / Cagliari, Italy / Remote",
       "process": "Initial call/Skype interview with HR. Tech interview about OOP concepts, HTTP and REST API design questions with 2 engineers. Brief talk with VP of Engineering or CTO."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Factory",
@@ -5658,7 +5932,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Remote",
       "process": "Start with a brief talk with CTO or VP of Engineering, take home coding challenge, then remote interviews with several people on the engineering team"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Fanatics",
@@ -5675,8 +5952,8 @@
   {
     "name": "Fannie Mae",
     "categories": [
-      "Interview Friendly",
-      "US / Remote"
+      "Finance & Banking",
+      "Real Estate & Construction"
     ],
     "scrape": {
       "mode": "workday",
@@ -5690,7 +5967,10 @@
       "locations": "",
       "process": "",
       "employment_type": ""
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Fastly",
@@ -5712,14 +5992,28 @@
       "Logistics & Supply Chain"
     ],
     "scrape": {
-      "mode": "workday",
-      "list_url": "https://fedex.wd1.myworkdayjobs.com/FXF_External_Career_Site"
+      "mode": "html",
+      "list_url": "https://careers.fedex.com/jobs?page_size=100&sort_by=title",
+      "include": "careers.fedex.com/",
+      "require_job_path": true,
+      "verify_reported_total": true,
+      "url_exclude": [
+        "/jobs/page/"
+      ],
+      "stop_on_seen": true,
+      "pagination": {
+        "type": "path_page",
+        "segment": "page",
+        "start": 1,
+        "trailing_slash": false,
+        "hard_max_pages": 200
+      }
     }
   },
   {
     "name": "Feld Entertainment",
     "categories": [
-      "Consumer Goods & Retail"
+      "Media & Entertainment"
     ],
     "scrape": {
       "lever_slug": "feldinc",
@@ -5760,7 +6054,7 @@
   {
     "name": "Fife Council",
     "categories": [
-      "Technology"
+      "Government"
     ],
     "scrape": {
       "mode": "oraclecloud",
@@ -5827,8 +6121,8 @@
   {
     "name": "Fiserv",
     "categories": [
-      "FinTech & Payments",
-      "Finance & Banking"
+      "Finance & Banking",
+      "FinTech & Payments"
     ],
     "scrape": {
       "mode": "workday",
@@ -5838,8 +6132,8 @@
   {
     "name": "Fitch Solutions (dv01)",
     "categories": [
-      "Finance & Banking",
-      "Data & Analytics"
+      "Data & Analytics",
+      "Finance & Banking"
     ],
     "scrape": {
       "mode": "greenhouse",
@@ -5874,7 +6168,6 @@
     "name": "Fivetran",
     "categories": [
       "Cloud & Infrastructure",
-      "Consumer Goods & Retail",
       "Data & Analytics",
       "Software & SaaS"
     ],
@@ -5886,7 +6179,8 @@
   {
     "name": "Flagright",
     "categories": [
-      "Technology"
+      "Cybersecurity",
+      "FinTech & Payments"
     ],
     "scrape": {
       "mode": "ashby",
@@ -5928,7 +6222,10 @@
       "no_whiteboard": true,
       "source": "Startup hiring",
       "source_url": "https://www.flocksafety.com/careers"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Flow Traders",
@@ -5958,13 +6255,16 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Cambridge, UK / Berlin, Germany / Remote",
       "process": "Reach out to us by email or on Slack with your CV. You'll receive a written interview which should take 15min to 30min to complete, after which we'll schedule at most 2x technical video interviews with a potential take-home assignment in between. Alternatively, you share the Open-Source code you have written so we can discuss that."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Fluidstack",
     "categories": [
-      "Cloud",
-      "AI"
+      "AI & Machine Learning",
+      "Cloud & Infrastructure"
     ],
     "scrape": {
       "mode": "ashby",
@@ -5974,7 +6274,8 @@
   {
     "name": "Fluxergy",
     "categories": [
-      "Technology"
+      "Healthcare & Biotech",
+      "Medical Devices"
     ],
     "scrape": {
       "mode": "lever",
@@ -5997,7 +6298,10 @@
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
       "locations": "Remote",
       "process": "Phone call, async questions regarding expectations and past experience, interview regarding communication and principles, async work sample, interview and AMA with CTO, interview with one of the founders"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Ford",
@@ -6025,8 +6329,8 @@
   {
     "name": "Form3",
     "categories": [
-      "FinTech & Payments",
-      "Developer Tools"
+      "Developer Tools",
+      "FinTech & Payments"
     ],
     "scrape": {
       "mode": "greenhouse",
@@ -6038,7 +6342,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Remote",
       "process": "Preliminary call, take-home project, three stage interview (code review, technical assessment and debugging exercise)"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Formation Bio",
@@ -6066,7 +6373,10 @@
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
       "locations": "Seattle, WA; London, UK; Remote",
       "process": "Take-home project, remote pair programming, discussion on-site or remote"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Fortinet",
@@ -6093,7 +6403,9 @@
   {
     "name": "Foxglove",
     "categories": [
-      "Technology"
+      "Developer Tools",
+      "Robotics & Automation",
+      "Software & SaaS"
     ],
     "scrape": {
       "mode": "ashby",
@@ -6103,8 +6415,8 @@
   {
     "name": "Frappe",
     "categories": [
-      "Software & SaaS",
-      "Developer Tools"
+      "Developer Tools",
+      "Software & SaaS"
     ],
     "scrape": {
       "mode": "html",
@@ -6117,13 +6429,16 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Mumbai, India / Remote",
       "process": "Take-home project, a short pair programming exercise, discussion and interview with members of the Engineering team."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Freddie Mac",
     "categories": [
-      "Interview Friendly",
-      "US / Remote"
+      "Finance & Banking",
+      "Real Estate & Construction"
     ],
     "scrape": {
       "mode": "workday",
@@ -6137,7 +6452,10 @@
       "locations": "",
       "process": "",
       "employment_type": ""
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Freedom Technology Solutions Group",
@@ -6162,8 +6480,8 @@
   {
     "name": "Freeport-McMoRan",
     "categories": [
-      "Mining",
-      "Energy"
+      "Energy",
+      "Mining"
     ],
     "scrape": {
       "mode": "html",
@@ -6174,8 +6492,8 @@
   {
     "name": "FreshDirect",
     "categories": [
-      "E-commerce",
-      "Retail"
+      "Consumer Goods & Retail",
+      "E-commerce & Marketplace"
     ],
     "scrape": {
       "mode": "icims",
@@ -6195,7 +6513,7 @@
   {
     "name": "Fullbay",
     "categories": [
-      "Technology"
+      "Software & SaaS"
     ],
     "scrape": {
       "mode": "bamboohr",
@@ -6205,7 +6523,9 @@
   {
     "name": "Further",
     "categories": [
-      "Technology"
+      "AI & Machine Learning",
+      "Consulting",
+      "Data & Analytics"
     ],
     "scrape": {
       "mode": "greenhouse",
@@ -6324,7 +6644,7 @@
   {
     "name": "GCI",
     "categories": [
-      "Technology"
+      "Telecom"
     ],
     "scrape": {
       "mode": "oraclecloud",
@@ -6348,7 +6668,10 @@
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
       "locations": "Remote",
       "process": "Non-technical screening, 2 hours technical and soft skills interview including architecture discussion"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "GE Aerospace",
@@ -6398,7 +6721,8 @@
   {
     "name": "Gelber Group",
     "categories": [
-      "Technology"
+      "Finance & Banking",
+      "Quant Trading"
     ],
     "scrape": {
       "mode": "greenhouse",
@@ -6409,7 +6733,7 @@
     "name": "Gemini",
     "categories": [
       "Crypto",
-      "Fintech"
+      "FinTech & Payments"
     ],
     "scrape": {
       "mode": "greenhouse",
@@ -6525,7 +6849,8 @@
   {
     "name": "GenScript",
     "categories": [
-      "Technology"
+      "Healthcare & Biotech",
+      "Research"
     ],
     "scrape": {
       "mode": "greenhouse",
@@ -6535,18 +6860,21 @@
   {
     "name": "Gensler",
     "categories": [
-      "Industrials & Manufacturing"
+      "Consulting",
+      "Real Estate & Construction"
     ],
     "scrape": {
-      "list_url": "https://gensler.wd1.myworkdayjobs.com/genslercareers",
-      "mode": "workday"
+      "mode": "xml_feed",
+      "list_url": "https://talent.gensler.com/careersmarketplace/SearchJobs/feed/",
+      "feed_format": "rss",
+      "include": "talent.gensler.com/careersmarketplace/JobDetail/"
     }
   },
   {
     "name": "Genuine Parts Company",
     "categories": [
-      "Interview Friendly",
-      "US / Remote"
+      "Automotive",
+      "Consumer Goods & Retail"
     ],
     "scrape": {
       "mode": "workday",
@@ -6560,13 +6888,16 @@
       "locations": "",
       "process": "",
       "employment_type": ""
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Georgetown University",
     "categories": [
-      "Interview Friendly",
-      "US / Remote"
+      "Education & Academia",
+      "Research"
     ],
     "scrape": {
       "mode": "workday",
@@ -6580,14 +6911,16 @@
       "locations": "",
       "process": "",
       "employment_type": ""
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Georgia Tech",
     "categories": [
-      "Academia",
-      "Research",
-      "Technology"
+      "Education & Academia",
+      "Research"
     ],
     "scrape": {
       "mode": "html",
@@ -6613,7 +6946,8 @@
   {
     "name": "Giant Spoon",
     "categories": [
-      "Consumer Goods & Retail"
+      "Ad Tech & MarTech",
+      "Consulting"
     ],
     "scrape": {
       "board_token": "giantspoon",
@@ -6672,14 +7006,17 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Remote / San Francisco, CA / Boulder, CO",
       "process": "Take-home exercise, code review and technical discussions."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "GitLab",
     "categories": [
-      "Consumer Goods & Retail",
+      "Cybersecurity",
       "Developer Tools",
-      "Industrials & Manufacturing"
+      "Software & SaaS"
     ],
     "scrape": {
       "mode": "greenhouse",
@@ -6691,7 +7028,10 @@
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
       "locations": "Remote",
       "process": "A series of video calls, and a coding exercise involving working on a Merge Request that is like a real work task"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Glean",
@@ -6754,7 +7094,10 @@
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
       "locations": "Remote",
       "process": "Virtual interviews with recruiter, sr engineer, and hiring manager. Short real-world take-home project w/ follow-up conversation. Final interviews w/ CEO/Founder and Product team lead."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "GOAT Group",
@@ -6793,30 +7136,32 @@
       "no_whiteboard": true,
       "source": "YC recent SWE jobs",
       "source_url": "https://www.gogograndparent.com/careers"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Goldman Sachs",
     "categories": [
-      "Finance",
-      "Investment Banking",
-      "Quant"
+      "Finance & Banking",
+      "Quant Trading"
     ],
     "scrape": {
       "mode": "playwright",
-      "list_url": "https://www.goldmansachs.com/careers/professionals/search-jobs/results/",
-      "include": "goldmansachs.com/careers"
+      "list_url": "https://higher.gs.com/results",
+      "include": "higher.gs.com/roles/"
     },
     "scan_enabled": false,
     "policy": {
       "message": "Goldman Sachs restricts automated access to their job listings per their usage policy.",
-      "careers_url": "https://www.goldmansachs.com/careers/professionals/search-jobs/results/"
+      "careers_url": "https://higher.gs.com/results"
     }
   },
   {
     "name": "Goliath Partners",
     "categories": [
-      "Finance",
+      "Finance & Banking",
       "Recruiting"
     ],
     "scrape": {
@@ -6841,8 +7186,8 @@
   {
     "name": "GoodLeap",
     "categories": [
-      "FinTech & Payments",
-      "Climate Tech"
+      "Climate Tech",
+      "FinTech & Payments"
     ],
     "scrape": {
       "mode": "lever",
@@ -6852,8 +7197,8 @@
   {
     "name": "Goodyear",
     "categories": [
-      "Interview Friendly",
-      "US / Remote"
+      "Automotive",
+      "Industrials & Manufacturing"
     ],
     "scrape": {
       "mode": "workday",
@@ -6867,24 +7212,27 @@
       "locations": "",
       "process": "",
       "employment_type": ""
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Google",
     "categories": [
-      "Technology",
-      "AI",
-      "Cloud"
+      "AI & Machine Learning",
+      "Cloud & Infrastructure"
     ],
     "scrape": {
-      "mode": "playwright",
-      "list_url": "https://careers.google.com/jobs/results/",
-      "include": "careers.google.com/jobs"
+      "mode": "xml_feed",
+      "list_url": "https://careers.google.com/jobs/sitemap",
+      "feed_format": "sitemap",
+      "include": "careers.google.com/jobs/results/"
     },
     "scan_enabled": false,
     "policy": {
-      "message": "Google's Terms of Service restrict automated access to their job listings.",
-      "careers_url": "https://careers.google.com/jobs/results/"
+      "message": "Admin-only listing sourced from Google's official careers sitemap.",
+      "careers_url": "https://www.google.com/about/careers/applications/jobs/results"
     }
   },
   {
@@ -6901,8 +7249,8 @@
   {
     "name": "Gopuff",
     "categories": [
-      "E-commerce & Marketplace",
-      "Consumer Goods & Retail"
+      "Consumer Goods & Retail",
+      "E-commerce & Marketplace"
     ],
     "scrape": {
       "mode": "lever",
@@ -6918,7 +7266,8 @@
     "scrape": {
       "mode": "html",
       "list_url": "https://gower.st/jobs",
-      "include": "gower.st"
+      "include": "gower.st/jobs/",
+      "require_job_path": true
     },
     "interview": {
       "no_whiteboard": true,
@@ -6926,7 +7275,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Remote / London, UK",
       "process": "Initial telephone chat, then either a) work with us, fully paid, for a day on real code with the team; or b) pair-programming on a code kata with the team members for four pomodoros. Your choice."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Grab",
@@ -6947,7 +7299,8 @@
   {
     "name": "Gradient Experience",
     "categories": [
-      "Consumer Goods & Retail"
+      "Ad Tech & MarTech",
+      "Consulting"
     ],
     "scrape": {
       "bamboohr_slug": "gradient",
@@ -6988,8 +7341,8 @@
   {
     "name": "Graphistry",
     "categories": [
-      "Data & Analytics",
-      "Cybersecurity"
+      "Cybersecurity",
+      "Data & Analytics"
     ],
     "scrape": {
       "mode": "html",
@@ -7002,12 +7355,16 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "San Francisco, CA / Remote",
       "process": "Discuss product/market, engineering, and culture, review past code/project, and for junior developers, choice of take home or code review."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Great Question",
     "categories": [
-      "Technology"
+      "Data & Analytics",
+      "Software & SaaS"
     ],
     "scrape": {
       "mode": "ashby",
@@ -7041,8 +7398,8 @@
   {
     "name": "Gruntwork",
     "categories": [
-      "Developer Tools",
-      "Cloud & Infrastructure"
+      "Cloud & Infrastructure",
+      "Developer Tools"
     ],
     "scrape": {
       "mode": "ashby",
@@ -7054,7 +7411,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Remote",
       "process": "Paid, take-home project with pair coding"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "GSK",
@@ -7117,8 +7477,8 @@
   {
     "name": "H-E-B",
     "categories": [
-      "Interview Friendly",
-      "US / Remote"
+      "Consumer Goods & Retail",
+      "Food & Beverage"
     ],
     "scrape": {
       "mode": "html",
@@ -7133,7 +7493,10 @@
       "locations": "",
       "process": "",
       "employment_type": ""
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Hadrian",
@@ -7158,7 +7521,8 @@
   {
     "name": "HARMAN International",
     "categories": [
-      "Technology"
+      "Automotive",
+      "Consumer Electronics"
     ],
     "scrape": {
       "mode": "workday",
@@ -7193,13 +7557,16 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Cambridge, MA",
       "process": "Take home project that mirrors work we might do on a [Sketch](https://lil.law.harvard.edu/sketches/) and follow up discussion after."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Harvard University",
     "categories": [
-      "Interview Friendly",
-      "US / Remote"
+      "Education & Academia",
+      "Research"
     ],
     "scrape": {
       "mode": "html",
@@ -7214,7 +7581,10 @@
       "locations": "",
       "process": "",
       "employment_type": ""
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Harvey",
@@ -7244,7 +7614,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Chicago, IL / Jacksonville Beach, FL",
       "process": "Remote pairing session, paid week pair programming with everyone on the team"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "HCA Healthcare",
@@ -7291,8 +7664,8 @@
   {
     "name": "Helsing",
     "categories": [
-      "AI & Machine Learning",
-      "Aerospace & Defense"
+      "Aerospace & Defense",
+      "AI & Machine Learning"
     ],
     "scrape": {
       "mode": "greenhouse",
@@ -7326,8 +7699,8 @@
   {
     "name": "Hero Digital",
     "categories": [
-      "Consulting",
-      "Ad Tech & MarTech"
+      "Ad Tech & MarTech",
+      "Consulting"
     ],
     "scrape": {
       "mode": "html",
@@ -7340,7 +7713,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "San Francisco, CA / Remote",
       "process": "Take-home project with code review, multiple (non-technical) interviews with different areas of the company about past projects and experience"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Heron Power",
@@ -7392,7 +7768,7 @@
   {
     "name": "HeyGen",
     "categories": [
-      "AI",
+      "AI & Machine Learning",
       "Media & Entertainment"
     ],
     "scrape": {
@@ -7435,8 +7811,8 @@
   {
     "name": "Hims & Hers",
     "categories": [
-      "Healthcare & Biotech",
-      "Consumer"
+      "Consumer Tech",
+      "Healthcare & Biotech"
     ],
     "scrape": {
       "mode": "ashby",
@@ -7459,7 +7835,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Portland, OR / San Francisco, CA / Seattle, WA / Austin, TX / Denver, CO / Montreal, Québec & Remote",
       "process": "Resume deep dive, take-home exercise on GitHub, (virtual) in-person including review of the take-home exercise (1hr), product collaboration, meet the team, and AMA with leadership"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "HOKA / Deckers Brands",
@@ -7475,8 +7854,8 @@
   {
     "name": "Hologram",
     "categories": [
-      "Telecom",
-      "Software & SaaS"
+      "Software & SaaS",
+      "Telecom"
     ],
     "scrape": {
       "mode": "greenhouse",
@@ -7488,7 +7867,10 @@
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
       "locations": "Chicago, IL; Remote",
       "process": "Intro call, take-home project taken from production work, pair programming exercise"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Home Chef",
@@ -7505,7 +7887,10 @@
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
       "locations": "Chicago, IL; Remote",
       "process": "Get-to-know-you meeting with the team, followed by a half-day collaborative coding session"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Home Depot",
@@ -7524,7 +7909,7 @@
   {
     "name": "HomeLight",
     "categories": [
-      "Real Estate",
+      "Real Estate & Construction",
       "Software & SaaS"
     ],
     "scrape": {
@@ -7537,7 +7922,10 @@
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
       "locations": "San Francisco, CA; Scottsdale, AZ; Seattle, WA",
       "process": "Phone screen, take home that is close to production code, onsite with pair programming"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Honeycomb",
@@ -7545,9 +7933,8 @@
       "Software & SaaS"
     ],
     "scrape": {
-      "mode": "html",
-      "list_url": "https://www.honeycomb.io/careers",
-      "include": "www.honeycomb.io"
+      "mode": "greenhouse",
+      "board_token": "honeycomb"
     }
   },
   {
@@ -7565,8 +7952,8 @@
   {
     "name": "Hotjar",
     "categories": [
-      "Data & Analytics",
-      "Ad Tech & MarTech"
+      "Ad Tech & MarTech",
+      "Data & Analytics"
     ],
     "scrape": {
       "mode": "html",
@@ -7579,12 +7966,16 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Remote",
       "process": "Short introduction call -> Technical interview with engineers on real-world problems/system design -> Paid short take-home task -> Team fit interview, EMEA timezones preferred"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Houzz",
     "categories": [
-      "Consumer Goods & Retail"
+      "E-commerce & Marketplace",
+      "Real Estate & Construction"
     ],
     "scrape": {
       "mode": "lever",
@@ -7597,7 +7988,7 @@
   {
     "name": "Howard University",
     "categories": [
-      "Academia",
+      "Education & Academia",
       "Research"
     ],
     "scrape": {
@@ -7678,7 +8069,7 @@
   {
     "name": "HudsonGray",
     "categories": [
-      "Finance",
+      "Finance & Banking",
       "Recruiting"
     ],
     "scrape": {
@@ -7701,8 +8092,8 @@
   {
     "name": "Human API",
     "categories": [
-      "Healthcare & Biotech",
-      "Developer Tools"
+      "Developer Tools",
+      "Healthcare & Biotech"
     ],
     "scrape": {
       "mode": "workday",
@@ -7714,7 +8105,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Redwood City, CA",
       "process": "Technical phone interview, then on-site pair programming and design discussion"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Humana",
@@ -7771,7 +8165,8 @@
   {
     "name": "Icon",
     "categories": [
-      "Technology"
+      "Healthcare & Biotech",
+      "Research"
     ],
     "scrape": {
       "mode": "ashby",
@@ -7794,7 +8189,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "San Francisco, CA / New York, NY / Chicago, IL / Cambridge, MA",
       "process": "Take home project that resembles a problem IDEO solves for, then pairing session in person or over video chat."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "IEX",
@@ -7813,7 +8211,8 @@
   {
     "name": "iHerb",
     "categories": [
-      "Technology"
+      "Consumer Goods & Retail",
+      "E-commerce & Marketplace"
     ],
     "scrape": {
       "mode": "greenhouse",
@@ -7847,7 +8246,8 @@
   {
     "name": "Imerys",
     "categories": [
-      "Technology"
+      "Industrials & Manufacturing",
+      "Materials & Chemicals"
     ],
     "scrape": {
       "mode": "workday",
@@ -7857,7 +8257,7 @@
   {
     "name": "ImmobilienScout24",
     "categories": [
-      "Real Estate",
+      "Real Estate & Construction",
       "Software & SaaS"
     ],
     "scrape": {
@@ -7870,7 +8270,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Berlin, Germany",
       "process": "Take-home project, discussion on-site"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Impulse Space",
@@ -7943,7 +8346,8 @@
   {
     "name": "Inizio",
     "categories": [
-      "Technology"
+      "Consulting",
+      "Healthcare & Biotech"
     ],
     "scrape": {
       "mode": "greenhouse",
@@ -7953,7 +8357,8 @@
   {
     "name": "Inmar",
     "categories": [
-      "Consumer Goods & Retail",
+      "Ad Tech & MarTech",
+      "Data & Analytics",
       "Software & SaaS"
     ],
     "scrape": {
@@ -7966,7 +8371,10 @@
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
       "locations": "Winston-Salem, NC; Austin, TX & Remote",
       "process": "Take-home project and conversation-style interviews"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Insider Intelligence",
@@ -7984,7 +8392,10 @@
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
       "locations": "New York, NY",
       "process": "Short phone interview, then come in and meet the team, check out our space, and have a discussion with team members about real-world problems"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Insitro",
@@ -8030,7 +8441,8 @@
   {
     "name": "Instead",
     "categories": [
-      "Technology"
+      "FinTech & Payments",
+      "Software & SaaS"
     ],
     "scrape": {
       "mode": "greenhouse",
@@ -8061,8 +8473,8 @@
   {
     "name": "Integral.",
     "categories": [
-      "Software & SaaS",
-      "Consulting"
+      "Consulting",
+      "Software & SaaS"
     ],
     "scrape": {
       "mode": "html",
@@ -8075,7 +8487,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Detroit, MI",
       "process": "3-step process (100% remote): tech-screening with an engineer for 30 minutes, remote pair-programming and test driven development exercise for 1 hour, conversation with engineering leadership for 30 minutes."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Intel",
@@ -8101,8 +8516,9 @@
       "Finance & Banking"
     ],
     "scrape": {
-      "mode": "greenhouse",
-      "board_token": "ibkr"
+      "mode": "playwright",
+      "list_url": "https://jobs.dayforcehcm.com/en-US/ibgllc/CANDIDATEPORTAL",
+      "include": "jobs.dayforcehcm.com/en-US/ibgllc/CANDIDATEPORTAL/jobs/"
     }
   },
   {
@@ -8198,7 +8614,8 @@
   {
     "name": "iSpot.tv",
     "categories": [
-      "Technology"
+      "Ad Tech & MarTech",
+      "Data & Analytics"
     ],
     "scrape": {
       "mode": "greenhouse",
@@ -8222,7 +8639,8 @@
   {
     "name": "Itron",
     "categories": [
-      "Technology"
+      "Industrials & Manufacturing",
+      "Utilities"
     ],
     "scrape": {
       "mode": "workday",
@@ -8254,7 +8672,8 @@
   {
     "name": "Jack Morton",
     "categories": [
-      "Consumer Goods & Retail"
+      "Ad Tech & MarTech",
+      "Consulting"
     ],
     "scrape": {
       "board_token": "jackmortonworldwide",
@@ -8277,7 +8696,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Portland, OR",
       "process": "Initial phone screen with hiring manager. In person pairing on project similar to day-to-day work with a separate cultural interview"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Jamf",
@@ -8313,8 +8735,7 @@
   {
     "name": "Jefferies",
     "categories": [
-      "Finance",
-      "Investment Banking"
+      "Finance & Banking"
     ],
     "scrape": {
       "mode": "oraclecloud",
@@ -8325,8 +8746,8 @@
   {
     "name": "JetBlue Airways",
     "categories": [
-      "Interview Friendly",
-      "US / Remote"
+      "Transportation & Mobility",
+      "Travel & Hospitality"
     ],
     "scrape": {
       "mode": "successfactors",
@@ -8340,13 +8761,15 @@
       "locations": "",
       "process": "",
       "employment_type": ""
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "JFrog",
     "categories": [
-      "Developer Tools",
-      "DevOps"
+      "Developer Tools"
     ],
     "scrape": {
       "mode": "greenhouse",
@@ -8356,7 +8779,9 @@
   {
     "name": "JINGDONG",
     "categories": [
-      "Technology"
+      "Consumer Goods & Retail",
+      "E-commerce & Marketplace",
+      "Logistics & Supply Chain"
     ],
     "scrape": {
       "mode": "workday",
@@ -8380,9 +8805,9 @@
   {
     "name": "Johns Hopkins University",
     "categories": [
-      "Academia",
-      "Research",
-      "Healthcare & Biotech"
+      "Education & Academia",
+      "Healthcare & Biotech",
+      "Research"
     ],
     "scrape": {
       "mode": "html",
@@ -8404,8 +8829,7 @@
   {
     "name": "Johnson Controls",
     "categories": [
-      "Industrials",
-      "Manufacturing",
+      "Industrials & Manufacturing",
       "Smart Buildings"
     ],
     "scrape": {
@@ -8430,7 +8854,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Los Angeles, CA",
       "process": "Mini take-home project, phone interview, discussion on-site"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "JPMorgan Chase",
@@ -8449,7 +8876,10 @@
       "difficulty": "medium",
       "rounds": "3-4",
       "process": "Coding or technical screen, behavioral, and domain knowledge (finance/banking)."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Julius AI",
@@ -8488,7 +8918,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Tel Aviv, Israel",
       "process": "Phone screening to discuss technical background and past experience. Take-home assignment followed by on-site code review and interview. Cultural fit assessment"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Kaiser Permanente",
@@ -8513,7 +8946,8 @@
   {
     "name": "KBR",
     "categories": [
-      "Technology"
+      "Aerospace & Defense",
+      "Consulting"
     ],
     "scrape": {
       "mode": "workday",
@@ -8582,7 +9016,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Remote",
       "process": "Culture fit interview, take home assignmentv, discussion on-site, technical interview discussing past real world experiences as well as knowledge of tools that will be used for position"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "KKR",
@@ -8622,7 +9059,10 @@
       "no_whiteboard": true,
       "source": "YC hiring event",
       "source_url": "https://www.klarity.ai/careers"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Klaviyo",
@@ -8642,7 +9082,7 @@
   {
     "name": "Knock.com",
     "categories": [
-      "Real Estate",
+      "Real Estate & Construction",
       "Software & SaaS"
     ],
     "scrape": {
@@ -8655,7 +9095,10 @@
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
       "locations": "San Francisco, CA / New York, NY / Remote",
       "process": "Phone Interview, Take-home project, On-site technical conversation relating to the tech stack you would be hired to build with"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "KoBold Metals",
@@ -8682,8 +9125,8 @@
   {
     "name": "Kong",
     "categories": [
-      "Developer Tools",
-      "Cloud & Infrastructure"
+      "Cloud & Infrastructure",
+      "Developer Tools"
     ],
     "scrape": {
       "mode": "ashby",
@@ -8695,7 +9138,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "San Francisco, CA",
       "process": "Phone interview. Pairing and technical interviews. Take home assignment."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Kongregate",
@@ -8713,7 +9159,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Portland, OR",
       "process": "Phone screening. Take home project. On-site pairing and conversational technical interviews."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Krea AI",
@@ -8751,13 +9200,15 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Remote / Austin, TX",
       "process": "30-40 minute recruiter screen, 30 minute hiring manager screen, 1.5 hour final interview (discussion only, no coding or whiteboarding)."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Kustomer",
     "categories": [
-      "Software & SaaS",
-      "Customer Support"
+      "Software & SaaS"
     ],
     "scrape": {
       "mode": "ashby",
@@ -8795,7 +9246,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "New York, NY / Washington, DC / London, UK / Sydney, AU",
       "process": "First interview - Pairing interview using Codility. Final interviews that include a coding challenge."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Labcorp",
@@ -8861,7 +9315,10 @@
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
       "locations": "San Francisco, CA; New York, NY; Remote",
       "process": "Technical exercises based on work we do at Lattice, discussion of a new architecture to solve a real world problem"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "LaunchDarkly",
@@ -8879,7 +9336,10 @@
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
       "locations": "Oakland, CA",
       "process": "Informational phone screen with Eng leadership, take home project, onsite interviews"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Lear Corporation",
@@ -8908,7 +9368,7 @@
   {
     "name": "Lennar",
     "categories": [
-      "Consumer Goods & Retail"
+      "Real Estate & Construction"
     ],
     "scrape": {
       "mode": "workday",
@@ -8918,8 +9378,8 @@
   {
     "name": "Leverton",
     "categories": [
-      "Real Estate",
-      "AI & Machine Learning"
+      "AI & Machine Learning",
+      "Real Estate & Construction"
     ],
     "scrape": {
       "mode": "workday",
@@ -8931,7 +9391,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Berlin, Germany",
       "process": "Initial chat with the HR continued with 1-2 rounds chat with the team; followed by a technical test and finally a chat with the CTO/MD. [Jobs page](https://leverton-jobs.personio.de)"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Levi Strauss",
@@ -8949,7 +9412,8 @@
   {
     "name": "LG Ad Solutions",
     "categories": [
-      "Technology"
+      "Ad Tech & MarTech",
+      "Data & Analytics"
     ],
     "scrape": {
       "mode": "ashby",
@@ -8959,7 +9423,8 @@
   {
     "name": "Life Fitness",
     "categories": [
-      "Technology"
+      "Health & Fitness",
+      "Industrials & Manufacturing"
     ],
     "scrape": {
       "mode": "workday",
@@ -8980,7 +9445,8 @@
   {
     "name": "Lightfield",
     "categories": [
-      "Technology"
+      "AI & Machine Learning",
+      "Software & SaaS"
     ],
     "scrape": {
       "mode": "ashby",
@@ -9046,7 +9512,8 @@
   {
     "name": "Liquid",
     "categories": [
-      "Technology"
+      "Finance & Banking",
+      "Quant Trading"
     ],
     "scrape": {
       "mode": "ashby",
@@ -9066,8 +9533,8 @@
   {
     "name": "Live Nation",
     "categories": [
-      "Consumer Goods & Retail",
-      "Media & Entertainment"
+      "Media & Entertainment",
+      "Travel & Hospitality"
     ],
     "scrape": {
       "list_url": "https://livenation.wd503.myworkdayjobs.com/LNExternalSite",
@@ -9087,7 +9554,8 @@
   {
     "name": "LiveRamp",
     "categories": [
-      "Technology"
+      "Ad Tech & MarTech",
+      "Data & Analytics"
     ],
     "scrape": {
       "mode": "workday",
@@ -9122,7 +9590,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "San Francisco, CA",
       "process": "Initial phone screen followed by an on-site interview. Technical problems discussed during the interview are all simplified versions of problems we've had to solve in production. Our entire interview process and what we're looking for is described in our blog post [How We Interview Engineers](https://lob.com/blog/how-we-interview-engineers)."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Lockheed Martin",
@@ -9140,8 +9611,8 @@
   {
     "name": "Loom",
     "categories": [
-      "Software & SaaS",
-      "Consumer Tech"
+      "Consumer Tech",
+      "Software & SaaS"
     ],
     "scrape": {
       "mode": "html",
@@ -9154,7 +9625,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "San Francisco, CA",
       "process": "Google Hangouts resume dive on past experience, take-home project OR architectural phone screen, on-site interviews (2 technical architecture related to work, 1 or 2 non-technical)"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Lovable",
@@ -9179,8 +9653,8 @@
   {
     "name": "LPL Financial",
     "categories": [
-      "Interview Friendly",
-      "US / Remote"
+      "Finance & Banking",
+      "Investment & Asset Management"
     ],
     "scrape": {
       "mode": "workday",
@@ -9194,7 +9668,10 @@
       "locations": "",
       "process": "",
       "employment_type": ""
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Lucid Motors",
@@ -9279,7 +9756,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "San Francisco, CA / Seattle, WA / New York, NY / Minsk, Belarus / Mexico City, Mexico",
       "process": "On-site project, discussion of candidate's completed project afterwards"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Lyra Health",
@@ -9317,7 +9797,8 @@
   {
     "name": "Magna",
     "categories": [
-      "Technology"
+      "Automotive",
+      "Industrials & Manufacturing"
     ],
     "scrape": {
       "mode": "workday",
@@ -9338,7 +9819,7 @@
     "name": "Major League Soccer",
     "categories": [
       "Media & Entertainment",
-      "Consumer Goods & Retail"
+      "Sports"
     ],
     "scrape": {
       "mode": "icims",
@@ -9350,13 +9831,16 @@
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
       "locations": "New York, NY",
       "process": "Phone interview + short take home project, which is daily work focused. In person interview could involve discussing past projects or pair programming."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "MakeMusic",
     "categories": [
-      "Software & SaaS",
-      "Media & Entertainment"
+      "Media & Entertainment",
+      "Software & SaaS"
     ],
     "scrape": {
       "mode": "html",
@@ -9369,7 +9853,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Boulder, CO / Denver, CO",
       "process": "Phone screen, take home project, remote and on-site interviews for technical and cultural fit"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Man Group",
@@ -9385,7 +9872,8 @@
   {
     "name": "ManTech",
     "categories": [
-      "Defense & Government",
+      "Aerospace & Defense",
+      "Government",
       "IT Services"
     ],
     "scrape": {
@@ -9408,12 +9896,15 @@
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
       "locations": "San Francisco, CA; Washington, DC; Ayacucho, Peru; Bangalore, India; Berlin, Germany; Remote",
       "process": "Conversational interviews, paid onsite project with team."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Maple",
     "categories": [
-      "HealthTech",
+      "Healthcare & Biotech",
       "Software & SaaS"
     ],
     "scrape": {
@@ -9424,8 +9915,7 @@
   {
     "name": "Marathon Petroleum",
     "categories": [
-      "Interview Friendly",
-      "US / Remote"
+      "Energy"
     ],
     "scrape": {
       "mode": "workday",
@@ -9439,7 +9929,10 @@
       "locations": "",
       "process": "",
       "employment_type": ""
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "MarketAxess",
@@ -9458,8 +9951,7 @@
   {
     "name": "Marqeta",
     "categories": [
-      "Fintech",
-      "Payments"
+      "FinTech & Payments"
     ],
     "scrape": {
       "mode": "greenhouse",
@@ -9512,8 +10004,8 @@
   {
     "name": "Mastercard",
     "categories": [
-      "FinTech & Payments",
-      "Finance & Banking"
+      "Finance & Banking",
+      "FinTech & Payments"
     ],
     "scrape": {
       "mode": "workday",
@@ -9564,8 +10056,7 @@
   {
     "name": "Mattel",
     "categories": [
-      "Interview Friendly",
-      "US / Remote"
+      "Consumer Goods & Retail"
     ],
     "scrape": {
       "mode": "talentbrew",
@@ -9580,13 +10071,16 @@
       "locations": "",
       "process": "",
       "employment_type": ""
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Mattermost",
     "categories": [
-      "Software & SaaS",
-      "Developer Tools"
+      "Developer Tools",
+      "Software & SaaS"
     ],
     "scrape": {
       "mode": "greenhouse",
@@ -9598,7 +10092,10 @@
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
       "locations": "Remote",
       "process": "Follow-up questions over email, a couple of video calls, audition (paid real-world “try out” project), video call to discuss audtion, and then a video call with the CTO"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Maven",
@@ -9623,8 +10120,8 @@
   {
     "name": "Mavenlink",
     "categories": [
-      "Software & SaaS",
-      "Consulting"
+      "Consulting",
+      "Software & SaaS"
     ],
     "scrape": {
       "mode": "html",
@@ -9637,13 +10134,16 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "San Francisco, CA / Irvine, CA / Salt Lake City, UT",
       "process": "On-site pairing with multiple engineers. Pairing exercises and pairing on company code."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "McKesson",
     "categories": [
       "Healthcare & Biotech",
-      "Industrials & Manufacturing"
+      "Logistics & Supply Chain"
     ],
     "scrape": {
       "mode": "workday",
@@ -9679,7 +10179,8 @@
   {
     "name": "MedImpact",
     "categories": [
-      "Technology"
+      "Healthcare & Biotech",
+      "Insurance"
     ],
     "scrape": {
       "mode": "workday",
@@ -9720,7 +10221,7 @@
   {
     "name": "Menasha Corporation",
     "categories": [
-      "Technology"
+      "Industrials & Manufacturing"
     ],
     "scrape": {
       "mode": "workday",
@@ -9730,8 +10231,8 @@
   {
     "name": "Meow Wolf",
     "categories": [
-      "Consumer Goods & Retail",
-      "Media & Entertainment"
+      "Media & Entertainment",
+      "Travel & Hospitality"
     ],
     "scrape": {
       "list_url": "https://meowwolf.wd1.myworkdayjobs.com/MeowWolf",
@@ -9741,7 +10242,8 @@
   {
     "name": "Mercedes-Benz",
     "categories": [
-      "Technology"
+      "Automotive",
+      "Industrials & Manufacturing"
     ],
     "scrape": {
       "mode": "lever",
@@ -9783,7 +10285,8 @@
   {
     "name": "Meshy",
     "categories": [
-      "Technology"
+      "AI & Machine Learning",
+      "Software & SaaS"
     ],
     "scrape": {
       "mode": "ashby",
@@ -9793,8 +10296,7 @@
   {
     "name": "Meta",
     "categories": [
-      "Technology",
-      "AI",
+      "AI & Machine Learning",
       "Social Media"
     ],
     "scrape": {
@@ -9825,8 +10327,8 @@
   {
     "name": "MGM Resorts",
     "categories": [
-      "Consumer Goods & Retail",
-      "Media & Entertainment"
+      "Gaming",
+      "Travel & Hospitality"
     ],
     "scrape": {
       "mode": "workday",
@@ -9847,9 +10349,8 @@
   {
     "name": "Microsoft",
     "categories": [
-      "Technology",
-      "Cloud",
-      "AI"
+      "AI & Machine Learning",
+      "Cloud & Infrastructure"
     ],
     "scrape": {
       "mode": "playwright",
@@ -9866,7 +10367,7 @@
     "name": "Milk Makeup",
     "categories": [
       "Beauty",
-      "Retail"
+      "Consumer Goods & Retail"
     ],
     "scrape": {
       "mode": "lever",
@@ -9891,9 +10392,8 @@
       "Software & SaaS"
     ],
     "scrape": {
-      "mode": "html",
-      "list_url": "https://mintlify.com/careers",
-      "include": "mintlify.com"
+      "mode": "ashby",
+      "ashby_slug": "Mintlify"
     }
   },
   {
@@ -9928,16 +10428,15 @@
       "AI & Machine Learning"
     ],
     "scrape": {
-      "lever_slug": "mistral",
-      "mode": "lever"
+      "mode": "ashby",
+      "ashby_slug": "mistral.ai"
     }
   },
   {
     "name": "MIT",
     "categories": [
-      "Academia",
-      "Research",
-      "Technology"
+      "Education & Academia",
+      "Research"
     ],
     "scrape": {
       "mode": "html",
@@ -9953,8 +10452,8 @@
   {
     "name": "Mixmax",
     "categories": [
-      "Software & SaaS",
-      "Ad Tech & MarTech"
+      "Ad Tech & MarTech",
+      "Software & SaaS"
     ],
     "scrape": {
       "mode": "greenhouse",
@@ -9966,13 +10465,14 @@
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
       "locations": "San Francisco, CA",
       "process": "Takehome assignment purely based on their platform, followed by phone interview"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Mixpanel",
     "categories": [
-      "Cloud & Infrastructure",
-      "Consumer Goods & Retail",
       "Data & Analytics",
       "Software & SaaS"
     ],
@@ -10036,8 +10536,8 @@
   {
     "name": "Moloco",
     "categories": [
-      "AI & Machine Learning",
-      "Ad Tech & MarTech"
+      "Ad Tech & MarTech",
+      "AI & Machine Learning"
     ],
     "scrape": {
       "mode": "greenhouse",
@@ -10113,8 +10613,8 @@
   {
     "name": "Monzo",
     "categories": [
-      "FinTech & Payments",
-      "Finance & Banking"
+      "Finance & Banking",
+      "FinTech & Payments"
     ],
     "scrape": {
       "mode": "greenhouse",
@@ -10126,7 +10626,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "London, UK & Remote",
       "process": "Phone interview with another engineer. Take-home assignment. Call to debrief on take-home assignment. Half-day interview (on-site or Hangouts) with three conversational sessions: (1) building on take-home test & real-world system design (verbal and collaborative); (2) digging into knowledge & understanding in 1-2 other relevant technical areas; (3) general background, teams and ways of working."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Moody’s",
@@ -10217,15 +10720,18 @@
       "Software & SaaS"
     ],
     "scrape": {
-      "mode": "greenhouse",
-      "board_token": "moveworks"
+      "mode": "smartrecruiters",
+      "smartrecruiters_company": "ServiceNow",
+      "query_params": {
+        "q": "moveworks"
+      }
     }
   },
   {
     "name": "Mozilla",
     "categories": [
-      "Software & SaaS",
-      "Consumer Tech"
+      "Consumer Tech",
+      "Software & SaaS"
     ],
     "scrape": {
       "mode": "html",
@@ -10238,7 +10744,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "San Francisco, US / Portland, US / Toronta, CA / Vancouver, CA / Berlin, DE / Remote",
       "process": "Deep-dive discussions on technical and mentorship problems solved in the past. No live coding. Total of 3 rounds."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "MSCI",
@@ -10254,8 +10763,8 @@
   {
     "name": "MTA",
     "categories": [
-      "Transportation",
-      "Government"
+      "Government",
+      "Transportation & Mobility"
     ],
     "scrape": {
       "mode": "html",
@@ -10266,7 +10775,7 @@
   {
     "name": "Munters",
     "categories": [
-      "Technology"
+      "Industrials & Manufacturing"
     ],
     "scrape": {
       "mode": "workday",
@@ -10302,12 +10811,16 @@
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
       "locations": "San Francisco, CA; London, UK & Remote",
       "process": "Hands-on software engineer and system-design interviews that focus on collaboratively building practical applications at scale."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "N1",
     "categories": [
-      "Technology"
+      "Crypto",
+      "Software & SaaS"
     ],
     "scrape": {
       "mode": "ashby",
@@ -10337,7 +10850,8 @@
   {
     "name": "Nash",
     "categories": [
-      "Technology"
+      "Logistics & Supply Chain",
+      "Software & SaaS"
     ],
     "scrape": {
       "mode": "ashby",
@@ -10369,7 +10883,7 @@
   {
     "name": "Nationwide Children's Hospital",
     "categories": [
-      "Technology"
+      "Healthcare & Biotech"
     ],
     "scrape": {
       "mode": "workday",
@@ -10420,7 +10934,8 @@
   {
     "name": "Neighborly",
     "categories": [
-      "Technology"
+      "Consumer Tech",
+      "E-commerce & Marketplace"
     ],
     "scrape": {
       "mode": "workday",
@@ -10430,7 +10945,8 @@
   {
     "name": "Nelnet",
     "categories": [
-      "Technology"
+      "EdTech",
+      "Finance & Banking"
     ],
     "scrape": {
       "mode": "workday",
@@ -10460,7 +10976,10 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs / Hiring Without Whiteboards",
       "source_url": "https://www.no-wb.org/"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "NetApp",
@@ -10511,13 +11030,16 @@
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
       "locations": "Warsaw, Poland; Remote",
       "process": "Takehome exercise & pair programming session"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Netlify",
     "categories": [
-      "Developer Tools",
-      "Cloud & Infrastructure"
+      "Cloud & Infrastructure",
+      "Developer Tools"
     ],
     "scrape": {
       "mode": "greenhouse",
@@ -10529,7 +11051,10 @@
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
       "locations": "San Francisco, CA / Remote",
       "process": "Takehome project and online/onsite discussion"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Netskope",
@@ -10545,18 +11070,19 @@
   {
     "name": "Neuberger Berman",
     "categories": [
-      "Finance",
-      "Asset Management"
+      "Finance & Banking",
+      "Investment & Asset Management"
     ],
     "scrape": {
       "mode": "workday",
-      "list_url": "https://nb.wd1.myworkdayjobs.com/NB_External_Career_Site"
+      "list_url": "https://nb.wd1.myworkdayjobs.com/NBCareers"
     }
   },
   {
     "name": "Neuralink",
     "categories": [
-      "Technology"
+      "Healthcare & Biotech",
+      "Medical Devices"
     ],
     "scrape": {
       "mode": "greenhouse",
@@ -10589,13 +11115,16 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs / Hiring Without Whiteboards",
       "source_url": "https://www.no-wb.org/"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "New York University",
     "categories": [
-      "Interview Friendly",
-      "US / Remote"
+      "Education & Academia",
+      "Research"
     ],
     "scrape": {
       "mode": "icims",
@@ -10611,7 +11140,10 @@
       "locations": "",
       "process": "",
       "employment_type": ""
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Newfront",
@@ -10627,7 +11159,8 @@
   {
     "name": "NewsBreak",
     "categories": [
-      "Technology"
+      "Consumer Tech",
+      "Media & Entertainment"
     ],
     "scrape": {
       "mode": "greenhouse",
@@ -10637,8 +11170,8 @@
   {
     "name": "NewStore",
     "categories": [
-      "Software & SaaS",
-      "Consumer Goods & Retail"
+      "Consumer Goods & Retail",
+      "Software & SaaS"
     ],
     "scrape": {
       "mode": "html",
@@ -10651,7 +11184,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Berlin, Germany / Hannover, Germany / Erfurt, Germany / Boston, MA",
       "process": "Telephone technical interview, code sample submission or takeaway coding exercise, on-site pair programming, design session (1/2 day)"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Nextdoor",
@@ -10689,7 +11225,8 @@
   {
     "name": "Nightwing Intelligence Solutions",
     "categories": [
-      "Technology"
+      "Aerospace & Defense",
+      "Cybersecurity"
     ],
     "scrape": {
       "mode": "workday",
@@ -10730,8 +11267,8 @@
   {
     "name": "Nitro",
     "categories": [
-      "Software & SaaS",
-      "Developer Tools"
+      "Developer Tools",
+      "Software & SaaS"
     ],
     "scrape": {
       "mode": "html",
@@ -10744,7 +11281,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Dublin, Ireland / San Francisco, CA",
       "process": "Phone Call, Take Home Test, Hiring Manager Phone Interview followed by an onsite discussion"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Nokia",
@@ -10761,8 +11301,8 @@
   {
     "name": "Noom",
     "categories": [
-      "Healthcare & Biotech",
-      "Consumer"
+      "Consumer Tech",
+      "Healthcare & Biotech"
     ],
     "scrape": {
       "mode": "greenhouse",
@@ -10797,7 +11337,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "San Francisco, CA",
       "process": "Take-home exercise & pair programming session"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Norfolk Southern",
@@ -10826,8 +11369,8 @@
   {
     "name": "Northeastern University",
     "categories": [
-      "Interview Friendly",
-      "US / Remote"
+      "Education & Academia",
+      "Research"
     ],
     "scrape": {
       "mode": "workday",
@@ -10841,7 +11384,10 @@
       "locations": "",
       "process": "",
       "employment_type": ""
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Northern Trust",
@@ -10879,7 +11425,7 @@
   {
     "name": "Northwestern University",
     "categories": [
-      "Academia",
+      "Education & Academia",
       "Research"
     ],
     "scrape": {
@@ -10919,7 +11465,8 @@
   {
     "name": "NOV",
     "categories": [
-      "Technology"
+      "Energy",
+      "Industrials & Manufacturing"
     ],
     "scrape": {
       "mode": "oraclecloud",
@@ -10930,8 +11477,8 @@
   {
     "name": "Nova Credit",
     "categories": [
-      "FinTech & Payments",
-      "Finance & Banking"
+      "Finance & Banking",
+      "FinTech & Payments"
     ],
     "scrape": {
       "mode": "greenhouse",
@@ -10943,7 +11490,10 @@
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
       "locations": "San Francisco, CA",
       "process": "Choose between a take home assignment or two interviews on CoderPad, CodePen, or your local dev env while screensharing. Final round is onsite working on a small project"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "NRG Energy",
@@ -10972,8 +11522,8 @@
   {
     "name": "Nubank",
     "categories": [
-      "FinTech & Payments",
-      "Finance & Banking"
+      "Finance & Banking",
+      "FinTech & Payments"
     ],
     "scrape": {
       "mode": "greenhouse",
@@ -10986,7 +11536,8 @@
   {
     "name": "Nuclear Promise X",
     "categories": [
-      "Technology"
+      "Consulting",
+      "Energy"
     ],
     "scrape": {
       "mode": "ashby",
@@ -11029,7 +11580,10 @@
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
       "locations": "San Francisco, CA; Remote",
       "process": "Phone screen with recruiter and/or hiring manager, tech assessment with multiple options (full take home, partial take home, no take home), and then virtual on-site with a pair coding session, peer review of a technical document, architecture design, and exec loop"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Nutanix",
@@ -11045,7 +11599,8 @@
   {
     "name": "NVE Experience Agency",
     "categories": [
-      "Consumer Goods & Retail"
+      "Ad Tech & MarTech",
+      "Consulting"
     ],
     "scrape": {
       "board_token": "nve",
@@ -11084,7 +11639,7 @@
   {
     "name": "NYU Langone",
     "categories": [
-      "Health Care"
+      "Healthcare & Biotech"
     ],
     "scrape": {
       "mode": "html",
@@ -11109,7 +11664,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Sebastopol, CA / Boston, MA / Remote",
       "process": "Phone conversation, take-home exercise or pair programming session, team interview, all via Google Hangout"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Observe",
@@ -11149,13 +11707,17 @@
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
       "locations": "London, UK; Sydney, Australia; Remote",
       "process": "Take-home exercise and phone or on-site interview/discussion with potential team"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Odeko",
     "categories": [
-      "Consumer Goods & Retail",
-      "Industrials & Manufacturing"
+      "Food & Beverage",
+      "Logistics & Supply Chain",
+      "Software & SaaS"
     ],
     "scrape": {
       "mode": "greenhouse",
@@ -11167,12 +11729,16 @@
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
       "locations": "Remote; New York, NY; Dublin, IE",
       "process": "Take-home project (2 hours) related to role, follow-up technical interview where you discuss your project implementation (may perform pair-programming session instead of technical interview)."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "OfferUp",
     "categories": [
-      "Technology"
+      "Consumer Tech",
+      "E-commerce & Marketplace"
     ],
     "scrape": {
       "mode": "greenhouse",
@@ -11182,8 +11748,8 @@
   {
     "name": "Ohio State University",
     "categories": [
-      "Interview Friendly",
-      "US / Remote"
+      "Education & Academia",
+      "Research"
     ],
     "scrape": {
       "mode": "workday",
@@ -11197,12 +11763,15 @@
       "locations": "",
       "process": "",
       "employment_type": ""
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Oklahoma State Government",
     "categories": [
-      "Technology"
+      "Government"
     ],
     "scrape": {
       "mode": "workday",
@@ -11266,7 +11835,10 @@
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
       "locations": "San Francisco, CA",
       "process": "Take home exercise and/or pair programming session."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Omni",
@@ -11294,13 +11866,16 @@
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
       "locations": "Chicago, IL; Remote",
       "process": "Take-home exercise and on-site interview/discussion with potential team"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "OneSignal",
     "categories": [
-      "Developer Tools",
-      "Ad Tech & MarTech"
+      "Ad Tech & MarTech",
+      "Developer Tools"
     ],
     "scrape": {
       "mode": "html",
@@ -11313,7 +11888,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "San Mateo, CA",
       "process": "Intro call with recruiting, second conversation with OneSignal engineer, onsite pairing via screenshare"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "OpenAI",
@@ -11336,7 +11914,7 @@
   {
     "name": "Opendoor",
     "categories": [
-      "Real Estate",
+      "Real Estate & Construction",
       "Software & SaaS"
     ],
     "scrape": {
@@ -11495,15 +12073,17 @@
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
       "locations": "New York, NY; Remote",
       "process": "Short phone interview, conversational interviews, take-home exercise & discussion"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "PagerDuty",
     "categories": [
-      "Consumer Goods & Retail",
-      "Data & Analytics",
+      "Cloud & Infrastructure",
       "Developer Tools",
-      "Industrials & Manufacturing"
+      "Software & SaaS"
     ],
     "scrape": {
       "mode": "greenhouse",
@@ -11515,7 +12095,10 @@
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
       "locations": "San Francisco, CA / Toronto, Canada / Atlanta, GA",
       "process": "Zoom / on-site pair programming and tasks"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Palantir",
@@ -11661,7 +12244,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Durham, NC / Raleigh, NC / Chapel Hill, NC / Remote",
       "process": "3 conversational interviews (Manager, Team, Founder). No homework. We look for a candidate to be \"culture add\" instead of \"culture fit\""
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Patreon",
@@ -11690,8 +12276,8 @@
   {
     "name": "PayPal",
     "categories": [
-      "FinTech & Payments",
-      "Finance & Banking"
+      "Finance & Banking",
+      "FinTech & Payments"
     ],
     "scrape": {
       "mode": "workday",
@@ -11711,8 +12297,10 @@
       "FinTech & Payments"
     ],
     "scrape": {
-      "mode": "greenhouse",
-      "board_token": "paystack"
+      "mode": "html",
+      "list_url": "https://careers.paystack.com/jobs",
+      "include": "careers.paystack.com/jobs/",
+      "require_job_path": true
     }
   },
   {
@@ -11740,8 +12328,8 @@
   {
     "name": "Peaksware Companies (TrainingPeaks, TrainHeroic, MakeMusic)",
     "categories": [
-      "Software & SaaS",
-      "Consumer Tech"
+      "Consumer Tech",
+      "Software & SaaS"
     ],
     "scrape": {
       "mode": "html",
@@ -11754,22 +12342,28 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Boulder, CO / Denver, CO",
       "process": "Phone screen, take home project, remote and on-site interviews for technical and cultural fit"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Pearson",
     "categories": [
-      "Education"
+      "Education & Academia"
     ],
     "scrape": {
-      "mode": "workday",
-      "list_url": "https://pearson.wd3.myworkdayjobs.com/PearsonJobs"
+      "mode": "oraclecloud",
+      "list_url": "https://hccz.fa.em3.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_2/jobs",
+      "site": "CX_2"
     }
   },
   {
     "name": "Pebl",
     "categories": [
-      "Technology"
+      "FinTech & Payments",
+      "HR Tech",
+      "Software & SaaS"
     ],
     "scrape": {
       "mode": "ashby",
@@ -11790,8 +12384,8 @@
   {
     "name": "Penn State",
     "categories": [
-      "Interview Friendly",
-      "US / Remote"
+      "Education & Academia",
+      "Research"
     ],
     "scrape": {
       "mode": "workday",
@@ -11805,7 +12399,10 @@
       "locations": "",
       "process": "",
       "employment_type": ""
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Pentair",
@@ -11841,7 +12438,8 @@
   {
     "name": "Periodic Labs",
     "categories": [
-      "Technology"
+      "AI & Machine Learning",
+      "Research"
     ],
     "scrape": {
       "mode": "ashby",
@@ -11851,7 +12449,7 @@
   {
     "name": "PermitFlow",
     "categories": [
-      "Construction & Real Estate"
+      "Real Estate & Construction"
     ],
     "scrape": {
       "mode": "ashby",
@@ -11882,8 +12480,8 @@
   {
     "name": "Persado",
     "categories": [
-      "AI & Machine Learning",
-      "Ad Tech & MarTech"
+      "Ad Tech & MarTech",
+      "AI & Machine Learning"
     ],
     "scrape": {
       "mode": "workable",
@@ -11895,7 +12493,10 @@
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
       "locations": "New York, NY",
       "process": "Phone screen, take home project, remote meeting with team member to discuss the project, remote meeting with team manager to discuss role and go over statistical concepts relevant to the role"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Persona",
@@ -11912,7 +12513,10 @@
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
       "locations": "San Francisco, CA",
       "process": "Tech interview (technical background and experiences), pair programming, and culture fit"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Pex",
@@ -11931,7 +12535,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Los Angeles, CA / Remote",
       "process": "3 sessions: brief phone conversation (30 min); take home assignment (2 hours); on-site or video discussion without any coding (2 hours)"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Pfizer",
@@ -11970,7 +12577,10 @@
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
       "locations": "San Francisco, CA; Cambridge, MA",
       "process": "Initial screen with deep-dive into one of your recent projects (30 mins) ; take-home coding exercise tailored your skills (4 hours); on-site with take-home code review, architecture interview, design interview and \"soft skills\" interview (4 hours)"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Photoroom",
@@ -12003,8 +12613,8 @@
   {
     "name": "Pie Insurance",
     "categories": [
-      "Insurance",
-      "FinTech & Payments"
+      "FinTech & Payments",
+      "Insurance"
     ],
     "scrape": {
       "mode": "html",
@@ -12017,7 +12627,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Denver, CO / Washington, D.C. / Remote",
       "process": "Phone; remote technical screen paired with another engineer; remote multi-round interview to demonstrate basic backend/frontend skills (no bizarre Leetcode questions), behavioral/culture fit, design skills"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Pika",
@@ -12051,14 +12664,17 @@
       "Healthcare & Biotech"
     ],
     "scrape": {
-      "mode": "greenhouse",
-      "board_token": "pineparkhealth"
+      "mode": "rippling",
+      "list_url": "https://ats.rippling.com/pineparkhealth/jobs"
     },
     "interview": {
       "no_whiteboard": true,
       "source": "YC recent SWE jobs",
       "source_url": "https://www.pineparkhealth.com/careers"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Pinecone",
@@ -12073,7 +12689,8 @@
   {
     "name": "Ping Identity",
     "categories": [
-      "Technology"
+      "Cybersecurity",
+      "Software & SaaS"
     ],
     "scrape": {
       "mode": "greenhouse",
@@ -12083,7 +12700,8 @@
   {
     "name": "PingWind",
     "categories": [
-      "Technology"
+      "Government",
+      "IT Services"
     ],
     "scrape": {
       "mode": "lever",
@@ -12124,7 +12742,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Remote / Bristol, UK / Austin, TX / Singapore, Singapore",
       "process": "Initial and quick screening with recruiters from hr department, remote general technical discussion with tech lead and team members, take home assessment (choose between Java and/or Golang), remote pair programming."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Plaid",
@@ -12167,7 +12788,10 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs / Hiring Without Whiteboards",
       "source_url": "https://www.no-wb.org/"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Pleo",
@@ -12184,7 +12808,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Remote, Copenhagen / Denmark / London, UK / Berlin, Germany / Stockholm, Sweden / Madrid, Spain",
       "process": "Intro interview (30m-45m), take home assignment, interview with discussion on the assignment + technical questions with the team (90m) and interview with managers (60m)."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "PlusAI",
@@ -12209,7 +12836,8 @@
   {
     "name": "Podium",
     "categories": [
-      "Technology"
+      "Ad Tech & MarTech",
+      "Software & SaaS"
     ],
     "scrape": {
       "mode": "greenhouse",
@@ -12244,7 +12872,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Remote",
       "process": "Introduction call, 1 hour take home technical assessment, pairing session with Designer and Engineer to enhance technical challenge submission, Meeting with CTO and hiring manager."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Polymarket",
@@ -12293,7 +12924,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Remote",
       "process": "Video calls with recruiter then engineering management, take home project, video call for code review with engineering lead"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "PostHog",
@@ -12347,8 +12981,8 @@
   {
     "name": "Princeton University",
     "categories": [
-      "Interview Friendly",
-      "US / Remote"
+      "Education & Academia",
+      "Research"
     ],
     "scrape": {
       "mode": "icims",
@@ -12364,12 +12998,15 @@
       "locations": "",
       "process": "",
       "employment_type": ""
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Principal Financial Group",
     "categories": [
-      "Finance",
+      "Finance & Banking",
       "Insurance"
     ],
     "scrape": {
@@ -12392,20 +13029,28 @@
   {
     "name": "Progressive Insurance",
     "categories": [
-      "Insurance",
-      "Finance"
+      "Finance & Banking",
+      "Insurance"
     ],
     "scrape": {
       "mode": "playwright",
-      "list_url": "https://careers.progressive.com/search/",
-      "include": "careers.progressive.com/job"
+      "list_url": "https://careers.progressive.com/search/jobs/",
+      "include": "careers.progressive.com/jobs/",
+      "reader_only": true,
+      "reader_paginate": true,
+      "pagination": {
+        "type": "query_page",
+        "param": "page",
+        "start": 1,
+        "hard_max_pages": 20
+      }
     }
   },
   {
     "name": "Prokeep",
     "categories": [
-      "Software & SaaS",
-      "Industrials & Manufacturing"
+      "Industrials & Manufacturing",
+      "Software & SaaS"
     ],
     "scrape": {
       "mode": "ashby",
@@ -12417,12 +13062,15 @@
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
       "locations": "Remote",
       "process": "Take-home project, informal chat with managers."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Prologis",
     "categories": [
-      "Real Estate"
+      "Real Estate & Construction"
     ],
     "scrape": {
       "mode": "workday",
@@ -12477,8 +13125,8 @@
   {
     "name": "Publix Super Markets",
     "categories": [
-      "Interview Friendly",
-      "US / Remote"
+      "Consumer Goods & Retail",
+      "Food & Beverage"
     ],
     "scrape": {
       "mode": "talentbrew",
@@ -12493,7 +13141,10 @@
       "locations": "",
       "process": "",
       "employment_type": ""
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Pulley",
@@ -12508,7 +13159,7 @@
   {
     "name": "PulteGroup",
     "categories": [
-      "Consumer Goods & Retail"
+      "Real Estate & Construction"
     ],
     "scrape": {
       "mode": "workday",
@@ -12532,9 +13183,8 @@
   {
     "name": "Purdue University",
     "categories": [
-      "Academia",
-      "Research",
-      "Engineering"
+      "Education & Academia",
+      "Research"
     ],
     "scrape": {
       "mode": "successfactors",
@@ -12575,8 +13225,8 @@
   {
     "name": "Qonto",
     "categories": [
-      "FinTech & Payments",
-      "Finance & Banking"
+      "Finance & Banking",
+      "FinTech & Payments"
     ],
     "scrape": {
       "mode": "lever",
@@ -12588,12 +13238,16 @@
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
       "locations": "Paris, France / Berlin, Germany / Milan, Italy / Barcelona, Spain / Belgrade, Serbia / Remote",
       "process": "Take-home project, code review and discussions with our engineers."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Quadric",
     "categories": [
-      "Technology"
+      "AI & Machine Learning",
+      "Semiconductors & Hardware"
     ],
     "scrape": {
       "mode": "workable",
@@ -12631,7 +13285,8 @@
   {
     "name": "QuEra Computing",
     "categories": [
-      "Technology"
+      "Research",
+      "Semiconductors & Hardware"
     ],
     "scrape": {
       "mode": "greenhouse",
@@ -12653,8 +13308,8 @@
   {
     "name": "QuikTrip",
     "categories": [
-      "Interview Friendly",
-      "US / Remote"
+      "Consumer Goods & Retail",
+      "Food & Beverage"
     ],
     "scrape": {
       "mode": "html",
@@ -12669,7 +13324,10 @@
       "locations": "",
       "process": "",
       "employment_type": ""
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Quora",
@@ -12719,7 +13377,10 @@
       "no_whiteboard": true,
       "source": "Developer tools/startup",
       "source_url": "https://railway.com/careers"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Rainmaker",
@@ -12734,7 +13395,7 @@
   {
     "name": "Ralliant",
     "categories": [
-      "Technology"
+      "Industrials & Manufacturing"
     ],
     "scrape": {
       "mode": "oraclecloud",
@@ -12745,7 +13406,7 @@
   {
     "name": "Ralph Lauren",
     "categories": [
-      "Retail",
+      "Consumer Goods & Retail",
       "Fashion"
     ],
     "scrape": {
@@ -12768,7 +13429,10 @@
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
       "locations": "New York, NY",
       "process": "Phone interview on a basic applied problem, followed by 2-3 onsite programming interviews that test practical day-to-day software skills."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Rapid7",
@@ -12784,8 +13448,8 @@
   {
     "name": "Raymond James",
     "categories": [
-      "Finance",
-      "Wealth Management"
+      "Finance & Banking",
+      "Investment & Asset Management"
     ],
     "scrape": {
       "mode": "workday",
@@ -12829,12 +13493,17 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "New York, NY / Amsterdam, The Netherlands / Helsinki, Finland / Tokyo, Japan",
       "process": "Discussion, work samples from previous projects (work or hobby), take-home exercise if needed for further info"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Realm",
     "categories": [
-      "Technology"
+      "AI & Machine Learning",
+      "Mining",
+      "Software & SaaS"
     ],
     "scrape": {
       "mode": "ashby",
@@ -12844,7 +13513,7 @@
   {
     "name": "Realync",
     "categories": [
-      "Real Estate",
+      "Real Estate & Construction",
       "Software & SaaS"
     ],
     "scrape": {
@@ -12858,13 +13527,16 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Chicago, IL / Carmel, IN / Remote",
       "process": "Quick phone interview, then a take home project and finally in person interview (open discussions instead of quizzes - anything technical are real-world problems)."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Recorded Future",
     "categories": [
-      "Cybersecurity",
-      "AI"
+      "AI & Machine Learning",
+      "Cybersecurity"
     ],
     "scrape": {
       "mode": "greenhouse",
@@ -12898,7 +13570,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "New York City, USA",
       "process": "A rather educational week long hacking challenge with a monetary reward upon finding solution. On-site with team members, real job related problems, a few open-ended questions."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Red Hat",
@@ -12943,7 +13618,8 @@
   {
     "name": "Redfin",
     "categories": [
-      "Consumer Goods & Retail"
+      "E-commerce & Marketplace",
+      "Real Estate & Construction"
     ],
     "scrape": {
       "mode": "html",
@@ -12992,7 +13668,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "San Francisco, CA / Bengaluru, India",
       "process": "A short take home project/assignment, followed by a couple of technical and non-technical discussions online and offline."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Regeneron",
@@ -13017,8 +13696,7 @@
   {
     "name": "REI",
     "categories": [
-      "Interview Friendly",
-      "US / Remote"
+      "Consumer Goods & Retail"
     ],
     "scrape": {
       "mode": "html",
@@ -13033,7 +13711,10 @@
       "locations": "",
       "process": "",
       "employment_type": ""
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Reka AI",
@@ -13060,12 +13741,16 @@
       "no_whiteboard": true,
       "source": "Wellfound active startups",
       "source_url": "https://www.relativityspace.com/careers"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "RELX",
     "categories": [
-      "Technology"
+      "Data & Analytics",
+      "Media & Entertainment"
     ],
     "scrape": {
       "mode": "workday",
@@ -13096,7 +13781,10 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs / Hiring Without Whiteboards",
       "source_url": "https://www.no-wb.org/"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Renaissance Technologies",
@@ -13105,12 +13793,9 @@
       "Investment & Asset Management"
     ],
     "scrape": {
-      "mode": "playwright",
+      "mode": "html",
       "list_url": "https://www.rentec.com/Careers.action?jobs=true",
-      "prefix": "https://www.rentec.com/Careers.action?jobs=true&selectedPosition=",
-      "include": "selectedPosition=",
-      "validate_prefix": false,
-      "require_id": false
+      "include": "selectedPosition="
     },
     "interview": {
       "no_whiteboard": false,
@@ -13118,11 +13803,6 @@
       "rounds": "3-4",
       "process": "Heavy mathematics and statistics. Very selective. Favours PhDs and strong quantitative backgrounds.",
       "source": "Public knowledge"
-    },
-    "scan_enabled": false,
-    "policy": {
-      "message": "Renaissance Technologies's careers page requires browser automation to access and may conflict with their Terms of Service.",
-      "careers_url": "https://www.rentec.com/Careers.action"
     }
   },
   {
@@ -13140,7 +13820,10 @@
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
       "locations": "San Francisco, CA; Remote",
       "process": "Phone screen followed by an onsite project based on our day-to-day, real world challenges."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Replicate",
@@ -13167,7 +13850,8 @@
   {
     "name": "Reply",
     "categories": [
-      "Technology"
+      "Consulting",
+      "IT Services"
     ],
     "scrape": {
       "mode": "lever",
@@ -13227,8 +13911,8 @@
   {
     "name": "ReviewTrackers",
     "categories": [
-      "Software & SaaS",
-      "Ad Tech & MarTech"
+      "Ad Tech & MarTech",
+      "Software & SaaS"
     ],
     "scrape": {
       "mode": "html",
@@ -13241,13 +13925,16 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Remote / Chicago, IL",
       "process": "Phone conversation, take home project, virtual interview with project review and live coding, discussion with engineers and product, interview with VP of Engineering"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "rEvolution",
     "categories": [
-      "Consumer Goods & Retail",
-      "Developer Tools"
+      "Ad Tech & MarTech",
+      "Consulting"
     ],
     "scrape": {
       "bamboohr_slug": "revolutionmarketing",
@@ -13257,7 +13944,8 @@
   {
     "name": "Rho",
     "categories": [
-      "Technology"
+      "FinTech & Payments",
+      "Software & SaaS"
     ],
     "scrape": {
       "mode": "ashby",
@@ -13267,8 +13955,8 @@
   {
     "name": "Rice University",
     "categories": [
-      "Interview Friendly",
-      "US / Remote"
+      "Education & Academia",
+      "Research"
     ],
     "scrape": {
       "mode": "oraclecloud",
@@ -13283,7 +13971,10 @@
       "locations": "",
       "process": "",
       "employment_type": ""
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Rigetti Computing",
@@ -13355,6 +14046,10 @@
     "scrape": {
       "mode": "rippling",
       "list_url": "https://www.rippling.com/careers/open-roles",
+      "algolia_app_id": "6FNAX3TBEF",
+      "algolia_search_key": "416caa4690f002ff6fe4a2097623640b",
+      "algolia_index": "careers_en-US_production",
+      "algolia_hits_per_page": 1000,
       "fetch_experience_details": true,
       "max_desc_details": 250
     }
@@ -13392,8 +14087,8 @@
   {
     "name": "Robinhood",
     "categories": [
-      "FinTech & Payments",
-      "Finance & Banking"
+      "Finance & Banking",
+      "FinTech & Payments"
     ],
     "scrape": {
       "mode": "greenhouse",
@@ -13460,7 +14155,8 @@
   {
     "name": "Rokt",
     "categories": [
-      "Technology"
+      "Ad Tech & MarTech",
+      "E-commerce & Marketplace"
     ],
     "scrape": {
       "mode": "workable",
@@ -13546,8 +14242,8 @@
       "Cloud & Infrastructure"
     ],
     "scrape": {
-      "board_token": "runpod",
-      "mode": "greenhouse"
+      "mode": "ashby",
+      "ashby_slug": "runpod"
     }
   },
   {
@@ -13563,8 +14259,8 @@
   {
     "name": "Ryder System",
     "categories": [
-      "Logistics",
-      "Transportation"
+      "Logistics & Supply Chain",
+      "Transportation & Mobility"
     ],
     "scrape": {
       "mode": "workday",
@@ -13598,7 +14294,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "San Francisco, CA",
       "process": "Take-home project, then an on-site or remote interview with a review, pair programming, and culture fit discussions"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Sahaj Software",
@@ -13617,12 +14316,16 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Bangalore, India / Chennai, India / Pune, India / Melbourne, Australia / London, UK / San Jose, CA",
       "process": "Take home code + Pairing + Discussion"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "SAIC",
     "categories": [
-      "Defense & Government",
+      "Aerospace & Defense",
+      "Government",
       "IT Services"
     ],
     "scrape": {
@@ -13671,8 +14374,8 @@
   {
     "name": "Sakari",
     "categories": [
-      "Software & SaaS",
-      "Ad Tech & MarTech"
+      "Ad Tech & MarTech",
+      "Software & SaaS"
     ],
     "scrape": {
       "mode": "html",
@@ -13685,7 +14388,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "San Francisco, CA",
       "process": "Phone screen, programming assignment related to Sakari business (communications) with pair programming element, team and culture fit"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Salesforce",
@@ -13717,7 +14423,10 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs / Hiring Without Whiteboards",
       "source_url": "https://www.no-wb.org/"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "SambaNova Systems",
@@ -13774,7 +14483,7 @@
   {
     "name": "Sandisk",
     "categories": [
-      "Technology"
+      "Semiconductors & Hardware"
     ],
     "scrape": {
       "mode": "smartrecruiters",
@@ -13784,7 +14493,7 @@
   {
     "name": "Sandvik",
     "categories": [
-      "Technology"
+      "Industrials & Manufacturing"
     ],
     "scrape": {
       "mode": "workday",
@@ -13856,8 +14565,7 @@
     "name": "Scale AI",
     "categories": [
       "AI & Machine Learning",
-      "Consumer Goods & Retail",
-      "Industrials & Manufacturing",
+      "Data & Analytics",
       "Software & SaaS"
     ],
     "scrape": {
@@ -13946,7 +14654,10 @@
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
       "locations": "Remote",
       "process": "Technical challenges based on real world problems"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Semgrep",
@@ -13975,8 +14686,8 @@
   {
     "name": "Sensor Tower",
     "categories": [
-      "Data & Analytics",
-      "Ad Tech & MarTech"
+      "Ad Tech & MarTech",
+      "Data & Analytics"
     ],
     "scrape": {
       "mode": "html",
@@ -13989,12 +14700,16 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "San Francisco, CA",
       "process": "Phone call, on-site interview including discussion about projects/skills and a short real-world programming challenge"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "SentiLink",
     "categories": [
-      "Technology"
+      "Cybersecurity",
+      "FinTech & Payments"
     ],
     "scrape": {
       "mode": "ashby",
@@ -14041,12 +14756,15 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Austin, TX / Remote",
       "process": "Skype core value and culture interview, review of contributions on GitHub or other platforms, and take-home project if online contributions are not enough."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Serve Robotics",
     "categories": [
-      "Robotics"
+      "Robotics & Automation"
     ],
     "scrape": {
       "mode": "ashby",
@@ -14073,7 +14791,8 @@
   {
     "name": "SHEIN",
     "categories": [
-      "Technology"
+      "E-commerce & Marketplace",
+      "Fashion"
     ],
     "scrape": {
       "mode": "oraclecloud",
@@ -14095,7 +14814,7 @@
     "name": "Sherwin-Williams",
     "categories": [
       "Consumer Goods & Retail",
-      "Manufacturing"
+      "Industrials & Manufacturing"
     ],
     "scrape": {
       "mode": "oraclecloud",
@@ -14105,8 +14824,8 @@
   {
     "name": "Shield AI",
     "categories": [
-      "AI & Machine Learning",
       "Aerospace & Defense",
+      "AI & Machine Learning",
       "Robotics & Automation"
     ],
     "scrape": {
@@ -14128,8 +14847,8 @@
   {
     "name": "Shogun",
     "categories": [
-      "Software & SaaS",
-      "E-commerce & Marketplace"
+      "E-commerce & Marketplace",
+      "Software & SaaS"
     ],
     "scrape": {
       "mode": "html",
@@ -14142,7 +14861,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Remote",
       "process": "Discussion about software development and past experience, code samples, paid trial period."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Shopify",
@@ -14173,9 +14895,8 @@
       "Software & SaaS"
     ],
     "scrape": {
-      "mode": "html",
-      "list_url": "https://shortcut.com/careers",
-      "include": "shortcut.com"
+      "mode": "bamboohr",
+      "bamboohr_slug": "shortcut"
     },
     "interview": {
       "no_whiteboard": true,
@@ -14183,7 +14904,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "New York, NY & Remote",
       "process": "Phone interview, followed by onsite discussions and pair programming"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Siemens",
@@ -14271,7 +14995,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "London, UK",
       "process": "Phone screen; take home code exercise; on-site code extension with pair programming and discussion"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "SigNoz",
@@ -14289,7 +15016,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Bangalore, India / Remote",
       "process": "Intro round to explore interests, 1-2 Technical interviews that resembles a problem SigNoz solves for, then product round to discuss on industry and problems which SigNoz is solving."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Sila Nanotechnologies",
@@ -14316,7 +15046,10 @@
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
       "locations": "London, UK / Remote",
       "process": "Three stage, one day interview with quick feedback. One of the stages is 1.5h pair-programming session, where interviewee is assigned a task and interviewing developer plays role of Product Owner."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "SingleStore",
@@ -14372,13 +15105,16 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Remote",
       "process": "Screening call to determine general interest, 1.5 hour pair programming exercise based on realistic scenario, EQ interview."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Slack",
     "categories": [
-      "Software & SaaS",
-      "Developer Tools"
+      "Developer Tools",
+      "Software & SaaS"
     ],
     "scrape": {
       "mode": "workday",
@@ -14390,14 +15126,16 @@
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
       "locations": "San Francisco, CA",
       "process": "Call with recruiter, 1 week take-home project, call with hiring manager, on-site interview covering high-level system design, best software development practices and culture-fit"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "SmartAsset",
     "categories": [
-      "Consumer Goods & Retail",
-      "FinTech & Payments",
-      "Finance & Banking"
+      "Finance & Banking",
+      "FinTech & Payments"
     ],
     "scrape": {
       "mode": "greenhouse",
@@ -14554,7 +15292,10 @@
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
       "locations": "San Francisco, CA & Remote",
       "process": "Tailored to the candidate, often consists of take-home work, discussion of real-world eng challenges, and product familiarity."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Southern Company",
@@ -14572,8 +15313,8 @@
   {
     "name": "Southwest Airlines",
     "categories": [
-      "Interview Friendly",
-      "US / Remote"
+      "Transportation & Mobility",
+      "Travel & Hospitality"
     ],
     "scrape": {
       "mode": "workday",
@@ -14587,7 +15328,10 @@
       "locations": "",
       "process": "",
       "employment_type": ""
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "SpaceX",
@@ -14669,7 +15413,10 @@
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
       "locations": "New York, NY; Remote",
       "process": "Call with recruiter, 4 hr take-home project, video interview w two engs on take-home exercise, video call with hiring manager, video call w VPE & principal eng to talk about architecture."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Spotify",
@@ -14686,8 +15433,8 @@
   {
     "name": "Spreedly",
     "categories": [
-      "FinTech & Payments",
-      "Developer Tools"
+      "Developer Tools",
+      "FinTech & Payments"
     ],
     "scrape": {
       "mode": "lever",
@@ -14699,7 +15446,10 @@
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
       "locations": "Durham, NC",
       "process": "Take-home project [related to business](https://engineering.spreedly.com/blog/programming-puzzles-are-not-the-answer-how-spreedly-does-work-samples.html)"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Sprinklr",
@@ -14778,18 +15528,20 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "London, UK / New York, US / Trivandrum, India / Remote",
       "process": "Real-world take-home project, video interviews with HR and the engineering team."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Stanford University",
     "categories": [
-      "Interview Friendly",
-      "US / Remote"
+      "Education & Academia",
+      "Research"
     ],
     "scrape": {
-      "mode": "html",
-      "list_url": "https://careersearch.stanford.edu/jobs/search",
-      "include": "careersearch.stanford.edu"
+      "mode": "oraclecloud",
+      "list_url": "https://careersearch.stanford.edu/hcmUI/CandidateExperience/en/sites/stanford/jobs"
     },
     "interview": {
       "no_whiteboard": true,
@@ -14799,7 +15551,10 @@
       "locations": "",
       "process": "",
       "employment_type": ""
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Starburst",
@@ -14828,7 +15583,10 @@
       "no_whiteboard": true,
       "source": "YC startup",
       "source_url": "https://www.starcloud.com/careers"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "State Farm",
@@ -14837,8 +15595,11 @@
       "Insurance"
     ],
     "scrape": {
-      "mode": "talentbrew",
-      "list_url": "https://jobs.statefarm.com/main/jobs"
+      "mode": "playwright",
+      "list_url": "https://jobs.statefarm.com/main/jobs",
+      "include": "jobs.statefarm.com/main/jobs/",
+      "scroll_rounds": 12,
+      "validate_prefix": false
     }
   },
   {
@@ -14874,7 +15635,7 @@
   {
     "name": "Stitch Fix",
     "categories": [
-      "E-commerce",
+      "E-commerce & Marketplace",
       "Fashion"
     ],
     "scrape": {
@@ -14885,8 +15646,7 @@
   {
     "name": "StockX",
     "categories": [
-      "E-commerce",
-      "Marketplace"
+      "E-commerce & Marketplace"
     ],
     "scrape": {
       "mode": "greenhouse",
@@ -14919,12 +15679,15 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Seattle, WA / Remote",
       "process": "Phone/skype screen --> Take-home coding assignment --> on-site/skype interview loop to discuss assignment; meet-and-greet with other teams --> +1/-1 based on team consensus"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Strava",
     "categories": [
-      "Consumer",
+      "Consumer Tech",
       "Health & Fitness"
     ],
     "scrape": {
@@ -14967,7 +15730,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Prague, Czech Republic / Brno, Czech Republic / Remote",
       "process": "A social interview with a recruiter + take-home coding challenge followed by a technical interview session discussing your approach in solving the take-home assignment + a culture-fit interview with the head of engineering."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Stryker Corporation",
@@ -15009,7 +15775,10 @@
       "no_whiteboard": true,
       "source": "YC recent SWE jobs",
       "source_url": "https://substack.com/jobs"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Sulvo",
@@ -15028,7 +15797,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "New York, NY / Remote",
       "process": "Interview over video call for cultural fit first, if you pass we proceed with technical interview that doesn't include coding games or challenges"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Sumo Logic",
@@ -15061,12 +15833,15 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "London, UK",
       "process": "Five-stages interview process. The first stage is with HR. The second stage is with the Engineering manager - discussion about general engineering knowledge and past projects. The third stage is take-home assignment. The fourth stage is a discussion of the take-home assignment solution with two engineers. The fifth stage is a behavioural interview structured around company values."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Sundt",
     "categories": [
-      "Technology"
+      "Real Estate & Construction"
     ],
     "scrape": {
       "mode": "oraclecloud",
@@ -15110,7 +15885,9 @@
   {
     "name": "Super",
     "categories": [
-      "Technology"
+      "Consumer Tech",
+      "FinTech & Payments",
+      "Travel & Hospitality"
     ],
     "scrape": {
       "mode": "ashby",
@@ -15145,12 +15922,15 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Remote",
       "process": "Take home project, an interview to discuss the project, and a cultural fit interview."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Swiftly",
     "categories": [
-      "Consumer Goods & Retail",
+      "Ad Tech & MarTech",
       "Software & SaaS"
     ],
     "scrape": {
@@ -15164,12 +15944,16 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Seattle, WA / San Francisco, CA",
       "process": "Take-home coding project, design principles discussions, collaborative problem solving"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Symbotic",
     "categories": [
-      "Technology"
+      "Industrials & Manufacturing",
+      "Robotics & Automation"
     ],
     "scrape": {
       "mode": "workday",
@@ -15229,7 +16013,8 @@
   {
     "name": "Syntax",
     "categories": [
-      "Technology"
+      "Cloud & Infrastructure",
+      "IT Services"
     ],
     "scrape": {
       "mode": "lever",
@@ -15319,7 +16104,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Bengaluru, India / Vancouver, Canada / London, UK / Singapore / Singapore, CA / NY, WA: United States",
       "process": "Data Engineering, Recruiter screening, followed by 1 round of fitment discussion, followed by a take home assignment(similar to actual work), followed by 1 round involving assignment solution discussion, programming language specific questions, and other role specific technical questions, followed by hiring manager discussion."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Tandem",
@@ -15337,7 +16125,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Chicago, IL / San Francisco, CA",
       "process": "Introductory phone screen, take-home project, take-home project phone review, a few hour-long pairing sessions on real projects."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Tanium",
@@ -15353,7 +16144,7 @@
   {
     "name": "TAO Group Hospitality",
     "categories": [
-      "Consumer Goods & Retail",
+      "Food & Beverage",
       "Travel & Hospitality"
     ],
     "scrape": {
@@ -15365,8 +16156,8 @@
   {
     "name": "Tapestry",
     "categories": [
-      "Interview Friendly",
-      "US / Remote"
+      "Consumer Goods & Retail",
+      "Fashion"
     ],
     "scrape": {
       "mode": "workday",
@@ -15380,7 +16171,10 @@
       "locations": "",
       "process": "",
       "employment_type": ""
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Target",
@@ -15429,12 +16223,16 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs / Hiring Without Whiteboards",
       "source_url": "https://www.no-wb.org/"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Teamworks",
     "categories": [
-      "Technology"
+      "Software & SaaS",
+      "Sports"
     ],
     "scrape": {
       "mode": "ashby",
@@ -15454,7 +16252,7 @@
   {
     "name": "Tekion",
     "categories": [
-      "Consumer Goods & Retail",
+      "Automotive",
       "Software & SaaS"
     ],
     "scrape": {
@@ -15475,7 +16273,8 @@
   {
     "name": "Tempo",
     "categories": [
-      "Technology"
+      "Developer Tools",
+      "Software & SaaS"
     ],
     "scrape": {
       "mode": "ashby",
@@ -15495,7 +16294,10 @@
       "no_whiteboard": true,
       "source": "Developer tools/startup",
       "source_url": "https://temporal.io/careers"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Tenable",
@@ -15510,7 +16312,9 @@
   {
     "name": "Tencent",
     "categories": [
-      "Technology"
+      "Gaming",
+      "Media & Entertainment",
+      "Software & SaaS"
     ],
     "scrape": {
       "mode": "workday",
@@ -15531,7 +16335,8 @@
   {
     "name": "Tenstorrent",
     "categories": [
-      "Technology"
+      "AI & Machine Learning",
+      "Semiconductors & Hardware"
     ],
     "scrape": {
       "mode": "greenhouse",
@@ -15596,13 +16401,16 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Remote",
       "process": "Initial conversation, Consulting interview, Technical interview, Pair programming, Takehome exercise."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Texas A&M University",
     "categories": [
-      "Interview Friendly",
-      "US / Remote"
+      "Education & Academia",
+      "Research"
     ],
     "scrape": {
       "mode": "workday",
@@ -15616,7 +16424,10 @@
       "locations": "",
       "process": "",
       "employment_type": ""
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Texas Instruments",
@@ -15626,16 +16437,18 @@
     ],
     "scrape": {
       "mode": "playwright",
-      "list_url": "https://careers.ti.com/search-jobs",
-      "include": "careers.ti.com/job/",
+      "list_url": "https://careers.ti.com/en/sites/CX/jobs",
+      "include": "careers.ti.com/en/sites/CX/job/",
+      "require_id": true,
+      "scroll_rounds": 15,
       "validate_prefix": false
     }
   },
   {
     "name": "Texas Roadhouse",
     "categories": [
-      "Interview Friendly",
-      "US / Remote"
+      "Consumer Goods & Retail",
+      "Food & Beverage"
     ],
     "scrape": {
       "mode": "html",
@@ -15650,13 +16463,16 @@
       "locations": "",
       "process": "",
       "employment_type": ""
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Textio",
     "categories": [
-      "HR Tech",
-      "AI & Machine Learning"
+      "AI & Machine Learning",
+      "HR Tech"
     ],
     "scrape": {
       "mode": "html",
@@ -15669,14 +16485,16 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Seattle, WA",
       "process": "Initial screen to discuss experience and interest in a role at Textio; then a take-home programming task is discussed during a 1-hour tech screen (on-site or remote); finally a larger take-home project, simulating real work, is discussed during an on-site presentation plus 1-1s; [How we hire](https://textio.ai/how-we-hire-a74cdbadd1e8)"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Textron",
     "categories": [
-      "Manufacturing",
-      "Defense & Government",
-      "Aerospace"
+      "Aerospace & Defense",
+      "Industrials & Manufacturing"
     ],
     "scrape": {
       "mode": "html",
@@ -15698,7 +16516,8 @@
   {
     "name": "The Coca-Cola Company",
     "categories": [
-      "Technology"
+      "Consumer Goods & Retail",
+      "Food & Beverage"
     ],
     "scrape": {
       "mode": "workday",
@@ -15708,12 +16527,14 @@
   {
     "name": "The RealReal",
     "categories": [
-      "E-commerce",
+      "E-commerce & Marketplace",
       "Fashion"
     ],
     "scrape": {
-      "mode": "greenhouse",
-      "board_token": "therealreal"
+      "mode": "phenom",
+      "list_url": "https://careers.therealreal.com/us/en/search-results",
+      "prefix": "https://careers.therealreal.com/us/en/job/",
+      "scroll_rounds": 15
     }
   },
   {
@@ -15744,7 +16565,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Austin, TX",
       "process": "Take-home coding challenge with in-person review and pair programming."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Thermo Fisher Scientific",
@@ -15805,7 +16629,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "San Francisco, CA / London, UK",
       "process": "[Our interview process](https://thoughtbot.com/playbook/our-company/hiring#interviewing)"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "ThoughtWorks",
@@ -15824,7 +16651,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "San Francisco, CA",
       "process": "Interviews with ThoughtWorkers of diverse backgrounds and roles; take home assignment followed by in person pairing session."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "ThousandEyes",
@@ -15863,12 +16693,12 @@
   {
     "name": "Tiffany",
     "categories": [
-      "Retail",
+      "Consumer Goods & Retail",
       "Luxury"
     ],
     "scrape": {
-      "mode": "workday",
-      "list_url": "https://tiffany.wd5.myworkdayjobs.com/TiffanyCareers"
+      "mode": "oraclecloud",
+      "list_url": "https://eljs.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX/jobs"
     }
   },
   {
@@ -15884,7 +16714,9 @@
   {
     "name": "Titan",
     "categories": [
-      "Technology"
+      "AI & Machine Learning",
+      "IT Services",
+      "Software & SaaS"
     ],
     "scrape": {
       "mode": "ashby",
@@ -15938,7 +16770,10 @@
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
       "locations": "Remote / Toronto, Canada",
       "process": "Short coding challenge inspired from the day-to-day problem space followed by a longer frontend or backend pairing design and implementation exercise"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Torc Robotics",
@@ -15975,7 +16810,9 @@
   {
     "name": "Toyota Research Institute",
     "categories": [
-      "Technology"
+      "AI & Machine Learning",
+      "Automotive",
+      "Research"
     ],
     "scrape": {
       "mode": "lever",
@@ -16008,7 +16845,7 @@
   {
     "name": "Tradeweb",
     "categories": [
-      "Finance",
+      "Finance & Banking",
       "FinTech & Payments"
     ],
     "scrape": {
@@ -16019,8 +16856,8 @@
   {
     "name": "TrainingPeaks",
     "categories": [
-      "Software & SaaS",
-      "Consumer Tech"
+      "Consumer Tech",
+      "Software & SaaS"
     ],
     "scrape": {
       "mode": "workable",
@@ -16032,7 +16869,10 @@
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
       "locations": "Boulder, CO; Denver, CO",
       "process": "Phone screen, take home project, remote and on-site interviews for technical and cultural fit"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Trane Technologies",
@@ -16052,7 +16892,8 @@
   {
     "name": "TransMarket Group",
     "categories": [
-      "Consumer Goods & Retail"
+      "Finance & Banking",
+      "Quant Trading"
     ],
     "scrape": {
       "mode": "greenhouse",
@@ -16072,7 +16913,7 @@
   {
     "name": "Trexon",
     "categories": [
-      "Technology"
+      "Industrials & Manufacturing"
     ],
     "scrape": {
       "mode": "greenhouse",
@@ -16113,7 +16954,8 @@
   {
     "name": "True Anomaly",
     "categories": [
-      "Technology"
+      "Aerospace & Defense",
+      "Space"
     ],
     "scrape": {
       "mode": "greenhouse",
@@ -16123,8 +16965,8 @@
   {
     "name": "Truebill",
     "categories": [
-      "FinTech & Payments",
-      "Finance & Banking"
+      "Finance & Banking",
+      "FinTech & Payments"
     ],
     "scrape": {
       "mode": "greenhouse",
@@ -16134,7 +16976,8 @@
   {
     "name": "TrueBuilt",
     "categories": [
-      "Technology"
+      "Real Estate & Construction",
+      "Software & SaaS"
     ],
     "scrape": {
       "mode": "greenhouse",
@@ -16158,13 +17001,15 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Pittsburgh, PA",
       "process": "Phone screen, Take-home project, In-person interview with the team that you would join"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Truist Financial",
     "categories": [
-      "Finance",
-      "Banking"
+      "Finance & Banking"
     ],
     "scrape": {
       "mode": "workday",
@@ -16187,12 +17032,16 @@
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
       "locations": "San Francisco, CA; Remote",
       "process": "Phone screen/ Take-home project that resembles a problem Truss has seen many times before / Followup interview about the project / Closing Interview, all interviews done remotely"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "TSC",
     "categories": [
-      "Technology"
+      "Aerospace & Defense",
+      "Industrials & Manufacturing"
     ],
     "scrape": {
       "mode": "workday",
@@ -16387,9 +17236,8 @@
   {
     "name": "UC Berkeley",
     "categories": [
-      "Academia",
-      "Research",
-      "Technology"
+      "Education & Academia",
+      "Research"
     ],
     "scrape": {
       "mode": "html",
@@ -16400,8 +17248,8 @@
   {
     "name": "UC San Diego",
     "categories": [
-      "Interview Friendly",
-      "US / Remote"
+      "Education & Academia",
+      "Research"
     ],
     "scrape": {
       "mode": "html",
@@ -16416,13 +17264,16 @@
       "locations": "",
       "process": "",
       "employment_type": ""
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "UCLA",
     "categories": [
-      "Interview Friendly",
-      "US / Remote"
+      "Education & Academia",
+      "Research"
     ],
     "scrape": {
       "mode": "avature",
@@ -16436,13 +17287,17 @@
       "locations": "",
       "process": "",
       "employment_type": ""
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "UCSF",
     "categories": [
-      "Interview Friendly",
-      "US / Remote"
+      "Education & Academia",
+      "Healthcare & Biotech",
+      "Research"
     ],
     "scrape": {
       "mode": "html",
@@ -16457,7 +17312,10 @@
       "locations": "",
       "process": "",
       "employment_type": ""
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "UiPath",
@@ -16486,7 +17344,8 @@
   {
     "name": "UL Solutions",
     "categories": [
-      "Technology"
+      "Consulting",
+      "Industrials & Manufacturing"
     ],
     "scrape": {
       "mode": "oraclecloud",
@@ -16512,7 +17371,7 @@
   {
     "name": "UNC Chapel Hill",
     "categories": [
-      "Universities"
+      "Education & Academia"
     ],
     "scrape": {
       "mode": "html",
@@ -16528,7 +17387,9 @@
   {
     "name": "Uncountable",
     "categories": [
-      "Technology"
+      "Data & Analytics",
+      "Materials & Chemicals",
+      "Software & SaaS"
     ],
     "scrape": {
       "mode": "ashby",
@@ -16597,8 +17458,7 @@
   {
     "name": "United Airlines",
     "categories": [
-      "Transportation",
-      "Airline"
+      "Transportation & Mobility"
     ],
     "scrape": {
       "mode": "workday",
@@ -16608,8 +17468,7 @@
   {
     "name": "United Rentals",
     "categories": [
-      "Industrials",
-      "Equipment"
+      "Industrials & Manufacturing"
     ],
     "scrape": {
       "mode": "workday",
@@ -16642,8 +17501,8 @@
       "Gaming"
     ],
     "scrape": {
-      "mode": "greenhouse",
-      "board_token": "unity3d"
+      "mode": "workday",
+      "list_url": "https://unitytech.wd1.myworkdayjobs.com/Unity"
     }
   },
   {
@@ -16659,7 +17518,7 @@
   {
     "name": "University of Arkansas",
     "categories": [
-      "Academia",
+      "Education & Academia",
       "Research"
     ],
     "scrape": {
@@ -16670,9 +17529,9 @@
   {
     "name": "University of Chicago",
     "categories": [
-      "Academia",
-      "Research",
-      "Finance"
+      "Education & Academia",
+      "Finance & Banking",
+      "Research"
     ],
     "scrape": {
       "mode": "workday",
@@ -16682,8 +17541,8 @@
   {
     "name": "University of Colorado Boulder",
     "categories": [
-      "Interview Friendly",
-      "US / Remote"
+      "Education & Academia",
+      "Research"
     ],
     "scrape": {
       "mode": "html",
@@ -16698,14 +17557,16 @@
       "locations": "",
       "process": "",
       "employment_type": ""
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "University of Illinois Urbana-Champaign",
     "categories": [
-      "Academia",
-      "Research",
-      "Technology"
+      "Education & Academia",
+      "Research"
     ],
     "scrape": {
       "mode": "html",
@@ -16716,8 +17577,8 @@
   {
     "name": "University of Iowa",
     "categories": [
-      "Interview Friendly",
-      "US / Remote"
+      "Education & Academia",
+      "Research"
     ],
     "scrape": {
       "mode": "html",
@@ -16732,13 +17593,16 @@
       "locations": "",
       "process": "",
       "employment_type": ""
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "University of Michigan",
     "categories": [
-      "Interview Friendly",
-      "US / Remote"
+      "Education & Academia",
+      "Research"
     ],
     "scrape": {
       "mode": "html",
@@ -16753,13 +17617,15 @@
       "locations": "",
       "process": "",
       "employment_type": ""
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "University of Notre Dame",
     "categories": [
-      "Universities",
-      "Education"
+      "Education & Academia"
     ],
     "scrape": {
       "mode": "html",
@@ -16773,8 +17639,8 @@
   {
     "name": "University of Pennsylvania",
     "categories": [
-      "Interview Friendly",
-      "US / Remote"
+      "Education & Academia",
+      "Research"
     ],
     "scrape": {
       "mode": "workday",
@@ -16788,13 +17654,16 @@
       "locations": "",
       "process": "",
       "employment_type": ""
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "University of Southern California",
     "categories": [
-      "Interview Friendly",
-      "US / Remote"
+      "Education & Academia",
+      "Research"
     ],
     "scrape": {
       "mode": "workday",
@@ -16808,13 +17677,16 @@
       "locations": "",
       "process": "",
       "employment_type": ""
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "University of Texas at Austin",
     "categories": [
-      "Interview Friendly",
-      "US / Remote"
+      "Education & Academia",
+      "Research"
     ],
     "scrape": {
       "mode": "workday",
@@ -16828,12 +17700,15 @@
       "locations": "",
       "process": "",
       "employment_type": ""
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "University of Virginia",
     "categories": [
-      "Universities",
+      "Education & Academia",
       "Healthcare & Biotech",
       "Research"
     ],
@@ -16845,10 +17720,8 @@
   {
     "name": "University of Washington",
     "categories": [
-      "Academia",
-      "Research",
-      "Technology",
-      "Universities"
+      "Education & Academia",
+      "Research"
     ],
     "scrape": {
       "mode": "workday",
@@ -16858,7 +17731,7 @@
   {
     "name": "University System of New Hampshire",
     "categories": [
-      "Academia",
+      "Education & Academia",
       "Research"
     ],
     "scrape": {
@@ -16893,12 +17766,15 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Wilmington, NC / New York, NY / Los Angeles, CA",
       "process": "Review portfolio - What projects have you worked on? + personality assessment, + interview"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Updater",
     "categories": [
-      "Real Estate",
+      "Real Estate & Construction",
       "Software & SaaS"
     ],
     "scrape": {
@@ -16912,7 +17788,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "New York, NY",
       "process": "Begin-at-home assignment highly relevant to role, presented and discussed during on-site."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "UPS",
@@ -16952,13 +17831,16 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Boston, MA / New York, NY / Remote",
       "process": "Phone screen, take home project relevant to our work, first round interview to discuss background and take home implementation, second round interview to meet more employees and share some of your and our recent work."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "US Foods",
     "categories": [
       "Food & Beverage",
-      "Logistics"
+      "Logistics & Supply Chain"
     ],
     "scrape": {
       "mode": "workday",
@@ -16979,8 +17861,8 @@
   {
     "name": "UserTesting",
     "categories": [
-      "Software & SaaS",
-      "Data & Analytics"
+      "Data & Analytics",
+      "Software & SaaS"
     ],
     "scrape": {
       "mode": "workday",
@@ -16992,13 +17874,15 @@
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
       "locations": "Atlanta, GA; San Francisco, CA; Mountain View, CA",
       "process": "Initial interview, pair programming, and offer"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Valassis Digital",
     "categories": [
-      "Ad Tech & MarTech",
-      "Consumer Goods & Retail"
+      "Ad Tech & MarTech"
     ],
     "scrape": {
       "mode": "html",
@@ -17011,13 +17895,16 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Seattle, WA / San Francisco, CA / Lansing, MI / Hamburg, Germany",
       "process": "Phone screen, on-site interview with group, paired whiteboard problem solving and discussion, take-home project and follow-up review"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Vanderbilt University",
     "categories": [
-      "Interview Friendly",
-      "US / Remote"
+      "Education & Academia",
+      "Research"
     ],
     "scrape": {
       "mode": "oraclecloud",
@@ -17032,7 +17919,10 @@
       "locations": "",
       "process": "",
       "employment_type": ""
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Vanguard",
@@ -17081,7 +17971,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Remote",
       "process": "Take home assignment, presentation of assignment, live code review with team. Advanced / high-level chat with team based on skillset and role."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "VAST Data",
@@ -17136,12 +18029,16 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Remote",
       "process": "Zoom interview, take-home project followed by technical interview with ICs with opportunities to discuss the project, interview with team leaders."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Veolia",
     "categories": [
-      "Technology"
+      "Energy",
+      "Utilities"
     ],
     "scrape": {
       "mode": "smartrecruiters",
@@ -17187,8 +18084,9 @@
       "Insurance"
     ],
     "scrape": {
-      "mode": "workday",
-      "list_url": "https://verisk.wd1.myworkdayjobs.com/verisk"
+      "mode": "oraclecloud",
+      "list_url": "https://fa-ewmy-saasfaprod1.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/jobs",
+      "site": "CX_1"
     }
   },
   {
@@ -17252,7 +18150,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Madison, WI / Remote",
       "process": "Phone screen, project discussion and tooling experience overview in panel interview with team, practical shared-editor coding problem and relevant architectural challenge in hands-on interview"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Viatris",
@@ -17280,7 +18181,8 @@
   {
     "name": "Viridien",
     "categories": [
-      "Technology"
+      "Data & Analytics",
+      "Energy"
     ],
     "scrape": {
       "mode": "workday",
@@ -17311,8 +18213,8 @@
   {
     "name": "Visa",
     "categories": [
-      "FinTech & Payments",
-      "Finance & Banking"
+      "Finance & Banking",
+      "FinTech & Payments"
     ],
     "scrape": {
       "mode": "workday",
@@ -17376,7 +18278,7 @@
     ],
     "scrape": {
       "mode": "workday",
-      "list_url": "https://walmart.wd5.myworkdayjobs.com/WalmartExternal"
+      "list_url": "https://walmart.wd504.myworkdayjobs.com/WalmartExternal"
     }
   },
   {
@@ -17403,8 +18305,8 @@
   {
     "name": "Washington University in St. Louis",
     "categories": [
-      "Interview Friendly",
-      "US / Remote"
+      "Education & Academia",
+      "Research"
     ],
     "scrape": {
       "mode": "workday",
@@ -17418,7 +18320,10 @@
       "locations": "",
       "process": "",
       "employment_type": ""
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Waste Management",
@@ -17455,8 +18360,8 @@
   {
     "name": "Wawa",
     "categories": [
-      "Interview Friendly",
-      "US / Remote"
+      "Consumer Goods & Retail",
+      "Food & Beverage"
     ],
     "scrape": {
       "mode": "html",
@@ -17471,7 +18376,10 @@
       "locations": "",
       "process": "",
       "employment_type": ""
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Wayfair",
@@ -17541,8 +18449,7 @@
   {
     "name": "Weave",
     "categories": [
-      "Consumer Goods & Retail",
-      "Developer Tools",
+      "Healthcare & Biotech",
       "Software & SaaS"
     ],
     "scrape": {
@@ -17556,15 +18463,14 @@
       "Software & SaaS"
     ],
     "scrape": {
-      "mode": "html",
-      "list_url": "https://weaviate.io/company/careers",
-      "include": "weaviate.io"
+      "mode": "ashby",
+      "ashby_slug": "weaviate"
     }
   },
   {
     "name": "Webflow",
     "categories": [
-      "Consumer Goods & Retail",
+      "Developer Tools",
       "Software & SaaS"
     ],
     "scrape": {
@@ -17577,12 +18483,16 @@
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
       "locations": "San Francisco, CA & Remote",
       "process": "Short take-home challenge, followed by a paid 3-5 day freelance contract project"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "WebFX",
     "categories": [
-      "Technology"
+      "Ad Tech & MarTech",
+      "Consulting"
     ],
     "scrape": {
       "mode": "lever",
@@ -17592,7 +18502,7 @@
   {
     "name": "Weedmaps",
     "categories": [
-      "Consumer Goods & Retail"
+      "E-commerce & Marketplace"
     ],
     "scrape": {
       "mode": "greenhouse",
@@ -17605,13 +18515,16 @@
       "no_whiteboard": true,
       "source": "No Whiteboard Jobs / Hiring Without Whiteboards",
       "source_url": "https://www.no-wb.org/"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Wegmans Food Markets",
     "categories": [
-      "Interview Friendly",
-      "US / Remote"
+      "Consumer Goods & Retail",
+      "Food & Beverage"
     ],
     "scrape": {
       "mode": "workday",
@@ -17625,7 +18538,10 @@
       "locations": "",
       "process": "",
       "employment_type": ""
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Weights & Biases",
@@ -17676,7 +18592,7 @@
     "name": "Whirlpool",
     "categories": [
       "Consumer Goods & Retail",
-      "Manufacturing"
+      "Industrials & Manufacturing"
     ],
     "scrape": {
       "mode": "eightfold",
@@ -17686,8 +18602,8 @@
   {
     "name": "WHOOP",
     "categories": [
-      "Consumer Goods & Retail",
-      "Software & SaaS"
+      "Consumer Tech",
+      "Health & Fitness"
     ],
     "scrape": {
       "mode": "lever",
@@ -17697,8 +18613,8 @@
   {
     "name": "Wikimedia Foundation",
     "categories": [
-      "Software & SaaS",
-      "Consumer Tech"
+      "Consumer Tech",
+      "Software & SaaS"
     ],
     "scrape": {
       "mode": "html",
@@ -17711,7 +18627,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Remote",
       "process": "Cultural fit interview, about one hour of discussing possible solutions for real problems the team you are applying to could face. Not right or wrong answers, more of a brainstorming with two engineers who will evaluate how your problem solving workflow works."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Wise",
@@ -17761,7 +18680,8 @@
   {
     "name": "Wonderschool",
     "categories": [
-      "Technology"
+      "EdTech",
+      "Software & SaaS"
     ],
     "scrape": {
       "mode": "greenhouse",
@@ -17865,7 +18785,8 @@
   {
     "name": "XPENG Motors",
     "categories": [
-      "Technology"
+      "Automotive",
+      "Industrials & Manufacturing"
     ],
     "scrape": {
       "mode": "greenhouse",
@@ -17917,8 +18838,8 @@
   {
     "name": "Yale University",
     "categories": [
-      "Interview Friendly",
-      "US / Remote"
+      "Education & Academia",
+      "Research"
     ],
     "scrape": {
       "mode": "html",
@@ -17933,12 +18854,16 @@
       "locations": "",
       "process": "",
       "employment_type": ""
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Yelp",
     "categories": [
-      "Consumer Goods & Retail"
+      "Consumer Tech",
+      "E-commerce & Marketplace"
     ],
     "scrape": {
       "mode": "html",
@@ -17976,7 +18901,10 @@
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
       "locations": "London, UK; Lisbon, PT; Porto, PT & Remote",
       "process": "Take home-code challenge, pair-programming session and discussion about past experience"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Yum Brands",
@@ -17996,7 +18924,6 @@
   {
     "name": "Zapier",
     "categories": [
-      "Consumer Goods & Retail",
       "Developer Tools",
       "Software & SaaS"
     ],
@@ -18010,7 +18937,10 @@
       "source_url": "https://github.com/poteto/hiring-without-whiteboards",
       "locations": "Remote",
       "process": "Recruiter interview, take-home project, code review of the take-home project, technical discussions with hiring manager and engineers from the team, and a values interview."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Zebra Technologies",
@@ -18049,12 +18979,15 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "San Francisco, CA",
       "process": "One technical phone screen focused on JS fundamentals and/or one timeboxed take-home challenge. The onsite is a series of interviews designed to test your understanding of JS, HTML/CSS, design, etc."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Zillow",
     "categories": [
-      "Real Estate",
+      "Real Estate & Construction",
       "Software & SaaS"
     ],
     "scrape": {
@@ -18075,7 +19008,10 @@
       "no_whiteboard": true,
       "source": "Startup hiring",
       "source_url": "https://ziphq.com/careers"
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Zipline",
@@ -18137,8 +19073,8 @@
   {
     "name": "ZoomInfo",
     "categories": [
-      "Software & SaaS",
-      "Data"
+      "Data & Analytics",
+      "Software & SaaS"
     ],
     "scrape": {
       "mode": "greenhouse",
@@ -18197,7 +19133,10 @@
       "source_url": "https://www.no-wb.org/",
       "locations": "Münster, Germany & Remote",
       "process": "Get-to-know call, take-home task representative to our problems, on-site pairing and discussion, and mentoring throughout the process with talks for aligning expectations."
-    }
+    },
+    "tags": [
+      "Interview Friendly"
+    ]
   },
   {
     "name": "Zynga",

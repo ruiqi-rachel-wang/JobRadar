@@ -341,7 +341,10 @@ _EXTRACT_CANDIDATES = r"""
 
   // 1) <a href>
   document.querySelectorAll('a[href]').forEach(a =>
-    push(a.getAttribute('href'), a.textContent, a));
+    // Use the browser-resolved URL. Joining a raw relative href against a
+    // listing URL without a trailing slash can duplicate path segments (for
+    // example /jobs/results -> /jobs/jobs/results) and discard valid jobs.
+    push(a.href || a.getAttribute('href'), a.textContent, a));
 
   // 2) data-* urls
   document.querySelectorAll('[data-href],[data-url],[data-link]').forEach(el =>
@@ -540,6 +543,10 @@ def fetch_playwright(scrape: dict, seen: dict, company: str):
     fetch_posted_details = bool(scrape.get("fetch_posted_details", False))
     posted_detail_limit = int(scrape.get("max_posted_details", 100000))
     url_exclude      = [s.lower() for s in (scrape.get("url_exclude") or [])]
+    drop_query_params = {
+        str(name).strip() for name in (scrape.get("drop_job_query_params") or [])
+        if str(name).strip()
+    }
 
     pg        = scrape.get("pagination") or {"type": "none"}
     pg_type   = (pg.get("type") or "none").strip()
@@ -582,6 +589,13 @@ def fetch_playwright(scrape: dict, seen: dict, company: str):
 
         for c in cands:
             u = (c.get("url") or "").strip()
+            if u and drop_query_params:
+                parts = list(urlparse(u))
+                query = parse_qs(parts[4], keep_blank_values=True)
+                for name in drop_query_params:
+                    query.pop(name, None)
+                parts[4] = urlencode(query, doseq=True)
+                u = urlunparse(parts)
             if not u or u in seen_abs_links:
                 continue
             seen_abs_links.add(u)
@@ -606,7 +620,10 @@ def fetch_playwright(scrape: dict, seen: dict, company: str):
                 continue
             seen_job_urls.add(u)
 
-            title = _title_from_url_or_text(u, c.get("text", ""))
+            if scrape.get("title_from_context"):
+                title = _title_from_context(c.get("ctx", ""))
+            else:
+                title = _title_from_url_or_text(u, c.get("text", ""))
             if not title or title.lower() == "unknown title":
                 title = _title_from_context(c.get("ctx", ""))
             title = norm(title)
@@ -625,7 +642,13 @@ def fetch_playwright(scrape: dict, seen: dict, company: str):
             # a location; titles like "Research Scientist" otherwise become
             # bogus location fragments such as "Scientist".
             _loc_combined = " ".join(filter(None, [c.get("text", ""), c.get("ctx", "")]))
-            location = _extract_location(_loc_combined)
+            location = ""
+            location_regex = scrape.get("location_regex")
+            if location_regex:
+                location_match = re.search(location_regex, c.get("ctx", ""), re.I | re.S)
+                if location_match:
+                    location = norm(location_match.group(1))
+            location = location or _extract_location(_loc_combined)
             posted = _extract_posted(c.get("ctx", ""))
             jobs_out.append({"title": title, "url": u, "location": location, "source": "playwright", "posted": posted})
             new_added += 1

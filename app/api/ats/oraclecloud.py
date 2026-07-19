@@ -1,4 +1,5 @@
 from .base import *
+from ..utils import extract_experience
 
 # ── Oracle Cloud ──────────────────────────────────────────────────────────────
 
@@ -73,6 +74,30 @@ def _oraclecloud_list_text(job):
         return ""
     return norm(BeautifulSoup(text, "lxml").get_text(" ", strip=True))
 
+
+def _oraclecloud_text_has_numeric_experience(title, text):
+    if not text:
+        return False
+    exp = extract_experience(title, text, allow_title_fallback=False)
+    return exp.get("min") is not None or exp.get("max") is not None
+
+
+def _oraclecloud_cached_detail_is_sufficient(existing, refresh_experience=False):
+    if not isinstance(existing, dict):
+        return False
+    source = existing.get("exp_source") or ""
+    if source == "oracle_detail":
+        return True
+    has_numeric_exp = (
+        existing.get("exp_min") is not None
+        or existing.get("exp_max") is not None
+    )
+    return (
+        has_numeric_exp
+        and not refresh_experience
+        and source in {"text", "company_peer"}
+    )
+
 def fetch_oraclecloud(scrape, seen, company):
     """Oracle Cloud Candidate Experience public API."""
     list_url = scrape.get("list_url", "")
@@ -139,6 +164,7 @@ def fetch_oraclecloud(scrape, seen, company):
 
         job_url_prefix = scrape.get("job_url_prefix", "").rstrip("/")
         descriptions = {}
+        detail_ids = set()
         if fetch_exp_detail:
             ids = []
             for j in requisitions:
@@ -153,26 +179,18 @@ def fetch_oraclecloud(scrape, seen, company):
                 list_desc = _oraclecloud_list_text(j)
                 if list_desc:
                     descriptions[jid] = list_desc
-                    continue
+                    if (
+                        len(list_desc) >= 500
+                        or _oraclecloud_text_has_numeric_experience(title, list_desc)
+                    ):
+                        continue
                 existing = seen.get(make_id(company, jurl, title)) if isinstance(seen, dict) else None
                 if fetch_new_exp_only and isinstance(existing, dict):
                     continue
-                existing_source = (existing.get("exp_source") or "") if isinstance(existing, dict) else ""
-                existing_has_description = (
-                    isinstance(existing, dict)
-                    and bool(existing.get("has_description"))
-                )
-                has_good_existing_exp = (
-                    isinstance(existing, dict)
-                    and bool(existing.get("exp_label"))
-                    and (not refresh_experience or existing_has_description)
-                    and existing_source in {"text", "company_peer"}
-                )
-                # If we already have the description stored, skip the detail fetch.
-                # Re-fetching returns the same text and would take hours for large companies.
-                # _enrich re-extracts from the stored exp or title fallback as needed.
-                desc_already_fetched = bool(existing_has_description)
-                if not has_good_existing_exp and not desc_already_fetched:
+                # A short Oracle search-card summary is not a full description.
+                # Numeric cached results and the oracle_detail marker avoid
+                # refetching full descriptions on later scans.
+                if not _oraclecloud_cached_detail_is_sufficient(existing, refresh_experience):
                     ids.append(jid)
 
             def _fetch_desc(req_id):
@@ -181,6 +199,8 @@ def fetch_oraclecloud(scrape, seen, company):
             with concurrent.futures.ThreadPoolExecutor(max_workers=max(1, detail_workers)) as ex:
                 for req_id, desc in ex.map(_fetch_desc, ids):
                     descriptions[req_id] = desc
+                    if desc:
+                        detail_ids.add(req_id)
 
         for j in requisitions:
             title = norm(j.get("Title") or "")
@@ -193,7 +213,15 @@ def fetch_oraclecloud(scrape, seen, company):
             posted = _parse_posted(j.get("PostedDate") or "")
             if title and jurl:
                 desc = descriptions.get(jid) or _oraclecloud_list_text(j)
-                jobs.append({"title": title, "url": jurl, "location": loc, "source": "oraclecloud", "posted": posted, "description": desc})
+                jobs.append({
+                    "title": title,
+                    "url": jurl,
+                    "location": loc,
+                    "source": "oraclecloud",
+                    "posted": posted,
+                    "description": desc,
+                    "description_is_detail": jid in detail_ids,
+                })
 
         if total and offset + limit >= total:
             break

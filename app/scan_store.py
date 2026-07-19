@@ -11,17 +11,21 @@ def _now():
     return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
 
-def create_scan_run(scan_type, total_companies):
+def create_scan_run(scan_type, total_companies, scheduled_for="", send_alerts_after=False):
     with connect_db() as conn:
         if IS_POSTGRES:
             row = conn.execute(
-                "INSERT INTO scan_runs (scan_type, total_companies, started_at) VALUES (?, ?, ?) RETURNING id",
-                (scan_type, total_companies, _now()),
+                "INSERT INTO scan_runs "
+                "(scan_type, total_companies, started_at, scheduled_for, send_alerts_after) "
+                "VALUES (?, ?, ?, ?, ?) RETURNING id",
+                (scan_type, total_companies, _now(), scheduled_for or "", int(bool(send_alerts_after))),
             ).fetchone()
             return row[0]
         cur = conn.execute(
-            "INSERT INTO scan_runs (scan_type, total_companies, started_at) VALUES (?, ?, ?)",
-            (scan_type, total_companies, _now()),
+            "INSERT INTO scan_runs "
+            "(scan_type, total_companies, started_at, scheduled_for, send_alerts_after) "
+            "VALUES (?, ?, ?, ?, ?)",
+            (scan_type, total_companies, _now(), scheduled_for or "", int(bool(send_alerts_after))),
         )
         return cur.lastrowid
 
@@ -186,6 +190,34 @@ def create_company_scan_status(scan_run_id, company_name):
             (scan_run_id, company_name),
         )
         return cur.lastrowid
+
+
+def create_company_scan_statuses(scan_run_id, company_names):
+    """Create many pending company rows in one connection and transaction.
+
+    Opening a database connection for every company is especially expensive
+    when Postgres is remote. Keep the same row-per-company schema and returned
+    IDs, but pay the connection/commit cost once for the whole scan.
+    """
+    status_ids = {}
+    with connect_db() as conn:
+        for company_name in company_names:
+            if IS_POSTGRES:
+                row = conn.execute(
+                    "INSERT INTO scan_company_status "
+                    "(scan_run_id, company_name, status) "
+                    "VALUES (?, ?, 'pending') RETURNING id",
+                    (scan_run_id, company_name),
+                ).fetchone()
+                status_ids[company_name] = row[0]
+            else:
+                cur = conn.execute(
+                    "INSERT INTO scan_company_status "
+                    "(scan_run_id, company_name, status) VALUES (?, ?, 'pending')",
+                    (scan_run_id, company_name),
+                )
+                status_ids[company_name] = cur.lastrowid
+    return status_ids
 
 
 def start_company_scan_status(status_id):

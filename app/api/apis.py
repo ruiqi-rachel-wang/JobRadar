@@ -285,9 +285,9 @@ def _enrich(jobs, seen, company_name, scan_type="fresh"):
             and existing.get("exp_label")
             and (
                 not desc  # no new text to compute from
-                or (not is_full and existing_source in {"text", "company_peer"})  # fresh: trust stored result
+                or (not is_full and existing_source in {"text", "company_peer", "oracle_detail"})  # fresh: trust stored result
             )
-            and (not is_full or existing_source in {"text", "company_peer"})
+            and (not is_full or existing_source in {"text", "company_peer", "oracle_detail"})
         )
         if can_reuse_existing:
             j.setdefault("exp_min",    existing.get("exp_min"))
@@ -305,6 +305,13 @@ def _enrich(jobs, seen, company_name, scan_type="fresh"):
             j["exp_max"]    = exp.get("max")
             j["exp_label"]  = exp.get("label", "")
             j["exp_source"] = exp.get("source", "")
+            if (
+                j.get("description_is_detail")
+                and j["exp_min"] is None
+                and j["exp_max"] is None
+                and j["exp_source"] == "text"
+            ):
+                j["exp_source"] = "oracle_detail"
             if not j.get("skills"):
                 j["skills"] = extract_skills(j.get("title", ""), desc)
 

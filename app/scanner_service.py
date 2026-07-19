@@ -28,7 +28,7 @@ try:
     )
     from .api.utils import make_id
     from .scan_store import (
-        create_company_scan_status, create_scan_run,
+        create_company_scan_statuses, create_scan_run,
         finish_company_scan_status, finish_scan_run_from_statuses,
         reset_unfinished_company_statuses, scan_company_status_map,
         scan_run_totals, start_company_scan_status, update_scan_counts,
@@ -40,7 +40,7 @@ except ImportError:
     )
     from api.utils import make_id
     from scan_store import (
-        create_company_scan_status, create_scan_run,
+        create_company_scan_statuses, create_scan_run,
         finish_company_scan_status, finish_scan_run_from_statuses,
         reset_unfinished_company_statuses, scan_company_status_map,
         scan_run_totals, start_company_scan_status, update_scan_counts,
@@ -69,7 +69,8 @@ _FULL_COMPANY_TIMEOUT_S  = int(os.environ.get("JOBRADAR_FULL_COMPANY_TIMEOUT_SEC
 # ── Public entry point ────────────────────────────────────────────────────────
 
 def run_scan(companies, scan_type="fresh", progress=None, on_scan_run_id=None,
-             should_cancel=None, resume_scan_run_id=None):
+             should_cancel=None, resume_scan_run_id=None, timing=None,
+             scheduled_for="", send_alerts_after=False):
     """Scan a list of companies and return a summary dict.
 
     Args:
@@ -82,14 +83,48 @@ def run_scan(companies, scan_type="fresh", progress=None, on_scan_run_id=None,
         scan_run_id, scan_type, status, progress, results,
         new_count, total_jobs, failed_companies, elapsed_s
     """
+    t_start = time.monotonic()
+    phase_started = t_start
+    phase_raw = {}
+    work_raw = {
+        "status_start": 0.0,
+        "fetch_enrich": 0.0,
+        "prepare_rows": 0.0,
+        "save_jobs": 0.0,
+        "status_finish": 0.0,
+        "progress_write": 0.0,
+    }
+    if timing is None:
+        timing = {}
+    timing.clear()
+    timing.update({"phase": "select_companies", "steps_s": {}, "work_s": {}})
+
+    def _finish_phase(name, next_phase=None):
+        nonlocal phase_started
+        now = time.monotonic()
+        phase_raw[name] = now - phase_started
+        phase_started = now
+        timing["steps_s"] = {key: round(value, 3) for key, value in phase_raw.items()}
+        timing["elapsed_s"] = round(now - t_start, 3)
+        timing["phase"] = next_phase or name
+
+    def _publish_work():
+        total = sum(work_raw.values())
+        timing["work_s"] = {key: round(value, 3) for key, value in work_raw.items()}
+        timing["work_percent"] = {
+            key: round((value / total * 100) if total else 0.0, 1)
+            for key, value in work_raw.items()
+        }
+
     companies   = [
         c for c in companies
         if c.get("scan_enabled", True) is not False or c.get("policy")
     ]
     is_fresh    = scan_type != "full"
+    _finish_phase("select_companies", "load_seen")
     seen        = load_seen()
+    _finish_phase("load_seen", "create_scan_run")
     now_str     = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    t_start     = time.monotonic()
     summaries   = []        # per-company summary dicts
     total_jobs  = 0
     total_new   = 0
@@ -104,9 +139,15 @@ def run_scan(companies, scan_type="fresh", progress=None, on_scan_run_id=None,
             if (resumed_statuses.get(c["name"]) or {}).get("status") in {"pending", "scanning"}
         ]
     else:
-        scan_run_id = create_scan_run(scan_type=scan_type, total_companies=len(companies))
+        scan_run_id = create_scan_run(
+            scan_type=scan_type,
+            total_companies=len(companies),
+            scheduled_for=scheduled_for,
+            send_alerts_after=send_alerts_after,
+        )
     if on_scan_run_id:
         on_scan_run_id(scan_run_id)
+    _finish_phase("create_scan_run", "create_status_rows")
 
     if progress is None:
         progress = [
@@ -121,10 +162,20 @@ def run_scan(companies, scan_type="fresh", progress=None, on_scan_run_id=None,
         ]
 
     # Pre-create DB status rows so the polling endpoint can return them immediately.
-    status_ids = {}
+    status_ids = {
+        i: resumed_statuses[company["name"]]["id"]
+        for i, company in enumerate(companies)
+        if company["name"] in resumed_statuses
+    }
+    missing_names = [
+        company["name"] for company in companies
+        if company["name"] not in resumed_statuses
+    ]
+    created_status_ids = create_company_scan_statuses(scan_run_id, missing_names)
     for i, company in enumerate(companies):
-        row = resumed_statuses.get(company["name"])
-        status_ids[i] = row["id"] if row else create_company_scan_status(scan_run_id, company["name"])
+        if i not in status_ids:
+            status_ids[i] = created_status_ids[company["name"]]
+    _finish_phase("create_status_rows", "scan_companies")
 
     # ── Per-company helpers (closures so they share outer state) ──────────────
 
@@ -132,39 +183,60 @@ def run_scan(companies, scan_type="fresh", progress=None, on_scan_run_id=None,
         """Call the appropriate ATS fetcher for one company."""
         progress[i]["status"] = "scanning"
         t0 = time.monotonic()
+        work = {}
         try:
+            status_t0 = time.monotonic()
             try:
                 start_company_scan_status(status_ids[i])
             except Exception as exc:
                 # Bookkeeping write only — a transient SQLite lock here must
                 # not fail the company's whole scan.
                 logging.warning("scan: status write failed for %s: %s", company.get("name"), exc)
+            work["status_start"] = time.monotonic() - status_t0
+            fetch_t0 = time.monotonic()
             blocked_until = _blocked_until(company["name"])
             if blocked_until and blocked_until > datetime.now():
+                work["fetch_enrich"] = time.monotonic() - fetch_t0
                 return (
                     i, company, [],
                     f"skipped after recent 403 until {blocked_until.strftime('%Y-%m-%d %H:%M:%S')}",
                     round(time.monotonic() - t0, 1),
+                    work,
                 )
             raw, err = fetch_jobs(company, seen, scan_type=scan_type)
             if err and _is_forbidden_error(err):
                 _remember_forbidden(company["name"])
-            return i, company, raw or [], err, round(time.monotonic() - t0, 1)
+            work["fetch_enrich"] = time.monotonic() - fetch_t0
+            return i, company, raw or [], err, round(time.monotonic() - t0, 1), work
         except Exception as exc:
-            return i, company, [], str(exc), round(time.monotonic() - t0, 1)
+            work.setdefault("fetch_enrich", time.monotonic() - t0)
+            return i, company, [], str(exc), round(time.monotonic() - t0, 1), work
 
-    def _commit_one(i, company, raw, err, duration):
+    def _commit_one(i, company, raw, err, duration, work=None):
         """Persist results for one company and update shared state."""
         nonlocal total_jobs, total_new
+        work = work or {}
+        for key in ("status_start", "fetch_enrich"):
+            work_raw[key] += work.get(key, 0.0)
         name      = company["name"]
         cats      = company.get("categories", [])
         new_count = 0
         rows      = []
 
+        prepare_t0 = time.monotonic()
         with _seen_lock:
             for job in raw:
                 jid    = make_id(name, job.get("url", ""), job.get("title", ""))
                 is_new = jid not in seen
+                existing = seen.get(jid) if not is_new else None
+                fts_changed = bool(
+                    is_new
+                    or (job.get("title") or "") != (existing.get("title") or "")
+                    or (
+                        job.get("location")
+                        and job.get("location") != (existing.get("location") or "")
+                    )
+                )
 
                 if is_new:
                     new_count += 1
@@ -178,19 +250,31 @@ def run_scan(companies, scan_type="fresh", progress=None, on_scan_run_id=None,
                     "company":    name,
                     "categories": cats,
                     "is_new":     is_new,
+                    "fts_changed": fts_changed,
                     "first_seen": seen[jid]["first_seen"],
                     # Prefer freshly scraped date; fall back to what we cached.
                     "posted":     job.get("posted") or seen[jid].get("posted", ""),
                 })
+        work_raw["prepare_rows"] += time.monotonic() - prepare_t0
 
+        save_t0 = time.monotonic()
         if rows:
             upsert_jobs(rows)
-            # Full scan only: soft-delete jobs that vanished from the source.
-            # Never expire on an errored fetch — a mid-pagination failure returns
-            # a partial list, and expiring against it would close every job on
-            # the pages that were never reached.
-            if not is_fresh and raw and not err:
-                delete_expired_jobs(name, [r["id"] for r in rows])
+        # Full scan only: soft-delete jobs that vanished from the source.
+        # Never expire on an errored fetch — a mid-pagination failure returns
+        # a partial list, and expiring against it would close every job on the
+        # pages that were never reached. Empty results remain protected unless
+        # this company has an explicitly verified authoritative empty source.
+        allow_empty = bool(
+            (company.get("scrape") or {}).get("allow_empty_full_scan")
+        )
+        if not is_fresh and not err and (raw or allow_empty):
+            delete_expired_jobs(
+                name,
+                [r["id"] for r in rows],
+                allow_empty=allow_empty,
+            )
+        work_raw["save_jobs"] += time.monotonic() - save_t0
 
         entry = _make_summary(name, progress[i]["mode"], raw, err, duration, new_count)
         progress[i].update(entry)
@@ -198,6 +282,7 @@ def run_scan(companies, scan_type="fresh", progress=None, on_scan_run_id=None,
         total_jobs += len(raw)
         total_new += new_count
 
+        status_t0 = time.monotonic()
         finish_company_scan_status(
             status_ids[i],
             status="success" if not err else "failed",
@@ -205,7 +290,11 @@ def run_scan(companies, scan_type="fresh", progress=None, on_scan_run_id=None,
             new_jobs_found=new_count,
             error_message=err,
         )
+        work_raw["status_finish"] += time.monotonic() - status_t0
+        progress_t0 = time.monotonic()
         update_scan_counts(scan_run_id, len(summaries))
+        work_raw["progress_write"] += time.monotonic() - progress_t0
+        _publish_work()
 
     # ── Run fetches concurrently ──────────────────────────────────────────────
 
@@ -259,7 +348,7 @@ def run_scan(companies, scan_type="fresh", progress=None, on_scan_run_id=None,
         err = f"timed out after {timeout}s"
         logging.warning("scan: %s timed out after %.1fs", company.get("name"), duration)
         try:
-            _commit_one(i, company, [], err, duration)
+            _commit_one(i, company, [], err, duration, {"fetch_enrich": duration})
         except Exception as exc:
             logging.warning("scan: failed to record timeout for %s: %s", company.get("name"), exc)
 
@@ -327,7 +416,7 @@ def run_scan(companies, scan_type="fresh", progress=None, on_scan_run_id=None,
             for ex in (api_ex, workday_ex, html_ex, pw_ex):
                 ex.shutdown(wait=False, cancel_futures=True)
 
-        elapsed = round(time.monotonic() - t_start, 1)
+        _finish_phase("scan_companies", "finalize")
         if cancelled:
             status = "cancelled"
         else:
@@ -335,6 +424,14 @@ def run_scan(companies, scan_type="fresh", progress=None, on_scan_run_id=None,
             status = "partial_success" if totals["failed_companies"] else "success"
 
         finish_scan_run_from_statuses(scan_run_id, status=status)
+        _finish_phase("finalize", "done")
+        elapsed = round(time.monotonic() - t_start, 1)
+        timing["total_s"] = round(time.monotonic() - t_start, 3)
+        timing["steps_percent"] = {
+            key: round((value / timing["total_s"] * 100) if timing["total_s"] else 0.0, 1)
+            for key, value in phase_raw.items()
+        }
+        _publish_work()
         return {
             "scan_run_id":      scan_run_id,
             "scan_type":        scan_type,
@@ -345,6 +442,7 @@ def run_scan(companies, scan_type="fresh", progress=None, on_scan_run_id=None,
             "total_jobs":       total_jobs,
             "failed_companies": scan_run_totals(scan_run_id)["failed_companies"],
             "elapsed_s":        elapsed,
+            "timing":           timing,
         }
 
     except Exception as exc:

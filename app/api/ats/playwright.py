@@ -4,6 +4,9 @@ import concurrent.futures
 # ── Browser-backed ATS fallbacks ──────────────────────────────────────────────
 
 def _fetch_playwright_with_source(scrape, seen, company, source):
+    if scrape.get("reader_only"):
+        jobs, err = _fetch_reader_markdown(scrape, seen, company, source)
+        return jobs, err
     cfg = dict(scrape)
     cfg["mode"] = "playwright"
     jobs, err = fetch_playwright(cfg, seen, company)
@@ -41,7 +44,9 @@ def _fill_reader_descriptions(jobs, seen, scrape):
     for job in jobs:
         jid = make_id(scrape.get("_company_name", ""), job.get("url", ""), job.get("title", ""))
         existing = seen.get(jid) if isinstance(seen, dict) else None
-        if isinstance(existing, dict) and existing.get("description"):
+        if isinstance(existing, dict) and (
+            existing.get("description") or existing.get("has_description")
+        ):
             continue
         if job.get("url"):
             targets.append(job)
@@ -62,7 +67,8 @@ def _fill_reader_descriptions(jobs, seen, scrape):
 
     if not targets:
         return
-    with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:
+    workers = max(1, min(8, int(scrape.get("description_workers", 4))))
+    with concurrent.futures.ThreadPoolExecutor(max_workers=workers) as executor:
         for job, description in executor.map(fetch_one, targets):
             if description:
                 job["description"] = description
@@ -74,58 +80,104 @@ def _fetch_reader_markdown(scrape, seen, company, source):
     if not list_url or not include:
         return [], "reader fallback needs list_url and include/prefix"
 
-    reader_url = "https://r.jina.ai/" + list_url
-    try:
-        r = requests.get(reader_url, headers=HEADERS, timeout=35)
-        r.raise_for_status()
-    except Exception as e:
-        return [], str(e)
-
-    lines = r.text.splitlines()
     jobs = {}
     needs_id = bool(scrape.get("require_id", True)) and include.endswith(("=", "/"))
-    for idx, line in enumerate(lines):
-        for title, url in re.findall(r"\[([^\]]{4,180})\]\((https?://[^)\s]+)\)", line):
-            if not has_include(url, include):
-                continue
-            if needs_id:
-                suffix = url.lower().split(include.lower(), 1)[-1]
-                if not re.search(r"\d{2,}", suffix):
+    first_err = None
+    expected_total = None
+
+    pagination = scrape.get("pagination") or {"type": "none"}
+    paginate = bool(scrape.get("reader_paginate"))
+    pg_type = (pagination.get("type") or "none") if paginate else "none"
+    max_pages = int(pagination.get("hard_max_pages") or scrape.get("hard_max_pages") or 100)
+
+    if pg_type == "query_page":
+        param = (pagination.get("param") or "page").strip()
+        start = int(pagination.get("start", 1))
+        step = int(pagination.get("step", 1))
+        page_urls = [make_paged_url(list_url, {"param": param, "start": start, "step": step}, i)
+                     for i in range(max_pages)]
+    else:
+        page_urls = [list_url]
+
+    empty_streak = 0
+    for page_url in page_urls:
+        try:
+            r = requests.get("https://r.jina.ai/" + page_url, headers=HEADERS, timeout=35)
+            r.raise_for_status()
+        except Exception as e:
+            if first_err is None:
+                first_err = str(e)
+            break
+
+        before = len(jobs)
+        total_match = re.search(
+            r"\bShowing\s+\d[\d,]*(?:\s*-\s*\d[\d,]*)?\s+of\s+([\d,]+)\s+results?\b",
+            r.text,
+            re.I,
+        )
+        if total_match:
+            expected_total = int(total_match.group(1).replace(",", ""))
+        lines = r.text.splitlines()
+        for idx, line in enumerate(lines):
+            for title, url in re.findall(r"\[([^\]]{4,180})\]\((https?://[^)\s]+)\)", line):
+                if not has_include(url, include):
                     continue
-            title = norm(re.sub(r"!\[[^\]]*\]", " ", title))
-            if not title or re.search(r"^(apply|view job|search jobs|saved jobs|learn more)$", title, re.I):
-                continue
-            nearby = " ".join(lines[idx:idx + 8])
-            loc = ""
-            if line.lstrip().startswith("|"):
-                cells = [norm(cell.strip(" *")) for cell in line.strip().strip("|").split("|")]
-                # Common careers-table shape:
-                # title | requisition | employment type | location | workplace
-                if (
-                    len(cells) >= 5
-                    and re.fullmatch(r"[A-Z]*\d{4,}", cells[1], re.I)
-                    and re.search(r"\b(?:full|part|temporary|contract)\s*time\b", cells[2], re.I)
-                ):
-                    loc = normalize_location(cells[3])
-                if not loc:
-                    for cell in cells[1:]:
-                        extracted = extract_location_from_text(cell)
-                        if extracted:
-                            loc = normalize_location(extracted)
-                            break
-            loc_match = re.search(r"\*\*([^*]{2,80})\*\*", nearby)
-            if not loc and loc_match:
-                loc = normalize_location(norm(loc_match.group(1)))
-            loc = loc or extract_location_from_text(nearby)
-            posted = extract_posted_from_text(nearby)
-            jobs[url] = {
-                "title": title,
-                "url": url,
-                "location": loc,
-                "source": source,
-                "posted": posted,
-            }
-    return list(jobs.values()), None
+                if needs_id:
+                    suffix = url.lower().split(include.lower(), 1)[-1]
+                    if not re.search(r"\d{2,}", suffix):
+                        continue
+                title = norm(re.sub(r"!\[[^\]]*\]", " ", title))
+                if not title or re.search(r"^(apply|view job|search jobs|saved jobs|learn more)$", title, re.I):
+                    continue
+                nearby = " ".join(lines[idx:idx + 8])
+                loc = ""
+                if line.lstrip().startswith("|"):
+                    cells = [norm(cell.strip(" *")) for cell in line.strip().strip("|").split("|")]
+                    # Common careers-table shape:
+                    # title | requisition | employment type | location | workplace
+                    if (
+                        len(cells) >= 5
+                        and re.fullmatch(r"[A-Z]*\d{4,}", cells[1], re.I)
+                        and re.search(r"\b(?:full|part|temporary|contract)\s*time\b", cells[2], re.I)
+                    ):
+                        loc = normalize_location(cells[3])
+                    if not loc:
+                        for cell in cells[1:]:
+                            extracted = extract_location_from_text(cell)
+                            if extracted:
+                                loc = normalize_location(extracted)
+                                break
+                loc_match = re.search(r"\*\*([^*]{2,80})\*\*", nearby)
+                if not loc and loc_match:
+                    loc = normalize_location(norm(loc_match.group(1)))
+                loc = loc or extract_location_from_text(nearby)
+                posted = extract_posted_from_text(nearby)
+                jobs[url] = {
+                    "title": title,
+                    "url": url,
+                    "location": loc,
+                    "source": source,
+                    "posted": posted,
+                }
+        if len(jobs) == before:
+            empty_streak += 1
+        else:
+            empty_streak = 0
+        if empty_streak >= 2:
+            break
+        if scrape.get("stop_on_seen") and jobs:
+            page_jobs = list(jobs.values())[before:]
+            if page_jobs and all(
+                make_id(company, job.get("url", ""), job.get("title", "")) in seen
+                for job in page_jobs
+            ):
+                break
+        if len(page_urls) > 1:
+            time.sleep(0.35)
+    if expected_total is not None and len(jobs) < expected_total:
+        partial_err = f"partial listing: fetched {len(jobs)} of {expected_total} jobs"
+        first_err = f"{first_err}; {partial_err}" if first_err else partial_err
+    return list(jobs.values()), first_err
 
 def fetch_brassring(scrape, seen, company):
     return _fetch_playwright_with_source(scrape, seen, company, "brassring")
@@ -211,7 +263,12 @@ def fetch_phenom(scrape, seen, company):
         time.sleep(0.3)
 
     if jobs:
-        return list(jobs.values()), None
+        result = list(jobs.values())
+        if scrape.get("fetch_descriptions"):
+            detail_scrape = dict(scrape)
+            detail_scrape["_company_name"] = company
+            _fill_reader_descriptions(result, seen, detail_scrape)
+        return result, None
 
     pw_err = "no Phenom JSON jobs found"
     if scrape.get("allow_browser_fallback") is not False:
@@ -440,6 +497,8 @@ def fetch_salesforce(scrape, seen, company):
 # ── Playwright ────────────────────────────────────────────────────────────────
 
 def fetch_playwright(scrape, seen, company):
+    if scrape.get("reader_only"):
+        return _fetch_reader_markdown(scrape, seen, company, "playwright")
     from .playwright_scraper import fetch_playwright as _pw
     jobs, err = _pw(scrape, seen, company)
     if not jobs and scrape.get("list_url"):

@@ -158,7 +158,7 @@ input[type="email"]:focus { border-color: #5e8a5e; box-shadow: 0 0 0 3px #e9f1e3
         <label class="check" style="text-transform:none;letter-spacing:0;font-size:13.5px;color:#1c272d;margin-bottom:0">
           <input type="checkbox" name="email_alerts_enabled" {% if user['email_alerts_enabled'] %}checked{% endif %}>
           <div>
-            Allow saved-search email alerts
+            Allow daily saved-search emails after the final fresh scan
           </div>
         </label>
         <button class="btn" type="submit">Save profile</button>
@@ -170,7 +170,7 @@ input[type="email"]:focus { border-color: #5e8a5e; box-shadow: 0 0 0 3px #e9f1e3
 
     <aside class="card">
       <div class="stat"><span>Username</span><b>{{ user['username'] }}</b></div>
-      <div class="stat"><span>Plan</span><b>{{ user['plan_status'] or 'free' }}</b></div>
+      <div class="stat"><span>Plan</span><b>{% if user['role'] == 'admin' %}Admin · Pro access{% else %}{{ user['plan_status'] or 'free' }}{% endif %}</b></div>
       <div class="stat"><span>Apply List</span><b>{% if is_pro %}Unlimited{% else %}{{ free_apply_limit }} jobs{% endif %}</b></div>
       <div class="stat"><span>Email alerts</span><b>{% if is_pro %}Pro{% else %}Pro only{% endif %}</b></div>
     </aside>

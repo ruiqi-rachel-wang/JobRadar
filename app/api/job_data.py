@@ -5,6 +5,8 @@ from datetime import datetime
 
 from .common import COMPANIES_FILE, DEFAULT_COMPANIES_FILE
 from .database import IS_POSTGRES, add_column_if_missing, connect_db, initialize_postgres_schema, placeholders
+from .search import keyword_groups, keyword_matches
+from .taxonomy import normalize_categories, normalize_tags
 from .utils import extract_experience, extract_keywords, location_matches, make_id, normalize_location, _parse_posted
 
 def _backfill_has_description_once(conn):
@@ -45,6 +47,8 @@ def init_db():
             initialize_postgres_schema(conn)
             add_column_if_missing(conn, "jobs", "has_description INTEGER DEFAULT 0")
             add_column_if_missing(conn, "jobs", "keywords TEXT DEFAULT '[]'")
+            add_column_if_missing(conn, "scan_runs", "scheduled_for TEXT DEFAULT ''")
+            add_column_if_missing(conn, "scan_runs", "send_alerts_after INTEGER DEFAULT 0")
             _backfill_has_description_once(conn)
             return
         conn.execute("""
@@ -85,7 +89,9 @@ def init_db():
                 new_jobs_found INTEGER DEFAULT 0,
                 updated_jobs_found INTEGER DEFAULT 0,
                 failed_companies INTEGER DEFAULT 0,
-                error_message TEXT
+                error_message TEXT,
+                scheduled_for TEXT DEFAULT '',
+                send_alerts_after INTEGER DEFAULT 0
             )
         """)
         conn.execute("""
@@ -116,25 +122,22 @@ def init_db():
             "employment_type TEXT DEFAULT ''",
         ):
             add_column_if_missing(conn, "jobs", column_sql)
+        for column_sql in (
+            "scheduled_for TEXT DEFAULT ''",
+            "send_alerts_after INTEGER DEFAULT 0",
+        ):
+            add_column_if_missing(conn, "scan_runs", column_sql)
         _backfill_has_description_once(conn)
         _init_jobs_fts(conn)
         conn.execute("CREATE INDEX IF NOT EXISTS idx_jobs_open ON jobs(is_open)")
         conn.execute("CREATE INDEX IF NOT EXISTS idx_jobs_company_open ON jobs(company, is_open)")
         conn.execute("""
-            CREATE INDEX IF NOT EXISTS idx_jobs_open_sort_date
-            ON jobs(is_open, COALESCE(NULLIF(posted,''), substr(first_seen,1,10)) DESC)
+            CREATE INDEX IF NOT EXISTS idx_jobs_open_first_seen
+            ON jobs(is_open, first_seen DESC)
         """)
         conn.execute("""
-            CREATE INDEX IF NOT EXISTS idx_jobs_company_open_sort_date
-            ON jobs(company, is_open, COALESCE(NULLIF(posted,''), substr(first_seen,1,10)) DESC)
-        """)
-        conn.execute("""
-            CREATE INDEX IF NOT EXISTS idx_jobs_open_posted_sort
-            ON jobs(is_open, CASE WHEN posted != '' THEN 0 ELSE 1 END, posted DESC, substr(first_seen,1,10) DESC)
-        """)
-        conn.execute("""
-            CREATE INDEX IF NOT EXISTS idx_jobs_company_open_posted_sort
-            ON jobs(company, is_open, CASE WHEN posted != '' THEN 0 ELSE 1 END, posted DESC, substr(first_seen,1,10) DESC)
+            CREATE INDEX IF NOT EXISTS idx_jobs_company_open_first_seen
+            ON jobs(company, is_open, first_seen DESC)
         """)
         conn.execute("""
             CREATE TABLE IF NOT EXISTS feedback (
@@ -184,7 +187,9 @@ def init_db():
                 exp_yrs    TEXT    DEFAULT '',
                 since      TEXT    DEFAULT 'any',
                 category   TEXT    DEFAULT 'All',
+                tag        TEXT    DEFAULT '',
                 email_alert_enabled INTEGER DEFAULT 0,
+                alert_cursor_at TEXT DEFAULT '',
                 last_alert_sent_at TEXT DEFAULT '',
                 created_at TEXT    DEFAULT (datetime('now'))
             )
@@ -195,6 +200,8 @@ def init_db():
             add_column_if_missing(conn, "users", column_sql)
         for column_sql in (
             "email_alert_enabled INTEGER DEFAULT 0",
+            "tag TEXT DEFAULT ''",
+            "alert_cursor_at TEXT DEFAULT ''",
             "last_alert_sent_at TEXT DEFAULT ''",
         ):
             add_column_if_missing(conn, "user_saved_searches", column_sql)
@@ -251,12 +258,14 @@ def upsert_jobs(job_list):
             fts_rows = [
                 (j["id"], j["title"], j["company"], j.get("location", ""))
                 for j in job_list
+                if j.get("fts_changed", True)
             ]
-            conn.executemany("DELETE FROM jobs_fts WHERE job_id=?", [(row[0],) for row in fts_rows])
-            conn.executemany(
-                "INSERT INTO jobs_fts(job_id, title, company, location) VALUES (?,?,?,?)",
-                fts_rows,
-            )
+            if fts_rows:
+                conn.executemany("DELETE FROM jobs_fts WHERE job_id=?", [(row[0],) for row in fts_rows])
+                conn.executemany(
+                    "INSERT INTO jobs_fts(job_id, title, company, location) VALUES (?,?,?,?)",
+                    fts_rows,
+                )
 
 def get_app_state(key, default=""):
     with connect_db() as conn:
@@ -275,11 +284,12 @@ def delete_app_state(key):
     with connect_db() as conn:
         conn.execute("DELETE FROM app_state WHERE key=?", (key,))
 
-def delete_expired_jobs(company_name, current_ids):
+def delete_expired_jobs(company_name, current_ids, allow_empty=False):
     """Mark jobs closed when they do not appear in a company's latest scan.
-    Only runs when the scan returned results — empty scan means error, not expiry.
+    Empty results are non-destructive unless the caller explicitly verified
+    that the source reliably represents a company with no current openings.
     Uses a diff approach to avoid SQLite's 999 bind-variable limit."""
-    if not current_ids:
+    if not current_ids and not allow_empty:
         return
     current_set = set(current_ids)
     with connect_db() as conn:
@@ -305,6 +315,12 @@ def load_companies():
     if not path.exists():
         print("⚠  companies.json not found"); return []
     companies = json.loads(path.read_text(encoding="utf-8"))
+    for company in companies:
+        company["categories"] = normalize_categories(company.get("categories"))
+        tags = list(company.get("tags") or [])
+        if (company.get("interview") or {}).get("no_whiteboard") is True:
+            tags.append("Interview Friendly")
+        company["tags"] = normalize_tags(tags)
     modes = Counter((c.get("scrape") or {}).get("mode","html") for c in companies)
     print(f"✓ {len(companies)} companies — " +
           " | ".join(f"{m}:{n}" for m,n in sorted(modes.items())))
@@ -337,17 +353,17 @@ def add_or_update_company(name, scrape, categories=None):
     if not path.exists() and DEFAULT_COMPANIES_FILE.exists() and path != DEFAULT_COMPANIES_FILE:
         shutil.copyfile(DEFAULT_COMPANIES_FILE, path)
     companies = json.loads(path.read_text(encoding="utf-8")) if path.exists() else []
-    categories = categories or ["Detected"]
+    categories = normalize_categories(categories)
     updated = False
     for company in companies:
         if (company.get("name") or "").strip().lower() == name.lower():
             company["name"] = name
-            company["categories"] = company.get("categories") or categories
+            company["categories"] = normalize_categories(company.get("categories") or categories)
             company["scrape"] = scrape
             updated = True
             break
     if not updated:
-        companies.append({"name": name, "categories": categories, "scrape": scrape})
+        companies.append({"name": name, "categories": categories, "tags": ["Needs Review"], "scrape": scrape})
     companies.sort(key=lambda c: (c.get("name") or "").lower())
     path.write_text(json.dumps(companies, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     current_companies()
@@ -413,6 +429,7 @@ def jobs_from_seen_fallback(keyword, location, since, category, companies, limit
     """Fallback job query from the in-memory seen dict when the DB returns nothing."""
     cats_by_company = company_categories_map()
     company_set = set(companies or [])
+    groups = keyword_groups(keyword)
     jobs = []
     for jid, item in load_seen().items():
         if not isinstance(item, dict):
@@ -427,7 +444,7 @@ def jobs_from_seen_fallback(keyword, location, since, category, companies, limit
         if company_set and company not in company_set:
             continue
         loc = item.get("location", "")
-        if keyword and keyword not in f"{title} {company}".lower():
+        if groups and not keyword_matches(title, company, item.get("keywords") or [], groups):
             continue
         if location and not location_matches(location, loc):
             continue

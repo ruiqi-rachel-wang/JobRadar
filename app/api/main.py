@@ -8,6 +8,7 @@ import time
 from datetime import datetime, timedelta
 from email.message import EmailMessage
 from html import escape as html_escape
+from pathlib import Path
 from urllib.parse import urlencode, urlsplit
 
 from flask import Flask, Response, jsonify, redirect, render_template, request, session, url_for
@@ -19,7 +20,7 @@ try:
 except ModuleNotFoundError:
     stripe = None
 
-from .database import IS_POSTGRES, connect_auth_db, connect_db, init_auth_db, placeholders
+from .database import connect_auth_db, connect_db, init_auth_db, placeholders
 try:
     from scanner_service import run_scan
     from scan_store import (
@@ -41,13 +42,13 @@ from .job_data import (
     add_or_update_company, current_companies, get_app_state, init_db, jobs_from_seen_fallback,
     set_app_state,
 )
+from .common import DATA_DIR
 from .apis import fetch_jobs
 from .utils import experience_match_score, extract_keywords
 from .search import (
-    display_location, display_title,
-    experience_score_sql, fts_match_query, keyword_groups, keyword_relevance_sql, keyword_where,
-    role_intent_where,
+    JOB_DATE_ORDER_SQL, display_location, display_title, keyword_groups, keyword_where,
 )
+from .taxonomy import migrate_saved_filter
 
 SECRET_KEY = os.environ.get("SECRET_KEY") or os.environ.get("JOBRADAR_SECRET_KEY")
 IS_PRODUCTION = (
@@ -82,11 +83,11 @@ SMTP_PASSWORD = os.environ.get("JOBDROP_SMTP_PASSWORD", "")
 SMTP_USE_TLS = os.environ.get("JOBDROP_SMTP_USE_TLS", "true").lower() not in {"0", "false", "no"}
 EMAIL_FROM = os.environ.get("JOBDROP_EMAIL_FROM", "")
 EMAIL_FROM_NAME = os.environ.get("JOBDROP_EMAIL_FROM_NAME", "JobDrop")
-PUBLIC_BASE_URL = os.environ.get("JOBDROP_PUBLIC_URL", "http://jobdrop.site").rstrip("/")
-ALERT_MIN_HOURS = int(os.environ.get("JOBDROP_ALERT_MIN_HOURS", "20"))
+PUBLIC_BASE_URL = os.environ.get("JOBDROP_PUBLIC_URL", "https://jobdrop.site").rstrip("/")
 EMAIL_ALERTS_CONFIGURED = bool(
     SMTP_HOST and EMAIL_FROM
 )
+_EMAIL_ALERT_LOCK = threading.Lock()
 if stripe and STRIPE_SECRET_KEY:
     stripe.api_key = STRIPE_SECRET_KEY
 
@@ -98,6 +99,30 @@ def _is_user():
 
 def _current_user_id():
     return session.get("user_id")
+
+def _ensure_password_admin_user():
+    """Return the persistent account behind the password-only admin login."""
+    with connect_auth_db(rows=True) as conn:
+        row = conn.execute(
+            "SELECT id, role FROM users WHERE username=?",
+            ("admin",),
+        ).fetchone()
+        if row:
+            if row["role"] != "admin":
+                raise RuntimeError("The reserved admin username belongs to a non-admin account.")
+            return row["id"]
+        # The environment password remains the only admin credential. This
+        # unusable random hash merely satisfies the persistent user schema.
+        conn.execute(
+            "INSERT INTO users (username, password_hash, role, plan_status) "
+            "VALUES (?, ?, 'admin', 'free')",
+            ("admin", generate_password_hash(secrets.token_urlsafe(32))),
+        )
+        row = conn.execute(
+            "SELECT id FROM users WHERE username=?",
+            ("admin",),
+        ).fetchone()
+        return row["id"]
 
 def _has_paid_access():
     if _is_admin():
@@ -201,6 +226,18 @@ def _public_companies():
     return [dict(company) for company in current_companies() if _company_is_public(company, locks)]
 
 @app.before_request
+def attach_password_admin_identity():
+    """Upgrade existing password-only admin sessions to a persistent account."""
+    if not _is_admin() or _current_user_id():
+        return None
+    try:
+        session["user_id"] = _ensure_password_admin_user()
+        session["username"] = "admin"
+    except Exception:
+        app.logger.exception("Could not attach the persistent admin account")
+    return None
+
+@app.before_request
 def protect_routes():
     if request.path == "/app":
         return _user_required()
@@ -240,6 +277,17 @@ def _parse_db_dt(value):
         except ValueError:
             continue
     return None
+
+def _db_dt_iso(value):
+    """Return a browser-safe timestamp with the server's UTC offset attached."""
+    dt = _parse_db_dt(value)
+    if not dt:
+        return ""
+    if dt.tzinfo is None:
+        # Existing auth timestamps are stored in the server's local timezone.
+        # astimezone() supplies the correct historical UTC offset (including DST).
+        dt = dt.astimezone()
+    return dt.isoformat(timespec="seconds")
 
 def _days_since(value):
     dt = _parse_db_dt(value)
@@ -303,13 +351,15 @@ def _saved_search_url(search_row):
         params["since"] = search_row["since"]
     if search_row["category"] and search_row["category"] != "All":
         params["category"] = search_row["category"]
+    if search_row["tag"]:
+        params["tag"] = search_row["tag"]
     return f"{PUBLIC_BASE_URL}/app" + (f"?{urlencode(params)}" if params else "")
 
-def _saved_search_alert_jobs(search_row, cutoff, limit=15):
+def _saved_search_alert_jobs(search_row, cutoff, window_end):
     kw = (search_row["kw"] or "").strip().lower()
     location = (search_row["loc"] or "").strip().lower()
     since = (search_row["since"] or "").strip()
-    category = (search_row["category"] or "").strip()
+    category, tag = migrate_saved_filter(search_row["category"], search_row["tag"])
     exp_years_raw = (search_row["exp_yrs"] or "").strip()
     exp_years = None
     if exp_years_raw:
@@ -319,7 +369,11 @@ def _saved_search_alert_jobs(search_row, cutoff, limit=15):
             exp_years = None
 
     kw_groups = keyword_groups(kw)
-    clauses, params = ["is_open = TRUE", "COALESCE(first_seen, '') > ?"], [cutoff]
+    clauses, params = [
+        "is_open = TRUE",
+        "COALESCE(first_seen, '') > ?",
+        "COALESCE(first_seen, '') <= ?",
+    ], [cutoff, window_end]
     if kw:
         keyword_clauses, keyword_params = keyword_where(kw_groups)
         clauses.extend(keyword_clauses)
@@ -344,7 +398,19 @@ def _saved_search_alert_jobs(search_row, cutoff, limit=15):
         clauses.append("categories LIKE ?")
         params.append(f'%"{category}"%')
 
-    active_company_names = {company.get("name") for company in _public_companies() if company.get("name")}
+    visible_companies = _admin_companies() if search_row["role"] == "admin" else _public_companies()
+    active_company_names = {company.get("name") for company in visible_companies if company.get("name")}
+    if tag:
+        tag_company_names = {
+            company.get("name")
+            for company in visible_companies
+            if company.get("name") and tag in (company.get("tags") or [])
+        }
+        if not tag_company_names:
+            return []
+        tag_marks = placeholders(len(tag_company_names))
+        clauses.append(f"company IN ({tag_marks})")
+        params.extend(sorted(tag_company_names))
     hidden_company_names = sorted(
         company.get("name")
         for company in current_companies()
@@ -358,9 +424,8 @@ def _saved_search_alert_jobs(search_row, cutoff, limit=15):
     sql = (
         "SELECT id, title, url, company, location, first_seen, posted, exp_label "
         f"FROM jobs WHERE {' AND '.join(clauses)} "
-        "ORDER BY first_seen DESC LIMIT ?"
+        f"ORDER BY {JOB_DATE_ORDER_SQL}"
     )
-    params.append(limit)
     with connect_db(rows=True) as conn:
         rows = conn.execute(sql, params).fetchall()
     return [
@@ -393,66 +458,99 @@ def _send_email(to_email, subject, text_body, html_body):
         smtp.send_message(msg)
     return True
 
-def _send_saved_search_alerts():
+def _send_saved_search_alerts(window_end=None):
+    summary = {"configured": EMAIL_ALERTS_CONFIGURED, "searches": 0, "emails": 0, "jobs": 0, "failed": 0}
     if not EMAIL_ALERTS_CONFIGURED:
-        return
-    now = datetime.now()
-    min_gap = timedelta(hours=ALERT_MIN_HOURS)
-    with connect_auth_db(rows=True) as conn:
-        rows = conn.execute(
-            "SELECT s.id, s.name, s.kw, s.loc, s.exp_yrs, s.since, s.category, "
-            "s.last_alert_sent_at, u.username, u.email "
-            "FROM user_saved_searches s JOIN users u ON u.id=s.user_id "
-            "WHERE s.email_alert_enabled=1 "
-            "AND u.email_alerts_enabled=1 "
-            "AND COALESCE(u.email, '') != '' "
-            "AND (u.plan_status IN ('pro', 'trial') OR u.role='admin')"
-        ).fetchall()
+        return summary
+    if not _EMAIL_ALERT_LOCK.acquire(blocking=False):
+        summary["skipped"] = "already_running"
+        return summary
+    try:
+        now = window_end or datetime.now()
+        window_end_text = now.strftime("%Y-%m-%d %H:%M:%S")
+        with connect_auth_db(rows=True) as conn:
+            rows = conn.execute(
+                "SELECT s.id, s.name, s.kw, s.loc, s.exp_yrs, s.since, s.category, s.tag, "
+                "s.alert_cursor_at, s.last_alert_sent_at, s.created_at, "
+                "u.username, u.email, u.role "
+                "FROM user_saved_searches s JOIN users u ON u.id=s.user_id "
+                "WHERE s.email_alert_enabled=1 "
+                "AND u.email_alerts_enabled=1 "
+                "AND COALESCE(u.email, '') != '' "
+                "AND (u.plan_status IN ('pro', 'trial') OR u.role='admin')"
+            ).fetchall()
 
-    for row in rows:
-        last_sent = _parse_db_dt(row["last_alert_sent_at"])
-        if last_sent and now - last_sent < min_gap:
-            continue
-        cutoff_dt = last_sent or (now - timedelta(days=1))
-        cutoff = cutoff_dt.strftime("%Y-%m-%d %H:%M:%S")
-        jobs = _saved_search_alert_jobs(row, cutoff)
-        sent_at = now.strftime("%Y-%m-%d %H:%M:%S")
-        if not jobs:
-            with connect_auth_db() as conn:
-                conn.execute("UPDATE user_saved_searches SET last_alert_sent_at=? WHERE id=?", (sent_at, row["id"]))
-            continue
-
-        search_url = _saved_search_url(row)
-        lines = [f"New JobDrop matches for {row['name']}:", ""]
-        items_html = []
-        for job in jobs:
-            title = job["title"] or "Untitled role"
-            company = job["company"] or "Unknown company"
-            location = f" - {job['location']}" if job["location"] else ""
-            exp = f" ({job['exp_label']})" if job["exp_label"] else ""
-            lines.append(f"- {title} at {company}{location}{exp}")
-            if job["url"]:
-                lines.append(f"  {job['url']}")
-            items_html.append(
-                "<li>"
-                f"<strong>{html_escape(title)}</strong> at {html_escape(company)}"
-                f"{html_escape(location)}{html_escape(exp)}"
-                + (f"<br><a href=\"{html_escape(job['url'])}\">Open job</a>" if job["url"] else "")
-                + "</li>"
+        for row in rows:
+            summary["searches"] += 1
+            last_sent_dt = _parse_db_dt(row["last_alert_sent_at"])
+            # A search's first alert contains only jobs found today. After the
+            # first successful alert, include everything found since that email.
+            cutoff_dt = last_sent_dt or (
+                now.replace(hour=0, minute=0, second=0, microsecond=0)
+                - timedelta(seconds=1)
             )
-        lines.extend(["", f"Open this search: {search_url}", "", "You can turn this off from Profile or the saved-search toggle."])
-        html_body = (
-            f"<p>New JobDrop matches for <strong>{html_escape(row['name'])}</strong>:</p>"
-            f"<ul>{''.join(items_html)}</ul>"
-            f"<p><a href=\"{html_escape(search_url)}\">Open this search</a></p>"
-            "<p>You can turn this off from Profile or the saved-search toggle.</p>"
-        )
-        try:
-            if _send_email(row["email"], f"JobDrop: {len(jobs)} new jobs for {row['name']}", "\n".join(lines), html_body):
+            cutoff = min(cutoff_dt, now).strftime("%Y-%m-%d %H:%M:%S")
+            jobs = _saved_search_alert_jobs(row, cutoff, window_end_text)
+            if not jobs:
                 with connect_auth_db() as conn:
-                    conn.execute("UPDATE user_saved_searches SET last_alert_sent_at=? WHERE id=?", (sent_at, row["id"]))
-        except Exception as exc:
-            print(f"Saved-search alert failed for search {row['id']}: {exc}", flush=True)
+                    conn.execute(
+                        "UPDATE user_saved_searches SET alert_cursor_at=? WHERE id=?",
+                        (window_end_text, row["id"]),
+                    )
+                continue
+
+            search_url = _saved_search_url(row)
+            lines = [f"New JobDrop matches for {row['name']}:", ""]
+            items_html = []
+            for job in jobs:
+                title = job["title"] or "Untitled role"
+                company = job["company"] or "Unknown company"
+                location = f" - {job['location']}" if job["location"] else ""
+                exp = f" ({job['exp_label']})" if job["exp_label"] else ""
+                plain_title = f"{title} ({job['url']})" if job["url"] else title
+                lines.append(f"- {plain_title} at {company}{location}{exp}")
+                title_html = html_escape(title)
+                if job["url"]:
+                    title_html = (
+                        f"<a href=\"{html_escape(job['url'])}\">{title_html}</a>"
+                    )
+                items_html.append(
+                    "<li>"
+                    f"<strong>{title_html}</strong> at {html_escape(company)}"
+                    f"{html_escape(location)}{html_escape(exp)}"
+                    + "</li>"
+                )
+            lines.extend(["", f"Open this search: {search_url}", "", "You can turn this off from Profile or the saved-search toggle."])
+            html_body = (
+                f"<p><strong>{len(jobs)} new JobDrop matches</strong> for {html_escape(row['name'])}:</p>"
+                f"<ul>{''.join(items_html)}</ul>"
+                f"<p><a href=\"{html_escape(search_url)}\">Open this search</a></p>"
+                "<p>You can turn this off from Profile or the saved-search toggle.</p>"
+            )
+            try:
+                delivered = _send_email(
+                    row["email"],
+                    f"JobDrop: {len(jobs)} new jobs for {row['name']}",
+                    "\n".join(lines),
+                    html_body,
+                )
+                if delivered:
+                    with connect_auth_db() as conn:
+                        conn.execute(
+                            "UPDATE user_saved_searches "
+                            "SET alert_cursor_at=?, last_alert_sent_at=? WHERE id=?",
+                            (window_end_text, window_end_text, row["id"]),
+                        )
+                    summary["emails"] += 1
+                    summary["jobs"] += len(jobs)
+                else:
+                    summary["failed"] += 1
+            except Exception as exc:
+                summary["failed"] += 1
+                print(f"Saved-search alert failed for search {row['id']}: {exc}", flush=True)
+        return summary
+    finally:
+        _EMAIL_ALERT_LOCK.release()
 
 def _user_id_for_subscription(subscription):
     metadata = getattr(subscription, "metadata", None) or {}
@@ -485,7 +583,8 @@ def touch_user_activity():
     if not uid:
         return None
     now_ts = int(time.time())
-    if now_ts - int(session.get("_last_active_touch", 0) or 0) < 300:
+    # Bound writes while keeping the admin activity value close to real time.
+    if now_ts - int(session.get("_last_active_touch", 0) or 0) < 60:
         return None
     session["_last_active_touch"] = now_ts
     with connect_auth_db() as conn:
@@ -497,69 +596,139 @@ def touch_user_activity():
 scan_state = {
     "running": False, "done": False, "started_at": 0,
     "progress": [], "new_count": 0,
-    "scan_run_id": None, "scan_type": "fresh",
+    "scan_run_id": None, "scan_type": "fresh", "timing": {},
 }
 _scan_cancel_event = threading.Event()
 
 # ── Auto-schedule ──────────────────────────────────────────────────────────────
 
-_last_schedule_trigger: str = ""   # "HH:MM" of last auto-triggered slot
+_last_schedule_trigger: str = ""   # "YYYY-MM-DD HH:MM" of last triggered slot
+_schedule_cache: dict = {}
+_SCHEDULE_FILE = Path(DATA_DIR) / "scan_schedule.json"
+_SCHEDULE_QUEUE_FILE = Path(DATA_DIR) / "queued_scan.json"
+_schedule_file_lock = threading.Lock()
+_schedule_queue_lock = threading.Lock()
+
+
+def _write_schedule_file(schedule: dict) -> None:
+    """Persist the schedule without competing with scan writes to the jobs DB."""
+    global _schedule_cache
+    with _schedule_file_lock:
+        _SCHEDULE_FILE.parent.mkdir(parents=True, exist_ok=True)
+        temporary = _SCHEDULE_FILE.with_suffix(".tmp")
+        temporary.write_text(json.dumps(schedule), encoding="utf-8")
+        temporary.replace(_SCHEDULE_FILE)
+        _schedule_cache = schedule
 
 
 def _get_schedule() -> dict:
-    """Load the scan schedule from app_state (persisted JSON)."""
-    raw = get_app_state("scan_schedule")
+    """Load the file schedule, migrating the legacy DB value once if needed."""
+    global _schedule_cache
+    if _SCHEDULE_FILE.exists():
+        try:
+            with _schedule_file_lock:
+                parsed = json.loads(_SCHEDULE_FILE.read_text(encoding="utf-8"))
+            if isinstance(parsed, dict):
+                _schedule_cache = parsed
+                return _schedule_cache
+        except Exception:
+            pass
     try:
-        return json.loads(raw) if raw else {}
+        raw = get_app_state("scan_schedule")
+        parsed = json.loads(raw) if raw else {}
+        if isinstance(parsed, dict):
+            _write_schedule_file(parsed)
     except Exception:
-        return {}
+        pass
+    return _schedule_cache
 
 
-def _queue_scheduled_scan(scan_type):
-    """Remember missed scheduled slots so they run after the current scan.
+def _queue_scheduled_scan(scan_type, scheduled_for="", send_alerts_after=False):
+    """Keep only the newest missed schedule while another scan is running."""
+    if scan_type not in {"fresh", "full"}:
+        return
+    payload = {
+        "scan_type": scan_type,
+        "queued_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        "scheduled_for": scheduled_for or "",
+        "send_alerts_after": bool(send_alerts_after),
+    }
+    with _schedule_queue_lock:
+        temporary = _SCHEDULE_QUEUE_FILE.with_suffix(".tmp")
+        temporary.write_text(json.dumps(payload), encoding="utf-8")
+        temporary.replace(_SCHEDULE_QUEUE_FILE)
 
-    Keep BOTH types when they collide (stored comma-separated). The old
-    keep-fresh-only rule silently discarded a queued full scan whenever a
-    fresh slot also fired while a scan was busy — full scans could starve
-    forever on days with long scans."""
-    queued = set(filter(None, (get_app_state("queued_scan_type") or "").split(",")))
-    queued.add(scan_type)
-    set_app_state("queued_scan_type", ",".join(sorted(queued & {"fresh", "full"})))
-    set_app_state("queued_scan_queued_at", datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+
+def _pop_queued_scan():
+    payload = {}
+    with _schedule_queue_lock:
+        if _SCHEDULE_QUEUE_FILE.exists():
+            try:
+                loaded = json.loads(_SCHEDULE_QUEUE_FILE.read_text(encoding="utf-8"))
+                if isinstance(loaded, dict):
+                    payload = loaded
+            except Exception:
+                payload = {}
+            _SCHEDULE_QUEUE_FILE.unlink(missing_ok=True)
+    # Migrate any queue left by an older deployment after the active scan has
+    # released the jobs database lock.
+    if not payload.get("scan_type"):
+        try:
+            payload["scan_type"] = (get_app_state("queued_scan_type") or "").strip()
+        except Exception:
+            payload["scan_type"] = ""
+    try:
+        set_app_state("queued_scan_type", "")
+        set_app_state("queued_scan_queued_at", "")
+    except Exception:
+        pass
+    scan_type = str(payload.get("scan_type") or "")
+    return {
+        "scan_type": scan_type if scan_type in {"fresh", "full"} else "",
+        "scheduled_for": str(payload.get("scheduled_for") or ""),
+        "send_alerts_after": bool(payload.get("send_alerts_after")),
+    }
 
 
 def _pop_queued_scan_type():
-    queued = set(filter(None, (get_app_state("queued_scan_type") or "").split(",")))
-    queued &= {"fresh", "full"}
-    if not queued:
-        return ""
-    # Fresh first (freshness is the product promise); full runs on the next pop.
-    pick = "fresh" if "fresh" in queued else "full"
-    remaining = queued - {pick}
-    set_app_state("queued_scan_type", ",".join(sorted(remaining)))
-    if not remaining:
-        set_app_state("queued_scan_queued_at", "")
-    return pick
+    """Compatibility helper for callers that need only the queued type."""
+    return _pop_queued_scan()["scan_type"]
+
+
+def _is_final_fresh_schedule_slot(scan_type, cfg, time_text):
+    """True only for the last configured fresh-scan slot of the day."""
+    times = [
+        str(value) for value in (cfg.get("times") or [])
+        if re.match(r"^(?:[01]\d|2[0-3]):[0-5]\d$", str(value))
+    ]
+    return scan_type == "fresh" and bool(cfg.get("enabled")) and bool(times) and time_text == max(times)
 
 
 def _try_run_scheduled():
     """Fire a scheduled scan if the current minute matches a configured slot."""
     global _last_schedule_trigger
-    now = datetime.now().strftime("%H:%M")
-    if now == _last_schedule_trigger:
+    current = datetime.now()
+    now = current.strftime("%H:%M")
+    minute_key = current.strftime("%Y-%m-%d %H:%M")
+    if minute_key == _last_schedule_trigger:
         return  # already fired this minute
     schedule = _get_schedule()
     for scan_type in ("fresh", "full"):
         cfg = schedule.get(scan_type, {})
         if cfg.get("enabled") and now in (cfg.get("times") or []):
-            _last_schedule_trigger = now
+            _last_schedule_trigger = minute_key
+            send_alerts_after = _is_final_fresh_schedule_slot(scan_type, cfg, now)
             names = _scheduled_scan_names()
             if not names:
                 return
             if scan_state["running"] or running_scan_record():
-                _queue_scheduled_scan(scan_type)
+                _queue_scheduled_scan(scan_type, minute_key, send_alerts_after)
                 return
-            threading.Thread(target=scan_runner, args=(names, scan_type), daemon=True).start()
+            threading.Thread(
+                target=scan_runner,
+                args=(names, scan_type, minute_key, send_alerts_after),
+                daemon=True,
+            ).start()
             break
 
 
@@ -602,9 +771,14 @@ def _resume_interrupted_scan():
     except Exception:
         pass
 
-def scan_runner(selected_names, scan_type="fresh"):
+def scan_runner(selected_names, scan_type="fresh", scheduled_for="", send_alerts_after=False):
     try:
-        do_scan(selected_names, scan_type=scan_type)
+        do_scan(
+            selected_names,
+            scan_type=scan_type,
+            scheduled_for=scheduled_for,
+            send_alerts_after=send_alerts_after,
+        )
     except Exception as e:
         scan_state.update(running=False, done=True, new_count=0)
         for p in scan_state.get("progress", []):
@@ -623,7 +797,13 @@ def resume_scan_runner(scan_run):
         if row.get("status") in {"pending", "scanning"}
     ]
     try:
-        do_scan(remaining, scan_type=scan_type, resume_scan_run_id=scan_run_id)
+        do_scan(
+            remaining,
+            scan_type=scan_type,
+            resume_scan_run_id=scan_run_id,
+            scheduled_for=scan_run.get("scheduled_for") or "",
+            send_alerts_after=bool(scan_run.get("send_alerts_after")),
+        )
     except Exception as e:
         scan_state.update(running=False, done=True, new_count=0)
         for p in scan_state.get("progress", []):
@@ -642,20 +822,30 @@ def _start_queued_scan_if_idle():
         return
     if running_scan_record():
         return
-    queued = _pop_queued_scan_type()
-    if not queued:
+    queued = _pop_queued_scan()
+    if not queued["scan_type"]:
         return
     names = _scheduled_scan_names()
     if names:
-        threading.Thread(target=scan_runner, args=(names, queued), daemon=True).start()
+        threading.Thread(
+            target=scan_runner,
+            args=(
+                names,
+                queued["scan_type"],
+                queued["scheduled_for"],
+                queued["send_alerts_after"],
+            ),
+            daemon=True,
+        ).start()
 
 
-def do_scan(selected_names, scan_type="fresh", resume_scan_run_id=None):
+def do_scan(selected_names, scan_type="fresh", resume_scan_run_id=None,
+            scheduled_for="", send_alerts_after=False):
     _scan_cancel_event.clear()
     scan_state.update(
         running=True, done=False, started_at=time.time(),
         progress=[], new_count=0,
-        scan_run_id=resume_scan_run_id, scan_type=scan_type,
+        scan_run_id=resume_scan_run_id, scan_type=scan_type, timing={},
     )
     companies = current_companies()
     target = [c for c in companies if c["name"] in selected_names]
@@ -672,6 +862,9 @@ def do_scan(selected_names, scan_type="fresh", resume_scan_run_id=None):
         on_scan_run_id=lambda scan_run_id: scan_state.update(scan_run_id=scan_run_id),
         should_cancel=_scan_cancel_event.is_set,
         resume_scan_run_id=resume_scan_run_id,
+        timing=scan_state["timing"],
+        scheduled_for=scheduled_for,
+        send_alerts_after=send_alerts_after,
     )
     scan_state.update(
         running=False,
@@ -679,11 +872,22 @@ def do_scan(selected_names, scan_type="fresh", resume_scan_run_id=None):
         new_count=result["new_count"],
         scan_run_id=result.get("scan_run_id") or scan_state.get("scan_run_id"),
     )
-    if result.get("new_count", 0) > 0:
-        _send_saved_search_alerts()
+    if (
+        scan_type == "fresh"
+        and send_alerts_after
+        and result.get("status") in {"success", "partial_success"}
+    ):
+        try:
+            alert_summary = _send_saved_search_alerts()
+            print(f"Saved-search daily alerts: {alert_summary}", flush=True)
+        except Exception as exc:
+            # Email delivery is downstream of scanning; never turn a completed
+            # scan into an error because the mail provider or auth DB is down.
+            print(f"Saved-search daily alert dispatch failed: {exc}", flush=True)
 
 
 _resume_interrupted_scan()
+_start_queued_scan_if_idle()
 
 
 # ── Routes ────────────────────────────────────────────────────────────────────
@@ -702,7 +906,7 @@ def _user_ctx():
                 "username": row["username"],
                 "email": row["email"] or "",
                 "is_admin": row["role"] == "admin",
-                "plan_status": row["plan_status"] or "free",
+                "plan_status": "admin" if row["role"] == "admin" else (row["plan_status"] or "free"),
                 "paid_member_days": _days_since(row["plan_started_at"]),
                 "email_alerts_enabled": bool(row["email_alerts_enabled"]),
             }
@@ -747,7 +951,7 @@ def _job_query(where_sql="", params=(), limit=60):
         "SELECT id, title, url, company, location, posted, first_seen, exp_label, "
         "skills, keywords, description FROM jobs "
         f"{where} "
-        "ORDER BY COALESCE(NULLIF(posted,''), substr(first_seen,1,10)) DESC "
+        f"ORDER BY {JOB_DATE_ORDER_SQL} "
         "LIMIT ?"
     )
     with connect_db(rows=True) as conn:
@@ -917,6 +1121,12 @@ def login():
         if ADMIN_PASSWORD and username.lower() == "admin" and secrets.compare_digest(password, ADMIN_PASSWORD):
             session.clear()
             session["admin_ok"] = True
+            try:
+                session["user_id"] = _ensure_password_admin_user()
+                session["username"] = "admin"
+                session["_last_active_touch"] = int(time.time())
+            except Exception:
+                app.logger.exception("Could not attach the persistent admin account during login")
             return redirect(_safe_next("admin"))
         # Regular user lookup
         with connect_auth_db(rows=True) as conn:
@@ -956,6 +1166,9 @@ def signup():
         if not username or not password:
             return render_template("auth.html", mode="signup",
                                    error="Username and password are required."), 400
+        if username.lower() == "admin":
+            return render_template("auth.html", mode="signup",
+                                   error="Username already taken."), 400
         if not re.match(r'^[a-zA-Z0-9_.-]{3,30}$', username):
             return render_template("auth.html", mode="signup",
                                    error="Username: 3-30 chars, letters/numbers/._- only."), 400
@@ -1183,8 +1396,8 @@ def api_admin_users():
             "plan_status": row["plan_status"] or "free",
             "plan_started_at": str(row["plan_started_at"] or ""),
             "plan_current_period_end": str(row["plan_current_period_end"] or ""),
-            "last_login_at": str(row["last_login_at"] or ""),
-            "last_active_at": str(row["last_active_at"] or ""),
+            "last_login_at": _db_dt_iso(row["last_login_at"]),
+            "last_active_at": _db_dt_iso(row["last_active_at"]),
             "created_at": str(row["created_at"] or ""),
             "member_days": _days_since(row["created_at"]),
             "paid_member_days": _days_since(row["plan_started_at"]),
@@ -1311,7 +1524,7 @@ def get_saved_searches():
         return jsonify([])
     with connect_auth_db(rows=True) as conn:
         rows = conn.execute(
-            "SELECT id, name, kw, loc, exp_yrs, since, category, email_alert_enabled, created_at "
+            "SELECT id, name, kw, loc, exp_yrs, since, category, tag, email_alert_enabled, created_at "
             "FROM user_saved_searches WHERE user_id=? ORDER BY created_at DESC, id DESC",
             (uid,),
         ).fetchall()
@@ -1324,6 +1537,7 @@ def get_saved_searches():
             "exp": row["exp_yrs"] or "",
             "since": row["since"] or "",
             "cat": row["category"] or "All",
+            "tag": row["tag"] or "",
             "email_alert_enabled": bool(row["email_alert_enabled"]),
         }
         for row in rows
@@ -1341,13 +1555,15 @@ def add_saved_search():
     name = (d.get("name") or "").strip()
     if not name:
         return jsonify({"error": "name required"}), 400
+    category, tag = migrate_saved_filter(d.get("cat") or "All", d.get("tag"))
     payload = {
         "name": name[:80],
         "kw": (d.get("kw") or "").strip()[:120],
         "loc": (d.get("loc") or "").strip()[:120],
         "exp": (d.get("exp") or "").strip()[:12],
         "since": (d.get("since") or "").strip()[:20],
-        "cat": (d.get("cat") or "All").strip()[:80] or "All",
+        "cat": category[:80] or "All",
+        "tag": tag[:80],
         "email_alert_enabled": bool(d.get("email_alert_enabled")),
     }
     if payload["email_alert_enabled"]:
@@ -1359,16 +1575,17 @@ def add_saved_search():
     with connect_auth_db(rows=True) as conn:
         conn.execute(
             "INSERT INTO user_saved_searches "
-            "(user_id, name, kw, loc, exp_yrs, since, category, email_alert_enabled) "
-            "VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+            "(user_id, name, kw, loc, exp_yrs, since, category, tag, email_alert_enabled, alert_cursor_at) "
+            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
             (
                 uid, payload["name"], payload["kw"], payload["loc"],
-                payload["exp"], payload["since"], payload["cat"],
+                payload["exp"], payload["since"], payload["cat"], payload["tag"],
                 int(payload["email_alert_enabled"]),
+                _now_db() if payload["email_alert_enabled"] else "",
             ),
         )
         row = conn.execute(
-            "SELECT id, name, kw, loc, exp_yrs, since, category, email_alert_enabled FROM user_saved_searches "
+            "SELECT id, name, kw, loc, exp_yrs, since, category, tag, email_alert_enabled FROM user_saved_searches "
             "WHERE user_id=? ORDER BY id DESC LIMIT 1",
             (uid,),
         ).fetchone()
@@ -1380,6 +1597,7 @@ def add_saved_search():
         "exp": row["exp_yrs"] or "",
         "since": row["since"] or "",
         "cat": row["category"] or "All",
+        "tag": row["tag"] or "",
         "email_alert_enabled": bool(row["email_alert_enabled"]),
     })
 
@@ -1403,8 +1621,10 @@ def update_saved_search(search_id):
             return jsonify({"error": "Add an email address before enabling alerts.", "code": "email_required"}), 400
     with connect_auth_db() as conn:
         conn.execute(
-            "UPDATE user_saved_searches SET email_alert_enabled=? WHERE id=? AND user_id=?",
-            (int(enabled), search_id, uid),
+            "UPDATE user_saved_searches SET email_alert_enabled=?, "
+            "alert_cursor_at=CASE WHEN ?=1 THEN ? ELSE alert_cursor_at END "
+            "WHERE id=? AND user_id=?",
+            (int(enabled), int(enabled), _now_db(), search_id, uid),
         )
     return jsonify({"ok": True, "email_alert_enabled": enabled})
 
@@ -1467,6 +1687,7 @@ def get_progress():
         "progress":    scan_state["progress"],
         "new_count":   scan_state["new_count"],
         "scan_run_id": scan_state.get("scan_run_id"),
+        "timing":      scan_state.get("timing") or {},
     })
 
 @app.route("/api/reenrich", methods=["POST"])
@@ -1667,7 +1888,7 @@ def add_detected_company_route():
             "detected": best,
         }), 422
 
-    updated = add_or_update_company(name, config, ["Detected"])
+    updated = add_or_update_company(name, config, [])
     return jsonify({
         "ok": True,
         "updated": updated,
@@ -1748,11 +1969,10 @@ def save_schedule():
     for scan_type in ("fresh", "full"):
         cfg   = data.get(scan_type, {})
         times = sorted({t for t in (cfg.get("times") or [])
-                        if re.match(r'^\d{2}:\d{2}$', str(t))})
+                        if re.match(r'^(?:[01]\d|2[0-3]):[0-5]\d$', str(t))})
         schedule[scan_type] = {"enabled": bool(cfg.get("enabled")), "times": times}
-    from .job_data import set_app_state
-    set_app_state("scan_schedule", json.dumps(schedule))
-    return jsonify({"ok": True})
+    _write_schedule_file(schedule)
+    return jsonify({"ok": True, "schedule": schedule})
 
 @app.route("/api/scans/recent")
 def api_scans_recent():
@@ -1864,7 +2084,12 @@ def api_jobs():
             exp_years = max(0.0, float(exp_years_raw))
         except ValueError:
             exp_years = None
-    category = (request.args.get("category") or "").strip()
+    category, tag = migrate_saved_filter(
+        request.args.get("category") or "",
+        request.args.get("tag") or "",
+    )
+    if category == "All":
+        category = ""
     companies = [c.strip() for c in request.args.getlist("company") if c.strip()]
     if not companies:
         raw_companies = (request.args.get("companies") or "").strip()
@@ -1873,6 +2098,12 @@ def api_jobs():
     all_company_names = {company.get("name") for company in current_companies() if company.get("name")}
     company_configs = _admin_companies() if _is_admin() else _public_companies()
     active_company_names = {company.get("name") for company in company_configs if company.get("name")}
+    if tag:
+        active_company_names &= {
+            company.get("name")
+            for company in company_configs
+            if company.get("name") and tag in (company.get("tags") or [])
+        }
     hidden_company_names = sorted(all_company_names - active_company_names)
     no_visible_company_match = False
     if companies:
@@ -1899,30 +2130,12 @@ def api_jobs():
         })
 
     kw_groups = keyword_groups(keyword)
-    # Role-intent searches ("software engineer", "product manager", etc.) are
-    # broader than raw FTS terms. Let the expanded LIKE patterns drive those;
-    # otherwise FTS can accidentally require only one token such as "engineer*"
-    # and drop valid "developer"/"SDE" roles.
-    has_role_intent = bool(role_intent_where(kw_groups, "title")[0]) if kw_groups else False
-    fts_query = fts_match_query(keyword, "", kw_groups) if (not IS_POSTGRES and keyword and not has_role_intent) else ""
-    use_fts = bool(fts_query)
-
-    if use_fts:
-        from_sql = "jobs_fts JOIN jobs ON jobs.id = jobs_fts.job_id"
-        clauses, params = ["jobs_fts MATCH ?", "jobs.is_open = TRUE"], [fts_query]
-        field = lambda name: f"jobs.{name}"
-        role_where, role_params = role_intent_where(kw_groups, "jobs.title")
-        if role_where:
-            clauses.append(role_where)
-            params.extend(role_params)
-    else:
-        from_sql = "jobs"
-        clauses, params = ["is_open = TRUE"], []
-        field = lambda name: name
-        if keyword:
-            keyword_clauses, keyword_params = keyword_where(kw_groups)
-            clauses.extend(keyword_clauses)
-            params.extend(keyword_params)
+    from_sql = "jobs"
+    clauses, params = ["is_open = TRUE"], []
+    if keyword:
+        keyword_clauses, keyword_params = keyword_where(kw_groups)
+        clauses.extend(keyword_clauses)
+        params.extend(keyword_params)
 
     if location:
         if location in ("united states", "usa", "u.s.", "u.s.a.", "america"):
@@ -1935,23 +2148,23 @@ def api_jobs():
             clauses.append("(' ' || REPLACE(LOWER(location), ', ', ' ') || ' ') LIKE ?")
             params.append(f"% {location} %")
     if since:
-        clauses.append(f"COALESCE(NULLIF({field('posted')},''), substr({field('first_seen')},1,10)) >= ?")
+        clauses.append("COALESCE(NULLIF(posted,''), substr(first_seen,1,10)) >= ?")
         params.append(since)
     if exp_years is not None:
         # Keep unknowns, exact/close matches, and junior-ish roles. Drop known
         # requirements clearly above the user's experience.
-        clauses.append(f"({field('exp_min')} IS NULL OR {field('exp_min')} <= ?)")
+        clauses.append("(exp_min IS NULL OR exp_min <= ?)")
         params.append(int(exp_years) + 1)
     if category:
-        clauses.append(f"{field('categories')} LIKE ?")
+        clauses.append("categories LIKE ?")
         params.append(f'%"{category}"%')
     if companies:
         company_marks = placeholders(len(companies))
-        clauses.append(f"{field('company')} IN ({company_marks})")
+        clauses.append(f"company IN ({company_marks})")
         params.extend(companies)
     elif hidden_company_names:
         hidden_marks = placeholders(len(hidden_company_names))
-        clauses.append(f"{field('company')} NOT IN ({hidden_marks})")
+        clauses.append(f"company NOT IN ({hidden_marks})")
         params.extend(hidden_company_names)
 
     where = ("WHERE " + " AND ".join(clauses)) if clauses else ""
@@ -1960,33 +2173,15 @@ def api_jobs():
         for company in company_configs
         if company.get("interview")
     }
-    relevance_sql = keyword_relevance_sql(keyword, kw_groups) if kw_groups and not use_fts else "0"
-    select_rank = f", {relevance_sql} AS relevance" if kw_groups else ""
-    exp_score_sql = experience_score_sql(exp_years) if exp_years is not None else "0"
-    if use_fts:
-        exp_score_sql = exp_score_sql.replace("exp_min", "jobs.exp_min").replace("exp_max", "jobs.exp_max")
-    select_exp = f", {exp_score_sql} AS exp_score" if exp_years is not None else ""
-    exp_order = ", exp_score DESC" if exp_years is not None else ""
-    date_expr = f"COALESCE(NULLIF({field('posted')},''), substr({field('first_seen')},1,10))"
-    order_sql = (
-        f"{date_expr} DESC{exp_order}, relevance DESC"
-        if kw_groups and not use_fts else
-        f"{date_expr} DESC{exp_order}"
-    )
-    # Sort by posted date, falling back to first_seen only when posted is missing.
     select_cols = (
-        "jobs.id, jobs.title, jobs.url, jobs.company, jobs.location, jobs.source, "
-        "jobs.categories, jobs.first_seen, jobs.posted, jobs.exp_min, jobs.exp_max, "
-        "jobs.exp_label, jobs.exp_source, jobs.skills, jobs.keywords, jobs.employment_type"
-        if use_fts else
         "id, title, url, company, location, source, categories, first_seen, posted, "
         "exp_min, exp_max, exp_label, exp_source, skills, keywords, employment_type"
     )
-    sql   = (f"SELECT {select_cols}{select_rank}{select_exp} "
-             f"FROM {from_sql} {where} ORDER BY {order_sql} LIMIT ? OFFSET ?")
+    sql = (f"SELECT {select_cols} FROM {from_sql} {where} "
+           f"ORDER BY {JOB_DATE_ORDER_SQL} LIMIT ? OFFSET ?")
     count_sql = f"SELECT COUNT(*) FROM {from_sql} {where}"
     query_params = list(params) + [limit, offset]
-    exact_count = not (keyword or location or since or exp_years is not None or category or companies)
+    exact_count = not (keyword or location or since or exp_years is not None or category or tag or companies)
 
     today = datetime.now().strftime("%Y-%m-%d")
     try:

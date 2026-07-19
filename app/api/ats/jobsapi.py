@@ -28,12 +28,19 @@ def fetch_jobsapi(scrape, seen, company):
     # default here; these APIs are stable and the app handles dedupe on save.
     stop_on_seen = bool(scrape.get("stop_on_seen"))
     max_pages    = int(scrape.get("hard_max_pages") or 10000)
+    page_param   = (scrape.get("page_param") or "").strip()
+    page_start   = int(scrape.get("page_start") or 1)
     limit        = 100
     jobs         = []
+    seen_page_signatures = set()
 
     for page in range(max_pages):
         offset = page * limit
-        params = {"limit": limit, "offset": offset}
+        params = {"limit": limit}
+        if page_param:
+            params[page_param] = page_start + page
+        else:
+            params["offset"] = offset
         if country_filter:
             params["country_code"] = country_filter
 
@@ -49,6 +56,21 @@ def fetch_jobsapi(scrape, seen, company):
         raw_jobs = data.get("jobs") or []
         if not raw_jobs:
             break
+
+        # Some branded APIs accept `limit` but silently ignore `offset`.  Stop
+        # rather than processing the first page thousands of times.  Sources
+        # that paginate by page number declare page_param in their config.
+        signature = tuple(
+            str((item.get("data", item)).get("req_id")
+                or (item.get("data", item)).get("slug")
+                or (item.get("data", item)).get("id_icims")
+                or (item.get("data", item)).get("id") or "")
+            for item in raw_jobs[:10]
+        )
+        if signature and signature in seen_page_signatures:
+            break
+        if signature:
+            seen_page_signatures.add(signature)
 
         for item in raw_jobs:
             j = item.get("data", item)

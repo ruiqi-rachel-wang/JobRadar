@@ -123,6 +123,8 @@ def init_auth_db():
                 add_column_if_missing(conn, "users", column_sql)
             for column_sql in (
                 "email_alert_enabled INTEGER DEFAULT 0",
+                "tag TEXT DEFAULT ''",
+                "alert_cursor_at TEXT DEFAULT ''",
                 "last_alert_sent_at TEXT DEFAULT ''",
             ):
                 add_column_if_missing(conn, "user_saved_searches", column_sql)
@@ -184,13 +186,17 @@ def init_auth_db():
                 exp_yrs    TEXT    DEFAULT '',
                 since      TEXT    DEFAULT 'any',
                 category   TEXT    DEFAULT 'All',
+                tag        TEXT    DEFAULT '',
                 email_alert_enabled INTEGER DEFAULT 0,
+                alert_cursor_at TEXT DEFAULT '',
                 last_alert_sent_at TEXT DEFAULT '',
                 created_at TEXT    DEFAULT (datetime('now'))
             )
         """)
         for column_sql in (
             "email_alert_enabled INTEGER DEFAULT 0",
+            "tag TEXT DEFAULT ''",
+            "alert_cursor_at TEXT DEFAULT ''",
             "last_alert_sent_at TEXT DEFAULT ''",
         ):
             add_column_if_missing(conn, "user_saved_searches", column_sql)

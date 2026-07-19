@@ -39,6 +39,54 @@ def fetch_xml_feed(scrape, seen, company):
         return [], str(e)
 
     jobs = {}
+    root_tag = root.tag.rsplit("}", 1)[-1]
+    if scrape.get("feed_format") == "sitemap" or root_tag == "urlset":
+        for node in root.iter():
+            if node.tag.rsplit("}", 1)[-1] != "url":
+                continue
+            fields = {
+                child.tag.rsplit("}", 1)[-1]: (child.text or "").strip()
+                for child in node
+            }
+            url = fields.get("loc", "")
+            if not url or (include and not has_include(url, include)):
+                continue
+            segment = urlparse(url).path.rstrip("/").split("/")[-1]
+            segment = re.sub(r"^\d+[-_]", "", segment)
+            title = norm(re.sub(r"[-_]+", " ", segment)).title()
+            if not title:
+                continue
+            jobs[url] = {
+                "title": title,
+                "url": url,
+                "location": normalize_location(scrape.get("default_location") or ""),
+                "source": "xml_feed",
+                # Sitemap lastmod is a page-change timestamp, not a posting
+                # date, so do not expose it as job chronology.
+                "posted": "",
+            }
+        return list(jobs.values()), None
+
+    if scrape.get("feed_format") == "rss" or root_tag == "rss":
+        for node in root.iter("item"):
+            fields = {
+                child.tag.rsplit("}", 1)[-1]: (child.text or "").strip()
+                for child in node
+            }
+            url = fields.get("link", "") or fields.get("guid", "")
+            title = norm(fields.get("title", ""))
+            if not url or not title or (include and not has_include(url, include)):
+                continue
+            jobs[url] = {
+                "title": title,
+                "url": url,
+                "location": normalize_location(scrape.get("default_location") or ""),
+                "source": "xml_feed",
+                "posted": _parse_feed_date(fields.get("pubDate", "")),
+                "description": fields.get("description", ""),
+            }
+        return list(jobs.values()), None
+
     for node in root.iter("job"):
         def field(tag):
             child = node.find(tag)

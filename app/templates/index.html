@@ -214,6 +214,7 @@ const RECENT_DAYS    = 7;          // jobs within this window count as "new"
 const CLICKED_KEY    = 'jobradar_clicked';
 let selected         = new Set();
 let activeSidebarCat = 'All';
+let activeSidebarKind = 'category';
 let scanInterval     = null;
 let allResults       = [];
 let currentPage      = 1;
@@ -248,22 +249,35 @@ function onJobClick(id) {
 const allCats = ['All', ...new Set(COMPANIES.flatMap(c => c.categories || []))].sort(
   (a,b) => a === 'All' ? -1 : b === 'All' ? 1 : a.localeCompare(b)
 );
+const allTags = [...new Set(COMPANIES.flatMap(c => c.tags || []))].sort((a,b) => a.localeCompare(b));
+const companyByName = new Map(COMPANIES.map(c => [c.name, c]));
 
 function buildSidebar() {
   const catWrap = document.getElementById('cat-wrap');
-  allCats.forEach(cat => {
+  const addFilter = (cat, kind) => {
     const b = document.createElement('button');
     b.className = 'cat-btn' + (cat === 'All' ? ' active' : '');
     b.textContent = cat;
+    b.dataset.filterKind = kind;
+    b.dataset.filterValue = cat;
     b.onclick = () => {
       activeSidebarCat = cat;
+      activeSidebarKind = kind;
       document.querySelectorAll('.cat-btn').forEach(x => x.classList.remove('active'));
       b.classList.add('active');
       filterSidebar();
       if (resultsVisible()) applyFilters(null, 1);
     };
     catWrap.appendChild(b);
-  });
+  };
+  allCats.forEach(cat => addFilter(cat, 'category'));
+  if (allTags.length) {
+    const label = document.createElement('span');
+    label.textContent = 'Attributes';
+    label.style.cssText = 'width:100%;font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-4);margin:5px 2px 1px';
+    catWrap.appendChild(label);
+    allTags.forEach(tag => addFilter(tag, 'tag'));
+  }
 
   const list = document.getElementById('company-list');
   COMPANIES.forEach((c, i) => {
@@ -291,7 +305,8 @@ function filterSidebar() {
   const q = document.getElementById('sidebar-search').value.toLowerCase();
   document.querySelectorAll('.co-item').forEach(el => {
     const c = COMPANIES[el.dataset.idx];
-    const matchCat = activeSidebarCat === 'All' || (c.categories || []).includes(activeSidebarCat);
+    const values = activeSidebarKind === 'tag' ? (c.tags || []) : (c.categories || []);
+    const matchCat = activeSidebarCat === 'All' || values.includes(activeSidebarCat);
     const matchQ   = !q || c.name.toLowerCase().includes(q) || (c.categories||[]).some(cat => cat.toLowerCase().includes(q));
     el.classList.toggle('hidden', !(matchCat && matchQ));
   });
@@ -363,7 +378,7 @@ async function applyFilters(companyNames = null, page = 1) {
   if (loc) params.set('location', loc);
   if (exp) params.set('experience', exp);
   if (dt)  params.set('since', dt);
-  if (activeSidebarCat !== 'All') params.set('category', activeSidebarCat);
+  if (activeSidebarCat !== 'All') params.set(activeSidebarKind, activeSidebarCat);
   names.forEach(name => params.append('company', name));
 
   try {
@@ -394,19 +409,19 @@ async function applyFilters(companyNames = null, page = 1) {
   }
 }
 
-// Fast in-DOM filter while user types keyword/location (no network round-trip)
+// Fast in-DOM filter for location/category. Keyword expansion stays on the API.
 function filterDOM() {
   if (!resultsVisible()) return;
-  const kw  = (document.getElementById('f-keyword').value  || '').toLowerCase().trim();
   const loc = (document.getElementById('f-location').value || '').toLowerCase().trim();
-  // Note: date filter always goes to the DB API; DOM filter handles kw+loc only
+  // Date and keyword filters go to the API; the DOM pass handles location/category only.
   let vis = 0;
   document.querySelectorAll('.job-row').forEach(row => {
     const rowCats  = JSON.parse(row.dataset.cats || '[]');
-    const matchCat = activeSidebarCat === 'All' || rowCats.includes(activeSidebarCat);
-    const matchKw  = !kw  || keywordMatches(`${row.dataset.title} ${row.dataset.co}`, kw);
+    const company = companyByName.get(row.dataset.co);
+    const rowValues = activeSidebarKind === 'tag' ? ((company || {}).tags || []) : rowCats;
+    const matchCat = activeSidebarCat === 'All' || rowValues.includes(activeSidebarCat);
     const matchLoc = !loc || new RegExp('(?:^|[^a-z])' + loc.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '(?:[^a-z]|$)').test(row.dataset.loc.toLowerCase());
-    const show = matchCat && matchKw && matchLoc;
+    const show = matchCat && matchLoc;
     row.classList.toggle('filtered-out', !show);
     if (show) vis++;
   });
@@ -723,13 +738,13 @@ function renderSection(id, jobs, title, isNew, bucket) {
   if (!jobs.length) { el.innerHTML = ''; return; }
 
   const rows = jobs.map((j, idx) => {
-    const loc      = j.location || '—';
-    const hasPosted = j.posted && j.posted.length >= 8;
-    const seenDate = (j.first_seen || '').slice(0, 10);
-    const hasSeen = !hasPosted && seenDate.length >= 8;
-    const dateVal  = hasPosted ? j.posted : (hasSeen ? seenDate : '');
-    const dateLabel = hasPosted ? 'Posted' : (hasSeen ? 'Seen' : '');
-    const dateCls  = (hasPosted || hasSeen) ? 'td-date has-posted' : 'td-date';
+    const loc        = j.location || '—';
+    const postedDate = (j.posted || '').slice(0, 10);
+    const seenDate   = (j.first_seen || '').slice(0, 10);
+    const dateVal    = postedDate.length >= 8 ? postedDate : seenDate;
+    const hasDate    = dateVal.length >= 8;
+    const dateLabel  = hasDate ? 'Posted' : '';
+    const dateCls    = hasDate ? 'td-date has-posted' : 'td-date';
     const source   = j.source || 'html';
     const expLabel = j.exp_label ? ` · ${esc2(j.exp_label)}` : ' · Exp not listed';
     const dotCell = bucket === 'new'

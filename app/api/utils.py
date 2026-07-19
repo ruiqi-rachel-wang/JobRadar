@@ -768,12 +768,17 @@ def extract_location_from_text(text):
 
     label = re.search(
         r'\b(?:location|office|city|work location|job location)s?[:\s-]+'
-        r'([^|•\n;]+?)(?=\s+(?:posted|posting date|date posted|job id|requisition|apply)\b|$)',
+        r'([^|•\n;]+?)(?=\s+(?:posted|posting date|date posted|job id|requisition|apply|'
+        r'travel|work location type|brands?|job type|function|experience level|description|location)\b|$)',
         compact,
         re.I,
     )
     if label:
-        candidate = normalize_location(label.group(1).strip(" ,-"))
+        raw_candidate = label.group(1).strip(" ,-")
+        # A location is a short field.  If an unfamiliar careers page appends
+        # its description without a known label, fail closed instead of
+        # rendering the description as the location.
+        candidate = normalize_location(raw_candidate) if len(raw_candidate) <= 120 else ""
         if candidate and not _LOCATION_NOISE.search(candidate):
             return candidate
 

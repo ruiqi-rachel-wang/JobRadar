@@ -38,7 +38,7 @@ def fetch_smartrecruiters(scrape, seen, company):
         try:
             r = requests.get(
                 f"https://api.smartrecruiters.com/v1/companies/{slug}/postings",
-                params={"limit": limit, "offset": offset},
+                params={"limit": limit, "offset": offset, **(scrape.get("query_params") or {})},
                 headers={**HEADERS, "Accept": "application/json"},
                 timeout=25,
             )
@@ -52,9 +52,11 @@ def fetch_smartrecruiters(scrape, seen, company):
         for j in postings:
             title = norm(j.get("name") or "")
             posting_id = j.get("id") or ""
-            jurl = (j.get("ref") or "").strip()
-            if not jurl and posting_id:
+            jurl = ""
+            if posting_id:
                 jurl = f"https://jobs.smartrecruiters.com/{slug}/{posting_id}"
+            elif j.get("ref"):
+                jurl = (j.get("ref") or "").strip()
             loc_data = j.get("location") or {}
             loc = ""
             if isinstance(loc_data, dict):
@@ -93,4 +95,3 @@ def fetch_smartrecruiters(scrape, seen, company):
                     job["description"] = desc
 
     return jobs, None
-

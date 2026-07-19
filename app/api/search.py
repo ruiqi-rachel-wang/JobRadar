@@ -3,7 +3,6 @@ import re
 from functools import lru_cache
 from urllib.parse import unquote
 
-from .database import IS_POSTGRES
 from .utils import (
     _CANADA_PROVINCES,
     _CITY_DEFAULTS,
@@ -26,6 +25,10 @@ _DISPLAY_CITIES = (
 )
 
 # ── Keyword aliases ───────────────────────────────────────────────────────────
+
+JOB_DATE_ORDER_SQL = (
+    "COALESCE(NULLIF(posted,''), substr(first_seen,1,10)) DESC, first_seen DESC"
+)
 
 _KEYWORD_ALIASES = {
     "admin": {"administrative", "administrator"},
@@ -78,23 +81,6 @@ _KEYWORD_ALIASES = {
 
 # ── Experience scoring ────────────────────────────────────────────────────────
 
-def experience_score_sql(years):
-    y = float(years)
-    close = int(y) + 2
-    return (
-        "CASE "
-        "WHEN exp_min IS NULL AND exp_max IS NULL THEN 0 "
-        f"WHEN exp_min > {close} THEN -100 "
-        f"WHEN COALESCE(exp_min,0) <= {y} AND exp_max IS NOT NULL AND exp_max >= {y} THEN 100 "
-        # Open-ended "X+ years": penalise by how far below user_years exp_min is
-        f"WHEN COALESCE(exp_min,0) <= {y} AND exp_max IS NULL AND ({y} - COALESCE(exp_min,0)) <= 3 THEN 90 "
-        f"WHEN COALESCE(exp_min,0) <= {y} AND exp_max IS NULL AND ({y} - COALESCE(exp_min,0)) <= 7 THEN 60 "
-        f"WHEN COALESCE(exp_min,0) <= {y} AND exp_max IS NULL AND ({y} - COALESCE(exp_min,0)) <= 12 THEN 35 "
-        f"WHEN COALESCE(exp_min,0) <= {y} AND exp_max IS NULL THEN 15 "
-        f"WHEN exp_min <= {close} THEN 55 "
-        "ELSE 10 END"
-    )
-
 # ── Keyword parsing & SQL ─────────────────────────────────────────────────────
 
 def keyword_groups(keyword):
@@ -132,7 +118,6 @@ _ROLE_INTENTS = [
     {
         "name": "software_engineering",
         "buckets": [{"software", "swe"}, {"engineer", "engineering", "developer", "development", "sde"}],
-        "fts": "engineer*",
         "patterns": [
             "%software engineer%", "%software developer%", "%software development engineer%",
             "%software development%", "%swe%", "%sde%", "%backend engineer%",
@@ -151,74 +136,117 @@ _ROLE_INTENTS = [
     {
         "name": "data_science",
         "buckets": [{"data"}, {"scientist", "science", "scient", "ml", "machine"}],
-        "fts": "data*",
         "patterns": ["%data scientist%", "%machine learning scientist%", "%ml scientist%", "%applied scientist%", "%research scientist%", "%ai scientist%"],
     },
     {
         "name": "data_analytics",
         "buckets": [{"data", "business"}, {"analyst", "analysis", "analytics", "analy"}],
-        "fts": "analyst*",
         "patterns": ["%data analyst%", "%business analyst%", "%analytics analyst%", "%product analyst%", "%bi analyst%", "%business intelligence%", "%data analytics%"],
     },
     {
         "name": "data_engineering",
         "buckets": [{"data"}, {"engineer", "engineering", "developer", "development"}],
-        "fts": "engineer*",
         "patterns": ["%data engineer%", "%analytics engineer%", "%etl engineer%", "%bi engineer%", "%data platform engineer%", "%data infrastructure engineer%"],
     },
     {
         "name": "product_management",
         "buckets": [{"product"}, {"manager", "management", "mgr", "owner", "lead"}],
-        "fts": "product*",
         "patterns": ["%product manager%", "%product management%", "%product owner%", "%technical product manager%", "%group product manager%", "%product lead%", "%principal product manager%"],
     },
     {
         "name": "program_project_management",
         "buckets": [{"program", "project"}, {"manager", "management", "mgr", "lead"}],
-        "fts": "manager*",
         "patterns": ["%program manager%", "%project manager%", "%technical program manager%", "%technical project manager%", "%tpm%", "%scrum master%", "%delivery manager%"],
     },
     {
         "name": "design",
         "buckets": [{"design", "designer", "ux", "ui"}],
-        "fts": "design*",
         "patterns": ["%product designer%", "%ux designer%", "%ui designer%", "%visual designer%", "%brand designer%", "%design lead%", "%user experience%", "%user interface%"],
     },
     {
         "name": "security",
         "buckets": [{"security", "cybersecurity", "cyber"}],
-        "fts": "security*",
         "patterns": ["%security engineer%", "%cybersecurity%", "%cyber security%", "%security analyst%", "%soc analyst%", "%appsec%", "%application security%", "%information security%", "%security architect%"],
     },
     {
         "name": "devops_cloud",
         "buckets": [{"devops", "cloud", "infrastructure", "platform", "sre"}],
-        "fts": "engineer*",
         "patterns": ["%devops engineer%", "%cloud engineer%", "%infrastructure engineer%", "%platform engineer%", "%site reliability engineer%", "%sre%", "%systems engineer%", "%release engineer%"],
     },
     {
         "name": "sales",
         "buckets": [{"sales", "account"}],
-        "fts": "sales*",
         "patterns": ["%sales%", "%account executive%", "%account manager%", "%business development%", "%solution consultant%", "%solutions consultant%", "%sales engineer%", "%revenue%"],
     },
     {
         "name": "marketing",
         "buckets": [{"marketing", "market", "growth"}],
-        "fts": "marketing*",
         "patterns": ["%marketing%", "%growth%", "%demand generation%", "%go-to-market%", "%gtm%", "%content strategist%", "%campaign manager%"],
     },
     {
         "name": "recruiting",
         "buckets": [{"recruiter", "recruiting", "talent"}],
-        "fts": "recruit*",
         "patterns": ["%recruiter%", "%recruiting%", "%talent acquisition%", "%sourcer%", "%people partner%"],
     },
     {
         "name": "customer_success",
         "buckets": [{"customer", "client", "cx"}, {"success", "support", "solutions"}],
-        "fts": "customer*",
         "patterns": ["%customer success%", "%client success%", "%customer support%", "%solutions engineer%", "%solution engineer%", "%implementation consultant%", "%technical support%"],
+    },
+    {
+        "name": "finance_accounting",
+        "buckets": [{"finance", "financial", "accounting", "accountant", "audit", "auditor", "tax", "treasury"}],
+        "patterns": ["%financial analyst%", "%finance analyst%", "%accountant%", "%accounting%", "%auditor%", "%audit %", "%tax analyst%", "%tax specialist%", "%treasury%", "%controller%", "%bookkeeper%", "%payroll%", "%accounts payable%", "%accounts receivable%", "%fp&a%"],
+    },
+    {
+        "name": "human_resources",
+        "buckets": [{"hr", "human", "people", "personnel"}],
+        "patterns": ["%human resources%", "%hr business partner%", "%hr manager%", "%people partner%", "%people operations%", "%employee relations%", "%compensation%", "%benefits specialist%", "%personnel%", "%talent management%"],
+    },
+    {
+        "name": "operations_supply_chain",
+        "buckets": [{"operation", "operations", "ops", "logistics", "supply", "procurement", "warehouse"}],
+        "patterns": ["%operations%", "%business operations%", "%strategy and operations%", "%logistics%", "%supply chain%", "%procurement%", "%buyer%", "%purchasing%", "%inventory%", "%warehouse%", "%fulfillment%", "%distribution%"],
+    },
+    {
+        "name": "quality_assurance",
+        "buckets": [{"qa", "quality", "test", "testing", "tester"}],
+        "patterns": ["%quality assurance%", "%quality engineer%", "%qa engineer%", "%test engineer%", "%software tester%", "%automation engineer%", "%sdet%", "%quality analyst%", "%validation engineer%", "%quality control%"],
+    },
+    {
+        "name": "legal_compliance",
+        "buckets": [{"legal", "law", "lawyer", "attorney", "counsel", "compliance", "paralegal"}],
+        "patterns": ["%legal%", "%attorney%", "%lawyer%", "%counsel%", "%paralegal%", "%compliance%", "%contracts manager%", "%contract specialist%", "%privacy officer%", "%regulatory affairs%"],
+    },
+    {
+        "name": "healthcare_clinical",
+        "buckets": [{"healthcare", "health", "clinical", "medical", "nurse", "nursing", "physician", "pharmacy"}],
+        "patterns": ["%registered nurse%", "%nurse practitioner%", "%nursing%", "%physician%", "%medical assistant%", "%medical director%", "%clinical%", "%pharmacist%", "%pharmacy%", "%therapist%", "%healthcare%", "%patient care%", "%care coordinator%"],
+    },
+    {
+        "name": "consulting_strategy",
+        "buckets": [{"consulting", "consultant", "strategy", "advisory", "advisor"}],
+        "patterns": ["%consultant%", "%consulting%", "%strategy analyst%", "%strategy manager%", "%strategic initiatives%", "%business advisor%", "%advisory%", "%management consulting%"],
+    },
+    {
+        "name": "research",
+        "buckets": [{"research", "researcher"}],
+        "patterns": ["%research scientist%", "%researcher%", "%research analyst%", "%research associate%", "%research engineer%", "%user researcher%", "%ux research%", "%clinical research%", "%laboratory%", "%lab technician%"],
+    },
+    {
+        "name": "education_training",
+        "buckets": [{"education", "teacher", "teaching", "instructor", "training", "trainer"}],
+        "patterns": ["%teacher%", "%instructor%", "%educator%", "%professor%", "%lecturer%", "%curriculum%", "%instructional designer%", "%learning specialist%", "%training specialist%", "%trainer%", "%academic advisor%"],
+    },
+    {
+        "name": "content_communications",
+        "buckets": [{"content", "writer", "writing", "communications", "communication", "editor", "copywriter"}],
+        "patterns": ["%content writer%", "%content strategist%", "%technical writer%", "%copywriter%", "%editor%", "%communications%", "%public relations%", "%pr manager%", "%social media%", "%documentation%"],
+    },
+    {
+        "name": "administrative_office",
+        "buckets": [{"admin", "administrative", "administrator", "office", "secretary"}],
+        "patterns": ["%administrative assistant%", "%administrative coordinator%", "%office manager%", "%office administrator%", "%executive assistant%", "%secretary%", "%receptionist%", "%front desk%", "%clerical%"],
     },
 ]
 
@@ -241,65 +269,25 @@ def _groups_have_buckets(groups, buckets):
     term_sets = [set(group) for group in groups]
     return all(any(bucket & terms for terms in term_sets) for bucket in buckets)
 
-def fts_match_query(keyword="", location="", groups=None):
-    parts = []
-    stop = {"a", "an", "and", "at", "for", "in", "of", "on", "or", "the", "to"}
-    intent = role_intent(groups or [])
+def keyword_matches(title, company, keywords, groups):
+    """Python equivalent of keyword_where, used by the non-DB fallback."""
+    intent = role_intent(groups)
+    title_haystack = (title or "").lower()
     if intent:
-        parts.append(intent["fts"])
-    else:
-        for token in re.findall(r"[a-z0-9]+", (keyword or "").lower()):
-            if token not in stop:
-                term = _fts_term(token)
-                if term:
-                    parts.append(term)
-    loc = norm(location or "").lower()
-    if loc and loc not in {"united states", "usa", "u.s.", "u.s.a.", "america", "uk", "u.k.", "united kingdom"}:
-        loc_tokens = re.findall(r"[a-z0-9]+", loc)
-        if loc_tokens:
-            parts.append('"' + " ".join(loc_tokens).replace('"', '""') + '"')
-    return " ".join(parts)
+        return any(pattern.strip("%").lower() in title_haystack for pattern in intent["patterns"])
 
-def _fts_term(term):
-    tokens = re.findall(r"[a-z0-9]+", (term or "").lower())
-    if not tokens:
-        return ""
-    if len(tokens) == 1:
-        return tokens[0] + "*"
-    return '"' + " ".join(tokens).replace('"', '""') + '"'
+    keyword_text = (
+        keywords if isinstance(keywords, str)
+        else " ".join(str(value) for value in (keywords or []))
+    )
+    haystack = f"{title or ''} {company or ''} {keyword_text}".lower()
+    return all(any(_term_matches_text(haystack, term) for term in group) for group in groups)
 
-def keyword_relevance_sql(keyword, groups):
-    terms = {term for group in groups for term in group}
-    phrase = " ".join(re.findall(r"[a-z0-9+#.]+", (keyword or "").lower()))
-    parts = []
-    if phrase:
-        parts.extend([
-            f"(CASE WHEN LOWER(title) = {_sql_lit(phrase)} THEN 1000 ELSE 0 END)",
-            f"(CASE WHEN LOWER(title) LIKE {_sql_lit('%' + phrase + '%')} THEN 260 ELSE 0 END)",
-        ])
-    for group in groups:
-        term_scores = [
-            f"(CASE WHEN {_keyword_term_sql('LOWER(title)', term)} THEN {180 if term == group[0] else 120} ELSE 0 END)"
-            for term in group
-        ]
-        company_scores = [
-            f"(CASE WHEN {_keyword_term_sql('LOWER(company)', term)} THEN 20 ELSE 0 END)"
-            for term in group
-        ]
-        best_fn = "GREATEST" if IS_POSTGRES else "max"
-        parts.append(best_fn + "(" + ", ".join(term_scores) + ")" if len(term_scores) > 1 else term_scores[0])
-        parts.append(best_fn + "(" + ", ".join(company_scores) + ")" if len(company_scores) > 1 else company_scores[0])
-    if "software" in terms and any(t in terms for t in ("engineer", "engineering", "developer", "development", "developement")):
-        parts.extend([
-            "(CASE WHEN LOWER(title) LIKE '%software development engineer%' THEN 420 ELSE 0 END)",
-            "(CASE WHEN LOWER(title) LIKE '%software developer%' THEN 360 ELSE 0 END)",
-            "(CASE WHEN LOWER(title) LIKE '%sde%' THEN 340 ELSE 0 END)",
-            "(CASE WHEN LOWER(title) LIKE '%senior%' THEN -90 ELSE 0 END)",
-            "(CASE WHEN LOWER(title) LIKE '%staff%' OR LOWER(title) LIKE '%principal%' THEN -70 ELSE 0 END)",
-        ])
-    if "senior" not in terms and "sr" not in terms:
-        parts.append("(CASE WHEN LOWER(title) LIKE '%senior%' OR LOWER(title) LIKE 'sr.%' THEN -40 ELSE 0 END)")
-    return "(" + " + ".join(parts or ["0"]) + ")"
+
+def _term_matches_text(text, term):
+    if len(term) <= 2 and term.isalnum():
+        return re.search(rf"(?:^|[^a-z0-9]){re.escape(term)}(?:[^a-z0-9]|$)", text) is not None
+    return term in text
 
 def _keyword_variants(token):
     variants = {token, *_KEYWORD_ALIASES.get(token, set())}
@@ -328,16 +316,6 @@ def _keyword_term_clauses(field, term):
                     f"%-{term}-%", f"%/{term}/%", f"%({term})%"]
         return [f"{field} LIKE ?" for _ in patterns], patterns
     return [f"{field} LIKE ?"], [f"%{term}%"]
-
-def _keyword_term_sql(field, term):
-    if len(term) <= 2 and term.isalnum():
-        patterns = [term, f"{term} %", f"% {term}", f"% {term} %",
-                    f"%-{term}-%", f"%/{term}/%", f"%({term})%"]
-        return "(" + " OR ".join(f"{field} LIKE {_sql_lit(p)}" for p in patterns) + ")"
-    return f"{field} LIKE {_sql_lit('%' + term + '%')}"
-
-def _sql_lit(value):
-    return "'" + str(value).replace("'", "''") + "'"
 
 # ── Display title / location helpers ─────────────────────────────────────────
 

@@ -10,6 +10,25 @@ def normalize_text(value):
     return re.sub(r"\s+", " ", value)
 
 
+def _identity_job_url(job_url):
+    """Normalize equivalent ATS display/API URLs for stable job identity."""
+    value = str(job_url or "")
+    public_sr = re.match(
+        r"https?://jobs\.smartrecruiters\.com/([^/?#]+)/([^/?#]+)",
+        value,
+        re.I,
+    )
+    if public_sr:
+        company_slug = public_sr.group(1)
+        posting_id = public_sr.group(2).split("-", 1)[0]
+        if posting_id:
+            return (
+                "https://api.smartrecruiters.com/v1/companies/"
+                f"{company_slug}/postings/{posting_id}"
+            )
+    return value
+
+
 def make_job_hash(company_name, title, location=None, job_url=""):
     """
     Full stable hash for future storage or external integrations.
@@ -33,5 +52,5 @@ def make_job_id(company_name, job_url, title):
     Existing scans and rows use this 20-character prefix, so keep it stable
     while centralizing the hashing logic in one module.
     """
-    raw = f"{company_name}|{job_url}|{title}"
+    raw = f"{company_name}|{_identity_job_url(job_url)}|{title}"
     return hashlib.sha256(raw.encode("utf-8")).hexdigest()[:20]

@@ -62,7 +62,9 @@
     <span>{{ username }}</span>
   </a>
   {% endif %}
-  {% if plan_status in ["pro", "trial"] %}
+  {% if is_admin %}
+  <span class="tb-login-btn">Admin · Pro access</span>
+  {% elif plan_status in ["pro", "trial"] %}
   <form method="post" action="/billing/portal" style="margin:0">
     <button class="tb-login-btn" type="submit">Manage {{ plan_status|title }}</button>
   </form>
@@ -191,6 +193,7 @@ const EMAIL_ALERTS_CONFIGURED = {{ email_alerts_configured|tojson }};
 const SEARCHES_KEY = 'jd_searches_{{ username or "anon" }}';
 let selected         = new Set();
 let activeSidebarCat = 'All';
+let activeSidebarKind = 'category';
 let allResults       = [];
 let currentPage  = 1;
 let currentTotal = 0;
@@ -234,22 +237,35 @@ function onDateInput() {
 const allCats = ['All', ...new Set(COMPANIES.flatMap(c => c.categories||[]))].sort(
   (a,b) => a==='All' ? -1 : b==='All' ? 1 : a.localeCompare(b)
 );
+const allTags = [...new Set(COMPANIES.flatMap(c => c.tags||[]))].sort((a,b) => a.localeCompare(b));
+const companyByName = new Map(COMPANIES.map(c => [c.name, c]));
 
 function buildSidebar() {
   const cw = document.getElementById('cat-wrap');
-  allCats.forEach(cat => {
+  const addFilter = (cat, kind) => {
     const b = document.createElement('button');
     b.className = 'cat-btn' + (cat==='All' ? ' active' : '');
     b.textContent = cat;
+    b.dataset.filterKind = kind;
+    b.dataset.filterValue = cat;
     b.onclick = () => {
       activeSidebarCat = cat;
+      activeSidebarKind = kind;
       document.querySelectorAll('.cat-btn').forEach(x => x.classList.remove('active'));
       b.classList.add('active');
       filterSidebar();
       if (resultsVisible()) applyFilters(null, 1);
     };
     cw.appendChild(b);
-  });
+  };
+  allCats.forEach(cat => addFilter(cat, 'category'));
+  if (allTags.length) {
+    const label = document.createElement('span');
+    label.textContent = 'Attributes';
+    label.style.cssText = 'width:100%;font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-4);margin:5px 2px 1px';
+    cw.appendChild(label);
+    allTags.forEach(tag => addFilter(tag, 'tag'));
+  }
   const list = document.getElementById('company-list');
   COMPANIES.forEach((c, i) => {
     const mode = (c.scrape||{}).mode || 'html';
@@ -285,7 +301,8 @@ function filterSidebar() {
   const q = document.getElementById('sidebar-search').value.toLowerCase();
   document.querySelectorAll('.co-item').forEach(el => {
     const c = COMPANIES[el.dataset.idx];
-    const matchCat = activeSidebarCat==='All' || (c.categories||[]).includes(activeSidebarCat);
+    const values = activeSidebarKind === 'tag' ? (c.tags||[]) : (c.categories||[]);
+    const matchCat = activeSidebarCat==='All' || values.includes(activeSidebarCat);
     const matchQ   = !q || c.name.toLowerCase().includes(q);
     el.classList.toggle('hidden', !(matchCat && matchQ));
   });
@@ -353,7 +370,7 @@ async function applyFilters(companyNames, page) {
   if (loc) params.set('location', loc);
   if (exp) params.set('experience', exp);
   if (dt)  params.set('since', dt);
-  if (activeSidebarCat !== 'All') params.set('category', activeSidebarCat);
+  if (activeSidebarCat !== 'All') params.set(activeSidebarKind, activeSidebarCat);
   // Only send company filters if it's a subset — sending all 1000+ names blows the URL limit.
   const totalActive = COMPANIES.filter(c => c && c.scan_enabled !== false).length;
   if (names.length < totalActive) {
@@ -388,15 +405,17 @@ async function applyFilters(companyNames, page) {
 
 function filterDOM() {
   if (!resultsVisible()) return;
-  const kw  = (document.getElementById('f-keyword').value  || '').toLowerCase().trim();
   const loc = (document.getElementById('f-location').value || '').toLowerCase().trim();
   let vis = 0;
   document.querySelectorAll('.job-row').forEach(row => {
     const rowCats  = JSON.parse(row.dataset.cats || '[]');
-    const matchCat = activeSidebarCat==='All' || rowCats.includes(activeSidebarCat);
-    const matchKw  = !kw  || keywordMatches(`${row.dataset.title} ${row.dataset.co}`, kw);
+    const company = companyByName.get(row.dataset.co);
+    const rowValues = activeSidebarKind === 'tag' ? ((company||{}).tags||[]) : rowCats;
+    const matchCat = activeSidebarCat==='All' || rowValues.includes(activeSidebarCat);
     const matchLoc = !loc || row.dataset.loc.includes(loc);
-    const show = matchCat && matchKw && matchLoc;
+    // Keyword expansion is intentionally server-side so valid related roles
+    // are not removed again by a narrower browser-only substring check.
+    const show = matchCat && matchLoc;
     row.classList.toggle('filtered-out', !show);
     if (show) vis++;
   });
@@ -585,11 +604,11 @@ function renderSection(id, jobs, title, isNew, bucket) {
   if (!jobs.length) { el.innerHTML = ''; return; }
   jobs.forEach(j => { jobsById[j.id] = j; });
   const rows = jobs.map((j, idx) => {
-    const loc       = j.location || '—';
-    const hasPosted = j.posted && j.posted.length >= 8;
-    const seenDate  = (j.first_seen || '').slice(0, 10);
-    const dateVal   = hasPosted ? j.posted : (seenDate.length >= 8 ? seenDate : '—');
-    const dateCls   = (hasPosted || seenDate.length >= 8) ? 'td-date has-posted' : 'td-date';
+    const loc        = j.location || '—';
+    const postedDate = (j.posted || '').slice(0, 10);
+    const seenDate   = (j.first_seen || '').slice(0, 10);
+    const dateVal    = postedDate.length >= 8 ? postedDate : (seenDate || '—');
+    const dateCls    = dateVal !== '—' ? 'td-date has-posted' : 'td-date';
     const yrsHtml   = j.exp_label
       ? `<span class="exp-chip">${esc2(j.exp_label)}</span>`
       : '<span class="exp-chip exp-chip-muted">Not listed</span>';
@@ -1049,7 +1068,11 @@ async function saveSearch() {
   }
   const name = prompt('Name this search:');
   if (!name) return;
-  const saved = await _saveSearchRemote({ name, kw, loc, exp, since: dt, cat: activeSidebarCat });
+  const saved = await _saveSearchRemote({
+    name, kw, loc, exp, since: dt,
+    cat: activeSidebarKind === 'category' ? activeSidebarCat : 'All',
+    tag: activeSidebarKind === 'tag' ? activeSidebarCat : '',
+  });
   if (!saved) {
     alert('Could not save search. Please try again.');
     return;
@@ -1066,11 +1089,12 @@ function applySavedSearch(s) {
   // reset date seg buttons
   document.querySelectorAll('#seg-date .fb-seg-btn').forEach(b => b.classList.remove('is-on'));
   if (!s.since) document.querySelector('#seg-date .fb-seg-btn')?.classList.add('is-on');
-  if (s.cat && s.cat !== 'All') {
-    activeSidebarCat = s.cat;
-    document.querySelectorAll('.cat-btn').forEach(b => { b.classList.toggle('active', b.textContent === s.cat); });
-    filterSidebar();
-  }
+  activeSidebarKind = s.tag ? 'tag' : 'category';
+  activeSidebarCat = s.tag || s.cat || 'All';
+  document.querySelectorAll('.cat-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.filterKind === activeSidebarKind && b.dataset.filterValue === activeSidebarCat);
+  });
+  filterSidebar();
   if (resultsVisible()) applyFilters(null, 1);
 }
 
@@ -1093,7 +1117,7 @@ function renderSavedBar() {
   bar.innerHTML = '<span class="saved-bar-label">Saved Searches:</span>' + searches.map(s =>
     `<span class="saved-pill">
        <button onclick="applySavedSearch(${JSON.stringify(s).replace(/"/g,'&quot;')})">${esc2(s.name)}</button>
-       <button class="saved-alert-toggle${s.email_alert_enabled ? ' is-on' : ''}" onclick="toggleSearchAlert(${s.id})" title="${IS_PRO ? (EMAIL_ALERTS_CONFIGURED ? 'Daily email alert' : 'Alert preference saved; delivery setup pending') : 'Pro email alerts'}">${s.email_alert_enabled ? 'Email on' : (IS_PRO ? 'Email off' : 'Alerts Pro')}</button>
+       <button class="saved-alert-toggle${s.email_alert_enabled ? ' is-on' : ''}" onclick="toggleSearchAlert(${s.id})" title="${IS_PRO ? (EMAIL_ALERTS_CONFIGURED ? 'Daily email after the final fresh scan' : 'Alert preference saved; delivery setup pending') : 'Pro email alerts'}">${s.email_alert_enabled ? 'Email on' : (IS_PRO ? 'Email off' : 'Alerts Pro')}</button>
        <button class="saved-pill-del" onclick="deleteSavedSearch(${s.id})" title="Delete">×</button>
      </span>`
   ).join('');
@@ -1139,6 +1163,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const linkedExperience = queryParams.get('experience') || '';
   const linkedSince = queryParams.get('since') || '';
   const linkedCategory = queryParams.get('category') || '';
+  const linkedTag = queryParams.get('tag') || '';
   ['f-keyword','f-location'].forEach(id =>
     document.getElementById(id).addEventListener('input', filterDOM));
   document.getElementById('f-exp').addEventListener('input', filterDOM);
@@ -1154,7 +1179,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Support ?tab=apply from admin nav link
   if (queryParams.get('tab') === 'apply') {
     setTab('apply');
-  } else if (linkedKeyword || linkedLocation || linkedExperience || linkedSince || linkedCategory) {
+  } else if (linkedKeyword || linkedLocation || linkedExperience || linkedSince || linkedCategory || linkedTag) {
     document.getElementById('f-keyword').value = linkedKeyword;
     document.getElementById('f-location').value = linkedLocation;
     document.getElementById('f-exp').value = linkedExperience;
@@ -1162,9 +1187,15 @@ document.addEventListener('DOMContentLoaded', () => {
     if (linkedSince) {
       document.querySelectorAll('#seg-date .fb-seg-btn').forEach(b => b.classList.remove('is-on'));
     }
-    if (linkedCategory && allCats.includes(linkedCategory)) {
-      activeSidebarCat = linkedCategory;
-      document.querySelectorAll('.cat-btn').forEach(b => b.classList.toggle('active', b.textContent === linkedCategory));
+    const linkedFilter = linkedTag || linkedCategory;
+    const linkedKind = linkedTag ? 'tag' : 'category';
+    const knownFilter = linkedKind === 'tag' ? allTags.includes(linkedFilter) : allCats.includes(linkedFilter);
+    if (linkedFilter && knownFilter) {
+      activeSidebarCat = linkedFilter;
+      activeSidebarKind = linkedKind;
+      document.querySelectorAll('.cat-btn').forEach(b => {
+        b.classList.toggle('active', b.dataset.filterKind === linkedKind && b.dataset.filterValue === linkedFilter);
+      });
       filterSidebar();
       selectAllVisible();
     }
