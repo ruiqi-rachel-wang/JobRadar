@@ -116,7 +116,7 @@
       </div>
       <div class="filter-divider"></div>
       <div class="filter-group">
-        <div class="filter-label">Posted</div>
+        <div class="filter-label">Added</div>
         <div class="fb-seg" id="seg-date">
           <button class="fb-seg-btn is-on" onclick="setDateSeg(this,'')">Any</button>
           <button class="fb-seg-btn" onclick="setDateSeg(this,'1')">24h</button>
@@ -542,7 +542,7 @@ function renderResults(jobs) {
   document.getElementById('results-container').style.display = 'block';
   document.getElementById('new-section').innerHTML = '';
 
-  renderSection('old-section', jobs, 'Jobs by posted date', false, 'old');
+  renderSection('old-section', jobs, 'Jobs by added time', false, 'old');
   renderPagination(startRow, endRow, totalPages);
   document.getElementById('old-toggle').style.display = 'none';
   document.getElementById('old-section').style.display = 'block';
@@ -605,9 +605,8 @@ function renderSection(id, jobs, title, isNew, bucket) {
   jobs.forEach(j => { jobsById[j.id] = j; });
   const rows = jobs.map((j, idx) => {
     const loc        = j.location || '—';
-    const postedDate = (j.posted || '').slice(0, 10);
     const seenDate   = (j.first_seen || '').slice(0, 10);
-    const dateVal    = postedDate.length >= 8 ? postedDate : (seenDate || '—');
+    const dateVal    = seenDate || '—';
     const dateCls    = dateVal !== '—' ? 'td-date has-posted' : 'td-date';
     const yrsHtml   = j.exp_label
       ? `<span class="exp-chip">${esc2(j.exp_label)}</span>`
@@ -648,7 +647,7 @@ function renderSection(id, jobs, title, isNew, bucket) {
         <th style="width:150px">Company</th>
         <th style="width:160px">Location</th>
         <th style="width:120px">Experience</th>
-        <th style="width:96px">Posted</th>
+        <th style="width:96px">Added</th>
         <th style="width:${HAS_APPLY_ACCESS?'72px':'44px'}"></th>
       </tr></thead>
       <tbody>${rows}</tbody>
@@ -708,13 +707,13 @@ function openJobDrawer(id) {
   document.getElementById('jd-location').textContent = job.location || '—';
   document.getElementById('jd-title').textContent = job.title || '';
 
-  const dateStr = job.posted || (job.first_seen||'').slice(0,10) || '';
+  const dateStr = (job.first_seen||'').slice(0,10) || '';
   const postedEl = document.getElementById('jd-posted-line');
   if (dateStr) {
     const daysAgo = Math.floor((Date.now() - new Date(dateStr).getTime()) / 86400000);
-    if (daysAgo === 0) postedEl.innerHTML = '<span class="jd-posted-fresh">● Posted today</span>';
-    else if (daysAgo === 1) postedEl.innerHTML = '<span class="jd-posted-fresh">● Posted 1 day ago</span>';
-    else postedEl.textContent = `Posted ${dateStr} · ${daysAgo}d ago`;
+    if (daysAgo === 0) postedEl.innerHTML = '<span class="jd-posted-fresh">● Added today</span>';
+    else if (daysAgo === 1) postedEl.innerHTML = '<span class="jd-posted-fresh">● Added 1 day ago</span>';
+    else postedEl.textContent = `Added ${dateStr} · ${daysAgo}d ago`;
   } else { postedEl.textContent = ''; }
 
   const linkEl = document.getElementById('jd-open-link');

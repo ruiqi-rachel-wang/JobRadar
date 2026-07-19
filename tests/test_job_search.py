@@ -2,7 +2,7 @@ import sqlite3
 import unittest
 
 from app.api.search import (
-    JOB_DATE_ORDER_SQL,
+    ADDED_TIME_ORDER_SQL,
     keyword_groups,
     keyword_matches,
     keyword_where,
@@ -56,13 +56,10 @@ class JobSearchTests(unittest.TestCase):
             )
         )
 
-    def test_jobs_order_by_posted_date_then_first_seen_fallback(self):
-        self.assertEqual(
-            JOB_DATE_ORDER_SQL,
-            "COALESCE(NULLIF(posted,''), substr(first_seen,1,10)) DESC, first_seen DESC",
-        )
+    def test_jobs_have_one_added_time_sort_key(self):
+        self.assertEqual(ADDED_TIME_ORDER_SQL, "first_seen DESC")
 
-    def test_sql_results_keep_broad_matches_in_effective_posted_order(self):
+    def test_sql_results_keep_broad_matches_in_added_time_order(self):
         conn = sqlite3.connect(":memory:")
         self.addCleanup(conn.close)
         conn.execute(
@@ -79,13 +76,13 @@ class JobSearchTests(unittest.TestCase):
         clauses, params = keyword_where(keyword_groups("software engineer"))
         rows = conn.execute(
             f"SELECT title FROM jobs WHERE is_open = 1 AND {' AND '.join(clauses)} "
-            f"ORDER BY {JOB_DATE_ORDER_SQL}",
+            f"ORDER BY {ADDED_TIME_ORDER_SQL}",
             params,
         ).fetchall()
 
         self.assertEqual(
             [row[0] for row in rows],
-            ["Python Application Developer", "Software Engineer"],
+            ["Software Engineer", "Python Application Developer"],
         )
 
 
