@@ -54,6 +54,34 @@ class CompanyTaxonomyTests(unittest.TestCase):
         self.assertEqual(migrate_saved_filter("US / Remote", ""), ("All", ""))
         self.assertEqual(normalize_categories(["Retail", "Consumer Goods & Retail"]), ["Consumer Goods & Retail"])
 
+    def test_zero_result_source_review_is_fully_documented(self):
+        reviewed = {
+            "Alexander Chapman", "Archer Aviation", "Articulate", "Aviator", "Basecamp",
+            "Chesapeake Technology", "Coffee 'n Clothes", "Clerk", "Cummins", "dbt Labs",
+            "DeepFin Research", "Delta Air Lines", "Dragonfly", "End Point Dev",
+            "Freeport-McMoRan", "Georgia Tech", "Gower Street Analytics", "Hero Digital",
+            "Giant Spoon", "HudsonGray", "Informatica", "Infosys", "Jefferies",
+            "Johns Hopkins University", "Lindy", "ManTech", "Marriott", "MIT", "Mixmax",
+            "Newfront", "Nubank", "Optiver", "Precision Neuroscience",
+            "Principal Financial Group", "Pulley", "Purdue University", "Retool", "Sempra",
+            "Shopify", "Teradata", "Tesla", "Truss", "Uber", "UKG", "Upstatement",
+            "Vimeo", "Yum Brands",
+        }
+        authoritative_empty = {
+            "Basecamp", "Clerk", "End Point Dev", "Giant Spoon", "Mixmax", "Pulley", "Truss",
+        }
+        retired = reviewed - authoritative_empty - {
+            "Aviator", "dbt Labs", "Delta Air Lines", "Freeport-McMoRan", "Marriott",
+            "Optiver", "Shopify", "Teradata", "Uber", "UKG",
+        }
+        self.assertEqual(len(reviewed), 47)
+        for name in reviewed:
+            self.assertIn("2026-07-21", self.by_name[name].get("note", ""), name)
+        for name in authoritative_empty:
+            self.assertTrue(self.by_name[name]["scrape"].get("allow_empty_full_scan"), name)
+        for name in retired:
+            self.assertIs(self.by_name[name].get("scan_enabled"), False, name)
+
 
 if __name__ == "__main__":
     unittest.main()

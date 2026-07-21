@@ -81,7 +81,7 @@ def run_scan(companies, scan_type="fresh", progress=None, on_scan_run_id=None,
 
     Returns a dict with keys:
         scan_run_id, scan_type, status, progress, results,
-        new_count, total_jobs, failed_companies, elapsed_s
+        new_count, total_jobs, failed_companies, warning_companies, elapsed_s
     """
     t_start = time.monotonic()
     phase_started = t_start
@@ -118,7 +118,7 @@ def run_scan(companies, scan_type="fresh", progress=None, on_scan_run_id=None,
 
     companies   = [
         c for c in companies
-        if c.get("scan_enabled", True) is not False or c.get("policy")
+        if c.get("scan_enabled", True) is not False
     ]
     is_fresh    = scan_type != "full"
     _finish_phase("select_companies", "load_seen")
@@ -276,7 +276,25 @@ def run_scan(companies, scan_type="fresh", progress=None, on_scan_run_id=None,
             )
         work_raw["save_jobs"] += time.monotonic() - save_t0
 
-        entry = _make_summary(name, progress[i]["mode"], raw, err, duration, new_count)
+        unexplained_empty = _is_unexplained_empty_full_scan(
+            is_fresh=is_fresh,
+            raw=raw,
+            err=err,
+            allow_empty=allow_empty,
+        )
+        warning_message = (
+            "Full scan returned no jobs; existing jobs were preserved."
+            if unexplained_empty else None
+        )
+        entry = _make_summary(
+            name,
+            progress[i]["mode"],
+            raw,
+            err,
+            duration,
+            new_count,
+            warning_message=warning_message,
+        )
         progress[i].update(entry)
         summaries.append(dict(entry))
         total_jobs += len(raw)
@@ -285,10 +303,10 @@ def run_scan(companies, scan_type="fresh", progress=None, on_scan_run_id=None,
         status_t0 = time.monotonic()
         finish_company_scan_status(
             status_ids[i],
-            status="success" if not err else "failed",
+            status="failed" if err else "warning" if unexplained_empty else "success",
             jobs_found=len(raw),
             new_jobs_found=new_count,
-            error_message=err,
+            error_message=err or warning_message,
         )
         work_raw["status_finish"] += time.monotonic() - status_t0
         progress_t0 = time.monotonic()
@@ -421,7 +439,11 @@ def run_scan(companies, scan_type="fresh", progress=None, on_scan_run_id=None,
             status = "cancelled"
         else:
             totals = scan_run_totals(scan_run_id)
-            status = "partial_success" if totals["failed_companies"] else "success"
+            status = (
+                "partial_success"
+                if totals["failed_companies"] or totals["warning_companies"]
+                else "success"
+            )
 
         finish_scan_run_from_statuses(scan_run_id, status=status)
         _finish_phase("finalize", "done")
@@ -441,6 +463,7 @@ def run_scan(companies, scan_type="fresh", progress=None, on_scan_run_id=None,
             "new_count":        total_new,
             "total_jobs":       total_jobs,
             "failed_companies": scan_run_totals(scan_run_id)["failed_companies"],
+            "warning_companies": scan_run_totals(scan_run_id)["warning_companies"],
             "elapsed_s":        elapsed,
             "timing":           timing,
         }
@@ -511,16 +534,23 @@ def _refresh_seen_entry(entry, job):
         entry["has_description"] = True
 
 
-def _make_summary(name, mode, raw, err, duration, new_count):
+def _is_unexplained_empty_full_scan(*, is_fresh, raw, err, allow_empty):
+    """Return whether a successful full scan produced an unverified empty result."""
+    return not is_fresh and not err and not raw and not allow_empty
+
+
+def _make_summary(name, mode, raw, err, duration, new_count, warning_message=None):
     """Build the per-company status dict used by the progress list and scan log."""
     entry = {
         "company":    name,
         "mode":       mode,
-        "status":     "error" if err else "done",
+        "status":     "error" if err else "warning" if warning_message else "done",
         "count":      len(raw),
         "new":        new_count,
         "duration_s": duration,
     }
     if err:
         entry["error"] = err
+    elif warning_message:
+        entry["error"] = warning_message
     return entry

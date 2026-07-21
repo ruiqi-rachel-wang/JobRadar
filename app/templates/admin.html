@@ -186,9 +186,11 @@ button.kpi:hover { border-color: var(--line-3); }
 .td-dur    { font-size: 11px; color: var(--ink-4); font-family: var(--font-mono); }
 .status-ok      { font-size: 11px; color: var(--ok); }
 .status-error   { font-size: 11px; color: var(--err); }
+.status-warning { font-size: 11px; color: #b45309; }
 .status-pending { font-size: 11px; color: var(--ink-4); }
 .status-scanning{ font-size: 11px; color: var(--mint); }
 .err-detail { font-size: 10.5px; color: var(--err); max-width: 220px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.status-warning + .err-detail { color: #b45309; }
 .last-scan-info { font-size: 11px; color: var(--ink-3); margin-bottom: 14px; }
 .last-scan-info strong { color: var(--navy); }
 .detect-overlay {
@@ -788,12 +790,14 @@ function showSummary(progress, isFinal, scanType) {
   document.getElementById('summary-content').style.display = '';
 
   const done      = progress.filter(p => p.status === 'done');
+  const warnings  = progress.filter(p => p.status === 'warning');
   const errors    = progress.filter(p => p.status === 'error');
-  const totalJobs = done.reduce((a, p) => a + (p.count||0), 0);
-  const totalNew  = done.reduce((a, p) => a + (p.new||0), 0);
+  const completed = done.concat(warnings);
+  const totalJobs = completed.reduce((a, p) => a + (p.count||0), 0);
+  const totalNew  = completed.reduce((a, p) => a + (p.new||0), 0);
 
   document.getElementById('stat-cos').textContent        = progress.length;
-  document.getElementById('stat-cos-sub').textContent    = isFinal ? `${done.length} ok · ${errors.length} err` : 'in progress…';
+  document.getElementById('stat-cos-sub').textContent    = isFinal ? `${done.length} ok · ${warnings.length} warn · ${errors.length} err` : 'in progress…';
   document.getElementById('stat-jobs').textContent       = totalJobs.toLocaleString();
   document.getElementById('stat-new').textContent        = totalNew.toLocaleString();
   document.getElementById('stat-errors').textContent     = errors.length;
@@ -807,6 +811,7 @@ function showSummary(progress, isFinal, scanType) {
     const color = MODE_COLORS[mode] || '#9ca3af';
     const statusHtml =
       p.status === 'done'     ? `<span class="status-ok">● done</span>` :
+      p.status === 'warning'  ? `<span class="status-warning">● warning</span>${p.error ? `<div class="err-detail" title="${esc2(p.error||'')}">${esc2((p.error||'').slice(0,80))}</div>` : ''}` :
       p.status === 'error'    ? `<span class="status-error">● error</span>${p.error ? `<div class="err-detail" title="${esc2(p.error||'')}">${esc2((p.error||'').slice(0,80))}</div>` : ''}` :
       p.status === 'scanning' ? `<span class="status-scanning">● scanning…</span>` :
                                 `<span class="status-pending">○ pending</span>`;
@@ -815,8 +820,8 @@ function showSummary(progress, isFinal, scanType) {
     return `<tr data-status="${p.status}" data-count="${p.count||0}" data-newcount="${p.new||0}" data-company="${esc2(p.company).toLowerCase()}" data-source="${mode}">
       <td class="td-company"><span class="co-dot" style="background:${color}"></span>${esc2(p.company)}</td>
       <td style="font-size:11px;color:var(--ink-3)">${mode}</td>
-      <td class="td-count" style="text-align:right">${p.status==='done' ? (p.count||0) : '—'}</td>
-      <td class="${newCls}" style="text-align:right">${p.status==='done' ? (p.new||0) : '—'}</td>
+      <td class="td-count" style="text-align:right">${p.status==='done' || p.status==='warning' ? (p.count||0) : '—'}</td>
+      <td class="${newCls}" style="text-align:right">${p.status==='done' || p.status==='warning' ? (p.new||0) : '—'}</td>
       <td class="td-dur" style="text-align:right">${dur}</td>
       <td>${statusHtml}</td>
     </tr>`;

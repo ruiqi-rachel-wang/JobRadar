@@ -63,6 +63,27 @@ class SchedulerQueueTests(unittest.TestCase):
         self.assertTrue(main._is_final_fresh_schedule_slot("fresh", cfg, "19:00"))
         self.assertFalse(main._is_final_fresh_schedule_slot("full", cfg, "19:00"))
 
+    def test_scheduled_scans_skip_disabled_policy_companies(self):
+        companies = [
+            {"name": "Active"},
+            {"name": "Retired", "scan_enabled": False},
+            {"name": "Policy blocked", "scan_enabled": False, "policy": {"message": "Do not scan"}},
+        ]
+        with patch.object(main, "current_companies", return_value=companies):
+            self.assertEqual(main._scheduled_scan_names(), ["Active"])
+
+    def test_manual_scan_cannot_reenable_a_disabled_company(self):
+        companies = [
+            {"name": "Active", "scrape": {"mode": "html"}},
+            {"name": "Retired", "scan_enabled": False, "policy": {"message": "Do not scan"}},
+        ]
+        result = {"new_count": 0, "scan_run_id": 42, "status": "success"}
+        with patch.object(main, "current_companies", return_value=companies), patch.object(
+            main, "run_scan", return_value=result
+        ) as run:
+            main.do_scan(["Active", "Retired"])
+        self.assertEqual([company["name"] for company in run.call_args.args[0]], ["Active"])
+
     def test_final_slot_metadata_is_persisted_for_restart_resume(self):
         scan_run_id = create_scan_run(
             "fresh",

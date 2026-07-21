@@ -622,7 +622,9 @@
       "mode": "html",
       "list_url": "https://www.alexanderchapman.com/jobs",
       "include": "alexanderchapman.com/jobs"
-    }
+    },
+    "scan_enabled": false,
+    "note": "Careers page returned no job links and no verifiable public feed (verified 2026-07-21)"
   },
   {
     "name": "Algolia",
@@ -1227,7 +1229,9 @@
     },
     "interview": {
       "source": "Large active employer"
-    }
+    },
+    "scan_enabled": false,
+    "note": "Official careers site blocks automated collection via robots controls (verified 2026-07-21)"
   },
   {
     "name": "Arctic Wolf",
@@ -1356,7 +1360,9 @@
     },
     "tags": [
       "Interview Friendly"
-    ]
+    ],
+    "scan_enabled": false,
+    "note": "Lever board was empty while the official careers page reported a job-feed error (verified 2026-07-21)"
   },
   {
     "name": "Artsy",
@@ -1666,9 +1672,12 @@
       "Software & SaaS"
     ],
     "scrape": {
-      "mode": "html",
-      "list_url": "https://www.aviator.co/jobs",
-      "include": "www.aviator.co"
+      "mode": "playwright",
+      "list_url": "https://www.workatastartup.com/companies/aviator",
+      "prefix": "https://www.workatastartup.com/jobs/",
+      "include": "workatastartup.com/jobs/",
+      "validate_prefix": false,
+      "scroll_rounds": 5
     },
     "interview": {
       "no_whiteboard": true,
@@ -1677,7 +1686,8 @@
     },
     "tags": [
       "Interview Friendly"
-    ]
+    ],
+    "note": "Source replaced and verified with live job records on 2026-07-21"
   },
   {
     "name": "Axios",
@@ -1858,10 +1868,9 @@
       "Software & SaaS"
     ],
     "scrape": {
-      "mode": "html",
-      "list_url": "https://37signals.com/jobs",
-      "include": "37signals.com",
-      "require_job_path": true,
+      "mode": "xml_feed",
+      "list_url": "https://37signals.com/feed/jobs.xml",
+      "feed_format": "rss",
       "allow_empty_full_scan": true
     },
     "interview": {
@@ -1874,7 +1883,8 @@
     },
     "tags": [
       "Interview Friendly"
-    ]
+    ],
+    "note": "Official 37signals jobs RSS feed was reachable and empty on 2026-07-21"
   },
   {
     "name": "Baseten",
@@ -3171,7 +3181,9 @@
     },
     "tags": [
       "Interview Friendly"
-    ]
+    ],
+    "scan_enabled": false,
+    "note": "Legacy careers URL redirected and no current verifiable public job feed was found (verified 2026-07-21)"
   },
   {
     "name": "Chevron",
@@ -3574,7 +3586,8 @@
     ],
     "scrape": {
       "mode": "ashby",
-      "ashby_slug": "Clerk"
+      "ashby_slug": "Clerk",
+      "allow_empty_full_scan": true
     },
     "interview": {
       "no_whiteboard": true,
@@ -3583,7 +3596,8 @@
     },
     "tags": [
       "Interview Friendly"
-    ]
+    ],
+    "note": "Official Ashby board was reachable and empty on 2026-07-21"
   },
   {
     "name": "Clever",
@@ -3754,7 +3768,9 @@
       "mode": "html",
       "list_url": "https://coffeenclothes.freshteam.com/jobs",
       "include": "coffeenclothes.freshteam.com/jobs/"
-    }
+    },
+    "scan_enabled": false,
+    "note": "Freshteam careers page returned no job records in plain or browser collection (verified 2026-07-21)"
   },
   {
     "name": "Cognition",
@@ -4367,7 +4383,8 @@
     "policy": {
       "message": "Cummins remains an active employer, but its current careers site is not producing reliable job records in JobDrop.",
       "careers_url": "https://www.cummins.com/careers"
-    }
+    },
+    "note": "Current careers site did not produce reliable job records (verified 2026-07-21)"
   },
   {
     "name": "Cursor",
@@ -4606,9 +4623,11 @@
       "Data & Analytics"
     ],
     "scrape": {
-      "board_token": "dbtlabsinc",
-      "mode": "greenhouse"
-    }
+      "mode": "html",
+      "list_url": "https://www.getdbt.com/about-us/careers",
+      "include": "fivetran.com/careers/job"
+    },
+    "note": "Source replaced and verified with live job records on 2026-07-21"
   },
   {
     "name": "Decagon",
@@ -4645,7 +4664,9 @@
     "scrape": {
       "mode": "ashby",
       "ashby_slug": "deepfin"
-    }
+    },
+    "scan_enabled": false,
+    "note": "Configured Ashby board returned 404 and no replacement board was found (verified 2026-07-21)"
   },
   {
     "name": "Deepgram",
@@ -4730,10 +4751,13 @@
       "Transportation & Mobility"
     ],
     "scrape": {
-      "mode": "html",
+      "mode": "playwright",
       "list_url": "https://delta.avature.net/en_US/careers/SearchJobs",
-      "include": "delta.avature.net/en_US/careers/JobDetail"
-    }
+      "prefix": "https://delta.avature.net/en_US/careers/JobDetail/",
+      "validate_prefix": false,
+      "scroll_rounds": 8
+    },
+    "note": "Source replaced and verified with live job records on 2026-07-21"
   },
   {
     "name": "Delta Dental",
@@ -4969,7 +4993,9 @@
     "scrape": {
       "mode": "ashby",
       "ashby_slug": "dragonfly"
-    }
+    },
+    "scan_enabled": false,
+    "note": "Configured Ashby board returned 404 and no replacement board was found (verified 2026-07-21)"
   },
   {
     "name": "Drata",
@@ -5460,7 +5486,8 @@
     },
     "tags": [
       "Interview Friendly"
-    ]
+    ],
+    "note": "Official careers page explicitly reported no open positions on 2026-07-21"
   },
   {
     "name": "Engel & Völkers Technology",
@@ -6393,10 +6420,11 @@
       "Mining"
     ],
     "scrape": {
-      "mode": "html",
-      "list_url": "https://talent.fmjobs.com/careers?start=0&domain=fcx.com&sort_by=hot",
-      "include": "talent.fmjobs.com/careers/job"
-    }
+      "mode": "eightfold",
+      "list_url": "https://fcx.eightfold.ai/careers",
+      "eightfold_domain": "fcx.com"
+    },
+    "note": "Source replaced and verified with live job records on 2026-07-21"
   },
   {
     "name": "FreshDirect",
@@ -6834,7 +6862,9 @@
       "mode": "html",
       "list_url": "https://careers.gatech.edu/jobs",
       "include": "careers.gatech.edu"
-    }
+    },
+    "scan_enabled": false,
+    "note": "Configured careers URL redirects away from job listings and no reliable public feed was found (verified 2026-07-21)"
   },
   {
     "name": "Getaround",
@@ -6859,8 +6889,10 @@
     ],
     "scrape": {
       "board_token": "giantspoon",
-      "mode": "greenhouse"
-    }
+      "mode": "greenhouse",
+      "allow_empty_full_scan": true
+    },
+    "note": "Official Greenhouse board was reachable and empty on 2026-07-21"
   },
   {
     "name": "Giga AI",
@@ -7182,7 +7214,9 @@
     },
     "tags": [
       "Interview Friendly"
-    ]
+    ],
+    "scan_enabled": false,
+    "note": "Official jobs page exposed no job listings or authoritative feed (verified 2026-07-21)"
   },
   {
     "name": "Grab",
@@ -7618,7 +7652,9 @@
     },
     "tags": [
       "Interview Friendly"
-    ]
+    ],
+    "scan_enabled": false,
+    "note": "Careers URL now redirects to Huge and the former employer source is retired (verified 2026-07-21)"
   },
   {
     "name": "Heron Power",
@@ -7972,7 +8008,9 @@
       "mode": "html",
       "list_url": "https://www.hudsongray.com/jobs",
       "include": "hudsongray.com"
-    }
+    },
+    "scan_enabled": false,
+    "note": "Jobs page exposed no job links or verifiable public feed (verified 2026-07-21)"
   },
   {
     "name": "Hugging Face",
@@ -8220,7 +8258,9 @@
     },
     "interview": {
       "source": "Software"
-    }
+    },
+    "scan_enabled": false,
+    "note": "Careers URL redirects to Salesforce after the acquisition; the standalone source is retired (verified 2026-07-21)"
   },
   {
     "name": "Infosys",
@@ -8234,7 +8274,9 @@
       "prefix": "https://sjobs.brassring.com/",
       "scroll_rounds": 8,
       "validate_prefix": false
-    }
+    },
+    "scan_enabled": false,
+    "note": "Configured BrassRing source returned zero records and no reliable replacement endpoint was verified (verified 2026-07-21)"
   },
   {
     "name": "Inizio",
@@ -8627,7 +8669,9 @@
       "mode": "oraclecloud",
       "list_url": "https://careers.jefferies.com/hcmUI/CandidateExperience/en/sites/CX_1/jobs",
       "site": "CX_1"
-    }
+    },
+    "scan_enabled": false,
+    "note": "Official Oracle Cloud endpoint returned gateway errors and no safe replacement was verified (verified 2026-07-21)"
   },
   {
     "name": "JetBlue Airways",
@@ -8698,7 +8742,9 @@
       "mode": "html",
       "list_url": "https://hiring.jhu.edu/careers?start=0&pid=1133913310816&sort_by=hot",
       "include": "hiring.jhu.edu/careers"
-    }
+    },
+    "scan_enabled": false,
+    "note": "Official Eightfold jobs endpoint blocks collection with HTTP 403 (verified 2026-07-21)"
   },
   {
     "name": "Johnson & Johnson",
@@ -9357,7 +9403,9 @@
     "scrape": {
       "ashby_slug": "lindy",
       "mode": "ashby"
-    }
+    },
+    "scan_enabled": false,
+    "note": "Configured Ashby board returned 404 and no replacement board was found (verified 2026-07-21)"
   },
   {
     "name": "Linear",
@@ -9745,7 +9793,9 @@
     "scrape": {
       "mode": "workday",
       "list_url": "https://mantech.wd1.myworkdayjobs.com/External"
-    }
+    },
+    "scan_enabled": false,
+    "note": "Configured Workday source is retired and the replacement Avature site yielded no collectable records (verified 2026-07-21)"
   },
   {
     "name": "Mapbox",
@@ -9828,11 +9878,12 @@
       "Travel & Hospitality"
     ],
     "scrape": {
-      "mode": "playwright",
-      "list_url": "https://jobs.marriott.com/marriott/jobs",
-      "prefix": "https://jobs.marriott.com",
-      "include": "jobs.marriott.com/marriott/job/"
-    }
+      "mode": "html",
+      "list_url": "https://careers.marriott.com/jobs",
+      "include": "careers.marriott.com",
+      "require_job_path": true
+    },
+    "note": "Source replaced and verified with live job records on 2026-07-21"
   },
   {
     "name": "Marsh McLennan",
@@ -10308,7 +10359,8 @@
     "policy": {
       "message": "MIT's official external-candidate portal is active but is not currently yielding reliable structured job records.",
       "careers_url": "https://careers.peopleclick.com/careerscp/client_mit/external/search.do"
-    }
+    },
+    "note": "Official candidate portal did not yield reliable structured job records (verified 2026-07-21)"
   },
   {
     "name": "Mixmax",
@@ -10318,7 +10370,8 @@
     ],
     "scrape": {
       "mode": "greenhouse",
-      "board_token": "mixmax"
+      "board_token": "mixmax",
+      "allow_empty_full_scan": true
     },
     "interview": {
       "no_whiteboard": true,
@@ -10328,7 +10381,8 @@
     },
     "tags": [
       "Interview Friendly"
-    ]
+    ],
+    "note": "Official Greenhouse board was reachable and empty on 2026-07-21"
   },
   {
     "name": "Mixpanel",
@@ -11015,7 +11069,9 @@
     "scrape": {
       "mode": "ashby",
       "ashby_slug": "newfront"
-    }
+    },
+    "scan_enabled": false,
+    "note": "Ashby board was empty and Newfront was acquired by WTW; the standalone source is retired (verified 2026-07-21)"
   },
   {
     "name": "NewsBreak",
@@ -11388,7 +11444,9 @@
     },
     "interview": {
       "source": "Fintech target list"
-    }
+    },
+    "scan_enabled": false,
+    "note": "Legacy Greenhouse board was empty while current official job pages block collection with HTTP 403 (verified 2026-07-21)"
   },
   {
     "name": "Nuclear Promise X",
@@ -11800,18 +11858,11 @@
       "Investment & Asset Management"
     ],
     "scrape": {
-      "mode": "playwright",
-      "list_url": "https://optiver.com/working-at-optiver/career-opportunities/?orderby=date&order=DESC",
-      "prefix": "https://optiver.com/working-at-optiver/career-opportunities/",
-      "sort": true,
-      "stop_on_seen": false,
-      "max_posted_details": 200,
-      "pagination": {
-        "type": "query_page",
-        "param": "paged",
-        "start": 1
-      }
-    }
+      "mode": "html",
+      "list_url": "https://www.optiver.com/join-us/jobs/",
+      "include": "optiver.com/join-us/jobs/"
+    },
+    "note": "Source replaced and verified with live job records on 2026-07-21"
   },
   {
     "name": "Oracle",
@@ -12794,7 +12845,9 @@
       "mode": "playwright",
       "list_url": "https://careers.kula.ai/precision-neuroscience",
       "prefix": "https://careers.kula.ai/precision-neuroscience/"
-    }
+    },
+    "scan_enabled": false,
+    "note": "Configured Kula page exposed no job records and no replacement feed was verified (verified 2026-07-21)"
   },
   {
     "name": "Prefect",
@@ -12844,7 +12897,9 @@
       "icims_slug": "https://careers.principal.com",
       "list_url": "https://careers.principal.com/careers-home/jobs/search",
       "include": "careers.principal.com/careers-home/jobs/"
-    }
+    },
+    "scan_enabled": false,
+    "note": "Official iCIMS careers source blocks automated collection via robots controls (verified 2026-07-21)"
   },
   {
     "name": "Procter & Gamble",
@@ -12981,8 +13036,10 @@
     ],
     "scrape": {
       "mode": "greenhouse",
-      "board_token": "pulley"
-    }
+      "board_token": "pulley",
+      "allow_empty_full_scan": true
+    },
+    "note": "Official Greenhouse board was reachable and empty on 2026-07-21"
   },
   {
     "name": "PulteGroup",
@@ -13017,7 +13074,9 @@
     "scrape": {
       "mode": "successfactors",
       "list_url": "https://careers.purdue.edu/default/search/?createNewAlert=false&q=&locationsearch="
-    }
+    },
+    "scan_enabled": false,
+    "note": "Configured SuccessFactors source returned zero records and no reliable replacement was verified (verified 2026-07-21)"
   },
   {
     "name": "Pure Storage",
@@ -13726,7 +13785,9 @@
       "scroll_rounds": 30,
       "validate_prefix": false,
       "require_id": false
-    }
+    },
+    "scan_enabled": false,
+    "note": "Configured Gem board returned zero records and no reliable replacement source was verified (verified 2026-07-21)"
   },
   {
     "name": "ReviewTrackers",
@@ -14488,7 +14549,9 @@
       "prefix": "https://myjobs.adp.com/sempra/cx/job-details",
       "include": "myjobs.adp.com/sempra/cx/job-details",
       "validate_prefix": false
-    }
+    },
+    "scan_enabled": false,
+    "note": "Configured ADP source returned zero records and could not be verified as authoritative (verified 2026-07-21)"
   },
   {
     "name": "Sensor Tower",
@@ -14678,17 +14741,18 @@
     ],
     "scrape": {
       "mode": "playwright",
-      "list_url": "https://www.shopify.com/careers/search",
+      "list_url": "https://www.shopify.com/careers",
       "prefix": "https://www.shopify.com/careers/",
-      "scroll_rounds": 15,
-      "validate_prefix": false
+      "validate_prefix": false,
+      "scroll_rounds": 10
     },
     "interview": {
       "no_whiteboard": false,
       "difficulty": "medium",
       "rounds": "4",
       "source": "Public knowledge"
-    }
+    },
+    "note": "Source replaced and verified with live job records on 2026-07-21"
   },
   {
     "name": "Shortcut",
@@ -16126,13 +16190,17 @@
       "Software & SaaS"
     ],
     "scrape": {
-      "mode": "html",
+      "mode": "playwright",
       "list_url": "https://careers.teradata.com/jobs",
-      "include": "careers.teradata.com"
+      "prefix": "https://careers.teradata.com/jobs/",
+      "include": "careers.teradata.com/jobs/",
+      "validate_prefix": false,
+      "scroll_rounds": 10
     },
     "interview": {
       "source": "Software"
-    }
+    },
+    "note": "Source replaced and verified with live job records on 2026-07-21"
   },
   {
     "name": "Teradyne",
@@ -16159,7 +16227,9 @@
       "include": "tesla.com/careers/search/job/",
       "validate_prefix": false,
       "require_id": false
-    }
+    },
+    "scan_enabled": false,
+    "note": "Official careers search blocks automated collection with HTTP 403 (verified 2026-07-21)"
   },
   {
     "name": "Test Double",
@@ -16793,7 +16863,8 @@
     ],
     "scrape": {
       "mode": "greenhouse",
-      "board_token": "trussworksinc"
+      "board_token": "trussworksinc",
+      "allow_empty_full_scan": true
     },
     "interview": {
       "no_whiteboard": true,
@@ -16803,7 +16874,8 @@
     },
     "tags": [
       "Interview Friendly"
-    ]
+    ],
+    "note": "Official Greenhouse board was reachable and empty on 2026-07-21"
   },
   {
     "name": "TSC",
@@ -16971,17 +17043,17 @@
       "Transportation & Mobility"
     ],
     "scrape": {
-      "mode": "playwright",
-      "list_url": "https://www.uber.com/us/en/careers/list/",
-      "prefix": "https://www.uber.com",
-      "include": "uber.com/careers/"
+      "mode": "oraclecloud",
+      "list_url": "https://iaziqy.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/UberCareers/jobs",
+      "site": "UberCareers"
     },
     "interview": {
       "no_whiteboard": false,
       "difficulty": "hard",
       "rounds": "4-5",
       "source": "Public knowledge"
-    }
+    },
+    "note": "Source replaced and verified with live job records on 2026-07-21"
   },
   {
     "name": "Ubisoft",
@@ -17099,10 +17171,13 @@
     ],
     "scrape": {
       "mode": "playwright",
-      "list_url": "https://careers.ukg.com/careers/search",
-      "prefix": "https://careers.ukg.com",
-      "include": "careers.ukg.com/careers/jobs/"
-    }
+      "list_url": "https://apply.ukg.com/careers",
+      "prefix": "https://apply.ukg.com/careers/job/",
+      "include": "apply.ukg.com/careers/job/",
+      "validate_prefix": false,
+      "scroll_rounds": 10
+    },
+    "note": "Source replaced and verified with live job records on 2026-07-21"
   },
   {
     "name": "UL Solutions",
@@ -17594,7 +17669,9 @@
     },
     "tags": [
       "Interview Friendly"
-    ]
+    ],
+    "scan_enabled": false,
+    "note": "Official jobs page exposed no job listings or authoritative feed (verified 2026-07-21)"
   },
   {
     "name": "US Foods",
@@ -17930,7 +18007,9 @@
       "mode": "html",
       "list_url": "https://vimeo.com/careers",
       "include": "vimeo.com/jobs"
-    }
+    },
+    "scan_enabled": false,
+    "note": "Official careers page exposed no job listing links or verifiable feed (verified 2026-07-21)"
   },
   {
     "name": "Viridien",
@@ -18668,7 +18747,9 @@
       "include": "jobs.yum.com/jobs/",
       "validate_prefix": false,
       "require_id": false
-    }
+    },
+    "scan_enabled": false,
+    "note": "Configured careers source redirects to a 404 page and no replacement feed was verified (verified 2026-07-21)"
   },
   {
     "name": "Zapier",

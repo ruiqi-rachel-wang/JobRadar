@@ -66,7 +66,8 @@ def scan_run_totals(scan_run_id):
                 COUNT(CASE WHEN status NOT IN ('pending', 'scanning') THEN 1 END) AS companies_scanned,
                 COALESCE(SUM(jobs_found), 0) AS total_jobs_found,
                 COALESCE(SUM(new_jobs_found), 0) AS new_jobs_found,
-                COUNT(CASE WHEN status='failed' THEN 1 END) AS failed_companies
+                COUNT(CASE WHEN status='failed' THEN 1 END) AS failed_companies,
+                COUNT(CASE WHEN status='warning' THEN 1 END) AS warning_companies
             FROM scan_company_status
             WHERE scan_run_id=?
             """,
@@ -80,11 +81,15 @@ def scan_run_totals(scan_run_id):
         "new_jobs_found": new_jobs,
         "updated_jobs_found": max(0, total_jobs - new_jobs),
         "failed_companies": row["failed_companies"] or 0,
+        "warning_companies": row["warning_companies"] or 0,
     }
 
 
 def finish_scan_run_from_statuses(scan_run_id, status, error_message=None):
     totals = scan_run_totals(scan_run_id)
+    warning_companies = totals.pop("warning_companies")
+    if status == "success" and warning_companies:
+        status = "partial_success"
     finish_scan_run(scan_run_id, status=status, error_message=error_message, **totals)
 
 

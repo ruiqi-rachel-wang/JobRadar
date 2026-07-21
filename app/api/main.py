@@ -776,7 +776,7 @@ def _scheduled_scan_names():
     """Return every company eligible for scheduled scanning."""
     return [
         c["name"] for c in current_companies()
-        if c.get("name") and (c.get("scan_enabled", True) is not False or c.get("policy"))
+        if c.get("name") and c.get("scan_enabled", True) is not False
     ]
 
 
@@ -888,7 +888,10 @@ def do_scan(selected_names, scan_type="fresh", resume_scan_run_id=None,
         scan_run_id=resume_scan_run_id, scan_type=scan_type, timing={},
     )
     companies = current_companies()
-    target = [c for c in companies if c["name"] in selected_names]
+    target = [
+        c for c in companies
+        if c["name"] in selected_names and c.get("scan_enabled", True) is not False
+    ]
     scan_state["progress"] = [
         {"company": c["name"],
          "mode":    (c.get("scrape") or {}).get("mode", "html"),
