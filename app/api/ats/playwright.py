@@ -117,6 +117,9 @@ def _fetch_reader_markdown(scrape, seen, company, source):
     needs_id = bool(scrape.get("require_id", True)) and include.endswith(("=", "/"))
     first_err = None
     expected_total = None
+    stopped_on_seen = False
+    matched_job_rows = 0
+    seen_page_signatures = set()
 
     pagination = scrape.get("pagination") or {"type": "none"}
     paginate = bool(scrape.get("reader_paginate"))
@@ -132,17 +135,76 @@ def _fetch_reader_markdown(scrape, seen, company, source):
     else:
         page_urls = [list_url]
 
+    # Reader caches can serve sequential pages from slightly different
+    # snapshots while a busy employer is adding jobs. For explicitly opted-in
+    # large boards, discover the current total from page one and fetch the
+    # remaining pages concurrently in a small bounded pool. This is both much
+    # faster and less likely to shift jobs across page boundaries mid-scan.
+    prefetched = {}
+    if scrape.get("reader_parallel_pages") and pg_type == "query_page" and page_urls:
+        try:
+            first_response = requests.get(
+                "https://r.jina.ai/" + page_urls[0],
+                headers=HEADERS,
+                timeout=35,
+            )
+            first_response.raise_for_status()
+            prefetched[page_urls[0]] = first_response
+            total_match = re.search(
+                r"\bShowing\s+\d[\d,]*(?:\s*-\s*\d[\d,]*)?\s+of\s+([\d,]+)\s+results?\b",
+                first_response.text,
+                re.I,
+            )
+            if total_match:
+                expected_total = int(total_match.group(1).replace(",", ""))
+                page_size_match = re.search(
+                    r"\bShowing\s+(\d[\d,]*)\s*-\s*(\d[\d,]*)\s+of\b",
+                    first_response.text,
+                    re.I,
+                )
+                page_size = (
+                    int(page_size_match.group(2).replace(",", ""))
+                    - int(page_size_match.group(1).replace(",", ""))
+                    + 1
+                    if page_size_match else 25
+                )
+                needed = max(1, (expected_total + page_size - 1) // page_size)
+                page_urls = page_urls[:needed]
+
+            def _prefetch(page_url):
+                response = requests.get(
+                    "https://r.jina.ai/" + page_url,
+                    headers=HEADERS,
+                    timeout=35,
+                )
+                response.raise_for_status()
+                return page_url, response
+
+            remaining = page_urls[1:]
+            if remaining:
+                workers = min(4, len(remaining))
+                with concurrent.futures.ThreadPoolExecutor(max_workers=workers) as executor:
+                    for fetched_url, response in executor.map(_prefetch, remaining):
+                        prefetched[fetched_url] = response
+        except Exception as e:
+            if first_err is None:
+                first_err = str(e)
+
     empty_streak = 0
     for page_url in page_urls:
         try:
-            r = requests.get("https://r.jina.ai/" + page_url, headers=HEADERS, timeout=35)
-            r.raise_for_status()
+            r = prefetched.get(page_url)
+            if r is None:
+                r = requests.get("https://r.jina.ai/" + page_url, headers=HEADERS, timeout=35)
+                r.raise_for_status()
         except Exception as e:
             if first_err is None:
                 first_err = str(e)
             break
 
         before = len(jobs)
+        page_job_urls = []
+        page_matched_rows = 0
         total_match = re.search(
             r"\bShowing\s+\d[\d,]*(?:\s*-\s*\d[\d,]*)?\s+of\s+([\d,]+)\s+results?\b",
             r.text,
@@ -190,13 +252,29 @@ def _fetch_reader_markdown(scrape, seen, company, source):
                     loc = normalize_location(norm(loc_match.group(1)))
                 loc = loc or extract_location_from_text(nearby)
                 posted = extract_posted_from_text(nearby)
+                page_job_urls.append(url)
+                page_matched_rows += 1
+                existing_job = jobs.get(url) or {}
+                raw_locations = list(existing_job.get("locations_raw") or [])
+                if loc and loc.lower() not in {
+                    value.lower() for value in raw_locations
+                }:
+                    raw_locations.append(loc)
                 jobs[url] = {
                     "title": title,
                     "url": url,
-                    "location": loc,
+                    "location": "; ".join(raw_locations) or loc,
+                    "location_raw": (
+                        "; ".join(raw_locations) or loc or None
+                    ),
+                    "locations_raw": raw_locations,
                     "source": source,
-                    "posted": posted,
+                    "posted": posted or existing_job.get("posted"),
                 }
+        page_signature = tuple(page_job_urls)
+        if page_signature and page_signature not in seen_page_signatures:
+            seen_page_signatures.add(page_signature)
+            matched_job_rows += page_matched_rows
         if len(jobs) == before:
             empty_streak += 1
         else:
@@ -209,11 +287,47 @@ def _fetch_reader_markdown(scrape, seen, company, source):
                 make_id(company, job.get("url", ""), job.get("title", "")) in seen
                 for job in page_jobs
             ):
+                stopped_on_seen = True
                 break
         if len(page_urls) > 1:
             time.sleep(0.35)
-    if expected_total is not None and len(jobs) < expected_total:
-        partial_err = f"partial listing: fetched {len(jobs)} of {expected_total} jobs"
+    total_tolerance = max(0, int(scrape.get("reported_total_tolerance") or 0))
+    incomplete = (
+        not stopped_on_seen
+        and expected_total is not None
+        and matched_job_rows + total_tolerance < expected_total
+    )
+    if (
+        incomplete
+        and scrape.get("reader_parallel_pages")
+        and not scrape.get("_retrying_incomplete_reader")
+    ):
+        # Public reader caches can briefly mix snapshots when many pages are
+        # requested together. A bounded sequential retry is slower, but only
+        # runs after an incomplete full read and prevents false partial errors.
+        retry_scrape = dict(scrape)
+        retry_scrape["reader_parallel_pages"] = False
+        retry_scrape["stop_on_seen"] = False
+        retry_scrape["_retrying_incomplete_reader"] = True
+        retry_jobs, retry_err = _fetch_reader_markdown(
+            retry_scrape,
+            seen,
+            company,
+            source,
+        )
+        for job in retry_jobs:
+            if job.get("url"):
+                jobs[job["url"]] = job
+        if len(jobs) + total_tolerance >= expected_total:
+            incomplete = False
+            first_err = None
+        elif retry_err:
+            first_err = f"{first_err}; {retry_err}" if first_err else retry_err
+    if incomplete:
+        partial_err = (
+            f"partial listing: fetched {matched_job_rows} "
+            f"of {expected_total} result rows"
+        )
         first_err = f"{first_err}; {partial_err}" if first_err else partial_err
     return list(jobs.values()), first_err
 
@@ -376,7 +490,17 @@ def _fetch_jibe_text_cards(scrape, seen, company, source):
         if url in seen_urls:
             continue
         seen_urls.add(url)
-        out.append({"title": title, "url": url, "location": loc, "source": source, "posted": ""})
+        out.append({
+            "title": title,
+            "url": url,
+            "ats_id": req,
+            "requisition_id": req,
+            "location": loc,
+            "location_raw": loc or None,
+            "locations_raw": [loc] if loc else [],
+            "source": source,
+            "posted": None,
+        })
     return out, None
 
 def _fetch_bambusdev_salesforce(scrape, seen, company):

@@ -3,7 +3,7 @@ import json
 from unittest.mock import patch
 
 from app.api.ats.html import fetch_html
-from app.api.utils import extract_location_from_text
+from app.api.utils import extract_location_from_text, normalize_location
 
 
 class _Response:
@@ -15,6 +15,82 @@ class _Response:
 
 
 class HtmlPathPaginationTests(unittest.TestCase):
+    @patch("app.api.ats.html.requests.get")
+    def test_gem_next_payload_jobs_are_decoded(self, get):
+        postings = [{
+            "id": "4003629005",
+            "title": "Software Engineer",
+            "location": "San Francisco, United States",
+            "department": "Engineering",
+            "link": "https://jobs.gem.com/retool/4003629005",
+            "updatedAt": "2026-03-18T17:43:11.448Z",
+        }]
+        flight_chunk = json.dumps({"jobs": postings}, separators=(",", ":"))
+        get.return_value = _Response(
+            "<script>self.__next_f.push(" + json.dumps([1, flight_chunk]) + ")</script>"
+        )
+
+        jobs, error = fetch_html(
+            {
+                "list_url": "https://retool.com/careers",
+                "include": "jobs.gem.com/retool/",
+                "embedded_gem_jobs": True,
+            },
+            {},
+            "Retool",
+        )
+
+        self.assertIsNone(error)
+        self.assertEqual(1, len(jobs))
+        self.assertEqual("Software Engineer", jobs[0]["title"])
+        self.assertEqual("4003629005", jobs[0]["ats_id"])
+        self.assertEqual("San Francisco, CA, US", jobs[0]["location"])
+
+    @patch("app.api.ats.html.requests.get")
+    def test_kula_next_payload_jobs_are_decoded(self, get):
+        postings = [{
+            "id": 51437,
+            "title": "Senior Scientist",
+            "listed": True,
+            "launch_at": "2026-06-22T18:44:32.000Z",
+            "account_id": 1514,
+            "ats_job": {
+                "employment_type": "full_time",
+                "ats_department": {"name": "Chemistry"},
+                "offices": [{"location": "Pleasanton, California, United States"}],
+            },
+        }]
+        flight_chunk = json.dumps({"jobs": postings}, separators=(",", ":"))
+        get.return_value = _Response(
+            "<script>self.__next_f.push(" + json.dumps([1, flight_chunk]) + ")</script>"
+        )
+
+        jobs, error = fetch_html(
+            {
+                "list_url": "https://careers.kula.ai/10xgenomics",
+                "include": "careers.kula.ai/10xgenomics/",
+                "embedded_kula_jobs": True,
+            },
+            {},
+            "10x Genomics",
+        )
+
+        self.assertIsNone(error)
+        self.assertEqual(1, len(jobs))
+        self.assertEqual("Senior Scientist", jobs[0]["title"])
+        self.assertEqual("51437", jobs[0]["ats_id"])
+        self.assertEqual("Pleasanton, CA, US", jobs[0]["location"])
+
+    def test_indian_city_region_pairs_include_country(self):
+        self.assertEqual(
+            "Noida, Uttar Pradesh, India",
+            normalize_location("Noida, Uttar Pradesh"),
+        )
+        self.assertEqual(
+            "Hyderabad, Telangana, India",
+            normalize_location("Hyderabad, Telangana"),
+        )
+
     def test_abbvie_metadata_does_not_leak_into_location(self):
         text = (
             "Location Waco, TX Travel No Location Waco "
@@ -66,6 +142,97 @@ class HtmlPathPaginationTests(unittest.TestCase):
 
         self.assertIsNone(error)
         self.assertEqual(["Platform Engineer"], [job["title"] for job in jobs])
+
+    @patch("app.api.ats.html.requests.get")
+    def test_configured_location_regex_stops_department_leak(self, get):
+        get.return_value = _Response(
+            "<div class='irongforce-job-listing'>"
+            "<h2><a href='/jobs/fanduel/software-engineer/'>Software Engineer</a></h2>"
+            "<p>Build reliable services.</p>"
+            "<p>Location: Atlanta, New York City</p>"
+            "<p>Department: Software Engineering</p>"
+            "</div>"
+        )
+
+        jobs, error = fetch_html(
+            {
+                "list_url": "https://www.fanduel.careers/open-positions/",
+                "include": "fanduel.careers/jobs/fanduel/",
+                "location_regex": r"Location:\s*(.+?)\s+Department:",
+            },
+            {},
+            "FanDuel",
+        )
+
+        self.assertIsNone(error)
+        self.assertEqual("Atlanta, New York City", jobs[0]["location"])
+        self.assertNotIn("Department", jobs[0]["location"])
+
+    @patch("app.api.ats.html.requests.get")
+    def test_unitedhealth_card_separates_title_requisition_and_location(self, get):
+        get.return_value = _Response(
+            "<div class='job-card'>"
+            "<a href='/job/noida/devops-engineer/34088/98726908256'>"
+            "DevOps Engineer 2375311 | Noida, Uttar Pradesh | Optum"
+            "</a>"
+            "</div>"
+            "<div class='job-card'>"
+            "<a href='/job/sumter/certified-medical-assistant-colonial-healthcare/34088/98803641008'>"
+            "98803641008"
+            "</a>"
+            "</div>"
+        )
+
+        jobs, error = fetch_html(
+            {
+                "list_url": "https://careers.unitedhealthgroup.com/search-jobs",
+                "include": "/job/",
+                "title_suffix_regex": r"\s+\d+\s*\|.*$",
+                "location_regex": r"\|\s*([^|]+?)(?:\s*\||$)",
+                "ats_id_regex": r"/(\d+)$",
+            },
+            {},
+            "UnitedHealth Group",
+        )
+
+        self.assertIsNone(error)
+        self.assertEqual("DevOps Engineer", jobs[0]["title"])
+        self.assertEqual("Noida, Uttar Pradesh, India", jobs[0]["location"])
+        self.assertEqual("98726908256", jobs[0]["ats_id"])
+        self.assertEqual(
+            "certified medical assistant colonial healthcare",
+            jobs[1]["title"],
+        )
+        self.assertEqual("98803641008", jobs[1]["ats_id"])
+
+    @patch("app.api.ats.html.requests.get")
+    def test_reader_uses_structured_markdown_location_bullet(self, get):
+        get.return_value = _Response(
+            "### [Software Engineer II](https://careers.etsy.com/jobs/software-engineer-ii)\n"
+            "\n"
+            "* Hybrid\n"
+            "\n"
+            "* Brooklyn, New York, United States\n"
+            "\n"
+            "* Software Engineer\n"
+            "\n"
+            "* Full-time\n"
+        )
+
+        jobs, error = fetch_html(
+            {
+                "list_url": "https://careers.etsy.com/jobs/search",
+                "include": "careers.etsy.com/jobs/",
+                "reader": True,
+                "url_exclude": ["careers.etsy.com/jobs/search"],
+            },
+            {},
+            "Etsy",
+        )
+
+        self.assertIsNone(error)
+        self.assertEqual(["Software Engineer II"], [job["title"] for job in jobs])
+        self.assertEqual(["Brooklyn, NY, US"], [job["location"] for job in jobs])
 
     @patch("app.api.ats.html.time.sleep", return_value=None)
     @patch("app.api.ats.html.requests.get")

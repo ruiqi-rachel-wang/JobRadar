@@ -53,26 +53,29 @@ def _oraclecloud_detail_text(api_host, req_id, vanity_domain="", timeout=20):
         data = r.json()
     except Exception:
         return ""
-    parts = [
-        data.get("ExternalQualificationsStr") or "",
-        data.get("ExternalResponsibilitiesStr") or "",
-        data.get("ExternalDescriptionStr") or "",
-        data.get("ShortDescriptionStr") or "",
-    ]
-    return norm(BeautifulSoup(" ".join(parts), "lxml").get_text(" ", strip=True))
+    parts = []
+    for key, heading in (
+        ("ExternalQualificationsStr", "Qualifications"),
+        ("ExternalResponsibilitiesStr", "Responsibilities"),
+        ("ExternalDescriptionStr", "Description"),
+        ("ShortDescriptionStr", "Summary"),
+    ):
+        if data.get(key):
+            parts.append(f"<h3>{heading}</h3>\n{data[key]}")
+    return "\n\n".join(parts)
 
 def _oraclecloud_list_text(job):
     """Text Oracle already embeds in the search response."""
-    parts = [
-        job.get("ExternalQualificationsStr") or "",
-        job.get("ExternalResponsibilitiesStr") or "",
-        job.get("ExternalDescriptionStr") or "",
-        job.get("ShortDescriptionStr") or "",
-    ]
-    text = " ".join(str(p) for p in parts if p)
-    if not text:
-        return ""
-    return norm(BeautifulSoup(text, "lxml").get_text(" ", strip=True))
+    parts = []
+    for key, heading in (
+        ("ExternalQualificationsStr", "Qualifications"),
+        ("ExternalResponsibilitiesStr", "Responsibilities"),
+        ("ExternalDescriptionStr", "Description"),
+        ("ShortDescriptionStr", "Summary"),
+    ):
+        if job.get(key):
+            parts.append(f"<h3>{heading}</h3>\n{job[key]}")
+    return "\n\n".join(parts)
 
 
 def _oraclecloud_text_has_numeric_experience(title, text):
@@ -95,7 +98,7 @@ def _oraclecloud_cached_detail_is_sufficient(existing, refresh_experience=False)
     return (
         has_numeric_exp
         and not refresh_experience
-        and source in {"text", "company_peer"}
+        and source in {"text"}
     )
 
 def fetch_oraclecloud(scrape, seen, company):
@@ -119,10 +122,13 @@ def fetch_oraclecloud(scrape, seen, company):
     refresh_experience = bool(scrape.get("refresh_experience", False))
     detail_workers = int(scrape.get("detail_workers", 3))
     jobs = []
-    api_host     = host  # may be replaced by real backend if custom domain blocks REST API
+    total = 0
+    api_host     = scrape.get("api_host") or host  # may be replaced by real backend if custom domain blocks REST API
     vanity_domain = scrape.get("vanity_domain") or ""
     page = 0
     while page < max_pages:
+        if scan_deadline_exceeded(scrape):
+            return jobs, "company scan deadline reached (partial results)"
         offset = page * limit
         finder = f"findReqs;siteNumber={site},limit={limit},offset={offset},sortBy={sort_by}"
         # Pass finder inline to avoid requests URL-encoding the semicolons (Oracle rejects %3B)
@@ -155,10 +161,11 @@ def fetch_oraclecloud(scrape, seen, company):
 
         search_items = data.get("items") or []
         requisitions = []
-        total = 0
+        page_total = 0
         for item in search_items:
-            total = max(total, int(item.get("TotalJobsCount") or 0))
+            page_total = max(page_total, int(item.get("TotalJobsCount") or 0))
             requisitions.extend(item.get("requisitionList") or [])
+        total = max(total, page_total)
         if not requisitions:
             break
 
@@ -179,19 +186,31 @@ def fetch_oraclecloud(scrape, seen, company):
                 list_desc = _oraclecloud_list_text(j)
                 if list_desc:
                     descriptions[jid] = list_desc
-                    if (
-                        len(list_desc) >= 500
-                        or _oraclecloud_text_has_numeric_experience(title, list_desc)
-                    ):
+                    # Search responses can contain a long responsibilities
+                    # summary while omitting the qualifications section. Only
+                    # skip the detail request when the list text itself states
+                    # a numeric experience requirement.
+                    if _oraclecloud_text_has_numeric_experience(title, list_desc):
                         continue
-                existing = seen.get(make_id(company, jurl, title)) if isinstance(seen, dict) else None
-                if fetch_new_exp_only and isinstance(existing, dict):
+                existing = (
+                    seen.get(make_id(company, jurl, title, "oraclecloud", jid))
+                    or seen.get(make_id(company, jurl, title))
+                    if isinstance(seen, dict) else None
+                )
+                if (
+                    fetch_new_exp_only
+                    and isinstance(existing, dict)
+                    and not refresh_experience
+                ):
                     continue
                 # A short Oracle search-card summary is not a full description.
                 # Numeric cached results and the oracle_detail marker avoid
                 # refetching full descriptions on later scans.
                 if not _oraclecloud_cached_detail_is_sufficient(existing, refresh_experience):
                     ids.append(jid)
+
+            detail_limit = int(scrape.get("max_experience_details") or 1000000)
+            ids = ids[:detail_limit]
 
             def _fetch_desc(req_id):
                 return req_id, _oraclecloud_detail_text(api_host, req_id, vanity_domain)
@@ -209,18 +228,37 @@ def fetch_oraclecloud(scrape, seen, company):
                 jurl = f"{job_url_prefix}/{jid}" if jid else ""
             else:
                 jurl = f"https://{host}/hcmUI/CandidateExperience/en/sites/{site}/job/{jid}" if jid else ""
-            loc = normalize_location(norm(j.get("PrimaryLocation") or j.get("PrimaryLocationCountry") or ""))
-            posted = _parse_posted(j.get("PostedDate") or "")
+            loc_raw = norm(j.get("PrimaryLocation") or j.get("PrimaryLocationCountry") or "")
+            posted_raw = j.get("PostedDate")
             if title and jurl:
                 desc = descriptions.get(jid) or _oraclecloud_list_text(j)
                 jobs.append({
                     "title": title,
                     "url": jurl,
-                    "location": loc,
+                    "ats_id": jid or None,
+                    "requisition_id": (
+                        str(j.get("RequisitionNumber") or j.get("JobCode") or "")
+                        or None
+                    ),
+                    "location": loc_raw,
+                    "location_raw": loc_raw or None,
                     "source": "oraclecloud",
-                    "posted": posted,
+                    "posted_at": posted_raw,
                     "description": desc,
+                    "description_raw": desc,
                     "description_is_detail": jid in detail_ids,
+                    "employment_type": j.get("WorkerType") or j.get("JobType"),
+                    "employment_type_raw": j.get("WorkerType") or j.get("JobType"),
+                    "department": j.get("JobFamily"),
+                    "raw_data": {
+                        key: j.get(key)
+                        for key in (
+                            "PrimaryLocation", "PrimaryLocationCountry",
+                            "RequisitionNumber", "JobCode", "WorkerType",
+                            "JobType", "JobFamily",
+                        )
+                        if j.get(key)
+                    } or None,
                 })
 
         if total and offset + limit >= total:
@@ -228,7 +266,36 @@ def fetch_oraclecloud(scrape, seen, company):
         if len(requisitions) < limit:
             break
         page += 1
-    return jobs, None
+    unique_jobs = {}
+    for job in jobs:
+        unique_jobs[str(job.get("ats_id") or job.get("url") or "")] = job
+
+    # Oracle caps a single sorted result window at 10,000 even when
+    # TotalJobsCount is larger. Query the opposite date ordering and merge the
+    # two windows so very large boards can still be collected completely.
+    if scrape.get("complete_over_10000") and total > len(unique_jobs):
+        opposite_sort = (
+            "POSTING_DATES_ASC"
+            if sort_by == "POSTING_DATES_DESC"
+            else "POSTING_DATES_DESC"
+        )
+        supplement_cfg = dict(scrape)
+        supplement_cfg["sort_by"] = opposite_sort
+        supplement_cfg["complete_over_10000"] = False
+        supplement_cfg["hard_max_pages"] = max_pages
+        supplement, supplement_err = fetch_oraclecloud(supplement_cfg, seen, company)
+        for job in supplement:
+            key = str(job.get("ats_id") or job.get("url") or "")
+            unique_jobs.setdefault(key, job)
+        merged = list(unique_jobs.values())
+        if len(merged) < total:
+            detail = f"partial Oracle listing: fetched {len(merged)} of {total} jobs"
+            if supplement_err:
+                detail += f"; {supplement_err}"
+            return merged, detail
+        return merged[:total], None
+
+    return list(unique_jobs.values()), None
 
 def fetch_oracle(scrape, seen, company):
     list_url = scrape.get("list_url", "")

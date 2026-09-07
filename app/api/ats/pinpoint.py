@@ -33,10 +33,26 @@ def fetch_pinpoint(scrape, seen, company):
         if host and path:
             jurl = host + path
         loc_data = j.get("location") or {}
-        loc = normalize_location(norm(loc_data.get("name") if isinstance(loc_data, dict) else loc_data))
-        posted = _parse_posted(j.get("posted_at") or j.get("created_at") or j.get("published_at") or "")
+        loc_raw = norm(loc_data.get("name") if isinstance(loc_data, dict) else loc_data)
+        posted_raw = j.get("posted_at") or j.get("created_at") or j.get("published_at")
         if title and jurl:
-            jobs.append({"title":title,"url":jurl,"location":loc,"source":"pinpoint","posted":posted})
+            jobs.append({
+                "title": title,
+                "url": jurl,
+                "ats_id": str(j.get("id") or j.get("uuid") or path) or None,
+                "location": loc_raw,
+                "location_raw": loc_raw or None,
+                "source": "pinpoint",
+                "posted_at": posted_raw,
+                "employment_type": j.get("employment_type"),
+                "employment_type_raw": j.get("employment_type"),
+                "department": j.get("department"),
+                "remote_mode": "remote" if j.get("remote") is True else None,
+                "raw_data": {
+                    key: j.get(key)
+                    for key in ("location", "department", "employment_type")
+                    if j.get(key)
+                } or None,
+            })
     return jobs, None
-
 

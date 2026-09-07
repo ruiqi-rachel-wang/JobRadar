@@ -24,7 +24,8 @@ from datetime import timedelta
 try:
     from .api.apis import _API_MODES, fetch_jobs
     from .api.job_data import (
-        delete_expired_jobs, get_app_state, load_seen, set_app_state, upsert_jobs,
+        delete_app_state, delete_expired_jobs, get_app_state, load_seen,
+        set_app_state, upsert_jobs,
     )
     from .api.utils import make_id
     from .scan_store import (
@@ -36,7 +37,8 @@ try:
 except ImportError:
     from api.apis import _API_MODES, fetch_jobs
     from api.job_data import (
-        delete_expired_jobs, get_app_state, load_seen, set_app_state, upsert_jobs,
+        delete_app_state, delete_expired_jobs, get_app_state, load_seen,
+        set_app_state, upsert_jobs,
     )
     from api.utils import make_id
     from scan_store import (
@@ -123,6 +125,11 @@ def run_scan(companies, scan_type="fresh", progress=None, on_scan_run_id=None,
     is_fresh    = scan_type != "full"
     _finish_phase("select_companies", "load_seen")
     seen        = load_seen()
+    seen_by_url = {
+        (entry.get("company"), entry.get("url")): entry
+        for entry in seen.values()
+        if isinstance(entry, dict) and entry.get("company") and entry.get("url")
+    }
     _finish_phase("load_seen", "create_scan_run")
     now_str     = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     summaries   = []        # per-company summary dicts
@@ -194,7 +201,7 @@ def run_scan(companies, scan_type="fresh", progress=None, on_scan_run_id=None,
                 logging.warning("scan: status write failed for %s: %s", company.get("name"), exc)
             work["status_start"] = time.monotonic() - status_t0
             fetch_t0 = time.monotonic()
-            blocked_until = _blocked_until(company["name"])
+            blocked_until = _blocked_until(company)
             if blocked_until and blocked_until > datetime.now():
                 work["fetch_enrich"] = time.monotonic() - fetch_t0
                 return (
@@ -203,9 +210,17 @@ def run_scan(companies, scan_type="fresh", progress=None, on_scan_run_id=None,
                     round(time.monotonic() - t0, 1),
                     work,
                 )
-            raw, err = fetch_jobs(company, seen, scan_type=scan_type)
+            deadline = t0 + _company_timeout_s()
+            raw, err = fetch_jobs(
+                company,
+                seen,
+                scan_type=scan_type,
+                deadline=deadline,
+            )
             if err and _is_forbidden_error(err):
-                _remember_forbidden(company["name"])
+                _remember_forbidden(company)
+            elif not err:
+                _clear_forbidden(company)
             work["fetch_enrich"] = time.monotonic() - fetch_t0
             return i, company, raw or [], err, round(time.monotonic() - t0, 1), work
         except Exception as exc:
@@ -226,9 +241,30 @@ def run_scan(companies, scan_type="fresh", progress=None, on_scan_run_id=None,
         prepare_t0 = time.monotonic()
         with _seen_lock:
             for job in raw:
-                jid    = make_id(name, job.get("url", ""), job.get("title", ""))
-                is_new = jid not in seen
-                existing = seen.get(jid) if not is_new else None
+                stable_id = make_id(
+                    name,
+                    job.get("url", ""),
+                    job.get("title", ""),
+                    job.get("source", ""),
+                    job.get("ats_id", ""),
+                )
+                legacy_id = make_id(
+                    name, job.get("url", ""), job.get("title", "")
+                )
+                existing = _find_existing_seen_job(
+                    seen,
+                    seen_by_url,
+                    stable_id=stable_id,
+                    legacy_id=legacy_id,
+                    company=name,
+                    url=job.get("url"),
+                )
+                jid = (
+                    existing.get("_stored_id")
+                    if isinstance(existing, dict) and existing.get("_stored_id")
+                    else stable_id
+                )
+                is_new = existing is None
                 fts_changed = bool(
                     is_new
                     or (job.get("title") or "") != (existing.get("title") or "")
@@ -241,8 +277,14 @@ def run_scan(companies, scan_type="fresh", progress=None, on_scan_run_id=None,
                 if is_new:
                     new_count += 1
                     seen[jid] = _make_seen_entry(job, name, now_str)
+                    seen[jid]["_stored_id"] = jid
                 else:
-                    _refresh_seen_entry(seen[jid], job)
+                    _refresh_seen_entry(existing, job)
+                    seen[jid] = existing
+                seen[stable_id] = seen[jid]
+                seen[legacy_id] = seen[jid]
+                if job.get("url"):
+                    seen_by_url[(name, job.get("url"))] = seen[jid]
 
                 rows.append({
                     **job,
@@ -268,7 +310,16 @@ def run_scan(companies, scan_type="fresh", progress=None, on_scan_run_id=None,
         allow_empty = bool(
             (company.get("scrape") or {}).get("allow_empty_full_scan")
         )
-        if not is_fresh and not err and (raw or allow_empty):
+        preserve_unseen = bool(
+            (company.get("scrape") or {}).get("preserve_unseen_jobs")
+        )
+        if _should_expire_jobs(
+            is_fresh=is_fresh,
+            err=err,
+            raw=raw,
+            allow_empty=allow_empty,
+            preserve_unseen=preserve_unseen,
+        ):
             delete_expired_jobs(
                 name,
                 [r["id"] for r in rows],
@@ -358,7 +409,7 @@ def run_scan(companies, scan_type="fresh", progress=None, on_scan_run_id=None,
         }
 
     def _mark_timed_out(fut, meta):
-        fut.cancel()
+        cancelled_before_start = fut.cancel()
         i = meta["index"]
         company = meta["company"]
         duration = round(time.monotonic() - meta["started"], 1)
@@ -369,6 +420,7 @@ def run_scan(companies, scan_type="fresh", progress=None, on_scan_run_id=None,
             _commit_one(i, company, [], err, duration, {"fetch_enrich": duration})
         except Exception as exc:
             logging.warning("scan: failed to record timeout for %s: %s", company.get("name"), exc)
+        return cancelled_before_start
 
     def _run_bounded(api_ex, workday_ex, html_ex, pw_ex):
         """Keep only active workers queued so progress and memory stay honest."""
@@ -399,9 +451,10 @@ def run_scan(companies, scan_type="fresh", progress=None, on_scan_run_id=None,
                 if time.monotonic() - meta["started"] <= timeout_s:
                     continue
                 futures.pop(fut)
+                # A running thread cannot be killed safely. Retire this worker
+                # slot instead of queuing a replacement behind it (which made
+                # queued companies appear to time out before they even began).
                 _mark_timed_out(fut, meta)
-                if not _cancel_requested():
-                    _submit_next(meta["executor"], meta["iterator"], futures)
             done, _pending = concurrent.futures.wait(
                 futures,
                 timeout=1,
@@ -421,6 +474,13 @@ def run_scan(companies, scan_type="fresh", progress=None, on_scan_run_id=None,
                     logging.warning("scan: skipped a company after commit error: %s", exc)
                 if not _cancel_requested():
                     _submit_next(meta["executor"], meta["iterator"], futures)
+        # If hung workers exhausted a lane, report every never-submitted company
+        # explicitly. Silently skipping them would make scan completeness look
+        # better than it really was.
+        for iterator in (api_iter, workday_iter, html_iter, pw_iter):
+            for i, company in iterator:
+                err = "not scanned because all workers in this source lane timed out"
+                _commit_one(i, company, [], err, 0.0, {})
         return None
 
     try:
@@ -475,19 +535,75 @@ def run_scan(companies, scan_type="fresh", progress=None, on_scan_run_id=None,
 
 # ── Private helpers ───────────────────────────────────────────────────────────
 
-def _blocked_until(company_name):
-    raw = get_app_state(f"crawler_403_until:{company_name}")
+def _forbidden_source_key(company):
+    scrape = company.get("scrape") or {}
+    source_fields = (
+        "mode", "list_url", "url", "board_token", "lever_slug",
+        "ashby_slug", "workable_slug", "icims_slug", "company_id",
+    )
+    return "|".join(str(scrape.get(field) or "") for field in source_fields)
+
+
+def _blocked_until(company):
+    company_name = company["name"]
+    try:
+        raw = get_app_state(f"crawler_403_until:{company_name}")
+        stored_source = get_app_state(f"crawler_403_source:{company_name}")
+    except Exception as exc:
+        # Backoff metadata is advisory. A busy SQLite writer must not prevent
+        # an otherwise independent network fetch from running.
+        logging.warning("scan: could not read 403 backoff for %s: %s", company_name, exc)
+        return None
     if not raw:
+        return None
+    # A backoff belongs to the source that returned 403, not permanently to
+    # the company. If its ATS/config changes, try the new source immediately.
+    if not stored_source or stored_source != _forbidden_source_key(company):
         return None
     try:
         return datetime.strptime(raw, "%Y-%m-%d %H:%M:%S")
     except Exception:
         return None
 
-def _remember_forbidden(company_name):
-    hours = int(__import__("os").environ.get("JOBRADAR_403_BACKOFF_HOURS", "168"))
-    until = datetime.now() + timedelta(hours=max(1, hours))
-    set_app_state(f"crawler_403_until:{company_name}", until.strftime("%Y-%m-%d %H:%M:%S"))
+def _remember_forbidden(company):
+    company_name = company["name"]
+    count_key = f"crawler_403_count:{company_name}"
+    try:
+        count = int(get_app_state(count_key) or "0") + 1
+    except (ValueError, TypeError):
+        count = 1
+    except Exception as exc:
+        logging.warning("scan: could not read 403 count for %s: %s", company_name, exc)
+        count = 1
+    base_hours = int(os.environ.get("JOBRADAR_403_BACKOFF_HOURS", "2"))
+    max_hours = int(os.environ.get("JOBRADAR_403_MAX_BACKOFF_HOURS", "48"))
+    hours = min(max_hours, max(1, base_hours) * (2 ** min(count - 1, 6)))
+    until = datetime.now() + timedelta(hours=hours)
+    try:
+        set_app_state(count_key, str(count))
+        set_app_state(
+            f"crawler_403_until:{company_name}",
+            until.strftime("%Y-%m-%d %H:%M:%S"),
+        )
+        set_app_state(
+            f"crawler_403_source:{company_name}",
+            _forbidden_source_key(company),
+        )
+    except Exception as exc:
+        logging.warning("scan: could not persist 403 backoff for %s: %s", company_name, exc)
+
+
+def _clear_forbidden(company):
+    company_name = company["name"]
+    try:
+        delete_app_state(f"crawler_403_until:{company_name}")
+        delete_app_state(f"crawler_403_count:{company_name}")
+        delete_app_state(f"crawler_403_source:{company_name}")
+    except Exception as exc:
+        # Clearing advisory state must never discard a successfully fetched
+        # job list merely because another process currently owns SQLite's
+        # single writer lock.
+        logging.warning("scan: could not clear 403 backoff for %s: %s", company_name, exc)
 
 def _is_forbidden_error(err):
     text = str(err or "").lower()
@@ -497,17 +613,24 @@ def _is_forbidden_error(err):
 def _make_seen_entry(job, company_name, now_str):
     """Build the initial cache entry for a newly discovered job."""
     return {
+        "_stored_id":  job.get("id"),
         "first_seen":  now_str,
         "company":     company_name,
         "title":       job.get("title", ""),
         "url":         job.get("url", ""),
-        "location":    job.get("location", ""),
+        "ats_id":      job.get("ats_id"),
+        "location":    job.get("location"),
+        "location_raw": job.get("location_raw"),
+        "locations":   job.get("locations") or [],
+        "country_iso": job.get("country_iso"),
+        "remote_mode": job.get("remote_mode"),
         "source":      job.get("source", ""),
-        "posted":      job.get("posted", ""),
+        "posted":      job.get("posted"),
+        "posted_at":   job.get("posted_at"),
         "exp_min":     job.get("exp_min"),
         "exp_max":     job.get("exp_max"),
-        "exp_label":   job.get("exp_label", ""),
-        "exp_source":  job.get("exp_source", ""),
+        "exp_label":   job.get("exp_label"),
+        "exp_source":  job.get("exp_source"),
         "skills":      job.get("skills") or [],
         "keywords":    job.get("keywords") or [],
         "has_description": bool((job.get("description") or "").strip()),
@@ -516,8 +639,16 @@ def _make_seen_entry(job, company_name, now_str):
 
 def _refresh_seen_entry(entry, job):
     """Overwrite stale cached fields with newer data from a re-scan."""
-    if job.get("location"):  entry["location"]  = job["location"]
-    if job.get("posted"):    entry["posted"]    = job["posted"]
+    if job.get("title"):     entry["title"] = job["title"]
+    if job.get("url"):       entry["url"] = job["url"]
+    if job.get("ats_id"):    entry["ats_id"] = job["ats_id"]
+    if job.get("location"):  entry["location"] = job["location"]
+    if job.get("location_raw") is not None: entry["location_raw"] = job["location_raw"]
+    if job.get("locations"): entry["locations"] = job["locations"]
+    if job.get("country_iso"): entry["country_iso"] = job["country_iso"]
+    entry["remote_mode"] = job.get("remote_mode")
+    if job.get("posted"):    entry["posted"] = job["posted"]
+    if job.get("posted_at"): entry["posted_at"] = job["posted_at"]
     if job.get("source"):    entry["source"]    = job["source"]
     if job.get("exp_label"):
         entry.update({
@@ -532,6 +663,27 @@ def _refresh_seen_entry(entry, job):
         entry["keywords"] = job["keywords"]
     if job.get("description"):
         entry["has_description"] = True
+
+
+def _find_existing_seen_job(
+    seen, seen_by_url, *, stable_id, legacy_id, company, url
+):
+    """Match a corrected posting by URL when its title-derived ID changed."""
+    return (
+        seen.get(stable_id)
+        or seen.get(legacy_id)
+        or (seen_by_url.get((company, url)) if url else None)
+    )
+
+
+def _should_expire_jobs(*, is_fresh, err, raw, allow_empty, preserve_unseen):
+    """Only expire missing rows when a source is known to be comprehensive."""
+    return (
+        not is_fresh
+        and not err
+        and not preserve_unseen
+        and bool(raw or allow_empty)
+    )
 
 
 def _is_unexplained_empty_full_scan(*, is_fresh, raw, err, allow_empty):

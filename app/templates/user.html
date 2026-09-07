@@ -183,6 +183,7 @@
   </div>
 </div>
 
+<script src="{{ url_for('static', filename='js/job-search-request.js') }}"></script>
 <script>
 const COMPANIES    = {{ companies|tojson }};
 const IS_PUBLIC    = {{ is_public|tojson }};
@@ -384,7 +385,7 @@ async function applyFilters(companyNames, page) {
       nm.textContent = 'Loading jobs...';
       nm.style.display = 'block';
     }
-    const resp = await fetch('/api/jobs?' + params);
+    const resp = await fetchJobSearch(params);
     if (!resp.ok) {
       showEmptyMessage('Could not load jobs. Try again in a moment.');
       return;
@@ -613,7 +614,7 @@ function renderSection(id, jobs, title, isNew, bucket) {
     const dateCls    = dateVal !== '—' ? 'td-date has-posted' : 'td-date';
     const yrsHtml   = j.exp_label
       ? `<span class="exp-chip">${esc2(j.exp_label)}</span>`
-      : '<span class="exp-chip exp-chip-muted">Not listed</span>';
+      : '<span class="exp-chip exp-chip-muted">Not stated</span>';
     const dotCell   = '';
     const titleHtml = `<span class="job-title-link">${esc2(j.title)}</span>`;
     const openBtn = j.url
@@ -694,6 +695,16 @@ function _combinedKeywordTerms(skills, keywords) {
   });
 }
 
+function jobLocationText(job) {
+  const values = Array.isArray(job?.locations)
+    ? job.locations.map(location => {
+        if (typeof location === 'string') return location.trim();
+        return String(location?.display || '').trim();
+      }).filter(value => value && value !== 'Multiple Locations')
+    : [];
+  return values.length ? [...new Set(values)].join(' · ') : (job?.location || '—');
+}
+
 const MODE_DOT_COLORS = {
   greenhouse:'#22c55e',lever:'#3b82f6',ashby:'#a855f7',workday:'#f59e0b',
   bamboohr:'#14b8a6',icims:'#6366f1',html:'#9ca3af',playwright:'#cf923a',
@@ -707,7 +718,8 @@ function openJobDrawer(id) {
   currentDrawerJob = job;
 
   document.getElementById('jd-company').textContent = job.company || '';
-  document.getElementById('jd-location').textContent = job.location || '—';
+  const locationText = jobLocationText(job);
+  document.getElementById('jd-location').textContent = locationText;
   document.getElementById('jd-title').textContent = job.title || '';
 
   const dateStr = job.posted || (job.first_seen||'').slice(0,10) || '';
@@ -723,13 +735,13 @@ function openJobDrawer(id) {
   linkEl.href = job.url || '#';
   linkEl.style.display = job.url ? '' : 'none';
 
-  document.getElementById('jd-exp').textContent  = job.exp_label || 'Not listed';
+  document.getElementById('jd-exp').textContent  = job.exp_label || 'Not stated';
   document.getElementById('jd-type').textContent = job.employment_type || '—';
 
   _renderDrawerPills('jd-keywords', _combinedKeywordTerms(job.skills, job.keywords));
 
   document.getElementById('jd-d-company').textContent  = job.company || '—';
-  document.getElementById('jd-d-location').textContent = job.location || '—';
+  document.getElementById('jd-d-location').textContent = locationText;
   document.getElementById('jd-d-cats').textContent     = (job.categories||[]).slice(0,3).join(', ') || '—';
   document.getElementById('jd-d-seen').textContent     = (job.first_seen||'').slice(0,10) || '—';
   document.getElementById('jd-d-interview').textContent = '—';
@@ -751,6 +763,15 @@ function openJobDrawer(id) {
       if (Array.isArray(data.skills)) {
         currentDrawerJob.skills = data.skills;
       }
+      if (Array.isArray(data.locations)) {
+        currentDrawerJob.locations = data.locations;
+      }
+      if (data.location) {
+        currentDrawerJob.location = data.location;
+      }
+      const detailLocationText = jobLocationText(currentDrawerJob);
+      document.getElementById('jd-location').textContent = detailLocationText;
+      document.getElementById('jd-d-location').textContent = detailLocationText;
       _renderDrawerPills(
         'jd-keywords',
         _combinedKeywordTerms(currentDrawerJob.skills, currentDrawerJob.keywords)
@@ -926,7 +947,7 @@ function renderApplyList() {
     el.innerHTML = `<div class="empty-state" style="height:360px">
       <div class="icon">🔒</div>
       <h3>Log in to use Apply List</h3>
-      <p>Create a free account to track up to 30 jobs.</p>
+      <p>Create a free account to track up to ${APPLY_LIMIT} jobs.</p>
     </div>`;
     return;
   }

@@ -6,11 +6,10 @@ def fetch_greenhouse(scrape, seen, company):
     token = scrape.get("board_token","")
     if not token:
         return [], "no board_token"
-    include_content = bool(
-        scrape.get("greenhouse_content")
-        or scrape.get("fetch_descriptions")
-        or scrape.get("fetch_experience_details")
-    )
+    # Greenhouse embeds the complete description in the board response, so
+    # content=true avoids hundreds of per-job detail requests while preserving
+    # the qualifications needed for experience/skills extraction.
+    include_content = scrape.get("greenhouse_content") is not False
     region = (scrape.get("region") or "").lower()
     if region == "eu":
         bases = ["https://boards-api.eu.greenhouse.io", "https://boards-api.greenhouse.io"]
@@ -49,13 +48,41 @@ def fetch_greenhouse(scrape, seen, company):
             for j in data.get("jobs",[]):
                 title  = norm(j.get("title") or "")
                 jurl   = j.get("absolute_url") or ""
-                loc    = normalize_location(norm((j.get("location") or {}).get("name") or ""))
-                posted = _parse_posted(j.get("first_published") or j.get("published_at") or j.get("updated_at") or "")
-                desc   = ""
-                if include_content:
-                    desc = norm(BeautifulSoup(j.get("content") or "", "lxml").get_text(" ", strip=True))
+                loc_raw = norm((j.get("location") or {}).get("name") or "")
+                posted_raw = j.get("first_published") or j.get("published_at") or j.get("updated_at")
+                desc = j.get("content") or None if include_content else None
+                metadata = j.get("metadata") or []
+                departments = j.get("departments") or []
+                offices = j.get("offices") or []
                 if title and jurl:
-                    jobs.append({"title":title,"url":jurl,"location":loc,"source":"greenhouse","posted":posted,"description":desc})
+                    jobs.append({
+                        "title": title,
+                        "url": jurl,
+                        "ats_id": str(j.get("id") or "") or None,
+                        "requisition_id": (
+                            str(j.get("requisition_id"))
+                            if j.get("requisition_id") is not None else None
+                        ),
+                        "location": loc_raw,
+                        "location_raw": loc_raw or None,
+                        "source": "greenhouse",
+                        "posted_at": posted_raw,
+                        "description": desc,
+                        "description_raw": desc,
+                        "department": (
+                            departments[0].get("name")
+                            if departments and isinstance(departments[0], dict)
+                            else None
+                        ),
+                        "raw_data": {
+                            key: value for key, value in {
+                                "metadata": metadata,
+                                "departments": departments,
+                                "offices": offices,
+                                "internal_job_id": j.get("internal_job_id"),
+                            }.items() if value
+                        } or None,
+                    })
             return jobs, None
         except Exception as e:
             last_err = str(e)
@@ -72,10 +99,16 @@ def fetch_greenhouse(scrape, seen, company):
                 title  = norm(j.get("title") or "")
                 jurl   = j.get("absolute_url") or ""
                 loc_raw = (j.get("location") or {}).get("name") or ""
-                loc    = normalize_location(norm(loc_raw))
-                posted = _parse_posted(j.get("updated_at") or "")
                 if title and jurl:
-                    jobs.append({"title":title,"url":jurl,"location":loc,"source":"greenhouse","posted":posted})
+                    jobs.append({
+                        "title": title,
+                        "url": jurl,
+                        "ats_id": str(j.get("id") or "") or None,
+                        "location": norm(loc_raw),
+                        "location_raw": norm(loc_raw) or None,
+                        "source": "greenhouse",
+                        "posted_at": j.get("updated_at"),
+                    })
             if jobs:
                 return jobs, None
             last_err = f"new-board no jobs: {token}"

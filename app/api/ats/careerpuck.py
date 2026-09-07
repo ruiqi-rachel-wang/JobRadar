@@ -53,11 +53,29 @@ def fetch_careerpuck(scrape, seen, company):
 
         posted = _parse_posted(j.get("postedAt") or j.get("createdAt") or "")
         desc_html = html.unescape(j.get("content") or "")
-        desc = ""
-        if desc_html:
-            desc = norm(BeautifulSoup(desc_html, "lxml").get_text(" ", strip=True))
-        jobs.append({"title": title, "url": jurl, "location": loc,
-                     "source": "careerpuck", "posted": posted,
-                     "description": desc})
+        desc = normalize_description(desc_html)
+        jobs.append({
+            "title": title,
+            "url": jurl,
+            "ats_id": j.get("id") or j.get("_id") or j.get("permalink"),
+            "apply_url": j.get("applicationUrl") or jurl,
+            "location": loc,
+            "location_raw": raw_loc,
+            "locations_raw": [raw_loc] if raw_loc else [],
+            "remote_mode": j.get("workplaceType"),
+            "source": "careerpuck",
+            "posted": posted,
+            "posted_at": j.get("postedAt") or j.get("createdAt"),
+            "posted_raw": j.get("postedAt") or j.get("createdAt"),
+            "description": desc,
+            "description_raw": desc_html,
+            "employment_type_raw": j.get("employmentType"),
+            "department": j.get("department"),
+            "raw_data": {
+                key: j.get(key)
+                for key in ("workplaceType", "location", "employmentType", "department")
+                if j.get(key) is not None
+            },
+        })
 
     return jobs, None

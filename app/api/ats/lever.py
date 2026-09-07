@@ -16,17 +16,54 @@ def fetch_lever(scrape, seen, company):
     if not isinstance(data, list): return [], "unexpected response"
     jobs = []
     for j in data:
-        title      = norm(j.get("text") or "")
-        jurl       = j.get("hostedUrl") or ""
-        loc        = normalize_location(norm((j.get("categories") or {}).get("location") or ""))
-        created_ms = j.get("createdAt") or 0
-        posted     = datetime.fromtimestamp(created_ms/1000).strftime("%Y-%m-%d") if created_ms else ""
-        desc_parts  = [j.get("descriptionPlain") or j.get("description") or ""]
+        title = norm(j.get("text") or "")
+        jurl = j.get("hostedUrl") or ""
+        categories = j.get("categories") or {}
+        location_raw = norm(categories.get("location") or "")
+        desc_parts = []
+        intro = j.get("description") or ""
+        if intro:
+            desc_parts.append(str(intro))
         for list_item in j.get("lists") or []:
-            desc_parts.append(list_item.get("text") or "")
-            desc_parts.extend(list_item.get("content") or [])
-        desc = norm(" ".join(str(x) for x in desc_parts if x))
-        commitment = norm((j.get("categories") or {}).get("commitment") or "")
+            if not isinstance(list_item, dict):
+                continue
+            heading = norm(list_item.get("text") or "")
+            content = list_item.get("content") or ""
+            if isinstance(content, list):
+                content = "\n".join(str(value) for value in content if value)
+            if content:
+                desc_parts.append(
+                    (f"<h3>{heading}</h3>\n" if heading else "") + str(content)
+                )
+        if not desc_parts and j.get("descriptionPlain"):
+            desc_parts.append(str(j["descriptionPlain"]))
+        description_raw = "\n\n".join(desc_parts)
+        commitment = norm(categories.get("commitment") or "")
+        workplace_type = norm(j.get("workplaceType") or "")
         if title and jurl:
-            jobs.append({"title":title,"url":jurl,"location":loc,"source":"lever","posted":posted,"description":desc,"employment_type":commitment})
+            jobs.append({
+                "title": title,
+                "url": jurl,
+                "ats_id": str(j.get("id") or "") or None,
+                "apply_url": j.get("applyUrl"),
+                "location": location_raw,
+                "location_raw": location_raw or None,
+                "source": "lever",
+                "posted_at": j.get("createdAt"),
+                "description": description_raw or None,
+                "description_raw": description_raw or None,
+                "employment_type": commitment or None,
+                "employment_type_raw": commitment or None,
+                "department": categories.get("department"),
+                "team": categories.get("team"),
+                "workplace_type": workplace_type or None,
+                "raw_data": {
+                    key: value for key, value in {
+                        "categories": categories,
+                        "workplaceType": j.get("workplaceType"),
+                        "country": j.get("country"),
+                        "tags": j.get("tags"),
+                    }.items() if value
+                } or None,
+            })
     return jobs, None

@@ -45,12 +45,23 @@ def make_job_hash(company_name, title, location=None, job_url=""):
     return hashlib.sha256(raw.encode("utf-8")).hexdigest()
 
 
-def make_job_id(company_name, job_url, title):
+def make_job_id(company_name, job_url, title, source="", ats_id=""):
     """
-    Backward-compatible JobRadar ID.
+    Stable JobRadar ID.
 
-    Existing scans and rows use this 20-character prefix, so keep it stable
-    while centralizing the hashing logic in one module.
+    Prefer the provider's immutable posting id. Adapters without one retain
+    the historical company+URL+title hash so existing databases do not report
+    every old job as newly discovered after this upgrade.
     """
-    raw = f"{company_name}|{_identity_job_url(job_url)}|{title}"
+    stable_ats_id = normalize_text(ats_id)
+    stable_source = normalize_text(source)
+    normalized_url = _identity_job_url(job_url)
+    if stable_ats_id:
+        raw = f"ats|{stable_source}|{normalize_text(company_name)}|{stable_ats_id}"
+    elif normalized_url:
+        # Preserve the historical hash for adapters that have not yet exposed
+        # an ATS id, avoiding a one-time "every job is new" migration.
+        raw = f"{company_name}|{normalized_url}|{title}"
+    else:
+        raw = f"legacy|{normalize_text(company_name)}|{normalize_text(title)}"
     return hashlib.sha256(raw.encode("utf-8")).hexdigest()[:20]

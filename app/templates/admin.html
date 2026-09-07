@@ -561,6 +561,7 @@ button.kpi:hover { border-color: var(--line-3); }
   </div>
 </div>
 
+<script src="{{ url_for('static', filename='js/job-search-request.js') }}"></script>
 <script>
 const COMPANIES   = {{ companies|tojson }};
 const MODE_COLORS = {
@@ -1084,7 +1085,7 @@ function renderAdminApply() {
     <td style="font-weight:500">${esc2(j.title||'')}</td>
     <td style="font-size:12.5px">${esc2(j.company||'')}</td>
     <td style="font-size:12.5px;color:var(--ink-3)">${esc2(j.location||'—')}</td>
-    <td>${j.exp_label?`<span class="exp-chip">${esc2(j.exp_label)}</span>`:'<span class="exp-chip exp-chip-muted">Not listed</span>'}</td>
+    <td>${j.exp_label?`<span class="exp-chip">${esc2(j.exp_label)}</span>`:'<span class="exp-chip exp-chip-muted">Not stated</span>'}</td>
     <td><select style="font-size:11.5px;padding:3px 6px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--surface)"
         onchange="adminUpdateStage('${id}',this.value)">${STAGE_OPTS.replace(`value="${j.stage}"`,`value="${j.stage}" selected`)}</select></td>
     <td>${j.url?`<a class="j-open-btn" href="${escAttr(j.url||'')}" target="_blank" rel="noopener">↗</a>`:''}</td>
@@ -1312,7 +1313,7 @@ async function adminLoadJobs(page) {
   if (loc) p.set('location', loc);
   if (exp) p.set('experience', exp);
   names.forEach(n => p.append('company', n));
-  const data = await fetch('/api/jobs?' + p).then(r => r.json()).catch(() => null);
+  const data = await fetchJobSearch(p).then(r => r.ok ? r.json() : null).catch(() => null);
   if (!data) return;
   ajJobs  = Array.isArray(data) ? data : (data.jobs || []);
   ajPage  = Number(data.page  || page);
@@ -1344,7 +1345,7 @@ function adminRenderJobs() {
       <td class="td-title" style="max-width:340px"><span style="font-weight:600;font-size:13.5px;color:var(--navy)">${esc2(j.title)}</span></td>
       <td style="font-size:12.5px;color:var(--ink-2);width:150px">${esc2(j.company)}</td>
       <td style="font-size:12.5px;color:var(--ink-3);width:150px">${esc2(j.location||'—')}</td>
-      <td style="width:110px">${j.exp_label?`<span class="exp-chip">${esc2(j.exp_label)}</span>`:'<span class="exp-chip exp-chip-muted">Not listed</span>'}</td>
+      <td style="width:110px">${j.exp_label?`<span class="exp-chip">${esc2(j.exp_label)}</span>`:'<span class="exp-chip exp-chip-muted">Not stated</span>'}</td>
       <td style="font-size:11.5px;color:var(--ink-3);width:100px;font-family:var(--font-mono)">${date}</td>
       <td style="width:40px">${j.url?`<a href="${escAttr(j.url)}" target="_blank" rel="noopener" class="j-open-btn" title="Open">↗</a>`:''}</td>
     </tr>`;

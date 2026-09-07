@@ -69,6 +69,15 @@ def connect_db(rows=False):
         raw = sqlite3.connect(DB_FILE, timeout=30)
         raw.execute("PRAGMA busy_timeout=30000")
         raw.execute("PRAGMA journal_mode=WAL")
+        # SQLite's default page cache is only a few MB. The production jobs DB
+        # is several GB, so bulk upserts otherwise reread the B-tree/FTS index
+        # tens of thousands of times per second. A bounded cache plus mmap
+        # keeps hot index pages resident without loading the whole DB.
+        cache_mb = max(8, int(os.environ.get("JOBRADAR_SQLITE_CACHE_MB", "64")))
+        mmap_mb = max(0, int(os.environ.get("JOBRADAR_SQLITE_MMAP_MB", "256")))
+        raw.execute(f"PRAGMA cache_size=-{cache_mb * 1024}")
+        raw.execute(f"PRAGMA mmap_size={mmap_mb * 1024 * 1024}")
+        raw.execute("PRAGMA temp_store=MEMORY")
         if rows:
             raw.row_factory = sqlite3.Row
     conn = _Connection(raw)

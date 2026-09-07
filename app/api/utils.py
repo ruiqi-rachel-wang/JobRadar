@@ -1,7 +1,8 @@
 import json
+import html as html_lib
 import re
 from collections import Counter
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from functools import lru_cache
 from urllib.parse import parse_qs, unquote, urlencode, urlparse, urlunparse
 
@@ -12,14 +13,139 @@ try:
 except ModuleNotFoundError:
     from ..job_identity import make_job_id
 
-def make_id(company, url, title):
-    return make_job_id(company, url, title)
+def make_id(company, url, title, source="", ats_id=""):
+    return make_job_id(company, url, title, source=source, ats_id=ats_id)
 
 def norm(s):
     return " ".join((s or "").split())
 
-def extract_experience(title="", text="", allow_title_fallback=True):
-    """Return an estimated experience range from requirements text or title."""
+
+def normalize_description(value):
+    """Return structure-preserving Markdown-ish text from HTML or plain text.
+
+    Raw source content is stored separately by the caller. This function only
+    creates the canonical description used for display and enrichment. It
+    intentionally preserves headings, paragraphs, and list boundaries instead
+    of flattening the entire posting into one line.
+    """
+    if value is None:
+        return None
+    text = str(value).strip()
+    if not text:
+        return None
+
+    # Several ATS providers (including Darwinbox) return a complete HTML
+    # document encoded as entities. Decode before deciding whether the value
+    # is HTML; raw source content remains untouched in description_raw.
+    text = html_lib.unescape(text)
+    if "<" in text and re.search(r"<[a-zA-Z][^>]*>", text):
+        try:
+            soup = BeautifulSoup(text, "lxml")
+            for node in soup.select("script, style, noscript, template"):
+                node.decompose()
+            for br in soup.find_all("br"):
+                br.replace_with("\n")
+            for heading in soup.find_all(re.compile(r"^h[1-6]$")):
+                level = int(heading.name[1])
+                heading.insert_before("\n\n" + ("#" * level) + " ")
+                heading.insert_after("\n\n")
+            for item in soup.find_all("li"):
+                item.insert_before("\n- ")
+                item.insert_after("\n")
+            for block in soup.find_all(
+                ["p", "div", "section", "article", "ul", "ol", "table", "tr"]
+            ):
+                block.insert_after("\n")
+            text = soup.get_text("", strip=False)
+        except Exception:
+            text = re.sub(r"<[^>]+>", " ", text)
+
+    text = html_lib.unescape(text).replace("\r\n", "\n").replace("\r", "\n")
+    lines = []
+    blank = False
+    for raw_line in text.split("\n"):
+        line = re.sub(r"[ \t]+", " ", raw_line).strip()
+        if not line:
+            if lines and not blank:
+                lines.append("")
+            blank = True
+            continue
+        blank = False
+        if line.startswith("- "):
+            line = "- " + line[2:].strip()
+        lines.append(line)
+    normalized = "\n".join(lines).strip()
+    normalized = re.sub(r"(?m)(^- .+)\n\n(?=- )", r"\1\n", normalized)
+    return normalized[:100_000] or None
+
+
+def normalize_datetime_utc(value):
+    """Preserve a source timestamp as an ISO-8601 UTC string.
+
+    Date-only values are represented at midnight UTC. Relative labels such as
+    ``2 days ago`` are deliberately not promoted to an exact timestamp.
+    """
+    if value is None or value == "":
+        return None
+    if isinstance(value, datetime):
+        parsed = value
+    elif isinstance(value, (int, float)):
+        seconds = float(value)
+        if abs(seconds) > 10_000_000_000:
+            seconds /= 1000.0
+        try:
+            parsed = datetime.fromtimestamp(seconds, tz=timezone.utc)
+        except (ValueError, OSError, OverflowError):
+            return None
+    else:
+        raw = str(value).strip()
+        if not raw or re.search(r"\b(?:ago|today|yesterday)\b", raw, re.I):
+            return None
+        if re.fullmatch(r"-?\d{10,16}(?:\.\d+)?", raw):
+            seconds = float(raw)
+            if abs(seconds) > 10_000_000_000:
+                seconds /= 1000.0
+            try:
+                parsed = datetime.fromtimestamp(seconds, tz=timezone.utc)
+            except (ValueError, OSError, OverflowError):
+                return None
+        else:
+            parsed = None
+        candidate = raw.replace("Z", "+00:00")
+        try:
+            parsed = parsed or datetime.fromisoformat(candidate)
+        except ValueError:
+            for fmt in (
+                "%Y-%m-%d",
+                "%m/%d/%Y",
+                "%B %d, %Y",
+                "%b %d, %Y",
+                "%B %d %Y",
+                "%b %d %Y",
+                "%d-%B-%Y",
+                "%d-%b-%Y",
+            ):
+                try:
+                    parsed = datetime.strptime(raw, fmt)
+                    break
+                except ValueError:
+                    continue
+            if parsed is None:
+                return None
+    if parsed.tzinfo is None:
+        parsed = parsed.replace(tzinfo=timezone.utc)
+    parsed = parsed.astimezone(timezone.utc)
+    if parsed.date() > datetime.now(timezone.utc).date():
+        return None
+    return parsed.isoformat().replace("+00:00", "Z")
+
+def extract_experience(title="", text="", allow_title_fallback=False):
+    """Return an experience range only when the posting states numeric years.
+
+    ``allow_title_fallback`` remains in the signature for compatibility with
+    older callers, but titles are intentionally never converted into invented
+    year requirements.
+    """
     title = norm(title)
     text = norm(text)
 
@@ -137,7 +263,10 @@ def extract_experience(title="", text="", allow_title_fallback=True):
         # but should not raise the floor:
         #   "Minimum 1 year required; 3-10 preferred" -> "1-10 years".
         lo_values = [m["min"] for m in required_matches if m.get("min") is not None]
-        lo = min(lo_values) if lo_values else None
+        # When a role requires both an overall minimum and a smaller specialty
+        # minimum, the overall qualification floor is the larger number:
+        # "7+ years engineering, including 2+ years with AI" -> 7+ years.
+        lo = max(lo_values) if lo_values else None
         finite_maxes = [
             m["max"] for m in all_matches
             if m.get("max") is not None and (lo is None or m["max"] >= lo)
@@ -160,41 +289,11 @@ def extract_experience(title="", text="", allow_title_fallback=True):
         hours = flight_hours.group(1)
         return result(None, None, f"{hours} flight hours", "text")
 
-    # Some postings explicitly require relevant/proven/prior experience without
-    # assigning a numeric year count. Preserve that honest signal instead of
-    # presenting it as if the posting said nothing about experience.
-    if text and re.search(
-        r'\b(?:requires?|must have|minimum qualifications?|requisition qualifications?)'
-        r'[^.;:]{0,120}\bexperience\b'
-        r'|\b(?:relevant|related|prior|previous|proven|demonstrated|hands-on)'
-        r'(?:\s+\w+){0,4}\s+experience\b'
-        r'|\bexperience\s+(?:in|of|with|using|delivering)\b',
-        requirement,
-        re.I,
-    ):
-        return result(None, None, "Experience required", "text")
-
+    # A text source with no numeric minimum is still marked as inspected so
+    # detail fetchers can cache that work, but the UI must show "Not listed".
     if text:
-        return result(None, None, "No minimum stated", "text")
+        return result(None, None, "", "text")
 
-    # Title fallback. These are deliberately broad estimates; exact years from
-    # requirements text always wins above.
-    title_l = title.lower()
-    title_rules = [
-        (r'\b(?:intern|internship|co-?op|graduate|new grad|entry level|early career|apprentice)\b', 0, 1, "0-1 years"),
-        (r'\b(?:junior|jr\.?|associate|analyst i|engineer i|developer i)\b', 0, 3, "0-3 years"),
-        (r'\b(?:mid(?:-|\s)?level|engineer ii|developer ii|analyst ii|l3)\b', 2, 5, "2-5 years"),
-        (r'\b(?:engineer iii|developer iii|analyst iii|l4|l5)\b', 4, 8, "4-8 years"),
-        (r'\b(?:staff|principal|lead|architect|l6|l7)\b', 6, None, "6+ years"),
-        (r'\b(?:director|head of|vp|vice president|executive)\b', 8, None, "8+ years"),
-    ]
-    title_matches = [
-        result(lo, hi, label, "title")
-        for pattern, lo, hi, label in title_rules
-        if re.search(pattern, title_l)
-    ]
-    if allow_title_fallback and title_matches:
-        return max(title_matches, key=lambda x: (x["min"] or -1, x["max"] or 10_000))
     return {"min": None, "max": None, "label": "", "source": ""}
 
 # ── Skills extraction ─────────────────────────────────────────────────────────
@@ -454,11 +553,13 @@ _CITY_DEFAULTS = {
     'chicago': ('Chicago','IL','US'), 'dallas': ('Dallas','TX','US'), 'denver': ('Denver','CO','US'),
     'detroit': ('Detroit','MI','US'), 'houston': ('Houston','TX','US'), 'los angeles': ('Los Angeles','CA','US'),
     'miami': ('Miami','FL','US'), 'nashville': ('Nashville','TN','US'), 'new york': ('New York','NY','US'),
-    'nyc': ('New York','NY','US'), 'palo alto': ('Palo Alto','CA','US'), 'philadelphia': ('Philadelphia','PA','US'),
+    'nyc': ('New York','NY','US'), 'new york city': ('New York','NY','US'),
+    'palo alto': ('Palo Alto','CA','US'), 'philadelphia': ('Philadelphia','PA','US'),
     'phoenix': ('Phoenix','AZ','US'), 'portland': ('Portland','OR','US'), 'raleigh': ('Raleigh','NC','US'),
     'redmond': ('Redmond','WA','US'), 'san diego': ('San Diego','CA','US'), 'san francisco': ('San Francisco','CA','US'),
     'san jose': ('San Jose','CA','US'), 'santa clara': ('Santa Clara','CA','US'), 'seattle': ('Seattle','WA','US'),
     'washington': ('Washington','DC','US'), 'washington dc': ('Washington','DC','US'),
+    'washington d.c.': ('Washington','DC','US'), 'washington d.c': ('Washington','DC','US'),
     'london': ('London','','UK'), 'toronto': ('Toronto','ON','Canada'), 'vancouver': ('Vancouver','BC','Canada'),
     'montreal': ('Montreal','QC','Canada'), 'singapore': ('Singapore','','Singapore'),
     'pune': ('Pune','','India'), 'pune city': ('Pune','','India'), 'bengaluru': ('Bengaluru','','India'),
@@ -494,6 +595,14 @@ _CITY_DEFAULTS = {
     'hsinchu': ('Hsinchu','','Taiwan'), 'yerevan': ('Yerevan','','Armenia'),
 }
 
+# A city plus a local region is not enough for the generic two-part parser to
+# infer a country safely (for example, "Paris, Texas" must not become France).
+# Keep only unambiguous pairs observed in official job feeds here.
+_CITY_REGION_COUNTRY_DEFAULTS = {
+    ('hyderabad', 'telangana'): ('Hyderabad', 'Telangana', 'India'),
+    ('noida', 'uttar pradesh'): ('Noida', 'Uttar Pradesh', 'India'),
+}
+
 _ISRAEL_CITY_NAMES = {
     'beer sheva', 'caesarea', 'haifa', 'herzliya', 'kibbutz shefayim',
     'kiryat gat', 'migdal haemek', "migdal ha'emek", 'ness ziona',
@@ -522,11 +631,33 @@ def _country_code(raw):
     raw = (raw or "").strip()
     return _COUNTRY_ALIASES.get(raw.lower()) or _COUNTRY_CODES.get(raw.upper())
 
+
+def _location_separator_is_multi(raw):
+    parts = [p.strip() for p in re.split(r"\s*/\s*", raw) if p.strip()]
+    if len(parts) < 2:
+        return False
+    if any(re.search(r"\b(?:remote|hybrid|on-?site|in[- ]office)\b", p, re.I) for p in parts):
+        return True
+    return all("," in p for p in parts)
+
+
 @lru_cache(maxsize=8192)
 def normalize_location(loc):
     if not loc:
         return ''
     loc = ' '.join(loc.split())
+    # A slash often separates complete alternatives, not address components.
+    # Preserve each alternative before the normal city/state/country parser can
+    # mistake a trailing state code such as CA for the country Canada.
+    if "/" in loc and _location_separator_is_multi(loc):
+        values = []
+        seen_values = set()
+        for part in re.split(r"\s*/\s*", loc):
+            normalized = normalize_location(part)
+            if normalized and normalized.lower() not in seen_values:
+                values.append(normalized)
+                seen_values.add(normalized.lower())
+        return "; ".join(values)
     loc = re.sub(r'^(?:location|office|city|work location|job location)s?[:\s-]+', '', loc, flags=re.I).strip()
     loc = re.sub(r'\s*\([^)]*(?:hybrid|onsite|on-site|remote)[^)]*\)\s*', ' ', loc, flags=re.I).strip()
     loc = re.sub(r'\s*,?\s*(?:hybrid|onsite|on-site)\s*$', '', loc, flags=re.I).strip()
@@ -585,6 +716,8 @@ def normalize_location(loc):
         return f"{_US_STATE_NAMES[lower]}, US"
     if re.fullmatch(r'[A-Z]{2}', loc) and loc.upper() in _US_STATES:
         return f"{loc.upper()}, US"
+    if lower in _CANADA_PROVINCE_NAMES:
+        return f"{_CANADA_PROVINCE_NAMES[lower]}, Canada"
     if lower in {"puerto rico", "pr"}:
         return "Puerto Rico, US"
 
@@ -629,6 +762,15 @@ def normalize_location(loc):
         country = _country_code(m_country_city.group(1))
         if country:
             return normalize_location(f"{city_text}, {country}")
+
+    # "New York - United States of America" / "London - United Kingdom".
+    # Check the right-hand country before treating a left-hand US state name
+    # as the state in a state-city pair.
+    m_city_country = re.match(r"^(.+?)\s+-\s+([A-Za-z .]+)$", loc)
+    if m_city_country:
+        country = _country_code(m_city_country.group(2))
+        if country:
+            return normalize_location(f"{m_city_country.group(1)}, {country}")
 
     # "Massachusetts - Boston" / "California - Pleasanton"
     m_state_city = re.match(r'^([A-Za-z ]+?)\s*-\s*(.+)$', loc)
@@ -701,6 +843,21 @@ def normalize_location(loc):
             return country
         return ", ".join(x for x in (city, state, country) if x)
 
+    # Corporate Workday locations sometimes append a street/building to a
+    # well-known US city token without a comma ("NYC - 1211 Ave ...").
+    city_address = re.match(
+        r"^(nyc|new york city|washington d\.?c\.?)\s*-\s*.+$",
+        lower,
+    )
+    if city_address:
+        key = (
+            "washington dc"
+            if city_address.group(1).startswith("washington")
+            else city_address.group(1)
+        )
+        city, state, country = _CITY_DEFAULTS[key]
+        return f"{city}, {state}, {country}"
+
     # Strip US country suffix and re-add normalized ", US"
     m = re.search(r',?\s*(united states of america|united states|usa|u\.s\.a\.|u\.s\.)\s*$', lower)
     if m:
@@ -710,6 +867,18 @@ def normalize_location(loc):
     parts = [p.strip() for p in loc.split(',') if p.strip()]
     if len(parts) >= 3 and re.fullmatch(r'\d{4,6}(?:-\d{4})?', parts[-1]):
         parts = parts[:-1]
+    # Workday frequently returns a facility/address followed by city and state,
+    # for example:
+    #   "Main Campus - 777 Bannock Street, Denver, CO 80204"
+    # After removing the ZIP, CO must remain Colorado -- not become the ISO
+    # country code for Colombia. The penultimate component guard preserves
+    # explicit international triples such as "Bogotá, DC, CO".
+    if (
+        len(parts) >= 3
+        and parts[-1].upper() in _US_STATES
+        and not re.fullmatch(r"[A-Z]{2}", parts[-2])
+    ):
+        return f"{_title_case_city(parts[-2])}, {parts[-1].upper()}, US"
     if len(parts) >= 3:
         city, region, country_raw = parts[0], parts[1], parts[-1]
         country = _country_code(country_raw) or country_raw
@@ -720,6 +889,11 @@ def normalize_location(loc):
 
     if len(parts) == 2:
         first, second = parts
+        city_region = _CITY_REGION_COUNTRY_DEFAULTS.get(
+            (first.lower(), second.lower())
+        )
+        if city_region:
+            return ", ".join(city_region)
         first_country = _country_code(first)
         if first_country:
             if second.lower() == first_country.lower():
@@ -759,6 +933,149 @@ def normalize_location(loc):
         return country
 
     return loc
+
+
+_COUNTRY_ISO_BY_DISPLAY = {
+    display.lower(): code
+    for code, display in _COUNTRY_CODES.items()
+}
+_COUNTRY_ISO_BY_DISPLAY.update({
+    "us": "US",
+    "uk": "GB",
+    "uae": "AE",
+    "türkiye": "TR",
+    "puerto rico": "PR",
+})
+
+
+def normalize_remote_mode(value, location_text=""):
+    """Return ``remote``, ``hybrid``, ``onsite``, or ``None`` when unknown."""
+    raw = " ".join(str(v) for v in (value, location_text) if v).strip().lower()
+    if not raw:
+        return None
+    if re.search(r"\bhybrid\b", raw):
+        return "hybrid"
+    if re.search(r"\b(?:fully\s+remote|remote|work\s+from\s+home|wfh|distributed)\b", raw):
+        return "remote"
+    if re.search(r"\b(?:on-?site|in[- ]office|office[- ]based)\b", raw):
+        return "onsite"
+    return None
+
+
+def _country_iso_from_normalized(location):
+    if not location:
+        return None
+    if location == "US" or location.endswith(", US"):
+        return "US"
+    if location == "UK" or location.endswith(", UK"):
+        return "GB"
+    tail = location.rsplit(",", 1)[-1].strip().lower()
+    return _COUNTRY_ISO_BY_DISPLAY.get(tail)
+
+
+def _structured_location(raw, normalized, remote_mode):
+    city = region = country = None
+    country_iso = _country_iso_from_normalized(normalized)
+    if normalized and not normalized.startswith("Remote"):
+        parts = [part.strip() for part in normalized.split(",") if part.strip()]
+        if country_iso and parts:
+            country = parts[-1]
+            if len(parts) >= 3:
+                city, region = parts[0], parts[1]
+            elif len(parts) == 2:
+                first = parts[0]
+                if (
+                    (country_iso == "US" and first in _US_STATES)
+                    or (country_iso == "CA" and first in _CANADA_PROVINCES)
+                ):
+                    region = first
+                elif first.lower() != country.lower():
+                    city = first
+        elif len(parts) >= 2:
+            city, region = parts[0], parts[1]
+        elif parts and normalized not in {"Multiple Locations"}:
+            city = parts[0]
+    return {
+        "raw": raw or None,
+        "display": normalized or None,
+        "city": city,
+        "region": region,
+        "country": country,
+        "country_iso": country_iso,
+        "remote_mode": remote_mode,
+    }
+
+
+def normalize_locations(raw_value, remote_mode=None):
+    """Build canonical display and structured locations without losing raw data."""
+    raw_items = []
+    if isinstance(raw_value, list):
+        for value in raw_value:
+            if isinstance(value, dict):
+                value = (
+                    value.get("raw")
+                    or value.get("display")
+                    or value.get("name")
+                    or value.get("label")
+                    or ", ".join(
+                        str(value.get(key))
+                        for key in ("city", "region", "state", "country")
+                        if value.get(key)
+                    )
+                )
+            if value:
+                raw_items.append(norm(str(value)))
+    elif isinstance(raw_value, dict):
+        assembled = ", ".join(
+            str(raw_value.get(key))
+            for key in ("city", "region", "state", "country")
+            if raw_value.get(key)
+        )
+        if assembled:
+            raw_items.append(norm(assembled))
+    elif raw_value:
+        raw_text = norm(str(raw_value))
+        if "/" in raw_text and _location_separator_is_multi(raw_text):
+            raw_items.extend(p.strip() for p in re.split(r"\s*/\s*", raw_text) if p.strip())
+        else:
+            raw_items.extend(
+                p.strip()
+                for p in re.split(r"\s*(?:;|\||│)\s*", raw_text)
+                if p.strip()
+            )
+
+    output = []
+    seen_display = set()
+    explicit_mode = normalize_remote_mode(remote_mode)
+    for raw in raw_items:
+        display = normalize_location(raw)
+        if not display:
+            continue
+        for display_part in [p.strip() for p in display.split(";") if p.strip()]:
+            key = display_part.lower()
+            if key in seen_display:
+                continue
+            seen_display.add(key)
+            mode = explicit_mode or normalize_remote_mode(None, raw)
+            output.append(_structured_location(raw, display_part, mode))
+
+    top_mode = explicit_mode
+    if top_mode is None:
+        modes = {item["remote_mode"] for item in output if item["remote_mode"]}
+        top_mode = next(iter(modes)) if len(modes) == 1 else None
+    country_values = {
+        item["country_iso"] for item in output if item["country_iso"]
+    }
+    country_iso = next(iter(country_values)) if len(country_values) == 1 else None
+    display = "; ".join(
+        item["display"] for item in output if item["display"]
+    ) or None
+    return {
+        "location": display,
+        "locations": output,
+        "country_iso": country_iso,
+        "remote_mode": top_mode,
+    }
 
 def extract_location_from_text(text):
     """Best-effort location extraction from job-card text."""
@@ -892,7 +1209,10 @@ def _parse_posted(raw):
     m = re.search(r'(\d+)\s+hours?\s+ago', lower)
     if m:
         return today.isoformat()
-    for fmt in ("%B %d, %Y", "%b %d, %Y", "%B %d %Y", "%b %d %Y"):
+    for fmt in (
+        "%B %d, %Y", "%b %d, %Y", "%B %d %Y", "%b %d %Y",
+        "%d-%B-%Y", "%d-%b-%Y",
+    ):
         try:
             return _not_future(datetime.strptime(raw, fmt).date().isoformat())
         except ValueError:
@@ -1034,11 +1354,45 @@ _EMP_TYPE_MAP = [
     (r'\btemporary\b|\btemp\b',                      'Temporary'),
 ]
 
+
+def normalize_employment_type(value):
+    """Map provider labels to the public display vocabulary."""
+    if value is None:
+        return None
+    raw = norm(str(value))
+    if not raw:
+        return None
+    canonical = raw.upper().replace("-", "_").replace(" ", "_")
+    enum_map = {
+        "FULL_TIME": "Full-time",
+        "FULLTIME": "Full-time",
+        "PERMANENT": "Full-time",
+        "REGULAR": "Full-time",
+        "PART_TIME": "Part-time",
+        "PARTTIME": "Part-time",
+        "CONTRACT": "Contract",
+        "CONTRACTOR": "Contract",
+        "FREELANCE": "Contract",
+        "INTERN": "Internship",
+        "INTERNSHIP": "Internship",
+        "TEMP": "Temporary",
+        "TEMPORARY": "Temporary",
+        "SEASONAL": "Temporary",
+    }
+    if canonical in enum_map:
+        return enum_map[canonical]
+    lower = raw.lower()
+    for pattern, label in _EMP_TYPE_MAP:
+        if re.fullmatch(rf".*(?:{pattern}).*", lower, re.I):
+            return label
+    return None
+
+
 def extract_employment_type(title, desc):
     """Return normalized employment type from title+description.
 
-    Checks title first (most reliable signal), then description.
-    Defaults to 'Full-time' when nothing specific is found.
+    Checks explicit title and labelled description signals. Missing evidence is
+    returned as ``None`` rather than silently inventing a full-time value.
     """
     # Title is the most reliable signal — check it first for non-default types
     desc_l = (desc or "").lower()
@@ -1051,15 +1405,14 @@ def extract_employment_type(title, desc):
         flags=re.I,
     )
     _NON_DEFAULT = _EMP_TYPE_MAP[:-2]   # Internship, Contract, Part-time
-    _ALL_TYPES   = _EMP_TYPE_MAP        # includes Full-time and Temporary
     for pattern, label in _NON_DEFAULT:
         if re.search(pattern, (title or "").lower()):
             return label
-    if re.search(r'\bjob type\s*:?\s*full[- ]time\b|\btime type\s*:?\s*full[- ]time\b', desc_l):
-        return "Full-time"
-    if re.search(r'\bjob type\s*:?\s*part[- ]time\b|\btime type\s*:?\s*part[- ]time\b|\bschedule\s*:?\s*part[- ]time\b', desc_l):
-        return "Part-time"
-    for pattern, label in _ALL_TYPES:
-        if re.search(pattern, desc_l):
-            return label
-    return "Full-time"
+    labelled = re.search(
+        r"\b(?:job|employment|position|time|schedule)\s*type\s*:?\s*"
+        r"(full[- ]time|part[- ]time|contract(?:or)?|intern(?:ship)?|temporary|seasonal)\b",
+        desc_l,
+    )
+    if labelled:
+        return normalize_employment_type(labelled.group(1))
+    return None

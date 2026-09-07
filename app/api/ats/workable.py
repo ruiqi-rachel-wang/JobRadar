@@ -26,18 +26,46 @@ def fetch_workable(scrape, seen, company):
         if not loc_data and j.get("locations"):
             loc_data = (j.get("locations") or [{}])[0]
         if isinstance(loc_data, dict):
-            loc = normalize_location(norm(", ".join(
+            loc_raw = norm(", ".join(
                 x for x in [
                     loc_data.get("city") or j.get("city"),
                     loc_data.get("region") or j.get("state"),
                     loc_data.get("country") or j.get("country"),
                 ] if x
-            )))
+            ))
         else:
-            loc = normalize_location(norm(loc_data))
-        posted = _parse_posted(j.get("published") or j.get("published_on") or j.get("created_at") or "")
-        desc = norm(BeautifulSoup(" ".join(str(j.get(k) or "") for k in ("description", "requirements", "benefits")), "lxml").get_text(" ", strip=True))
+            loc_raw = norm(loc_data)
+        posted_raw = j.get("published") or j.get("published_on") or j.get("created_at")
+        desc_parts = []
+        for key, heading in (
+            ("description", "Description"),
+            ("requirements", "Requirements"),
+            ("benefits", "Benefits"),
+        ):
+            if j.get(key):
+                desc_parts.append(f"<h3>{heading}</h3>\n{j[key]}")
+        desc = "\n\n".join(desc_parts)
         if title and jurl:
-            jobs.append({"title": title, "url": jurl, "location": loc, "source": "workable", "posted": posted, "description": desc})
+            jobs.append({
+                "title": title,
+                "url": jurl,
+                "ats_id": str(shortcode) or None,
+                "apply_url": j.get("application_url"),
+                "location": loc_raw,
+                "location_raw": loc_raw or None,
+                "locations_raw": j.get("locations") or ([loc_raw] if loc_raw else []),
+                "source": "workable",
+                "posted_at": posted_raw,
+                "description": desc or None,
+                "description_raw": desc or None,
+                "employment_type": j.get("employment_type"),
+                "employment_type_raw": j.get("employment_type"),
+                "department": j.get("department"),
+                "remote_mode": "remote" if j.get("remote") is True else None,
+                "raw_data": {
+                    key: j.get(key)
+                    for key in ("locations", "industry", "function")
+                    if j.get(key)
+                } or None,
+            })
     return jobs, None
-

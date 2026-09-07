@@ -208,6 +208,7 @@
   </div>
 </div>
 
+<script src="{{ url_for('static', filename='js/job-search-request.js') }}"></script>
 <script>
 const COMPANIES      = {{ companies|tojson }};
 const RECENT_DAYS    = 7;          // jobs within this window count as "new"
@@ -387,7 +388,7 @@ async function applyFilters(companyNames = null, page = 1) {
       noMatch.textContent = 'Loading jobs...';
       noMatch.style.display = 'block';
     }
-    const resp = await fetch('/api/jobs?' + params);
+    const resp = await fetchJobSearch(params);
     if (!resp.ok) {
       showEmptyMessage('Could not load jobs. Try again in a moment.');
       return;

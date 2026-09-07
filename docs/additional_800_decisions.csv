@@ -1,0 +1,801 @@
+input_name,decision,reason,canonical_categories,jobs_at_audit,url
+"Bain Capital, LP",added,,Finance & Banking | Investment & Asset Management,24,https://baincapital.wd1.myworkdayjobs.com/external_public
+Crescent Biopharma,added,,Healthcare & Biotech | Pharmaceuticals,10,https://jobs.lever.co/crescent-biopharma
+Cvshealth,already included,,,,https://cvshealth.wd1.myworkdayjobs.com/cvs_health_careers
+Applebank,added,,Finance & Banking,39,https://applebank.wd5.myworkdayjobs.com/applebankcareers
+Mundipharma,added,,Healthcare & Biotech | Pharmaceuticals,6,https://mundipharma.wd3.myworkdayjobs.com/external
+Capital One,already included,,,,https://capitalone.wd12.myworkdayjobs.com/capital_one
+GE Aerospace,already included,,,,https://geaerospace.wd5.myworkdayjobs.com/ge_externalsite
+Zealandpharma,added,,Healthcare & Biotech | Pharmaceuticals,11,https://zealandpharma.wd3.myworkdayjobs.com/external
+Alto Pharmacy,added,,Healthcare & Biotech | Pharmaceuticals,4,https://alto.wd1.myworkdayjobs.com/alto_external_career_site
+Sanford Health,skipped,no current openings,,0,https://marshfieldclinichealthsystems.wd5.myworkdayjobs.com/external
+Propharmagroup,added,,Healthcare & Biotech | Pharmaceuticals,52,https://propharmagroup.wd1.myworkdayjobs.com/ppgcareers
+Madrigalpharma,added,,Healthcare & Biotech | Pharmaceuticals,66,https://madrigalpharma.wd501.myworkdayjobs.com/Madrigal
+Elevance Health,already included,,,,https://elevancehealth.wd1.myworkdayjobs.com/ant
+Cityblock Health,added,,Healthcare & Biotech,40,https://cityblockhealth.wd1.myworkdayjobs.com/cityblockexternalcareersite
+Monterey Technologies Inc,added,,Software & SaaS,4,https://jobs.lever.co/mti-inc
+Salinasvalleyhealth,added,,Healthcare & Biotech,96,https://salinasvalleyhealth.wd5.myworkdayjobs.com/salinasvalleyhealth
+PCI Pharma Services,added,,Healthcare & Biotech | Pharmaceuticals,237,https://pciservices.wd1.myworkdayjobs.com/external
+Stanford Health Care,skipped,broken or inaccessible board,,,https://stanfordhealthcare.wd5.myworkdayjobs.com/shc_external_career_site
+nEye.ai,added,,AI & Machine Learning | Semiconductors & Hardware,15,https://jobs.lever.co/neye-systems-inc.
+Beyond Cloud Consulting Inc.,added,,Cloud & Infrastructure | Consulting | Software & SaaS,7,https://jobs.lever.co/beyondcloudconsulting
+"Sumitomo Pharma Co., Ltd",added,,Healthcare & Biotech | Pharmaceuticals,22,https://sumitomopharma.wd5.myworkdayjobs.com/smpa
+Cigna Group,already included,,,,https://cigna.wd5.myworkdayjobs.com/cignacareers
+Circle Pharma,skipped,no current openings,,0,https://jobs.lever.co/circlepharma
+Whiterabbit.ai,added,,AI & Machine Learning | Healthcare & Biotech,1,https://jobs.lever.co/whiterabbit
+Paradigm Health,added,,Healthcare & Biotech,3,https://jobs.lever.co/paradigm-health
+Biointellisense,added,,Healthcare & Biotech | Medical Devices,4,https://jobs.lever.co/biointellisense
+Enigma Aerospace,added,,Aerospace & Defense,4,https://jobs.lever.co/crgo
+Coca-Cola Company,already included,,,,https://coke.wd1.myworkdayjobs.com/coca-cola-careers
+"Gilead Sciences, Inc",already included,,,,https://gilead.wd1.myworkdayjobs.com/gileadcareers
+Pwc,already included,,,,https://pwc.wd3.myworkdayjobs.com/global_campus_careers
+Key,already included,,,597,https://keybank.wd5.myworkdayjobs.com/external_career_site
+Abb,added,,Industrials & Manufacturing | Robotics & Automation,2000,https://abb.wd3.myworkdayjobs.com/External_Career_Page
+Zoom,added,,Software & SaaS | Telecom,101,https://zoom.wd5.myworkdayjobs.com/zoom
+Visa,already included,,,,https://visa.wd5.myworkdayjobs.com/visa
+Wiley,added,,EdTech | Media & Entertainment,103,https://wiley.wd1.myworkdayjobs.com/wiley_careers
+Lower,added,,FinTech & Payments | Real Estate & Construction,16,https://lower.wd1.myworkdayjobs.com/lower_external_careers
+Intel,already included,,,,https://intel.wd1.myworkdayjobs.com/external
+Cisco,already included,,,,https://cisco.wd5.myworkdayjobs.com/cisco_careers
+Amgen,already included,,,,https://amgen.wd1.myworkdayjobs.com/careers
+Adobe,already included,,,,https://adobe.wd5.myworkdayjobs.com/external_experienced
+Toyota,already included,,,,https://toyota.wd503.myworkdayjobs.com/tmna
+TheKey,added,,Healthcare & Biotech,23,https://thekey.wd1.myworkdayjobs.com/thekey
+Target,already included,,,,https://target.wd5.myworkdayjobs.com/targetcareers
+Pfizer,already included,,,,https://pfizer.wd1.myworkdayjobs.com/pfizercareers
+PayPal,already included,,,,https://paypal.wd1.myworkdayjobs.com/jobs
+Micron,already included,,,,https://micron.wd1.myworkdayjobs.com/external
+Metabo,added,,Industrials & Manufacturing,25,https://metabo.wd3.myworkdayjobs.com/kokicareers
+Marmon,added,,Industrials & Manufacturing,824,https://marmon.wd501.myworkdayjobs.com/marmon_careers
+Malley,added,,Business Services,7,https://ensign.wd1.myworkdayjobs.com/malleycareersite
+Keyera,added,,Energy,7,https://keyera.wd10.myworkdayjobs.com/Keyera_Careers
+Humana,already included,,,,https://humana.wd5.myworkdayjobs.com/humana_external_career_site
+Disney,already included,,,,https://disney.wd5.myworkdayjobs.com/disneycareer
+Cooley,added,,Legal Tech,91,https://cooley.wd1.myworkdayjobs.com/cooley_us_llp
+Carmax,added,,Automotive | Consumer Goods & Retail,1187,https://carmax.wd1.myworkdayjobs.com/external
+Boeing,already included,,,,https://boeing.wd1.myworkdayjobs.com/external_careers
+Abbott,already included,,,,https://abbott.wd5.myworkdayjobs.com/abbottcareers
+Workday,already included,,,,https://workday.wd5.myworkdayjobs.com/workday
+Wofford,added,,Education & Academia,16,https://wofford.wd5.myworkdayjobs.com/Wofford
+Walmart,already included,,,,https://walmart.wd5.myworkdayjobs.com/walmartexternal
+Stryker,already included,,,,https://stryker.wd1.myworkdayjobs.com/strykercareers
+Shirley,added,,Real Estate & Construction,47,https://clark.wd503.myworkdayjobs.com/shirleyexternal
+Sanford,added,,Healthcare & Biotech,2000,https://sanford.wd5.myworkdayjobs.com/sanfordhealth
+OXM | Oxford Industries Inc,added,,Consumer Goods & Retail | Fashion,6,https://oxford.wd5.myworkdayjobs.com/oxford
+DigiKey,added,,Consumer Electronics | E-commerce & Marketplace | Semiconductors & Hardware,22,https://digikey.wd5.myworkdayjobs.com/digi-key
+Danaher,already included,,,,https://danaher.wd1.myworkdayjobs.com/danaherjobs
+Comcast,already included,,,,https://comcast.wd5.myworkdayjobs.com/comcast_careers
+Astreya,added,,IT Services,159,https://astreya.wd5.myworkdayjobs.com/life-at-astreya-opportunities
+Wesleyan,added,,Education & Academia,33,https://wesleyan.wd5.myworkdayjobs.com/careers
+Veradigm,added,,Healthcare & Biotech | Software & SaaS,112,https://veradigm.wd12.myworkdayjobs.com/vr
+Toyotaau,already included,represented by Toyota; alternate/regional board,,7,https://toyotaau.wd3.myworkdayjobs.com/careers
+Qualcomm,skipped,no current openings,,0,https://qualcomm.wd12.myworkdayjobs.com/external
+McKesson,already included,,,,https://mckesson.wd3.myworkdayjobs.com/external_careers
+Greystar,added,,Real Estate & Construction,1560,https://greystar.wd1.myworkdayjobs.com/external
+Fidelity,already included,,,,https://fmr.wd1.myworkdayjobs.com/fidelitycareers
+Broadcom,already included,,,,https://broadcom.wd1.myworkdayjobs.com/external_career
+Aresmgmt,already included,,,,https://aresmgmt.wd1.myworkdayjobs.com/external
+Sonyjapan,already included,represented by Sony; alternate/regional board,,12,https://sonyglobal.wd1.myworkdayjobs.com/sonyjapancareers
+Regeneron,already included,,,,https://regeneron.wd1.myworkdayjobs.com/careers
+Modernatx,already included,,,,https://modernatx.wd1.myworkdayjobs.com/m_tx
+Medtronic,already included,,,,https://medtronic.wd1.myworkdayjobs.com/medtroniccareers
+Intelogix,added,,Business Services | IT Services,44,https://intelogix.wd108.myworkdayjobs.com/external
+Blackrock,already included,,,,https://blackrock.wd1.myworkdayjobs.com/blackrock_professional
+Betmgminc,added,,Gaming,24,https://betmgminc.wd5.myworkdayjobs.com/betmgm
+Accenture,already included,,,,https://accenture.wd103.myworkdayjobs.com/accenturecareers
+Wolseleyuk,added,,Consumer Goods & Retail | Real Estate & Construction,55,https://wolseleyuk.wd3.myworkdayjobs.com/Wolseley
+Sonyglobal,already included,represented by Sony; alternate/regional board,,23,https://sonyglobal.wd1.myworkdayjobs.com/sony_europe_careers
+Salesforce,already included,,,,https://salesforce.wd12.myworkdayjobs.com/external_career_site
+Oxfordcorp,added,,IT Services | Recruiting,28,https://oxfordcorp.wd108.myworkdayjobs.com/Oxford_Careers
+Mastercard,already included,,,,https://mastercard.wd1.myworkdayjobs.com/corporatecareers
+Deloitteie,already included,represented by Deloitte; alternate/regional board,,63,https://deloitteie.wd3.myworkdayjobs.com/Experienced_Professionals
+BorgWarner,added,,Automotive | Industrials & Manufacturing,335,https://borgwarner.wd5.myworkdayjobs.com/borgwarner_careers
+"Accenture Infrastructure and Capital Projects, LLC",already included,represented by Accenture; alternate/regional board,,174,https://jobs.lever.co/InfrastructureandCapitalProjects
+Warner Music Inc.,added,,Media & Entertainment,23,https://jobs.lever.co/wmg
+Wayne Farms,added,,Food & Beverage,185,https://waynefarms.wd1.myworkdayjobs.com/WayneFarms
+Thehartford,added,,Insurance,214,https://thehartford.wd5.myworkdayjobs.com/careers_external
+Samsung SDS,skipped,no current openings,,0,https://sds.wd3.myworkdayjobs.com/Samsung_Careers
+CrowdStrike,already included,,,,https://crowdstrike.wd5.myworkdayjobs.com/crowdstrikecareers
+Company Description Press Ganey,added,,Data & Analytics | Healthcare & Biotech | Software & SaaS,16,https://pressganey.wd1.myworkdayjobs.com/careers
+Beyond The Plant Protein Company,added,,Consumer Goods & Retail | Food & Beverage,13,https://beyondmeat.wd1.myworkdayjobs.com/external_careers
+Salvationarmy,added,,Business Services,135,https://salvationarmy.wd3.myworkdayjobs.com/broadbean_external
+Intelcomgroup,added,,Logistics & Supply Chain,75,https://intelcomgroup.wd3.myworkdayjobs.com/Intelcom
+Hancockwhitney,added,,Finance & Banking,151,https://hancockwhitney.wd5.myworkdayjobs.com/careers
+Goodwinprocter,added,,Legal Tech,42,https://goodwinprocter.wd5.myworkdayjobs.com/external_careers
+Valleychildrens,added,,Healthcare & Biotech,77,https://valleychildrens.wd12.myworkdayjobs.com/VCH_External
+Stellamccartney,added,,Consumer Goods & Retail | Fashion,30,https://stellamccartney.wd3.myworkdayjobs.com/SMCExternal
+Ford Foundation,added,,Education & Academia | Research,1,https://fordfoundation.wd1.myworkdayjobs.com/fordfoundationcareerpage
+Americanfidelity,added,,Insurance,80,https://americanfidelity.wd5.myworkdayjobs.com/External
+TelevisaUnivision,added,,Media & Entertainment,143,https://univision.wd1.myworkdayjobs.com/external
+"Buckeye Corrugated, Inc.",added,,Industrials & Manufacturing,49,https://jobs.lever.co/bcipkg
+Deer Valley Resort,added,,Travel & Hospitality,30,https://alterra.wd1.myworkdayjobs.com/deervalleyresort
+Narmi,skipped,no current openings,,0,https://jobs.lever.co/narmi
+Samsung Electronics,already included,represented by Samsung; alternate/regional board,,16,https://sec.wd3.myworkdayjobs.com/samsung_jobs
+Non Workdayinternal,skipped,broken or inaccessible board,,,https://walmart.wd5.myworkdayjobs.com/non-workdayinternal
+Maschmeyer Concrete,added,,Industrials & Manufacturing,47,https://maschmeyer.wd12.myworkdayjobs.com/MCC
+Heidelbergmaterials,added,,Industrials & Manufacturing,756,https://heidelbergmaterials.wd3.myworkdayjobs.com/global_hm_career_site
+"Jupiter Intelligence, Inc.",added,,AI & Machine Learning | Climate Tech | Data & Analytics,1,https://jobs.lever.co/jupiterintel
+Gursey,added,,Finance & Banking,4,https://jobs.lever.co/gursey
+Anaheim Ducks Hockey,added,,Sports,11,https://anaheimducks.wd5.myworkdayjobs.com/adhctw
+"Warmly,",skipped,no current openings,,0,https://jobs.lever.co/warmly
+Pigment,added,,Data & Analytics | Software & SaaS,100,https://jobs.lever.co/pigment
+Keyloop,added,,Automotive | Software & SaaS,63,https://jobs.lever.co/keyloop
+Harmony,added,,Crypto | Developer Tools,9,https://jobs.lever.co/harmony
+Eyeline,skipped,no current openings,,0,https://jobs.lever.co/Eyeline
+Mastercard Foundation,added,,Education & Academia,5,https://mastercardfoundation.wd10.myworkdayjobs.com/mastercardfdn
+Copley Health Systems,added,,Healthcare & Biotech,79,https://careers-chsi.icims.com
+Uberflip,skipped,no current openings,,0,https://jobs.lever.co/uberflip
+Moneybox,added,,Finance & Banking | FinTech & Payments,14,https://jobs.lever.co/moneyboxapp
+Metabase,already included,,,,https://jobs.lever.co/metabase
+Hey Jane,added,,Healthcare & Biotech,13,https://jobs.lever.co/heyjane
+Warner Bros. Discovery,already included,,,,https://warnerbros.wd5.myworkdayjobs.com/global
+intenseye,added,,AI & Machine Learning | Industrials & Manufacturing | Software & SaaS,4,https://jobs.lever.co/intenseye
+The Block,skipped,no current openings,,0,https://jobs.lever.co/theblockcrypto
+Moneytree,added,,Finance & Banking | FinTech & Payments,1,https://jobs.lever.co/moneytree
+Metaprise,added,,FinTech & Payments | Software & SaaS,27,https://jobs.lever.co/metaprise.ai
+Swissblock,added,,Crypto | Investment & Asset Management,2,https://jobs.lever.co/swissblock
+Serverfarm,added,,Cloud & Infrastructure,48,https://jobs.lever.co/serverfarm
+Metawealth,added,,Finance & Banking | Investment & Asset Management,2,https://jobs.lever.co/metawealth
+KarmaCheck,added,,HR Tech,1,https://jobs.lever.co/karmacheck
+Chargezoom,added,,FinTech & Payments,1,https://jobs.lever.co/chargezoom
+vivenu GmbH,added,,E-commerce & Marketplace | Media & Entertainment | Software & SaaS,29,https://jobs.lever.co/vivenu
+Guardsquare,added,,Cybersecurity,1,https://jobs.lever.co/guardsquare
+Beyond Menu,added,,E-commerce & Marketplace | Food & Beverage,2,https://jobs.lever.co/beyondmenu
+Amazon RIVR,added,,AI & Machine Learning | Robotics & Automation,27,https://jobs.lever.co/rivr
+Temple Square Hospitality,added,,Travel & Hospitality,7,https://deseretmanagement.wd1.myworkdayjobs.com/templesquarehospitality
+Portland General Electric,added,,Energy,33,https://portlandgeneral.wd5.myworkdayjobs.com/pgn
+Stable Money,added,,FinTech & Payments,23,https://jobs.lever.co/stable-money1
+Contentsquare,added,,Data & Analytics | Software & SaaS,20,https://jobs.lever.co/contentsquare
+Packmatic GmbH,added,,Logistics & Supply Chain | Software & SaaS,14,https://jobs.lever.co/Packmatic
+Woven by Toyota,added,,Automotive | Autonomous Vehicles | Software & SaaS,149,https://jobs.lever.co/woven-by-toyota
+Harmonic Design,added,,Consulting | Industrials & Manufacturing,1,https://jobs.lever.co/harmonicdesign
+Disney+ Hotstar,skipped,no current openings,,0,https://jobs.lever.co/hotstar
+Once Upon a Farm,added,,Consumer Goods & Retail | Food & Beverage,1,https://jobs.lever.co/onceuponafarm
+Journey Clinical,added,,Healthcare & Biotech,18,https://jobs.lever.co/JourneyClinical
+Charm Industrial,already included,,,,https://jobs.lever.co/charmindustrial
+Beckley Clinical,added,,Healthcare & Biotech,9,https://jobs.lever.co/beckley-clinical
+CGM,added,,Healthcare & Biotech | Software & SaaS,291,https://cgm.wd3.myworkdayjobs.com/cgm
+Apple Tree Dental,added,,Healthcare & Biotech,52,https://jobs.lever.co/appletreedental
+Tutor Intelligence,added,,AI & Machine Learning | EdTech,39,https://jobs.lever.co/tutorintelligence
+Stanley Consultants,added,,Consulting,83,https://jobs.lever.co/stanleygroup
+Modern Intelligence,added,,Aerospace & Defense | AI & Machine Learning,1,https://jobs.lever.co/ModernIntelligence
+NVIDIA,already included,,,,https://nvidia.wd5.myworkdayjobs.com/nvidiaexternalcareersite
+San Francisco Giants,added,,Sports,9,https://jobs.lever.co/sfgiants
+Kestrel Intelligence,added,,Aerospace & Defense | AI & Machine Learning,4,https://jobs.lever.co/kestrel-intelligence
+Elk Valley Resources,added,,Mining,43,https://jobs.lever.co/evr
+Brindley Engineering,added,,Industrials & Manufacturing,23,https://jobs.lever.co/brindleyengineering
+Above and Beyond Therapy,added,,Healthcare & Biotech,231,https://jobs.lever.co/abtaba
+Toyota Research Institute,already included,,,,https://jobs.lever.co/tri
+"Xeris Pharmaceuticals, Inc.",skipped,no current openings,,0,https://careers-xerispharma.icims.com
+Planned Parenthood Keystone,added,,Healthcare & Biotech,4,https://jobs.lever.co/ppkeystone
+"Noven Pharmaceuticals, Inc.",added,,Healthcare & Biotech | Pharmaceuticals,24,https://careers-noven.icims.com
+Metasite Business Solutions,added,,IT Services,3,https://jobs.lever.co/metasite
+NAVISITE - Part of Accenture,skipped,no current openings,,0,https://jobs.lever.co/navisite
+Karyopharm Therapeutics Inc.,added,,Healthcare & Biotech | Pharmaceuticals,32,https://careers-karyopharm.icims.com
+Dendreon Pharmaceuticals LLC,added,,Healthcare & Biotech | Pharmaceuticals,21,https://careers-dendreon.icims.com
+GMO,added,,Finance & Banking | Investment & Asset Management,8,https://jobs.lever.co/gmo
+Dempsey Uniform & Linen Supply,added,,Business Services,18,https://jobs.lever.co/dempseyuniform-2
+New Jersey Innovation Authority,added,,Government,3,https://jobs.lever.co/NJStateOfficeofInnovation
+Armor Health,added,,Healthcare & Biotech,2,https://careers-ehs.icims.com
+"Fidelity National Financial, Inc.",skipped,no current openings,,0,https://careers-fnf.icims.com
+heyData,skipped,no current openings,,0,https://careers.smartrecruiters.com/heydata
+KPMG LLP,skipped,no current openings,,0,https://jobs.lever.co/kpmg
+empowerpharmacy,skipped,no current openings,,0,https://careers-empowerpharmacy.icims.com
+"Maxor National Pharmacy Services, LLC",added,,Healthcare & Biotech | Pharmaceuticals,68,https://careers-maxor.icims.com
+"Odyssey Systems Consulting Group, Ltd.",added,,Consulting,239,https://careers-odysseyconsult.icims.com
+Babble Cloud,added,,Cloud & Infrastructure | Software & SaaS | Telecom,17,https://careers.smartrecruiters.com/babblecloud
+Parman Energy,added,,Energy,1,https://careers.smartrecruiters.com/parmanenergy
+Valley Medical,skipped,no current openings,,0,https://careers.smartrecruiters.com/valleymedical
+Sydney Airport,added,,Transportation & Mobility,5,https://careers.smartrecruiters.com/sydneyairport1
+Sigma Software,added,,Software & SaaS,100,https://careers.smartrecruiters.com/sigmasoftware2
+Data Intellect,added,,Data & Analytics | Software & SaaS,31,https://careers.smartrecruiters.com/dataintellect
+Jobs have moved to our Accenture Job Site,skipped,no current openings,,0,https://jobs.lever.co/pip
+Josefs Pharmacy,skipped,no current openings,,0,https://careers.smartrecruiters.com/josefspharmacy
+Rocket Pharmaceuticals,added,,Healthcare & Biotech | Pharmaceuticals,14,https://careers-rocketpharma.icims.com
+Redcare Pharmacy,added,,Healthcare & Biotech | Pharmaceuticals,211,https://careers.smartrecruiters.com/redcare-pharmacy
+IntelligenceBank,added,,Data & Analytics | Software & SaaS,1,https://careers.smartrecruiters.com/intelligencebank
+ApplePie Capital,added,,FinTech & Payments,2,https://careers.smartrecruiters.com/applepiecapital
+Mitsubishi Tanabe Pharma,skipped,no current openings,,0,https://careers-mt-pharma.icims.com
+Key Cyber Solutions,added,,Cybersecurity,1,https://careers.smartrecruiters.com/KeyCyberSolutions
+GIANTS Software GmbH,added,,Gaming,4,https://careers.smartrecruiters.com/GIANTSSoftwareGmbH
+"Metabolon, Inc",added,,Data & Analytics | Healthcare & Biotech,4,https://careers-metabolon.icims.com
+Lupin Pharmaceuticals,skipped,no current openings,,0,https://careers.smartrecruiters.com/lupinpharmaceuticals
+Kegman Inc.,skipped,no current openings,,0,https://careers.smartrecruiters.com/kegmaninc
+Bosch Group,added,,Automotive | Industrials & Manufacturing,4750,https://careers.smartrecruiters.com/BoschGroup
+The Bradford Group,added,,Consumer Goods & Retail,4,https://careers-bradfordexchange.icims.com
+Toyota financial services,skipped,no current openings,,0,https://careers.smartrecruiters.com/toyotafinancialservices
+Deciphera Pharmaceuticals,added,,Healthcare & Biotech | Pharmaceuticals,38,https://careers.smartrecruiters.com/DecipheraPharmaceuticals1
+Intellyk INC,added,,IT Services,10,https://careers.smartrecruiters.com/intellykinc
+General Dynamics Mission Systems,skipped,no current openings,,0,https://careers-gd.icims.com
+Kittitas Valley Healthcare,added,,Healthcare & Biotech,47,https://careers.smartrecruiters.com/KittitasValleyHealthcare
+Farm Boy Inc.,added,,Consumer Goods & Retail | Food & Beverage,210,https://careers.smartrecruiters.com/farmboyinc
+"Luvata Appleton, LLC",added,,Industrials & Manufacturing | Materials & Chemicals,4,https://careers-luvata.icims.com
+MetaOption LLC,skipped,no current openings,,0,https://careers.smartrecruiters.com/metaoption
+"Greyhound Lines, Inc.",added,,Transportation & Mobility,73,https://careers-greyhound.icims.com
+bcg,skipped,no current openings,,0,https://careers-bcg.icims.com
+amd,already included,,,,https://careers-amd.icims.com
+ecgmc,skipped,no current openings,,0,https://careers-ecgmc.icims.com
+"H&R Block Management, LLC",added,,Finance & Banking,50,https://careers-hrblock.icims.com
+garmin,already included,,,,https://careers-garmin.icims.com
+costco,already included,,,,https://careers-costco.icims.com
+Leyton,skipped,broken or inaccessible board,,,https://careers-leyton.icims.com
+PortKey Delivery LLC,added,,Logistics & Supply Chain,1,https://careers.smartrecruiters.com/portkeydeliveryllc
+tlcmgmt,added,,Healthcare & Biotech,4,https://careers-tlcmgmt.icims.com
+crowley,skipped,no current openings,,0,https://careers-crowley.icims.com
+beazley,skipped,no current openings,,0,https://careers-beazley.icims.com
+PepsiCo,already included,,,,https://dutchcareers-pepsico.icims.com
+Buckeye,added,,Real Estate & Construction,12,https://careers-buckeye.icims.com
+Berkley,added,,Insurance,9,https://careers-apac-berkley.icims.com
+Louis Dreyfus Company,added,,Food & Beverage | Logistics & Supply Chain,450,https://careers.smartrecruiters.com/louisdreyfuscompany
+seyfarth,skipped,no current openings,,0,https://careers-seyfarth.icims.com
+"Metalcraft of Mayville, Inc.",added,,Industrials & Manufacturing,65,https://careers-mtlcraft.icims.com
+Stanford Medicine Children's Health,added,,Healthcare & Biotech,128,https://careers.smartrecruiters.com/StanfordMedicineChildrensHealth
+McDonald's Corporation,added,,Consumer Goods & Retail | Food & Beverage,4,https://careers.smartrecruiters.com/mcdonaldscorporation
+morleynet,skipped,no current openings,,0,https://careers-morleynet.icims.com
+royalfarms,skipped,no current openings,,0,https://careers-royalfarms.icims.com
+Sun Valley,skipped,no current openings,,0,https://careers-sunvalley.icims.com
+Metagenics,added,,Consumer Goods & Retail | Healthcare & Biotech,13,https://jobs-metagenics.icims.com
+Meta,already included,,,,https://careers.smartrecruiters.com/meta1
+General Dynamics Ordnance & Tactical Systems,added,,Aerospace & Defense | Industrials & Manufacturing,49,https://french-canadian-gd-ots.icims.com
+Ford,already included,,,,https://careers.smartrecruiters.com/ford
+Lord Abbett,added,,Finance & Banking | Investment & Asset Management,24,https://careers-lordabbett.icims.com
+Kimley-Horn,added,,Consulting | Real Estate & Construction,4,https://kimley-horndc.icims.com
+Armis,added,,Cybersecurity,2,https://careers.smartrecruiters.com/armis
+Oracle,already included,,,,https://careers.smartrecruiters.com/oracle
+Convey,skipped,no current openings,,0,https://careers.smartrecruiters.com/convey
+Amdocs,skipped,no current openings,,0,https://careers.smartrecruiters.com/amdocs
+Amazon,already included,,,,https://careers.smartrecruiters.com/amazon
+AbbVie,already included,,,,https://careers.smartrecruiters.com/abbvie
+reyesholdings,skipped,no current openings,,0,https://careers-reyesholdings.icims.com
+Califia Farms,added,,Food & Beverage,28,https://careers-califiafarms.icims.com
+Wizikey,added,,Ad Tech & MarTech | Software & SaaS,2,https://careers.smartrecruiters.com/Wizikey
+Spotify,already included,,,,https://careers.smartrecruiters.com/spotify
+Samsung,already included,,,,https://careers.smartrecruiters.com/samsung1
+Netflix,already included,,,,https://careers.smartrecruiters.com/netflix
+Nearmap,added,,Data & Analytics | Real Estate & Construction,32,https://careers.smartrecruiters.com/Nearmap
+Barkley,skipped,no current openings,,0,https://careers.smartrecruiters.com/barkley
+Metal Exchange,added,,Industrials & Manufacturing,3,https://careers-metalexchange.icims.com
+Solidigm,added,,Semiconductors & Hardware,46,https://careers.smartrecruiters.com/solidigm
+RightEye,added,,Medical Devices,1,https://careers.smartrecruiters.com/righteye
+Paradigm,already included,,,,https://careers.smartrecruiters.com/paradigm
+Mr Apple,skipped,no current openings,,0,https://careers.smartrecruiters.com/mrapple
+Metaview,skipped,no current openings,,0,https://careers.smartrecruiters.com/metaview
+Deloitte,already included,,,,https://careers.smartrecruiters.com/deloitte6
+AristaMD,skipped,no current openings,,0,https://careers.smartrecruiters.com/aristamd
+Affordable Care,added,,Healthcare & Biotech,20,https://careers-affordablecare.icims.com
+Starbucks,skipped,no current openings,,0,https://careers.smartrecruiters.com/starbucks
+Microsoft,already included,,,,https://careers.smartrecruiters.com/microsoft
+Honeywell,already included,,,,https://careers.smartrecruiters.com/honeywell
+Alarm.com,skipped,no current openings,,0,https://careers.smartrecruiters.com/alarmcom
+Paramount Residential Mortgage Group,added,,Finance & Banking | Real Estate & Construction,165,https://careers-prmg.icims.com
+Haley Mechanical,added,,Real Estate & Construction,14,https://careers-haleymechanical.icims.com
+General Dynamics,already included,,,,https://careers-generaldynamics.icims.com
+Smartkarma,added,,Finance & Banking | Market Data & Exchanges,10,https://careers.smartrecruiters.com/Smartkarma
+ServiceNow,already included,,,,https://careers.smartrecruiters.com/servicenow
+ODION GmbH,added,,Logistics & Supply Chain,2,https://careers.smartrecruiters.com/ODIONGmbH
+Moneythink,skipped,no current openings,,0,https://careers.smartrecruiters.com/moneythink
+Mama Money,added,,Finance & Banking | FinTech & Payments,1,https://careers.smartrecruiters.com/mamamoney
+Intellihub,added,,Energy | Software & SaaS,7,https://careers.smartrecruiters.com/Intellihub1
+Beyondsoft,skipped,no current openings,,0,https://careers.smartrecruiters.com/beyondsoft
+Sidley Austin LLP,skipped,no current openings,,0,https://careers-sidley.icims.com
+Kelley Kronenberg,added,,Legal Tech,63,https://careers-kelleykronenberg.icims.com
+SquareTrade,added,,Consumer Electronics | Insurance,39,https://careers.smartrecruiters.com/SquareTrade1
+Samsung E&A,added,,Industrials & Manufacturing | Real Estate & Construction,211,https://careers.smartrecruiters.com/SamsungEnA
+Microsoft C,skipped,misleading third-party board; Microsoft already represented,,6,https://careers.smartrecruiters.com/microsoftc1
+IntellectEU,skipped,no current openings,,0,https://careers.smartrecruiters.com/intellecteu
+Elatec GmbH,added,,Consumer Electronics | Cybersecurity,4,https://careers.smartrecruiters.com/ElatecGmbH
+Deloitte NZ,already included,represented by Deloitte; alternate/regional board,,126,https://careers.smartrecruiters.com/deloittenz
+BeyondTrust,added,,Cybersecurity,2,https://careers.smartrecruiters.com/beyondtrust
+AVANCO GmbH,added,,Industrials & Manufacturing | Materials & Chemicals,13,https://careers.smartrecruiters.com/AVANCOGmbH
+The Salvation Army,added,,Business Services,504,https://careers-usesalvationarmy.icims.com
+montamo GmbH,added,,Climate Tech | Energy,9,https://careers.smartrecruiters.com/MontamoGmbH
+ThousandEyes,already included,,,,https://careers.smartrecruiters.com/thousandeyes
+RR Donnelley,added,,Business Services | Industrials & Manufacturing,563,https://careers.smartrecruiters.com/rrdonnelley
+PwC Portugal,skipped,no current openings,,0,https://careers.smartrecruiters.com/pwcportugal
+ParentSquare,skipped,no current openings,,0,https://careers.smartrecruiters.com/parentsquare
+Grass Valley,skipped,no current openings,,0,https://careers.smartrecruiters.com/grassvalley
+Foster Farms,added,,Food & Beverage,10,https://careers.smartrecruiters.com/FosterFarms
+Credit Karma,skipped,no current openings,,0,https://careers.smartrecruiters.com/creditkarma
+Foley & Lardner LLP,added,,Legal Tech,27,https://careers-foley.icims.com
+Scalable GmbH,added,,FinTech & Payments | Investment & Asset Management,119,https://careers.smartrecruiters.com/scalablegmbh
+Natuvion GmbH,added,,Consulting | Software & SaaS,1,https://careers.smartrecruiters.com/natuviongmbh
+Michigan Farm Bureau,added,,Insurance,23,https://careers-michfb.icims.com
+Jobubersicht bei AXA,added,,Insurance,50,https://careers-de-axa.icims.com
+Rockford Bride,added,,Consumer Goods & Retail | Fashion,3,https://careers.smartrecruiters.com/rockfordbride
+Precoat Metals,added,,Industrials & Manufacturing,53,https://careers.smartrecruiters.com/PrecoatMetals
+Morgan stanley,already included,,,,https://careers.smartrecruiters.com/morganstanley
+Harley Therapy,added,,Healthcare & Biotech,26,https://careers.smartrecruiters.com/HarleyTherapy
+Beyondsoft Consulting,added,,Consulting | IT Services,27,https://careers-beyondsoft.icims.com
+Volocopter GmbH,skipped,no current openings,,0,https://careers.smartrecruiters.com/volocoptergmbh
+Schneider Downs,skipped,no current openings,,0,https://careers.smartrecruiters.com/schneiderdowns
+Clifford Chance,added,,Legal Tech,153,https://careers.smartrecruiters.com/CliffordChance
+Sonoma Valley Hospital,added,,Healthcare & Biotech,33,https://careers-svh.icims.com
+The Wesley Hotel,skipped,no current openings,,0,https://careers.smartrecruiters.com/thewesleyhotel
+Keywords Studios,added,,Gaming | IT Services,52,https://careers.smartrecruiters.com/KeywordsStudios
+Cumberland Farms,added,,Consumer Goods & Retail | Food & Beverage,23,https://careers.smartrecruiters.com/cumberlandfarms
+Open Jobs at Reynolds Consumer Products LLC,added,,Consumer Goods & Retail | Industrials & Manufacturing,61,https://careers-reynoldsconsumerproducts.icims.com
+Jobangebote bei PepsiCo,already included,represented by PepsiCo; alternate/regional board,,17,https://germancareers-pepsico.icims.com
+Keypath Education,added,,EdTech | Education & Academia,7,https://careers.smartrecruiters.com/KeypathEducation
+Geyen + del Campo,added,,Real Estate & Construction,1,https://careers.smartrecruiters.com/geyendelcampo
+Bullseye Strategy,skipped,no current openings,,0,https://careers.smartrecruiters.com/bullseyestrategy
+Bosch-HomeComfort,added,,Climate Tech | Industrials & Manufacturing,177,https://careers.smartrecruiters.com/bosch-homecomfort
+Steyer for Governor 2026,skipped,no current openings,,0,https://jobs.lever.co/tom-steyer
+McCloskey Partners,added,,HR Tech | Recruiting,3,https://careers.smartrecruiters.com/mccloskeypartners
+Machineyard.com.ng,added,,E-commerce & Marketplace | Industrials & Manufacturing,6,https://careers.smartrecruiters.com/machineyardcomng
+Werner & Mertz GmbH,added,,Consumer Goods & Retail | Materials & Chemicals,33,https://careers.smartrecruiters.com/WernerMertzGmbH
+JeffreyM Consulting,skipped,no current openings,,0,https://careers.smartrecruiters.com/jeffreymconsulting
+G.RAU GmbH & Co. KG,added,,Industrials & Manufacturing | Materials & Chemicals,15,https://careers.smartrecruiters.com/GRAUGmbHCoKG
+Oxford International,skipped,no current openings,,0,https://careers.smartrecruiters.com/oxfordinternational
+Deloitte East Africa,skipped,no current openings,,0,https://careers.smartrecruiters.com/deloitteeastafrica
+Opportunities at JerseySTEM,added,,EdTech | Education & Academia,2,https://community-jerseystem.icims.com
+Samsung by Korn Ferry,already included,represented by Samsung; alternate/regional board,,2,https://careers.smartrecruiters.com/samsung-by-korn-ferry
+Audi Interaction GmbH,added,,Automotive | Business Services,8,https://careers.smartrecruiters.com/AudiInteractionGmbH
+Open Positions at Reynolds Consumer Products LLC,added,,Consumer Goods & Retail | Industrials & Manufacturing,45,https://hourlyjobs-reynoldsconsumerproducts.icims.com
+European Homecare GmbH,added,,Business Services | Government,168,https://careers.smartrecruiters.com/EuropeanHomecareGmbH
+American Iron and Metal,added,,Industrials & Manufacturing,329,https://careers.smartrecruiters.com/AmericanIronAndMetal
+Spencer's and Spirit Halloween,added,,Consumer Goods & Retail,48,https://careers-spencersandspirit.icims.com
+Nomad Foods Europe / Birds Eye,skipped,no current openings,,0,https://careers-findus.icims.com
+General Dynamics Electric Boat,added,,Aerospace & Defense | Industrials & Manufacturing,172,https://careers-gdeb.icims.com
+IMS Nanofabrication GmbH,added,,Semiconductors & Hardware,19,https://careers.smartrecruiters.com/IMSNanofabricationGmbH
+E. Breuninger GmbH & Co.,added,,Consumer Goods & Retail | Fashion,162,https://careers.smartrecruiters.com/EBreuningerGmbHCo
+BlackApple Solutions Ltd,added,,IT Services,47,https://careers.smartrecruiters.com/blackapplesolutionsltd1
+NXTKEY CORPORATION,added,,Cybersecurity | IT Services,8,https://careers.smartrecruiters.com/nxtkeycorporation
+Bonial International GMBH,skipped,no current openings,,0,https://careers.smartrecruiters.com/bonialinternationalgmbh
+AMDT School of Creativity,added,,Education & Academia,3,https://careers.smartrecruiters.com/amdtschoolofcreativity
+Volunteer Listings at JerseySTEM,added,,EdTech | Education & Academia,125,https://volunteers-jerseystem.icims.com
+Oxford Policy Management Limited,added,,Consulting | Government,7,https://careers-opml.icims.com
+SBB Cargo Deutschland GmbH,added,,Logistics & Supply Chain,17,https://careers.smartrecruiters.com/SBBCargoDeutschlandGmbH
+Deutsche Pruefservice GmbH,added,,Business Services | Consulting,51,https://careers.smartrecruiters.com/DeutschePruefserviceGmbH
+Accenture Federal Services,already included,represented by Accenture; alternate/regional board,,23,https://careers.smartrecruiters.com/accenturefederalservices
+Nelson Mullins Riley & Scarborough,added,,Legal Tech,58,https://careers-nelsonmullins.icims.com
+Kentucky Farm Bureau Mutual Ins Co,added,,Insurance,5,https://careers-kyfb.icims.com
+General Dynamics - Bath Iron Works,added,,Aerospace & Defense | Industrials & Manufacturing,60,https://careers-gdbiw.icims.com
+Wabash Valley Power Alliance,added,,Energy,20,https://careers.smartrecruiters.com/wabashvalleypoweralliance
+SISLEY,added,,Beauty | Fashion,37,https://careers.smartrecruiters.com/SISLEY
+KIXEYE,skipped,no current openings,,0,https://careers.smartrecruiters.com/kixeye
+Harpeth Valley Utilities District,added,,Energy | Utilities,3,https://careers.smartrecruiters.com/harpethvalleyutilitiesdistrict
+MACSEYE,added,,EdTech | Education & Academia,22,https://careers.smartrecruiters.com/MACSEYE/careers
+LAPEYRE,added,,Consumer Goods & Retail | Real Estate & Construction,121,https://careers.smartrecruiters.com/LAPEYRE
+BEW Berliner Energie und Wärme GmbH,added,,Energy | Utilities,28,https://careers.smartrecruiters.com/bew
+General Dynamics Missions System International,added,,Aerospace & Defense | Industrials & Manufacturing,80,https://careers.smartrecruiters.com/gdmsi
+Vail Systems Inc.,added,,Telecom,2,https://jobs.lever.co/vailsys
+Mosaic Health,added,,Healthcare & Biotech,30,https://verawholehealth.wd1.myworkdayjobs.com/external
+Commerce Bank,added,,Finance & Banking,148,https://commercebank.wd1.myworkdayjobs.com/commercejobs
+Capitalhealth,added,,Healthcare & Biotech,537,https://capitalhealth.wd1.myworkdayjobs.com/capitalhealthcareers
+Ehealthinsurance,added,,Healthcare & Biotech,7,https://ehealthinsurance.wd5.myworkdayjobs.com/EHI
+GenBio AI,already included,,,,https://jobs.lever.co/genbio
+"Adverum Biotechnologies, Inc.",added,,Healthcare & Biotech | Pharmaceuticals,4,https://jobs.lever.co/adverum
+Sauk Prairie Healthcare,added,,Healthcare & Biotech,37,https://saukprairiehealthcare.wd12.myworkdayjobs.com/sauk_prairie_healthcare_careers
+Biodigital,added,,Healthcare & Biotech | Software & SaaS,3,https://jobs.lever.co/biodigital
+AskBio Inc,skipped,broken or inaccessible board,,,https://askbio.wd12.myworkdayjobs.com/askbio
+FUJIFILM Biotechnologies,skipped,no current openings,,0,https://fujifilmdiosynth.wd3.myworkdayjobs.com/external
+Columbine Health Systems,skipped,no current openings,,0,https://columbinehealth.wd12.myworkdayjobs.com/columbinehealthsystems
+Rainmaker Technology Corporation,already included,,,,https://jobs.lever.co/make-rain
+Capital Group,added,,Finance & Banking | Investment & Asset Management,118,https://capgroup.wd1.myworkdayjobs.com/capitalgroupcareers
+BrainChild Bio,added,,Healthcare & Biotech,6,https://jobs.lever.co/brainchildbio
+Sonrai Security,added,,Cybersecurity,3,https://jobs.lever.co/sonrai-security
+CyberOne Security,added,,Cybersecurity,4,https://jobs.lever.co/cyberonesecurity
+Cabinetworks Group,added,,Industrials & Manufacturing,66,https://cabinetworksgroup.wd1.myworkdayjobs.com/cabinetworksgroupcareers
+"Voya Financial, Inc",added,,Insurance,97,https://godirect.wd5.myworkdayjobs.com/voya_jobs
+PROCEPT BioRobotics,skipped,no current openings,,0,https://jobs.lever.co/procept-biorobotics
+CNO Financial Group,added,,Insurance,4,https://cnoinc.wd5.myworkdayjobs.com/careers
+Ace Retail Holdings,skipped,no current openings,,0,https://acehardware.wd1.myworkdayjobs.com/westlake_external
+Smile Digital Health,added,,Healthcare & Biotech | Software & SaaS,12,https://jobs.lever.co/smiledigitalhealth
+Medical Home Network,added,,Healthcare & Biotech,4,https://jobs.lever.co/mhnchicago
+Fast Retailing Group,added,,Consumer Goods & Retail,1,https://fastretailing.wd3.myworkdayjobs.com/global_production_pmc
+CSAA Insurance Group,added,,Insurance,24,https://aaaie.wd1.myworkdayjobs.com/csaacareers
+Gordian Biotechnology,skipped,no current openings,,0,https://jobs.lever.co/gordian-bio
+Aerospace Corporation,added,,Aerospace & Defense,338,https://aero.wd5.myworkdayjobs.com/external
+Strategic Data Systems,added,,Data & Analytics | Software & SaaS,10,https://jobs.lever.co/sdatasystems.com
+Rapid Micro Biosystems,added,,Healthcare & Biotech | Medical Devices,7,https://jobs.lever.co/rapidmicrobio
+Arch Capital Group Ltd,added,,Insurance,146,https://archgroup.wd1.myworkdayjobs.com/careers
+Yai,added,,Healthcare & Biotech,521,https://yai.wd5.myworkdayjobs.com/careers
+Invinity Energy Systems,added,,Climate Tech | Energy,7,https://jobs.lever.co/invinity
+Aviya Aerospace Systems,added,,Aerospace & Defense,14,https://jobs.lever.co/aviyatech
+Aig,already included,,,,https://aig.wd1.myworkdayjobs.com/aig
+ZOLL Medical Corporation,added,,Healthcare & Biotech | Medical Devices,247,https://zoll.wd5.myworkdayjobs.com/zollmedicalcorp
+Saia,added,,Logistics & Supply Chain,254,https://saia.wd1.myworkdayjobs.com/saiacareers
+Nait,added,,Education & Academia,28,https://nait.wd10.myworkdayjobs.com/NAIT_Careers
+Digital Media Management,added,,Ad Tech & MarTech | Media & Entertainment,8,https://jobs.lever.co/digitalmediamanagement
+Atmos Energy Corporation,already included,,,,https://atmosenergy.wd5.myworkdayjobs.com/external_career_site
+Raine Group,added,,Investment & Asset Management,3,https://jobs.lever.co/raine
+Saica,added,,Industrials & Manufacturing,103,https://saica.wd3.myworkdayjobs.com/external_career_site
+STEMCELL Technologies Inc,added,,Healthcare & Biotech,21,https://stemcell.wd3.myworkdayjobs.com/external_careers
+Robotics and AI Institute,added,,AI & Machine Learning | Research | Robotics & Automation,2,https://jobs.lever.co/rai
+Eisai,added,,Healthcare & Biotech | Pharmaceuticals,65,https://eisai.wd5.myworkdayjobs.com/eisai
+Plains,added,,Energy,48,https://plains.wd1.myworkdayjobs.com/Plains
+PacBio,added,,Healthcare & Biotech | Medical Devices,10,https://pacbio.wd12.myworkdayjobs.com/pacbio-
+Mosaic,already included,,,,https://mosaic.wd5.myworkdayjobs.com/mosaic
+Kainos,added,,Consulting | IT Services | Software & SaaS,127,https://kainos.wd3.myworkdayjobs.com/kainos
+Imperative Logistics Group,added,,Logistics & Supply Chain,34,https://imperativelogistics.wd5.myworkdayjobs.com/ILG
+Huatai,added,,Finance & Banking | Investment & Asset Management,86,https://htsc.wd102.myworkdayjobs.com/huatai_careers
+Health,added,,Government | Healthcare & Biotech,12,https://health.wd105.myworkdayjobs.com/External
+Tbkbank,added,,Finance & Banking,41,https://tbkbank.wd1.myworkdayjobs.com/tfin
+Rytbank,added,,Finance & Banking | FinTech & Payments | Software & SaaS,73,https://rytbank.wd3.myworkdayjobs.com/external_career
+Riteaid,added,,Consumer Goods & Retail | Healthcare & Biotech | Pharmaceuticals,17,https://riteaid.wd1.myworkdayjobs.com/External
+Pentair,already included,,,,https://pentair.wd5.myworkdayjobs.com/Pentair_Careers
+Finnair,added,,Transportation & Mobility,13,https://finnair.wd103.myworkdayjobs.com/finnair
+Claires,added,,Consumer Goods & Retail,20,https://claires.wd12.myworkdayjobs.com/claires
+Airasia,added,,Transportation & Mobility,162,https://airasia.wd3.myworkdayjobs.com/careers
+X-energy,added,,Climate Tech | Energy,94,https://xenergy.wd5.myworkdayjobs.com/x-energyus
+Universal Logistics Holdings,added,,Logistics & Supply Chain,454,https://hrone.wd1.myworkdayjobs.com/universal_logistics_holdings
+Saxobank,added,,Finance & Banking,76,https://saxobank.wd3.myworkdayjobs.com/careeratsaxobank
+Rabobank,added,,Finance & Banking,204,https://rabobank.wd3.myworkdayjobs.com/jobs
+Gphealth,added,,Healthcare & Biotech,115,https://gphealth.wd5.myworkdayjobs.com/GPH
+Fullsail,added,,Education & Academia,63,https://fullsail.wd1.myworkdayjobs.com/external
+Cloudera,added,,Cloud & Infrastructure | Data & Analytics | Software & SaaS,85,https://cloudera.wd5.myworkdayjobs.com/external_career
+Biocryst,added,,Healthcare & Biotech | Pharmaceuticals,8,https://biocryst.wd501.myworkdayjobs.com/external
+Availity,added,,Healthcare & Biotech | Software & SaaS,23,https://availity.wd1.myworkdayjobs.com/availity_careers_us
+"Railroad19, Inc",added,,IT Services,3,https://jobs.lever.co/railroad19
+WSFS Bank,added,,Finance & Banking,65,https://wsfsbank.wd1.myworkdayjobs.com/wsfscareers
+Vcuhealth,added,,Healthcare & Biotech,383,https://vcuhealth.wd1.myworkdayjobs.com/vcuhealth_careers
+Uvmhealth,added,,Healthcare & Biotech,137,https://uvmhealth.wd1.myworkdayjobs.com/external
+Us Retail,added,,Consumer Goods & Retail | Fashion,2000,https://maurices.wd5.myworkdayjobs.com/us_retail_jobs
+U.S. Bank,already included,,,,https://usbank.wd1.myworkdayjobs.com/us_bank_careers
+TC Energy,added,,Energy,41,https://tcenergy.wd3.myworkdayjobs.com/career_site_tc
+SailPoint,already included,,,,https://sailpoint.wd1.myworkdayjobs.com/sailpoint
+OU Health,added,,Healthcare & Biotech,384,https://oumedicine.wd5.myworkdayjobs.com/ouhealthcareers
+Invenergy,added,,Energy,158,https://invenergyllc.wd1.myworkdayjobs.com/invenergycareers
+Frostbank,added,,Finance & Banking,155,https://frostbank.wd5.myworkdayjobs.com/external
+Fairstone,added,,Finance & Banking | FinTech & Payments,123,https://fairstone.wd3.myworkdayjobs.com/FairstoneCareers
+Fairfield,added,,Real Estate & Construction,114,https://ffres.wd1.myworkdayjobs.com/fairfieldcareers
+DataRobot,added,,AI & Machine Learning | Data & Analytics | Software & SaaS,27,https://datarobot.wd1.myworkdayjobs.com/datarobot_external_careers
+Component Repair Technologies,added,,Aerospace & Defense | Industrials & Manufacturing,30,https://jobs.lever.co/componentrepairtechnologies
+Biotechne,already included,,,,https://biotechne.wd5.myworkdayjobs.com/biotechne
+"Volta Labs, Inc.",added,,Healthcare & Biotech,6,https://jobs.lever.co/voltalabs
+Tokai Rika Group,added,,Automotive | Industrials & Manufacturing,12,https://jobs.lever.co/tramgroup
+"DigitalFish, Inc",added,,Software & SaaS,3,https://jobs.lever.co/digitalfish
+"BrainStorm, Inc.",added,,Software & SaaS,1,https://jobs.lever.co/brainstorminc
+ZT Systems,added,,Industrials & Manufacturing | Semiconductors & Hardware,104,https://connect.wd1.myworkdayjobs.com/ztsystemscareers
+Xcelenergy,already included,,,,https://xcelenergy.wd1.myworkdayjobs.com/external
+Saintlukes,added,,Healthcare & Biotech,487,https://saintlukes.wd1.myworkdayjobs.com/saintlukeshealthcareers
+Q2Ebanking,added,,FinTech & Payments,44,https://q2ebanking.wd5.myworkdayjobs.com/q2
+OutSystems,added,,Developer Tools | Software & SaaS,77,https://outsystems.wd503.myworkdayjobs.com/outsystems
+OneDigital,added,,HR Tech | Insurance,114,https://onedigital.wd5.myworkdayjobs.com/onedigital
+Ohiohealth,added,,Healthcare & Biotech,921,https://ohiohealth.wd5.myworkdayjobs.com/ohiohealthjobs
+Lcmchealth,added,,Healthcare & Biotech,763,https://lcmchealth.wd1.myworkdayjobs.com/lcmchealth
+Higcapital,added,,Finance & Banking | Investment & Asset Management,3,https://higcapital.wd5.myworkdayjobs.com/linkedin
+Healthcare,added,canonicalized as Solventum,Healthcare & Biotech | Medical Devices,385,https://healthcare.wd1.myworkdayjobs.com/search
+Dukeenergy,already included,,,,https://dukeenergy.wd1.myworkdayjobs.com/search
+Cox Health,added,,Healthcare & Biotech,529,https://coxhealth.wd5.myworkdayjobs.com/coxhealth_external
+CapitaLand,added,,Investment & Asset Management | Real Estate & Construction,149,https://capitaland.wd3.myworkdayjobs.com/capitalandgroup
+AnewHealth,added,,Healthcare & Biotech,80,https://exactcare.wd1.myworkdayjobs.com/anewhealth_career_site
+Aenetworks,added,,Media & Entertainment,30,https://aenetworks.wd1.myworkdayjobs.com/ae-careers
+Primate Labs Inc.,skipped,no current openings,,0,https://jobs.lever.co/primatelabs
+Glass Health Inc.,added,,Healthcare & Biotech,4,https://jobs.lever.co/glass-health-inc
+"Galatea Bio, Inc.",added,,Healthcare & Biotech,2,https://jobs.lever.co/galatea
+Virainsight,added,,Data & Analytics,6,https://virainsight.wd108.myworkdayjobs.com/Vira_Insight
+Vena Energy,added,,Energy,97,https://venaenergy.wd102.myworkdayjobs.com/external
+UofL Health,added,,Healthcare & Biotech,290,https://uoflhealth.wd1.myworkdayjobs.com/uoflhealthcareers
+Simmonsbank,added,,Finance & Banking,104,https://simmonsbank.wd5.myworkdayjobs.com/simmonscareers
+SOLV Energy,added,,Energy,151,https://solvenergy.wd1.myworkdayjobs.com/solv_external_career
+Puma Energy,added,,Energy,28,https://trafigura.wd3.myworkdayjobs.com/puma_energy_careers
+Lloyd’s aim,added,,Insurance,18,https://lloyds.wd3.myworkdayjobs.com/Lloyds-of-London
+ImmunityBio,added,,Healthcare & Biotech,62,https://nant.wd5.myworkdayjobs.com/immunitybio
+Iheartmedia,added,,Media & Entertainment,295,https://iheartmedia.wd5.myworkdayjobs.com/external_ihm
+HonorHealth,added,,Healthcare & Biotech,519,https://honorhealth.wd12.myworkdayjobs.com/HonorHealth_careers
+Healthfirst,added,,Healthcare & Biotech,97,https://healthfirst.wd1.myworkdayjobs.com/healthfirst
+Greenlight Financial Technology,added,,FinTech & Payments,18,https://jobs.lever.co/greenlight
+Fortress Financial Technologies,skipped,no current openings,,0,https://jobs.lever.co/fortress
+Estiahealth,added,,Healthcare & Biotech,415,https://estiahealth.wd105.myworkdayjobs.com/Estia_Health_Careers
+Corrohealth,added,,Healthcare & Biotech,29,https://corrohealth.wd1.myworkdayjobs.com/corro
+Coreandmain,added,,Industrials & Manufacturing | Real Estate & Construction | Utilities,271,https://coreandmain.wd1.myworkdayjobs.com/coreandmain
+Chas Health,added,,Healthcare & Biotech,73,https://chas.wd1.myworkdayjobs.com/CHASHealth
+Cano Health,added,,Healthcare & Biotech,73,https://canohealth.wd5.myworkdayjobs.com/careers
+Brownhealth,added,,Education & Academia | Healthcare & Biotech,1512,https://brownhealth.wd12.myworkdayjobs.com/External_Careers
+Bigcommerce,added,,E-commerce & Marketplace | Software & SaaS,41,https://bigcommerce.wd12.myworkdayjobs.com/commerce
+Axiscapital,added,,Insurance,58,https://axiscapital.wd1.myworkdayjobs.com/axiscareers
+Ashealthnet,added,,Healthcare & Biotech,216,https://ashealthnet.wd1.myworkdayjobs.com/ashn
+Smart Energy Group,added,,Energy,22,https://jobs.lever.co/smartenergy
+Vital Energy,skipped,broken or inaccessible board,,,https://vitalenergy.wd5.myworkdayjobs.com/external
+Syneoshealth,added,,Healthcare & Biotech,690,https://syneoshealth.wd12.myworkdayjobs.com/syneos_health_external_site
+Soterahealth,added,,Healthcare & Biotech,144,https://soterahealth.wd501.myworkdayjobs.com/External
+Silicon Labs,added,,Semiconductors & Hardware,41,https://silabs.wd1.myworkdayjobs.com/siliconlabscareers
+Readycapital,skipped,no current openings,,0,https://readycapital.wd501.myworkdayjobs.com/readycapital
+Mainegeneral,added,,Healthcare & Biotech,193,https://mainegeneral.wd5.myworkdayjobs.com/MaineGeneralCareers
+InterDigital,added,,Research | Telecom,16,https://interdigital.wd5.myworkdayjobs.com/interdigital_career
+Horizonmedia,added,,Media & Entertainment,130,https://horizonmedia.wd1.myworkdayjobs.com/careeropportunities
+Honesthealth,added,,Healthcare & Biotech,10,https://honesthealth.wd503.myworkdayjobs.com/HonestHealth
+Gtefinancial,added,,Finance & Banking,12,https://gtefinancial.wd1.myworkdayjobs.com/gte_financial_career
+Fieracapital,added,,Finance & Banking | Investment & Asset Management,27,https://fieracapital.wd3.myworkdayjobs.com/career
+EverCommerce,added,,Software & SaaS,46,https://evercommerce.wd1.myworkdayjobs.com/evercommerce_careers
+Denverhealth,added,,Healthcare & Biotech,292,https://denverhealth.wd1.myworkdayjobs.com/dhha-main
+Data centers,added,,Cloud & Infrastructure,302,https://nttglobaldatacenters.wd501.myworkdayjobs.com/external
+Columbiabank,added,,Finance & Banking,224,https://columbiabank.wd108.myworkdayjobs.com/Columbia
+Circlehealth,added,,Healthcare & Biotech,503,https://circlehealth.wd103.myworkdayjobs.com/chgcareers
+Chord Energy,added,,Energy,18,https://chordenergy.wd1.myworkdayjobs.com/external
+Bloom Energy,added,,Climate Tech | Energy,234,https://bloomenergy.wd1.myworkdayjobs.com/bloomenergycareers
+Biomarpeople,added,,Food & Beverage | Industrials & Manufacturing,30,https://biomarpeople.wd3.myworkdayjobs.com/biomar
+Bb Insurance,added,,Insurance,222,https://bbinsurance.wd1.myworkdayjobs.com/careers
+Athenahealth,added,,Healthcare & Biotech,31,https://athenahealth.wd1.myworkdayjobs.com/external
+Airliquidehr,already included,,,,https://airliquidehr.wd3.myworkdayjobs.com/airliquideexternalcareer
+Air Products,already included,,,,https://airproducts.wd5.myworkdayjobs.com/ap0001
+Hawaiian Host Group,added,,Consumer Goods & Retail | Food & Beverage,14,https://jobs.lever.co/hawaiianhost
+Us MTM Health,added,,Healthcare & Biotech,36,https://mtminc.wd1.myworkdayjobs.com/mtm_external
+Texas Capital,added,,Finance & Banking,93,https://texascapitalbank.wd12.myworkdayjobs.com/careers
+Stibo Systems,added,,Data & Analytics | Software & SaaS,10,https://stibosystems.wd3.myworkdayjobs.com/careers-at-stibo-systems
+Saint Francis,skipped,broken or inaccessible board,,,https://saintfrancis.wd1.myworkdayjobs.com/external
+Prisma Health,added,,Healthcare & Biotech,1596,https://prismahealth.wd5.myworkdayjobs.com/prismahealthcorporate
+Northbridge Financial Corporation,added,,Insurance,39,https://northbridgefinancial.wd3.myworkdayjobs.com/nbfc
+Linklogistics,added,,Logistics & Supply Chain,9,https://linklogistics.wd5.myworkdayjobs.com/link
+LPL Financial,already included,,,,https://lplfinancial.wd1.myworkdayjobs.com/external
+Kaweah Health,added,,Healthcare & Biotech,176,https://kaweahhealth.wd1.myworkdayjobs.com/careers
+Iron Mountain,added,,Cloud & Infrastructure | Data & Analytics,410,https://ironmountain.wd5.myworkdayjobs.com/iron-mountain-jobs
+Ensora Health,added,,Healthcare & Biotech,9,https://therapybrands.wd1.myworkdayjobs.com/EnsoraHealth
+Dxctechnology,added,,IT Services,773,https://dxctechnology.wd1.myworkdayjobs.com/dxcjobs
+Deriva Energy,added,,Energy,5,https://derivaenergy.wd501.myworkdayjobs.com/careers
+Customersbank,added,,Finance & Banking,23,https://customersbank.wd1.myworkdayjobs.com/customersbankcareers
+Chghealthcare,added,,Healthcare & Biotech,21,https://chghealthcare.wd1.myworkdayjobs.com/external
+Beauty Health,added,,Beauty | Healthcare & Biotech,23,https://beautyhealth.wd12.myworkdayjobs.com/BeautyHealthCareer
+Banner Health,added,,Healthcare & Biotech,1084,https://bannerhealth.wd108.myworkdayjobs.com/careers
+Alliantenergy,already included,,,,https://alliantenergy.wd1.myworkdayjobs.com/alliant
+Agilon Health,added,,Healthcare & Biotech,6,https://agilonhealth.wd1.myworkdayjobs.com/external
+AGC Biologics,added,,Healthcare & Biotech,20,https://agcbio.wd5.myworkdayjobs.com/agcbio_careers
+Octopus Energy Group,already included,,,,https://jobs.lever.co/octoenergy
+"Coupa Software, Inc.",added,,FinTech & Payments | Software & SaaS,108,https://jobs.lever.co/coupa
+"Arvor Insurance, Inc",added,,Insurance,3,https://jobs.lever.co/arvor-insurance
+myPlace Health,added,,Healthcare & Biotech,27,https://scanhealthplan.wd108.myworkdayjobs.com/mphcareers
+Trinity Health,added,,Healthcare & Biotech,2000,https://trinityhealth.wd1.myworkdayjobs.com/jobs
+Sentara Health,added,,Healthcare & Biotech,2000,https://sentara.wd1.myworkdayjobs.com/scs
+Ochsner Health,added,,Healthcare & Biotech,15,https://ochsner.wd1.myworkdayjobs.com/OchsnerACQ
+Montage Health,added,,Healthcare & Biotech,106,https://montagehealth.wd5.myworkdayjobs.com/montage_health
+Marathonhealth,added,,Healthcare & Biotech,539,https://marathonhealth.wd501.myworkdayjobs.com/Marathon-Health-Careers
+Magellanhealth,added,,Healthcare & Biotech,403,https://magellanhealth.wd5.myworkdayjobs.com/magellan_health_careers
+Homeequitybank,added,,Finance & Banking,6,https://homeequitybank.wd10.myworkdayjobs.com/HEB_Careers
+Healthcatalyst,added,,Healthcare & Biotech,13,https://healthcatalyst.wd5.myworkdayjobs.com/healthcatalystcareers
+Halifax Health,added,,Healthcare & Biotech,381,https://halifaxhealth.wd12.myworkdayjobs.com/halifaxhealth
+Haihospitality,added,,Food & Beverage | Travel & Hospitality,49,https://haihospitality.wd12.myworkdayjobs.com/uchirestaurants
+Globus Medical,added,,Healthcare & Biotech | Medical Devices,341,https://globusmedical.wd5.myworkdayjobs.com/gmed_careers
+Fluence Energy,added,,Climate Tech | Energy,127,https://fluenceenergy.wd12.myworkdayjobs.com/fluenceenergy-jobs
+Clearskyhealth,added,,Healthcare & Biotech,294,https://clearskyhealth.wd1.myworkdayjobs.com/csh
+Cardinalhealth,already included,,,,https://cardinalhealth.wd1.myworkdayjobs.com/ext
+Amplify Health,added,,Healthcare & Biotech,22,https://aia.wd3.myworkdayjobs.com/amplifyhealthexternal
+Umchealthsystem,added,,Healthcare & Biotech,108,https://umchealthsystem.wd1.myworkdayjobs.com/external
+Sentryinsurance,added,,Insurance,45,https://sentryinsurance.wd1.myworkdayjobs.com/sentrycareers
+Onehealthineers,added,,Healthcare & Biotech | Medical Devices,462,https://onehealthineers.wd3.myworkdayjobs.com/shsjb
+Methodisthealth,added,,Healthcare & Biotech,603,https://methodisthealth.wd5.myworkdayjobs.com/mlh
+Jeffersonhealth,added,,Healthcare & Biotech,1223,https://jeffersonhealth.wd5.myworkdayjobs.com/thomasjeffersonexternal
+Highmark Health,added,,Healthcare & Biotech,1885,https://highmarkhealth.wd1.myworkdayjobs.com/highmark
+Flexerasoftware,added,,Software & SaaS,25,https://flexerasoftware.wd1.myworkdayjobs.com/flexerasoftware
+Essentia Health,added,,Healthcare & Biotech,782,https://essentiahealth.wd1.myworkdayjobs.com/essentia_health
+Energynorthwest,added,,Energy,15,https://energynorthwest.wd1.myworkdayjobs.com/external
+Digital Turbine,added,,Ad Tech & MarTech | Software & SaaS,30,https://digitalturbine.wd501.myworkdayjobs.com/digital_turbine_external_careers
+Corewell Health,added,,Healthcare & Biotech,1896,https://spectrumhealth.wd5.myworkdayjobs.com/corewellhealthcareers
+Campaignmonitor,added,,Ad Tech & MarTech | Software & SaaS,2,https://campaignmonitor.wd5.myworkdayjobs.com/marigold
+Blattner Energy,added,,Climate Tech | Energy,32,https://blattner.wd5.myworkdayjobs.com/blattnerenergy
+Associated Bank,added,,Finance & Banking,155,https://associatedbank.wd1.myworkdayjobs.com/external_careers
+Advocate Health,added,,Healthcare & Biotech,2000,https://aah.wd5.myworkdayjobs.com/external
+Healthmark Group Trial,added,,Healthcare & Biotech,1,https://jobs.lever.co/healthmark-group
+Adora Technologies Inc,added,,Software & SaaS,3,https://jobs.lever.co/adora
+Tidelands Health,added,,Healthcare & Biotech,188,https://tidelandshealth.wd12.myworkdayjobs.com/Tidelands
+Standardbiotools,added,,Healthcare & Biotech,5,https://standardbiotools.wd5.myworkdayjobs.com/external
+Southeast Health,added,,Healthcare & Biotech,225,https://seh.wd503.myworkdayjobs.com/southeasthealth
+Sharp HealthCare,added,,Healthcare & Biotech,247,https://sharp.wd1.myworkdayjobs.com/external
+Paloaltonetworks,already included,,,,https://paloaltonetworks.wd5.myworkdayjobs.com/panwexternalcareers
+Owensboro Health,added,,Healthcare & Biotech,148,https://owensborohealth.wd1.myworkdayjobs.com/owensborohealth
+Mammoth Mountain,added,,Travel & Hospitality,79,https://alterra.wd1.myworkdayjobs.com/mammothmountain
+John Muir Health,added,,Healthcare & Biotech,45,https://jmh.wd5.myworkdayjobs.com/johnmuirhealthcareers
+Jobs at Dataminr,added,,AI & Machine Learning | Data & Analytics,18,https://dataminr.wd12.myworkdayjobs.com/dataminr
+Ingenovis Health,added,,Healthcare & Biotech,12,https://ingenovishealth.wd1.myworkdayjobs.com/Ingenovishealth
+Healthcarerealty,added,,Healthcare & Biotech | Real Estate & Construction,12,https://healthcarerealty.wd501.myworkdayjobs.com/external_career_site
+Greatriverhealth,added,,Healthcare & Biotech,212,https://greatriverhealth.wd5.myworkdayjobs.com/external
+Crossover Health,added,,Healthcare & Biotech,96,https://crossoverhealth.wd1.myworkdayjobs.com/careers
+Alignment Health,added,,Healthcare & Biotech,82,https://alignmenthealthcare.wd12.myworkdayjobs.com/ahc_external
+Tiberius Aerospace Inc.,added,,Aerospace & Defense,13,https://jobs.lever.co/tiberius
+"Fate Therapeutics, Inc.",added,,Healthcare & Biotech | Pharmaceuticals,4,https://jobs.lever.co/fatetherapeutics
+Capital Solutions Group,added,,Aerospace & Defense | IT Services,18,https://jobs.lever.co/capitalsolutionsgroup
+Shelter Insurance® group of companies,added,,Insurance,97,https://shelterinsurance.wd5.myworkdayjobs.com/careers
+Rhahealthservices,added,,Healthcare & Biotech,597,https://rhahealthservices.wd1.myworkdayjobs.com/1
+LifeStance Health,added,,Healthcare & Biotech,136,https://lifestance.wd5.myworkdayjobs.com/careers
+Latitudefinancial,added,,Finance & Banking,6,https://latitudefinancial.wd3.myworkdayjobs.com/careers
+Communicarehealth,added,,Healthcare & Biotech,460,https://communicarehealth.wd1.myworkdayjobs.com/NewVistaExternalCareerSite
+Comfortsystemsusa,already included,represented by Comfort Systems USA; alternate/regional board,,162,https://comfortsystemsusa.wd1.myworkdayjobs.com/amteckcareers
+Chubbfiresecurity,added,,Cybersecurity,270,https://chubbfiresecurity.wd3.myworkdayjobs.com/chubbfs
+Canary Technologies Corp,added,,Software & SaaS,46,https://jobs.lever.co/canarytechnologies
+"BlueCloud Services, Inc.",added,,Cloud & Infrastructure | Software & SaaS,7,https://jobs.lever.co/blue
+AiFi,added,,AI & Machine Learning | Consumer Goods & Retail,2,https://jobs.lever.co/aifi
+Trane Technologies,already included,,,,https://tranetechnologies.wd12.myworkdayjobs.com/Trane_Technologies_Careers
+Synchronyfinancial,already included,,,,https://synchronyfinancial.wd5.myworkdayjobs.com/careers
+South Shore Health,added,,Healthcare & Biotech,237,https://southshorehealth.wd5.myworkdayjobs.com/ssh_careers
+Memorialhealthcare,added,,Healthcare & Biotech,565,https://memorialhealthcare.wd1.myworkdayjobs.com/mhs_careers
+Lendmark Financial,added,,Finance & Banking,170,https://lendmarkfinancial.wd1.myworkdayjobs.com/search
+Kansashealthsystem,added,,Education & Academia | Healthcare & Biotech,1052,https://kansashealthsystem.wd1.myworkdayjobs.com/careers
+Jackson Healthcare,added,,Healthcare & Biotech,40,https://jacksonhealthcare.wd1.myworkdayjobs.com/careers-jacksonhealthcare
+"Flagstar Bank, N.A",added,,Finance & Banking,233,https://flagstar.wd5.myworkdayjobs.com/flagstar
+Diamondback Energy,added,,Energy,40,https://diamondbackenergy.wd12.myworkdayjobs.com/dbe
+Bread Financial Us,added,,FinTech & Payments,16,https://alliancedata.wd5.myworkdayjobs.com/breadfinancial_us
+Accelentertainment,added,,Gaming,28,https://accelentertainment.wd12.myworkdayjobs.com/accelentertainment_careers
+Q Bio,skipped,no current openings,,0,https://jobs.lever.co/qbio
+Pocket Entertainment Corp,skipped,no current openings,,0,https://jobs.lever.co/pocketfm
+OraSure Technologies Inc.,added,,Healthcare & Biotech | Medical Devices,6,https://jobs.lever.co/dnagenotek
+Curai,added,,AI & Machine Learning | Healthcare & Biotech,17,https://jobs.lever.co/curai
+Aizon,added,,AI & Machine Learning | Healthcare & Biotech | Software & SaaS,6,https://jobs.lever.co/aizon
+Aiwyn,skipped,no current openings,,0,https://jobs.lever.co/aiwyn
+Aigen,skipped,no current openings,,0,https://jobs.lever.co/aigen
+#paid,added,,Ad Tech & MarTech | Software & SaaS,4,https://jobs.lever.co/hashtagpaid
+Visitcatalinaisland,added,,Travel & Hospitality,13,https://visitcatalinaisland.wd12.myworkdayjobs.com/ico
+Us PTC Therapeutics,added,,Healthcare & Biotech | Pharmaceuticals,16,https://ptcbio.wd5.myworkdayjobs.com/ptc_careers
+Polar Semiconductor,added,,Semiconductors & Hardware,29,https://polarsemi.wd501.myworkdayjobs.com/polar
+Jonas Club Software,added,,Software & SaaS,6,https://talentmanagementsolution.wd3.myworkdayjobs.com/jonasclub-careers
+Fujifilm Healthcare,added,,Healthcare & Biotech | Medical Devices,4,https://fujifilm.wd3.myworkdayjobs.com/ch_hc_es
+Ensign InfoSecurity,added,,Cybersecurity,52,https://ensigninfosecurity.wd3.myworkdayjobs.com/ensign_careers
+Corebridgefinancial,added,,Insurance,158,https://corebridgefinancial.wd1.myworkdayjobs.com/corebridgefinancial
+Columbus Airports 1,added,,Government | Transportation & Mobility,10,https://columbusairports.wd1.myworkdayjobs.com/Columbus_Airports1
+Clearwateranalytics,added,,Data & Analytics | Investment & Asset Management | Software & SaaS,208,https://clearwateranalytics.wd1.myworkdayjobs.com/clearwater_analytics_careers
+Arrowstreet Capital,added,,Finance & Banking | Investment & Asset Management,23,https://arrowstreetcapital.wd5.myworkdayjobs.com/arrowstreet
+Adventisthealthcare,added,,Healthcare & Biotech,371,https://adventisthealthcare.wd1.myworkdayjobs.com/adventisthealthcarecareers
+Worldscape Technology Inc.,added,,Software & SaaS,12,https://jobs.lever.co/worldscape-technology
+The Athletic Media Company,already included,,,,https://jobs.lever.co/theathletic
+PlusAI,already included,,,,https://jobs.lever.co/plus-2
+Macquarie Technology Group,added,,Cloud & Infrastructure | Telecom,16,https://jobs.lever.co/macquarietechnologygroup
+Crosslake Technologies LLC,added,,Consulting | Software & SaaS,7,https://jobs.lever.co/crosslaketech
+BioBus,added,,EdTech | Education & Academia,1,https://jobs.lever.co/biobus.org
+Airalo,added,,Consumer Tech | Telecom | Travel & Hospitality,19,https://jobs.lever.co/airalo
+AirDNA,added,,Data & Analytics | Real Estate & Construction | Travel & Hospitality,6,https://jobs.lever.co/airdna
+AIFund,added,,AI & Machine Learning | Investment & Asset Management,50,https://jobs.lever.co/AIFund
+United Overseas Bank,added,,Finance & Banking,1003,https://uobgroup.wd3.myworkdayjobs.com/UOBExternal
+Travere Therapeutics,added,,Healthcare & Biotech | Pharmaceuticals,57,https://travere.wd1.myworkdayjobs.com/traverecareers
+Sonic Healthcare USA,added,,Healthcare & Biotech,273,https://shusa.wd5.myworkdayjobs.com/external
+One80 Intermediaries,added,,Insurance,42,https://insbrk.wd5.myworkdayjobs.com/One80Careers
+LGT Capital Partners,added,,Finance & Banking | Investment & Asset Management,25,https://lgtcp.wd502.myworkdayjobs.com/lgtcpcurrentvacancies
+GoHealth Urgent Care,added,,Healthcare & Biotech,427,https://gohealthuc.wd12.myworkdayjobs.com/external
+Freseniusmedicalcare,added,,Healthcare & Biotech,2000,https://freseniusmedicalcare.wd3.myworkdayjobs.com/fme
+Foresters Financial™,added,,Finance & Banking | Insurance,29,https://foresters.wd3.myworkdayjobs.com/forestersfinancialcareers
+Cloud Imperium Games,added,,Gaming,60,https://cloudimperiumgames.wd503.myworkdayjobs.com/cig_global_careers
+Alaskacommunications,added,,Telecom,19,https://alaskacommunications.wd5.myworkdayjobs.com/Alaska_Communications
+zaimler,added,,AI & Machine Learning | Software & SaaS,10,https://jobs.lever.co/zaimler
+SugarAI,added,,AI & Machine Learning | Software & SaaS,17,https://jobs.lever.co/sugarcrm
+Slangai,added,,AI & Machine Learning | Software & SaaS,4,https://jobs.lever.co/slangai
+RapidAI,added,,AI & Machine Learning | Healthcare & Biotech,9,https://jobs.lever.co/rapidai
+Oxylabs,added,,Cloud & Infrastructure | Data & Analytics,48,https://jobs.lever.co/oxylabs
+NuvoAir,added,,Healthcare & Biotech | Medical Devices,4,https://jobs.lever.co/NuvoAir
+Gap Inc,already included,,,,https://gapinc.wd1.myworkdayjobs.com/gapinc
+FieldAI,already included,,,,https://jobs.lever.co/field-ai
+Fairmat,added,,Climate Tech | Materials & Chemicals,17,https://jobs.lever.co/Fairmat
+Apex.AI,added,,Autonomous Vehicles | Developer Tools | Software & SaaS,7,https://jobs.lever.co/apex-ai
+Air-tek,added,,Software & SaaS | Travel & Hospitality,13,https://jobs.lever.co/air-tek
+Aicrete,added,,AI & Machine Learning | Climate Tech | Real Estate & Construction,3,https://jobs.lever.co/aicrete
+2brains,added,,Consulting | Software & SaaS,10,https://jobs.lever.co/2brains
+Sovereignnetworkgroup,added,,Telecom,20,https://sovereignnetworkgroup.wd103.myworkdayjobs.com/SNGExternal
+Seaworldentertainment,added,,Media & Entertainment | Travel & Hospitality,427,https://seaworldentertainment.wd1.myworkdayjobs.com/sea
+Overlakemedicalcenter,added,,Healthcare & Biotech,197,https://overlakemedicalcenter.wd5.myworkdayjobs.com/overlake_external_career_site
+Echo Global Logistics,added,,Logistics & Supply Chain,31,https://echo.wd1.myworkdayjobs.com/echo_logistics
+CapitaLand Investment,added,,Investment & Asset Management | Real Estate & Construction,93,https://capitaland.wd3.myworkdayjobs.com/capitalandinvestmentcareers
+Auto-Owners Insurance,added,,Insurance,158,https://aoins.wd5.myworkdayjobs.com/autoowners
+nexos.ai,added,,AI & Machine Learning | Software & SaaS,9,https://jobs.lever.co/Nexos
+airSlate,added,,Developer Tools | Software & SaaS,7,https://jobs.lever.co/airslate
+Wisdomai,skipped,no current openings,,0,https://jobs.lever.co/wisdomai
+WaitWhat,added,,Media & Entertainment,3,https://jobs.lever.co/waitwhat
+Technology Advancement Group,skipped,no current openings,,0,https://jobs.lever.co/tag
+Spice AI,added,,AI & Machine Learning | Data & Analytics | Developer Tools,4,https://jobs.lever.co/spiceai
+Spear AI,added,,Aerospace & Defense | AI & Machine Learning,11,https://jobs.lever.co/spear-ai
+RYZ Labs,added,,AI & Machine Learning | IT Services,45,https://jobs.lever.co/RyzLabs
+PIP Labs,added,,Crypto | Developer Tools,4,https://jobs.lever.co/piplabs
+Orca Bio,added,,Healthcare & Biotech,37,https://jobs.lever.co/orcabiosystems
+Offchain,added,,Crypto | Developer Tools,13,https://jobs.lever.co/offchainlabs
+Nn Group,skipped,no current openings,,0,https://nngroup.wd3.myworkdayjobs.com/external
+Muttdata,added,,Data & Analytics | Software & SaaS,14,https://jobs.lever.co/muttdata
+Mediafly,added,,Ad Tech & MarTech | Software & SaaS,1,https://jobs.lever.co/Mediafly
+Level AI,added,,AI & Machine Learning | Software & SaaS,24,https://jobs.lever.co/levelai
+LatchBio,added,,Data & Analytics | Developer Tools | Healthcare & Biotech,2,https://jobs.lever.co/latch
+Kenko AI,added,,AI & Machine Learning,4,https://jobs.lever.co/kenko
+KCAS Bio,added,,Healthcare & Biotech,15,https://jobs.lever.co/kcasbio
+Innodata,added,,AI & Machine Learning | Data & Analytics | IT Services,3,https://jobs.lever.co/innodata
+Epoch AI,added,,AI & Machine Learning | Research,8,https://jobs.lever.co/epoch-ai
+Emi Labs,added,,AI & Machine Learning | HR Tech,9,https://jobs.lever.co/emilabs
+Doonails,added,,Beauty,11,https://jobs.lever.co/doonails
+Dataroid,added,,Data & Analytics | Software & SaaS,2,https://jobs.lever.co/dataroid
+Boson AI,added,,AI & Machine Learning,6,https://jobs.lever.co/bosonai
+BioCatch,added,,Cybersecurity | FinTech & Payments,13,https://jobs.lever.co/biocatch
+Alloy.ai,added,,AI & Machine Learning | Logistics & Supply Chain | Software & SaaS,9,https://jobs.lever.co/alloy
+Yakima Health District,skipped,no current openings,,0,https://yakimacounty.wd5.myworkdayjobs.com/healthdistrictwa
+Julius Baer Technology,added,,Finance & Banking | Software & SaaS,70,https://juliusbaer.wd3.myworkdayjobs.com/technology
+Clinical Health Network For Transformation,added,,Healthcare & Biotech,7,https://jobs.lever.co/ClinicalHealthNetworkForTransformation
+Chapters Health System,added,,Healthcare & Biotech,196,https://chaptershealth.wd5.myworkdayjobs.com/jobs
+CIP Terra Technologies,added,,Climate Tech | Energy | Investment & Asset Management,10,https://cip.wd103.myworkdayjobs.com/cip_tt
+ABC Financial Services,added,,FinTech & Payments | Health & Fitness | Software & SaaS,33,https://abcfinancial.wd5.myworkdayjobs.com/ABCFinancialServices
+WeRide.ai,added,,Autonomous Vehicles | Transportation & Mobility,31,https://jobs.lever.co/weride
+"WatchGuard Technologies, Inc.",added,,Cybersecurity,34,https://jobs.lever.co/watchguard
+Varo Bank,skipped,no current openings,,0,https://jobs.lever.co/varomoney
+ShyftLabs,added,,Consulting | Data & Analytics,30,https://jobs.lever.co/shyftlabs
+Shield AI,already included,,,,https://jobs.lever.co/shieldai
+Safran.AI,added,,AI & Machine Learning,32,https://jobs.lever.co/safran-ai
+Robust.ai,added,,AI & Machine Learning,5,https://jobs.lever.co/robust-ai
+Revhealth,skipped,no current openings,,0,https://jobs.lever.co/revhealth
+RainFocus,added,,Ad Tech & MarTech | Software & SaaS,16,https://jobs.lever.co/rainfocus
+"PROS, Inc",added,,AI & Machine Learning | Software & SaaS,18,https://pros.wd5.myworkdayjobs.com/pros_careers
+News Corp,added,,Media & Entertainment,23,https://dowjones.wd1.myworkdayjobs.com/news_corp_careers
+N1 Health,skipped,no current openings,,0,https://jobs.lever.co/algorex
+Mediatech,skipped,no current openings,,0,https://jobs.lever.co/adtech
+Mcc Group,added,,Materials & Chemicals,115,https://mitsubishichemicalgroup.wd3.myworkdayjobs.com/mccgroupcareers
+Man Group,already included,,,,https://mangroupplc.wd3.myworkdayjobs.com/man_group_careers
+Korro Bio,added,,Healthcare & Biotech,5,https://jobs.lever.co/korrobio
+Jito Labs,added,,Crypto | FinTech & Payments,2,https://jobs.lever.co/jito.wtf
+Jetbrains,skipped,no current openings,,0,https://jobs.lever.co/jetbrains
+ICW Group,added,,Insurance,38,https://icwgroup.wd5.myworkdayjobs.com/ICW
+Hevo Data,added,,Data & Analytics | Developer Tools | Software & SaaS,41,https://jobs.lever.co/hevodata
+Gator Bio,added,,Healthcare & Biotech | Medical Devices,4,https://jobs.lever.co/gatorbio
+Fuel Labs,added,,Crypto | Developer Tools,1,https://jobs.lever.co/fuellabs
+Elroy Air,added,,Aerospace & Defense,7,https://jobs.lever.co/elroyair
+Easybrain,added,,Gaming,13,https://jobs.lever.co/easybrain
+CloudWalk,skipped,no current openings,,0,https://jobs.lever.co/cloudwalk
+CSA Group,added,,Business Services | Consulting,71,https://csagroup.wd3.myworkdayjobs.com/csagroup
+BreezeBio,added,,Healthcare & Biotech | Pharmaceuticals,4,https://jobs.lever.co/BreezeBio
+BSI Group,added,,Business Services | Consulting,266,https://bsigroup.wd3.myworkdayjobs.com/BSI_Careers
+Amar Bank,added,,Finance & Banking,52,https://jobs.lever.co/amarbank
+AllTrails,added,,Consumer Tech | Travel & Hospitality,1,https://jobs.lever.co/alltrails
+Airtasker,skipped,no current openings,,0,https://jobs.lever.co/airtasker
+Acceldata,added,,Data & Analytics | Software & SaaS,53,https://jobs.lever.co/acceldata
+Radiosystemscorporation,added,,Consumer Electronics | Consumer Goods & Retail,23,https://radiosystemscorporation.wd501.myworkdayjobs.com/psbcareers
+Mary Lanning Healthcare,added,,Healthcare & Biotech,75,https://marylanning.wd1.myworkdayjobs.com/marylanningcareers
+all.health,skipped,no current openings,,0,https://jobs.lever.co/all.health
+Zus Health,added,,Healthcare & Biotech,7,https://jobs.lever.co/zushealth
+Unum Group,skipped,no current openings,,0,https://unum.wd1.myworkdayjobs.com/confidential
+Thalo Labs,added,,Climate Tech | Data & Analytics,3,https://jobs.lever.co/thalolabs
+Stark Bank,added,,Finance & Banking,8,https://jobs.lever.co/starkbank
+Simulmedia,added,,Ad Tech & MarTech | Data & Analytics,5,https://jobs.lever.co/simulmedia
+Rezolve Ai,added,,AI & Machine Learning | E-commerce & Marketplace | FinTech & Payments,2,https://jobs.lever.co/groupbyinc
+Radical AI,added,,AI & Machine Learning,3,https://jobs.lever.co/RadicalAI
+OutcomesAI,added,,AI & Machine Learning | Healthcare & Biotech,6,https://jobs.lever.co/outcomesai
+Mistral AI,already included,,,,https://jobs.lever.co/mistral
+Mediagenix,skipped,no current openings,,0,https://jobs.lever.co/mediagenix
+Max Retail,added,,E-commerce & Marketplace | Software & SaaS,1,https://jobs.lever.co/max-retail
+LB Capital,added,,Finance & Banking | Investment & Asset Management,72,https://jobs.lever.co/lb-capital
+IMO Health,added,,Healthcare & Biotech,4,https://jobs.lever.co/imo-online
+Genesis AI,skipped,no current openings,,0,https://jobs.lever.co/genesis-ai
+Gauss Labs,added,,AI & Machine Learning | Industrials & Manufacturing,8,https://jobs.lever.co/gausslabs
+Drivetrain,added,,Finance & Banking | Software & SaaS,35,https://jobs.lever.co/drivetrain
+Daily Wire,added,,Media & Entertainment,6,https://jobs.lever.co/dailywire
+Cloudinary,added,,Cloud & Infrastructure | Developer Tools | Software & SaaS,27,https://jobs.lever.co/cloudinary
+Cloudforce,added,,Cloud & Infrastructure | Software & SaaS,10,https://jobs.lever.co/go-cloudforce
+Big Health,added,,Healthcare & Biotech,1,https://jobs.lever.co/bighealth
+Array Labs,added,,Data & Analytics | Space,31,https://jobs.lever.co/arraylabs.io
+AppSamurai,added,,Ad Tech & MarTech | Software & SaaS,1,https://jobs.lever.co/appsamurai
+ABSA Group,added,,Finance & Banking,79,https://absa.wd3.myworkdayjobs.com/ABSAcareersite
+New Charter Technologies,added,,IT Services,25,https://newchartertech.wd12.myworkdayjobs.com/newchartertechnologies
+Marywashingtonhealthcare,added,,Healthcare & Biotech,264,https://marywashingtonhealthcare.wd5.myworkdayjobs.com/externalcareers
+capital.com,added,,FinTech & Payments | Investment & Asset Management,40,https://jobs.lever.co/capital
+Zeiss Group,added,,Consumer Electronics | Medical Devices,831,https://zeissgroup.wd3.myworkdayjobs.com/external
+Wilbur Labs,added,,Investment & Asset Management,1,https://jobs.lever.co/wilburlabs
+Walsh Group,added,,Real Estate & Construction,339,https://walshgroup.wd12.myworkdayjobs.com/walshgroup
+Vocal Media,added,,Media & Entertainment,16,https://jobs.lever.co/get-vocal-pbc
+Vida Health,added,,Healthcare & Biotech,11,https://jobs.lever.co/vida
+Triveni Bio,added,,Healthcare & Biotech,4,https://jobs.lever.co/trivenibio
+Thea Energy,added,,Climate Tech | Energy,50,https://jobs.lever.co/thea.energy
+"Stride, Inc",added,,EdTech | Education & Academia,222,https://strideinc.wd1.myworkdayjobs.com/sk
+Spine Media,added,,Media & Entertainment,2,https://jobs.lever.co/spine-media
+Rupa Health,added,,Healthcare & Biotech,1,https://jobs.lever.co/rupa
+RWS TrainAI,added,,AI & Machine Learning | Data & Analytics,61,https://jobs.lever.co/rws
+Outpace Bio,skipped,no current openings,,0,https://jobs.lever.co/outpacebio
+Nomi Health,added,,Healthcare & Biotech,2,https://jobs.lever.co/nomihealth
+Next Health,added,,Healthcare & Biotech,17,https://jobs.lever.co/next-health
+Merlin Labs,added,,Aerospace & Defense,33,https://jobs.lever.co/merlinlabs
+Last Energy,added,,Climate Tech | Energy,39,https://jobs.lever.co/last-energy
+KlearNow.ai,added,,AI & Machine Learning | Logistics & Supply Chain | Software & SaaS,11,https://jobs.lever.co/klearnow
+Kitman Labs,added,,Data & Analytics | Software & SaaS | Sports,8,https://jobs.lever.co/kitmanlabs
+"Kaplan, Inc",added,,EdTech | Education & Academia,68,https://ghc.wd1.myworkdayjobs.com/kaplan_careers
+Ironflow AI,added,,AI & Machine Learning,4,https://jobs.lever.co/ironflow
+Hint Health,skipped,no current openings,,0,https://jobs.lever.co/hint
+HAP Capital,skipped,no current openings,,0,https://jobs.lever.co/hap-capital
+Ethena Labs,skipped,no current openings,,0,https://jobs.lever.co/ethenalabs
+Datalab USA,already included,,,,https://jobs.lever.co/datalabusa
+"Constellation Technologies, Inc",added,,Aerospace & Defense | Cybersecurity,48,https://jobs.lever.co/cti-md
+BioAgilytix,added,,Healthcare & Biotech,15,https://jobs.lever.co/bioagilytix
+Banner Bank,added,,Finance & Banking,65,https://jobs.lever.co/bannerbank
+Aurora Labs,added,,Automotive | Developer Tools | Software & SaaS,2,https://jobs.lever.co/aurora-dev
+AntiCapital,added,,Investment & Asset Management | Quant Trading,3,https://jobs.lever.co/AntiCapital
+Ad Hoc Labs,added,,Consumer Tech | Telecom,1,https://jobs.lever.co/adhoclabs
+Acselhealth,added,,Healthcare & Biotech,2,https://jobs.lever.co/acselhealth
+AIP Connect,added,,HR Tech,20,https://jobs.lever.co/aipconnect
+Working at Bozeman Health,added,,Healthcare & Biotech,246,https://bozemanhealth.wd1.myworkdayjobs.com/bozemanhealthcareers
+St. Charles Health System,added,,Healthcare & Biotech,267,https://stcharles.wd1.myworkdayjobs.com/External
+Champlain Rehab Solutions,added,,Healthcare & Biotech,4,https://vhaca.wd10.myworkdayjobs.com/Champlain
+Ultra Health,added,,Healthcare & Biotech,6,https://jobs.lever.co/ultrahealthproviders
+TTEC Digital,added,,Consulting | IT Services,69,https://jobs.lever.co/ttecdigital
+TAKRAF Group,added,,Industrials & Manufacturing,31,https://takraf.wd103.myworkdayjobs.com/takraf_external_careers
+Sword Health,added,,Healthcare & Biotech,15,https://jobs.lever.co/swordhealth
+SwiftLynx AI,added,,AI & Machine Learning | Software & SaaS,1,https://jobs.lever.co/swiftlynx
+Salvo Health,added,,Healthcare & Biotech,12,https://jobs.lever.co/salvohealth
+Range Energy,added,,Climate Tech | Energy,5,https://jobs.lever.co/rangeenergy
+PocketHealth,added,,Healthcare & Biotech,7,https://jobs.lever.co/PocketHealth
+Pivot Energy,added,,Climate Tech | Energy,7,https://jobs.lever.co/pivotenergy

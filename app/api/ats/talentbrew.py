@@ -84,7 +84,7 @@ def fetch_talentbrew(scrape, seen, company):
                     posted = posted or _parse_posted(obj.get("datePosted") or obj.get("postedDate") or "")
                     loc = loc or _jsonld_location(obj.get("jobLocation"))
                     if not desc and obj.get("description"):
-                        desc = norm(BeautifulSoup(obj.get("description") or "", "lxml").get_text(" ", strip=True))
+                        desc = obj.get("description") or ""
             full_text = norm(soup.get_text(" ", strip=True))
             loc = loc or _detail_location_from_text(full_text)
             posted = posted or extract_posted_from_text(full_text)
@@ -93,14 +93,21 @@ def fetch_talentbrew(scrape, seen, company):
                             '[class*="jobDescription"]', 'main', 'article'):
                     el = soup.select_one(sel)
                     if el:
-                        text = norm(el.get_text(" ", strip=True))
-                        if len(text) > 150:
-                            desc = text
+                        raw_html = str(el)
+                        if len(normalize_description(raw_html) or "") > 150:
+                            desc = raw_html
                             break
-            return job, {"location": loc, "posted": posted, "description": desc}
+            return job, {
+                "location": loc,
+                "posted": posted,
+                "description": normalize_description(desc),
+                "description_raw": desc,
+            }
         except Exception:
             return job, {"location": "", "posted": "", "description": ""}
     for page in range(max_pages):
+        if scan_deadline_exceeded(scrape):
+            return list(jobs.values()), "company scan deadline reached (partial results)"
         purl = list_url if page == 0 else make_paged_url(list_url, {"param": page_param, "start": page + 1}, 0)
         try:
             r = requests.get(purl, headers=HEADERS, timeout=25, verify=verify_ssl)
@@ -163,7 +170,18 @@ def fetch_talentbrew(scrape, seen, company):
                     loc = extract_location_from_text(remainder)
             loc = loc or loc_from_url
             posted = extract_posted_from_text(parent_text)
-            jobs[jurl] = {"title": title, "url": jurl, "location": loc, "source": "talentbrew", "posted": posted}
+            ats_id = path_parts[-1] if path_parts and path_parts[-1].isdigit() else ""
+            jobs[jurl] = {
+                "title": title,
+                "url": jurl,
+                "ats_id": ats_id,
+                "location": loc,
+                "location_raw": loc_text or loc_from_url,
+                "locations_raw": [loc] if loc else [],
+                "source": "talentbrew",
+                "posted": posted,
+                "posted_raw": posted,
+            }
         if len(jobs) == before:
             break
     detail_targets = []
@@ -180,8 +198,12 @@ def fetch_talentbrew(scrape, seen, company):
             for job, detail in ex.map(_fetch_detail, detail_targets[:max_desc]):
                 if detail.get("location"):
                     job["location"] = detail["location"]
+                    job["locations_raw"] = [
+                        part.strip() for part in detail["location"].split(";") if part.strip()
+                    ]
                 if detail.get("posted") and not job.get("posted"):
                     job["posted"] = detail["posted"]
                 if detail.get("description"):
                     job["description"] = detail["description"]
+                    job["description_raw"] = detail.get("description_raw")
     return list(jobs.values()), None

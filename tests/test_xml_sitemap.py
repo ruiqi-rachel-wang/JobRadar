@@ -34,7 +34,7 @@ class SitemapFeedTests(unittest.TestCase):
         self.assertIsNone(error)
         self.assertEqual(1, len(jobs))
         self.assertEqual("Senior Software Engineer", jobs[0]["title"])
-        self.assertEqual("", jobs[0]["posted"])
+        self.assertIsNone(jobs[0]["posted"])
 
     @patch("app.api.ats.xml_feed.requests.get")
     def test_rss_items_become_jobs(self, get):

@@ -60,10 +60,15 @@ def fetch_xml_feed(scrape, seen, company):
                 "title": title,
                 "url": url,
                 "location": normalize_location(scrape.get("default_location") or ""),
+                "location_raw": scrape.get("default_location") or None,
+                "locations_raw": [scrape.get("default_location")]
+                    if scrape.get("default_location") else [],
                 "source": "xml_feed",
                 # Sitemap lastmod is a page-change timestamp, not a posting
                 # date, so do not expose it as job chronology.
-                "posted": "",
+                "posted": None,
+                "raw_data": {"sitemap_lastmod": fields.get("lastmod")}
+                    if fields.get("lastmod") else None,
             }
         return list(jobs.values()), None
 
@@ -73,17 +78,53 @@ def fetch_xml_feed(scrape, seen, company):
                 child.tag.rsplit("}", 1)[-1]: (child.text or "").strip()
                 for child in node
             }
+            location_node = next(
+                (
+                    child for child in node
+                    if child.tag.rsplit("}", 1)[-1] == "location"
+                ),
+                None,
+            )
+            location_fields = {}
+            if location_node is not None:
+                location_fields = {
+                    child.tag.rsplit("}", 1)[-1]: (child.text or "").strip()
+                    for child in location_node
+                }
             url = fields.get("link", "") or fields.get("guid", "")
-            title = norm(fields.get("title", ""))
+            title = norm(fields.get("title_raw", "") or fields.get("title", ""))
             if not url or not title or (include and not has_include(url, include)):
                 continue
+            location = ", ".join(
+                value for value in (
+                    location_fields.get("city", ""),
+                    location_fields.get("state", ""),
+                    location_fields.get("country", ""),
+                ) if value
+            ) or normalize_location(scrape.get("default_location") or "")
+            description_parts = []
+            for key in (
+                "description", "summary", "responsibilities", "qualifications",
+                "required_qualifications",
+            ):
+                value = fields.get(key)
+                if value and value not in description_parts:
+                    description_parts.append(value)
+            description = "\n\n".join(description_parts)
             jobs[url] = {
                 "title": title,
                 "url": url,
-                "location": normalize_location(scrape.get("default_location") or ""),
+                "ats_id": fields.get("id") or None,
+                "location": location,
+                "location_raw": location or None,
+                "locations_raw": [location] if location else [],
                 "source": "xml_feed",
-                "posted": _parse_feed_date(fields.get("pubDate", "")),
-                "description": fields.get("description", ""),
+                "posted": _parse_feed_date(fields.get("pubDate", "")) or None,
+                "posted_at": fields.get("pubDate") or None,
+                "posted_raw": fields.get("pubDate") or None,
+                "description": description or None,
+                "description_raw": description or None,
+                "department": fields.get("job_function") or None,
             }
         return list(jobs.values()), None
 
@@ -98,12 +139,19 @@ def fetch_xml_feed(scrape, seen, company):
         if include and not has_include(url, include):
             continue
         location = ", ".join(p for p in (field("city"), field("state"), field("country")) if p)
+        raw_date = field("date")
+        description = field("description")
         jobs[url] = {
             "title":       title,
             "url":         url,
             "location":    location,
+            "location_raw": location or None,
+            "locations_raw": [location] if location else [],
             "source":      "xml_feed",
-            "posted":      _parse_feed_date(field("date")),
-            "description": field("description"),
+            "posted":      _parse_feed_date(raw_date) or None,
+            "posted_at":   raw_date or None,
+            "posted_raw":  raw_date or None,
+            "description": description or None,
+            "description_raw": description or None,
         }
     return list(jobs.values()), None

@@ -88,6 +88,20 @@ def _workday_location(posting):
         return normalized[0]
     return "; ".join(normalized)
 
+
+def _workday_raw_locations(posting):
+    parts = []
+    for key in ("locations", "location", "jobLocations"):
+        parts.extend(_workday_location_parts(posting.get(key)))
+    if not parts and posting.get("locationsText"):
+        parts = [posting.get("locationsText")]
+    output = []
+    for part in parts:
+        value = norm(str(part))
+        if value and value not in output:
+            output.append(value)
+    return output
+
 def _workday_location_has_country(location):
     """Whether a normalized Workday location identifies a country."""
     location = normalize_location(location or "")
@@ -117,9 +131,16 @@ def _workday_detail_location(info):
     elif isinstance(country_obj, str):
         country = country_obj
 
-    parts = []
-    parts.extend(_workday_location_parts(info.get("location")))
-    parts.extend(_workday_location_parts(info.get("jobRequisitionLocation")))
+    parts = _workday_location_parts(info.get("location"))
+    # Workday often exposes both a public city ("Irving, TX") and an
+    # internal office descriptor ("Irving - 6011 Connection") for the same
+    # primary location. Use the requisition location only as a fallback so the
+    # UI shows the advertised locations instead of counting one office twice.
+    if not parts or all(
+        normalize_location(norm(str(part))) == "Multiple Locations"
+        for part in parts
+    ):
+        parts = _workday_location_parts(info.get("jobRequisitionLocation"))
     parts.extend(_workday_location_parts(info.get("additionalLocations")))
 
     normalized = []
@@ -141,7 +162,7 @@ def _workday_detail_location(info):
 
 def _fetch_workday_detail(base_url, tenant, board, path):
     if not path:
-        return {"posted": "", "location": "", "description": ""}
+        return {}
     detail_url = f"{base_url}/wday/cxs/{tenant}/{board}{path}"
     try:
         r = None
@@ -157,18 +178,50 @@ def _fetch_workday_detail(base_url, tenant, board, path):
         r.raise_for_status()
         data = r.json()
     except Exception:
-        return {"posted": "", "location": "", "description": ""}
+        return {}
 
     info = data.get("jobPostingInfo") if isinstance(data, dict) else {}
     loc = _workday_detail_location(info)
-    desc = ""
+    # The detail endpoint's additionalLocations field is authoritative. The
+    # list-page helper intentionally does not read it, so derive the complete
+    # stored list from the normalized detail result here.
+    raw_locations = [
+        part.strip() for part in (loc or "").split(";") if part.strip()
+    ]
+    desc = None
     if isinstance(info, dict):
-        desc = norm(BeautifulSoup(info.get("jobDescription") or "", "lxml").get_text(" ", strip=True))
+        desc = (
+            info.get("jobDescription")
+            or info.get("externalJobDescription")
+            or info.get("description")
+            or None
+        )
     if isinstance(info, dict):
-        posted = _parse_posted(info.get("postedOn") or info.get("postedDate") or info.get("startDate") or "")
-        if posted:
-            return {"posted": posted, "location": loc, "description": desc}
-    return {"posted": _posted_from_json(data), "location": loc, "description": desc}
+        posted_raw = (
+            info.get("postedOn")
+            or info.get("postedDate")
+            or info.get("startDate")
+        )
+    else:
+        posted_raw = None
+    return {
+        "posted": _parse_posted(posted_raw) or _posted_from_json(data) or None,
+        "posted_at": posted_raw,
+        "posted_raw": posted_raw,
+        "location": loc or None,
+        "location_raw": raw_locations[0] if raw_locations else None,
+        "locations_raw": raw_locations,
+        "description": desc,
+        "description_raw": desc,
+        "raw_data": {
+            key: info.get(key)
+            for key in (
+                "timeType", "remoteType", "jobFamilyGroup",
+                "additionalLocations", "country",
+            )
+            if isinstance(info, dict) and info.get(key)
+        } or None,
+    }
 
 def fetch_workday(scrape, seen, company):
     """
@@ -238,32 +291,53 @@ def fetch_workday(scrape, seen, company):
     refresh_experience = bool(scrape.get("refresh_experience", False))
     refresh_location = bool(scrape.get("refresh_location", False))
     fetch_location_details = bool(scrape.get("fetch_location_details", refresh_location))
-    detail_limit    = int(scrape.get("max_posted_details", 1000000))
+    detail_limit    = int(
+        scrape.get("max_experience_details")
+        or scrape.get("max_posted_details")
+        or 1000000
+    )
     detail_delay    = float(scrape.get("posted_detail_delay", 0.05))
     detail_workers  = int(scrape.get("detail_workers", 3))
     detail_count    = 0
     stop_early      = bool(scrape.get("stop_on_seen", False) or scrape.get("sort", False))
     page_workers    = max(1, int(scrape.get("page_workers", 4)))
 
-    def _fetch_page(offset):
-        r = None
+    def _fetch_page(offset, applied_facets=None):
+        if scan_deadline_exceeded(scrape):
+            raise TimeoutError("company scan deadline reached")
+        last_error = None
         for attempt in range(3):
-            r = requests.post(
-                api_url,
-                json={"appliedFacets":{},"limit":limit,"offset":offset,"searchText":""},
-                headers={**HEADERS, "Content-Type":"application/json", "Accept":"application/json"},
-                timeout=25,
-            )
-            if r.status_code not in (403, 429):
-                break
-            time.sleep(2.0 * (attempt + 1))
-        r.raise_for_status()
-        return r.json()
+            try:
+                r = requests.post(
+                    api_url,
+                    json={
+                        "appliedFacets": applied_facets or {},
+                        "limit": limit,
+                        "offset": offset,
+                        "searchText": "",
+                    },
+                    headers={**HEADERS, "Content-Type":"application/json", "Accept":"application/json"},
+                    timeout=25,
+                )
+                if r.status_code in (403, 429):
+                    last_error = RuntimeError(f"HTTP {r.status_code}")
+                else:
+                    r.raise_for_status()
+                    data = r.json()
+                    if not isinstance(data, dict):
+                        raise ValueError("Workday returned a non-object JSON response")
+                    return data
+            except Exception as exc:
+                last_error = exc
+            if attempt < 2:
+                time.sleep(2.0 * (attempt + 1))
+        raise last_error or RuntimeError("Workday request failed")
 
     # Full scans read every page anyway, so fetch them concurrently. The
     # stop-on-seen path stays sequential — early stop needs page order.
     pages = None
     page_errors = {}
+    subdivision_error = None
     if not stop_early and max_pages > 1:
         try:
             first = _fetch_page(0)
@@ -271,20 +345,170 @@ def fetch_workday(scrape, seen, company):
             return [], str(e)
         total_hint = int(first.get("total") or 0)
         if total_hint > 0:
-            pages = {0: first}
-            page_count = min(max_pages, max(1, (total_hint + limit - 1) // limit))
-            offsets = [i * limit for i in range(1, page_count)]
-            if offsets:
-                def _try_fetch_page(offset):
+            if total_hint == 2000 and first.get("facets"):
+                deduped = {}
+                exhaustion_errors = []
+                facet_priority = (
+                    "jobFamilyGroup", "workerSubType", "timeType",
+                    "locations", "locationMainGroup",
+                )
+                facet_max_depth = max(
+                    1,
+                    int(scrape.get("facet_max_depth") or 6),
+                )
+
+                def _posting_key(posting):
+                    bullets = posting.get("bulletFields") or []
+                    return (
+                        posting.get("externalPath")
+                        or (str(bullets[0]) if bullets else "")
+                        or "|".join(
+                            str(posting.get(key) or "")
+                            for key in ("title", "locationsText")
+                        )
+                    )
+
+                def _absorb(postings):
+                    for posting in postings or []:
+                        deduped[_posting_key(posting)] = posting
+
+                def _pick_facet(data, already_applied):
+                    by_parameter = {}
+                    for facet in data.get("facets") or []:
+                        if not isinstance(facet, dict):
+                            continue
+                        parameter = facet.get("facetParameter")
+                        values = facet.get("values") or []
+                        if (
+                            not parameter
+                            # Distance is meaningful only around a supplied
+                            # search location. Workday still advertises it on
+                            # unscoped searches, where selecting it leaves the
+                            # same capped result and creates fake partitions.
+                            or parameter == "distance"
+                            or parameter in already_applied
+                            or len(values) < 2
+                        ):
+                            continue
+                        usable = [
+                            (value.get("id"), int(value.get("count") or 0))
+                            for value in values
+                            if isinstance(value, dict)
+                            and value.get("id")
+                            and int(value.get("count") or 0) > 0
+                        ]
+                        if usable:
+                            by_parameter[parameter] = usable
+                    for parameter in facet_priority:
+                        if parameter in by_parameter:
+                            return parameter, by_parameter[parameter]
+                    if by_parameter:
+                        return max(
+                            by_parameter.items(),
+                            key=lambda item: len(item[1]),
+                        )
+                    return None
+
+                def _fetch_query_pages(filters, first_page):
+                    if scan_deadline_exceeded(scrape):
+                        raise TimeoutError("company scan deadline reached")
+                    query_total = int(first_page.get("total") or 0)
+                    _absorb(first_page.get("jobPostings") or [])
+                    page_count = min(
+                        max_pages,
+                        max(1, (query_total + limit - 1) // limit),
+                    )
+                    offsets = [index * limit for index in range(1, page_count)]
+                    if not offsets:
+                        return
+
+                    def _fetch_filtered(offset):
+                        return _fetch_page(offset, filters)
+
+                    with concurrent.futures.ThreadPoolExecutor(
+                        max_workers=page_workers
+                    ) as executor:
+                        for offset, result in zip(
+                            offsets,
+                            executor.map(_fetch_filtered, offsets),
+                        ):
+                            _absorb(result.get("jobPostings") or [])
+
+                def _exhaust(filters, first_page=None, depth=0):
+                    if scan_deadline_exceeded(scrape):
+                        exhaustion_errors.append("company scan deadline reached")
+                        return
                     try:
-                        return offset, _fetch_page(offset), None
-                    except Exception as e:
-                        return offset, None, str(e)
-                with concurrent.futures.ThreadPoolExecutor(max_workers=page_workers) as ex:
-                    for offset, data, page_err in ex.map(_try_fetch_page, offsets):
-                        pages[offset] = data
-                        if page_err:
-                            page_errors[offset] = page_err
+                        data = first_page or _fetch_page(0, filters)
+                    except Exception as exc:
+                        exhaustion_errors.append(
+                            f"facet query {filters or '{}'} failed: {exc}"
+                        )
+                        return
+                    query_total = int(data.get("total") or 0)
+                    if query_total != 2000:
+                        try:
+                            _fetch_query_pages(filters, data)
+                        except Exception as exc:
+                            exhaustion_errors.append(
+                                f"facet pagination {filters or '{}'} failed: {exc}"
+                            )
+                        return
+                    # Preserve postings that have no value for the next facet;
+                    # they otherwise disappear when only child partitions are
+                    # absorbed.
+                    _absorb(data.get("jobPostings") or [])
+                    if depth >= facet_max_depth:
+                        _absorb(data.get("jobPostings") or [])
+                        exhaustion_errors.append(
+                            f"Workday query remained capped at 2000 for {filters}"
+                        )
+                        return
+                    facet = _pick_facet(data, set(filters))
+                    if not facet:
+                        try:
+                            _fetch_query_pages(filters, data)
+                        except Exception as exc:
+                            exhaustion_errors.append(str(exc))
+                        exhaustion_errors.append(
+                            f"Workday query could not subdivide capped result for {filters}"
+                        )
+                        return
+                    parameter, values = facet
+                    for value_id, _count in values:
+                        if scan_deadline_exceeded(scrape):
+                            exhaustion_errors.append("company scan deadline reached")
+                            return
+                        _exhaust(
+                            {**filters, parameter: [value_id]},
+                            depth=depth + 1,
+                        )
+
+                _exhaust({}, first_page=first)
+                all_postings = list(deduped.values())
+                pages = {}
+                for index in range(0, len(all_postings), limit):
+                    pages[index] = {
+                        "jobPostings": all_postings[index:index + limit],
+                        "total": len(all_postings),
+                    }
+                if exhaustion_errors:
+                    subdivision_error = "; ".join(exhaustion_errors[:5])
+            else:
+                pages = {0: first}
+                page_count = min(max_pages, max(1, (total_hint + limit - 1) // limit))
+                offsets = [i * limit for i in range(1, page_count)]
+                if offsets:
+                    def _try_fetch_page(offset):
+                        try:
+                            return offset, _fetch_page(offset), None
+                        except Exception as e:
+                            return offset, None, str(e)
+                    with concurrent.futures.ThreadPoolExecutor(max_workers=page_workers) as ex:
+                        for offset, data, page_err in ex.map(_try_fetch_page, offsets):
+                            pages[offset] = data
+                            if page_err:
+                                page_errors[offset] = page_err
         # total missing/0: fall back to the sequential loop, which paginates
         # until an empty page instead of trusting the reported total.
 
@@ -292,9 +516,12 @@ def fetch_workday(scrape, seen, company):
     # the scanner records the fetch as incomplete — a full scan must never run
     # job expiry against a partial list (it would close every job on the pages
     # that were never reached).
-    fetch_err = None
+    fetch_err = subdivision_error
 
     for idx in range(max_pages):
+        if scan_deadline_exceeded(scrape):
+            fetch_err = "company scan deadline reached (partial results)"
+            break
         offset = idx * limit
         if pages is not None:
             if offset not in pages:
@@ -328,11 +555,21 @@ def fetch_workday(scrape, seen, company):
             title  = norm(j.get("title") or "")
             path   = j.get("externalPath") or ""
             jurl   = f"{public_base}{path}" if path else ""
+            raw_locations = _workday_raw_locations(j)
+            raw_location = raw_locations[0] if raw_locations else None
             loc    = _workday_location(j)
-            posted = _parse_posted(j.get("postedOn") or j.get("postedDate") or "")
+            posted_raw = j.get("postedOn") or j.get("postedDate")
+            posted = _parse_posted(posted_raw)
+            bullets = j.get("bulletFields") or []
+            requisition_id = str(bullets[0]) if bullets else None
+            ats_id = requisition_id or path.rsplit("/", 1)[-1] or None
             if title:
-                jid = make_id(company, jurl, title)
-                existing = seen.get(jid) if isinstance(seen, dict) else None
+                jid = make_id(company, jurl, title, "workday", ats_id)
+                existing = (
+                    seen.get(jid)
+                    or seen.get(make_id(company, jurl, title))
+                    if isinstance(seen, dict) else None
+                )
                 if not posted and isinstance(existing, dict):
                     posted = _parse_posted(existing.get("posted") or "")
                 existing_source = (existing.get("exp_source") or "") if isinstance(existing, dict) else ""
@@ -355,33 +592,42 @@ def fetch_workday(scrape, seen, company):
                 existing_exp = (
                     isinstance(existing, dict)
                     and bool(existing.get("exp_label"))
-                    and (not refresh_experience or existing_has_description)
-                    and existing_source in {"text", "company_peer"}
+                    and not refresh_experience
+                    and existing_source == "text"
                 )
                 # If we already have the description stored, skip re-fetching.
                 # Re-fetching returns the same text and causes hours-long hangs for large companies.
-                desc_already_fetched = bool(existing_has_description)
+                desc_already_fetched = bool(existing_has_description) and not refresh_experience
                 exp_detail_needed = (
                     fetch_exp_detail
                     and not existing_exp
                     and not desc_already_fetched
-                    and (not fetch_new_exp_only or not isinstance(existing, dict))
+                    and (
+                        refresh_experience
+                        or not fetch_new_exp_only
+                        or not isinstance(existing, dict)
+                    )
                 )
-                location_detail_needed = fetch_location_details and (
-                    refresh_location or not _workday_location_has_country(loc)
+                # A list-page placeholder such as "2 Locations" must always
+                # be resolved from the detail endpoint. Configured location
+                # enrichment additionally repairs incomplete country data.
+                location_detail_needed = (
+                    loc == "Multiple Locations"
+                    or (
+                        fetch_location_details
+                        and (refresh_location or not _workday_location_has_country(loc))
+                    )
                 )
                 needs_detail = (
                     exp_detail_needed
                     or location_detail_needed
                     or (not posted)
-                    or (fetch_location_details and loc == "Multiple Locations")
                 )
                 # Fast scans avoid detail pages unless rich metadata was
                 # explicitly requested; those requests dominate Workday runtime.
                 fetch_for_this = (
                     fetch_details
                     or location_detail_needed
-                    or (fetch_location_details and loc == "Multiple Locations")
                     or exp_detail_needed
                 )
                 if needs_detail and fetch_for_this and detail_count < detail_limit:
@@ -391,16 +637,38 @@ def fetch_workday(scrape, seen, company):
                 page_jobs.append({
                     "title": title,
                     "url": jurl,
+                    "ats_id": ats_id,
+                    "requisition_id": requisition_id,
                     "location": loc,
+                    "location_raw": raw_location,
+                    "locations_raw": raw_locations,
                     "source": "workday",
-                    "posted": posted,
-                    "description": "",
+                    "posted": posted or None,
+                    "posted_raw": posted_raw,
+                    "posted_at": posted_raw,
+                    "employment_type": j.get("timeType"),
+                    "employment_type_raw": j.get("timeType"),
+                    "workplace_type": j.get("remoteType"),
+                    "department": j.get("jobFamilyGroup"),
+                    "raw_data": {
+                        key: j.get(key)
+                        for key in (
+                            "bulletFields", "locations", "timeType",
+                            "jobFamilyGroup", "remoteType", "externalPath",
+                        )
+                        if j.get(key)
+                    } or None,
+                    "description": None,
                     "_detail_path": path if needs_detail and fetch_for_this else "",
                 })
 
         detail_targets = [
             (pos, job) for pos, job in enumerate(page_jobs)
-            if job.get("_detail_path") and detail_count + pos < detail_limit
+            if (
+                job.get("_detail_path")
+                and detail_count + pos < detail_limit
+                and not scan_deadline_exceeded(scrape)
+            )
         ]
         if detail_targets:
             def _fetch_target(item):
@@ -416,7 +684,20 @@ def fetch_workday(scrape, seen, company):
                     job["posted"] = job.get("posted") or detail.get("posted", "")
                     if detail.get("location"):
                         job["location"] = detail["location"]
+                    if detail.get("location_raw"):
+                        job["location_raw"] = detail["location_raw"]
+                    if detail.get("locations_raw"):
+                        job["locations_raw"] = detail["locations_raw"]
+                    if detail.get("posted_at"):
+                        job["posted_at"] = detail["posted_at"]
+                    if detail.get("posted_raw"):
+                        job["posted_raw"] = detail["posted_raw"]
                     job["description"] = detail.get("description", "")
+                    job["description_raw"] = detail.get("description_raw")
+                    if detail.get("raw_data"):
+                        if not isinstance(job.get("raw_data"), dict):
+                            job["raw_data"] = {}
+                        job["raw_data"].update(detail["raw_data"])
             detail_count += len(detail_targets)
             if detail_delay:
                 time.sleep(detail_delay)
@@ -425,7 +706,19 @@ def fetch_workday(scrape, seen, company):
         jobs.extend(page_jobs)
 
         if stop_early and seen and page_jobs:
-            all_seen = all(make_id(company, j["url"], j["title"]) in seen for j in page_jobs)
+            all_seen = all(
+                (
+                    make_id(
+                        company,
+                        j["url"],
+                        j["title"],
+                        j.get("source", ""),
+                        j.get("ats_id", ""),
+                    ) in seen
+                    or make_id(company, j["url"], j["title"]) in seen
+                )
+                for j in page_jobs
+            )
             consec_all_seen = consec_all_seen + 1 if all_seen else 0
             backfilling_dates = fetch_details and page_had_missing_posted and detail_count < detail_limit
             if consec_all_seen >= 2 and not backfilling_dates:

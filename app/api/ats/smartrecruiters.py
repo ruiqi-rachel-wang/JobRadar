@@ -3,7 +3,7 @@ from .base import *
 # ── SmartRecruiters ───────────────────────────────────────────────────────────
 
 def _fetch_sr_description(slug, posting_id, timeout=15):
-    """Fetch job description from the SmartRecruiters detail API."""
+    """Fetch structured SmartRecruiters detail metadata."""
     try:
         r = requests.get(
             f"https://api.smartrecruiters.com/v1/companies/{slug}/postings/{posting_id}",
@@ -11,7 +11,7 @@ def _fetch_sr_description(slug, posting_id, timeout=15):
             timeout=timeout,
         )
         if r.status_code != 200:
-            return ""
+            return {}
         data = r.json()
         sections = (data.get("jobAd") or {}).get("sections") or {}
         parts = []
@@ -19,10 +19,19 @@ def _fetch_sr_description(slug, posting_id, timeout=15):
             sec = sections.get(key) or {}
             text = sec.get("text") or ""
             if text:
-                parts.append(text)
-        return " ".join(parts)
+                heading = sec.get("title") or key.replace("Information", " information").replace("job", "Job ")
+                parts.append(f"<h3>{heading}</h3>\n{text}")
+        return {
+            "description": "\n\n".join(parts) or None,
+            "apply_url": data.get("applyUrl"),
+            "raw_data": {
+                key: data.get(key)
+                for key in ("language", "experienceLevel", "customField")
+                if data.get(key)
+            } or None,
+        }
     except Exception:
-        return ""
+        return {}
 
 
 def fetch_smartrecruiters(scrape, seen, company):
@@ -34,6 +43,8 @@ def fetch_smartrecruiters(scrape, seen, company):
     jobs = []
     job_ids = {}  # url -> posting_id for detail fetches
     for page in range(max_pages):
+        if scan_deadline_exceeded(scrape):
+            return jobs, "company scan deadline reached (partial results)"
         offset = page * limit
         try:
             r = requests.get(
@@ -58,14 +69,60 @@ def fetch_smartrecruiters(scrape, seen, company):
             elif j.get("ref"):
                 jurl = (j.get("ref") or "").strip()
             loc_data = j.get("location") or {}
-            loc = ""
+            loc_raw = ""
             if isinstance(loc_data, dict):
-                loc = normalize_location(norm(", ".join(
+                loc_raw = norm(", ".join(
                     x for x in [loc_data.get("city"), loc_data.get("region"), loc_data.get("country")] if x
-                )))
-            posted = _parse_posted(j.get("releasedDate") or j.get("createdOn") or "")
+                ))
+            department = j.get("department") or {}
+            function = j.get("function") or {}
+            emp = j.get("typeOfEmployment") or {}
+            emp_raw = (
+                emp.get("label") or emp.get("id")
+                if isinstance(emp, dict) else emp
+            )
             if title and jurl:
-                jobs.append({"title": title, "url": jurl, "location": loc, "source": "smartrecruiters", "posted": posted})
+                jobs.append({
+                    "title": title,
+                    "url": jurl,
+                    "ats_id": str(posting_id) or None,
+                    "requisition_id": j.get("refNumber"),
+                    "location": loc_raw,
+                    "location_raw": loc_raw or None,
+                    "country_iso": (
+                        str(loc_data.get("country")).upper()
+                        if isinstance(loc_data, dict)
+                        and len(str(loc_data.get("country") or "")) == 2
+                        else None
+                    ),
+                    "remote_mode": (
+                        "remote"
+                        if isinstance(loc_data, dict) and loc_data.get("remote") is True
+                        else "onsite"
+                        if isinstance(loc_data, dict) and loc_data.get("remote") is False
+                        else None
+                    ),
+                    "source": "smartrecruiters",
+                    "posted_at": j.get("releasedDate") or j.get("createdOn"),
+                    "employment_type": emp_raw,
+                    "employment_type_raw": emp_raw,
+                    "department": (
+                        department.get("label")
+                        if isinstance(department, dict) else department
+                    ),
+                    "team": (
+                        function.get("label")
+                        if isinstance(function, dict) else function
+                    ),
+                    "raw_data": {
+                        key: j.get(key)
+                        for key in (
+                            "industry", "function", "department",
+                            "experienceLevel", "language",
+                        )
+                        if j.get(key)
+                    } or None,
+                })
                 if posting_id:
                     job_ids[jurl] = posting_id
         total = int(data.get("totalFound") or 0)
@@ -80,8 +137,14 @@ def fetch_smartrecruiters(scrape, seen, company):
         pid = job_ids.get(j["url"])
         if not pid:
             continue
-        jid_key = make_id(company, j["url"], j["title"])
-        existing = seen.get(jid_key) if isinstance(seen, dict) else None
+        jid_key = make_id(
+            company, j["url"], j["title"], "smartrecruiters", j.get("ats_id")
+        )
+        existing = (
+            seen.get(jid_key)
+            or seen.get(make_id(company, j["url"], j["title"]))
+            if isinstance(seen, dict) else None
+        )
         if not (isinstance(existing, dict) and existing.get("has_description")):
             desc_targets.append((j, pid))
 
@@ -90,8 +153,13 @@ def fetch_smartrecruiters(scrape, seen, company):
             job, pid = args
             return job, _fetch_sr_description(slug, pid)
         with concurrent.futures.ThreadPoolExecutor(max_workers=max(1, desc_workers)) as ex:
-            for job, desc in ex.map(_get_desc, desc_targets[:max_desc]):
-                if desc:
-                    job["description"] = desc
+            for job, detail in ex.map(_get_desc, desc_targets[:max_desc]):
+                if detail.get("description"):
+                    job["description"] = detail["description"]
+                    job["description_raw"] = detail["description"]
+                if detail.get("apply_url"):
+                    job["apply_url"] = detail["apply_url"]
+                if detail.get("raw_data"):
+                    job.setdefault("raw_data", {}).update(detail["raw_data"])
 
     return jobs, None

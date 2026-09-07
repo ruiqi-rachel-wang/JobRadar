@@ -9,6 +9,8 @@ def fetch_html(scrape, seen, company):
     include     = scrape.get("include","")
     title_param = scrape.get("title_param","")
     title_suffix_regex = scrape.get("title_suffix_regex", "")
+    ats_id_regex = scrape.get("ats_id_regex", "")
+    location_regex = scrape.get("location_regex", "")
     url_exclude = [str(s).lower() for s in (scrape.get("url_exclude") or [])]
     title_exclude = [str(s).lower() for s in (scrape.get("title_exclude") or [])]
     stop_on_seen = bool(scrape.get("stop_on_seen", False))
@@ -92,6 +94,136 @@ def fetch_html(scrape, seen, company):
                     found[job_url] = job
         return found
 
+    def extract_embedded_kula_jobs(soup, page_url):
+        """Decode Kula job objects embedded in Next.js Flight payloads."""
+        if not scrape.get("embedded_kula_jobs"):
+            return {}
+        found = {}
+        decoder = json.JSONDecoder()
+        marker = '"jobs":'
+        for script in soup.find_all("script"):
+            text = script.string or script.get_text() or ""
+            if "self.__next_f.push(" not in text or "account_id" not in text:
+                continue
+            call_start = text.find("self.__next_f.push(") + len("self.__next_f.push(")
+            call_end = text.rfind(")")
+            if call_end <= call_start:
+                continue
+            try:
+                payload = json.loads(text[call_start:call_end])
+            except Exception:
+                continue
+            chunks = [value for value in payload if isinstance(value, str)] if isinstance(payload, list) else []
+            for chunk in chunks:
+                pos = 0
+                while True:
+                    pos = chunk.find(marker, pos)
+                    if pos < 0:
+                        break
+                    try:
+                        postings, pos = decoder.raw_decode(chunk, pos + len(marker))
+                    except Exception:
+                        pos += len(marker)
+                        continue
+                    if not isinstance(postings, list):
+                        continue
+                    for posting in postings:
+                        if not isinstance(posting, dict) or posting.get("listed") is False:
+                            continue
+                        title = norm(posting.get("title") or "")
+                        job_id = str(posting.get("id") or "").strip()
+                        if not title or not job_id:
+                            continue
+                        job_url = urljoin(page_url.rstrip("/") + "/", job_id + "/")
+                        offices = ((posting.get("ats_job") or {}).get("offices") or [])
+                        raw_locations = []
+                        for office in offices:
+                            if not isinstance(office, dict):
+                                continue
+                            location = norm(office.get("location") or office.get("name") or "")
+                            if location and location not in raw_locations:
+                                raw_locations.append(location)
+                        location = normalize_location(raw_locations[0]) if raw_locations else ""
+                        found[job_url] = {
+                            "title": title,
+                            "url": job_url,
+                            "ats_id": job_id,
+                            "location": location,
+                            "location_raw": raw_locations[0] if raw_locations else None,
+                            "locations_raw": raw_locations,
+                            "source": "html",
+                            "posted_at": posting.get("launch_at"),
+                            "employment_type": (posting.get("ats_job") or {}).get("employment_type"),
+                            "employment_type_raw": (posting.get("ats_job") or {}).get("employment_type"),
+                            "department": ((posting.get("ats_job") or {}).get("ats_department") or {}).get("name"),
+                        }
+        return found
+
+    def extract_embedded_gem_jobs(soup, page_url):
+        """Decode Gem postings embedded in a site's Next.js Flight payload.
+
+        Gem customers can render their job board on the employer's own site.
+        In that setup there may be no ordinary anchors in the initial HTML,
+        but the complete structured job list is still delivered in
+        ``self.__next_f`` script chunks.
+        """
+        if not scrape.get("embedded_gem_jobs"):
+            return {}
+        found = {}
+        decoder = json.JSONDecoder()
+        marker = '"jobs":'
+        for script in soup.find_all("script"):
+            text = script.string or script.get_text() or ""
+            if "self.__next_f.push(" not in text or "jobs.gem.com" not in text:
+                continue
+            call_start = text.find("self.__next_f.push(") + len("self.__next_f.push(")
+            call_end = text.rfind(")")
+            if call_end <= call_start:
+                continue
+            try:
+                payload = json.loads(text[call_start:call_end])
+            except Exception:
+                continue
+            chunks = [value for value in payload if isinstance(value, str)] if isinstance(payload, list) else []
+            for chunk in chunks:
+                pos = 0
+                while True:
+                    pos = chunk.find(marker, pos)
+                    if pos < 0:
+                        break
+                    try:
+                        postings, pos = decoder.raw_decode(chunk, pos + len(marker))
+                    except Exception:
+                        pos += len(marker)
+                        continue
+                    if not isinstance(postings, list):
+                        continue
+                    for posting in postings:
+                        if not isinstance(posting, dict):
+                            continue
+                        title = norm(posting.get("title") or "")
+                        job_url = norm(posting.get("link") or "")
+                        ats_id = str(posting.get("id") or "").strip()
+                        if not title or not job_url or not has_include(job_url, include):
+                            continue
+                        if job_url in visited:
+                            continue
+                        visited.add(job_url)
+                        location_raw = norm(posting.get("location") or "")
+                        found[job_url] = {
+                            "title": title,
+                            "url": job_url,
+                            "ats_id": ats_id or None,
+                            "location": normalize_location(location_raw),
+                            "location_raw": location_raw or None,
+                            "locations_raw": [location_raw] if location_raw else [],
+                            "department": posting.get("department"),
+                            "posted_at": posting.get("updatedAt"),
+                            "posted_raw": posting.get("updatedAt"),
+                            "source": "html",
+                        }
+        return found
+
     def is_job_detail_url(url):
         if not require_job_path:
             return True
@@ -137,6 +269,8 @@ def fetch_html(scrape, seen, company):
                     visited.add(abs_url)
                     title = norm(re.sub(r"!\[[^\]]*\]", " ", title))
                     title = re.sub(r'\s+(?:learn more|apply now|view job)$', '', title, flags=re.I).strip()
+                    if title_suffix_regex:
+                        title = re.sub(title_suffix_regex, "", title, flags=re.I).strip()
                     if not title or re.search(r"^(apply|apply now|view job|search jobs|saved jobs|learn more|read more|see details|job details)$", title, re.I):
                         continue
                     if title_exclude and any(ex in title.lower() for ex in title_exclude):
@@ -146,6 +280,21 @@ def fetch_html(scrape, seen, company):
                         stop = True
                         break
                     nearby_lines = r.text.splitlines()[idx + 1:idx + 8]
+                    bullet_location = ""
+                    for nearby_line in nearby_lines:
+                        bullet = re.match(r'^\s*\*\s+(.+?)\s*$', nearby_line)
+                        if not bullet:
+                            continue
+                        raw_bullet = norm(bullet.group(1))
+                        if raw_bullet.lower() in {
+                            "hybrid", "remote", "on-site", "onsite",
+                            "full-time", "part-time", "contract",
+                        }:
+                            continue
+                        candidate = extract_location_from_text(raw_bullet)
+                        if candidate:
+                            bullet_location = candidate
+                            break
                     # Strip markdown list bullets (* item) — they contain description
                     # text that looks like locations (e.g. "* Seattle, WA, and collaborate...")
                     nearby_clean = " ".join(
@@ -156,7 +305,8 @@ def fetch_html(scrape, seen, company):
                     found[abs_url] = {
                         "title": title,
                         "url": abs_url,
-                        "location": (extract_location_from_text(nearby_clean)
+                        "location": (bullet_location
+                                     or extract_location_from_text(nearby_clean)
                                      or extract_location_from_text(nearby)
                                      or extract_location_from_text(title)
                                      or default_location),
@@ -182,6 +332,8 @@ def fetch_html(scrape, seen, company):
             if total_match:
                 expected_total = int(total_match.group(1).replace(",", ""))
         found = extract_embedded_next_jobs(soup, page_url)
+        found.update(extract_embedded_kula_jobs(soup, page_url))
+        found.update(extract_embedded_gem_jobs(soup, page_url))
         stop  = False
 
         for a in soup.find_all("a", href=True):
@@ -233,11 +385,22 @@ def fetch_html(scrape, seen, company):
                     else:
                         title = title[:100].rsplit(" ", 1)[0]
 
+            # Some job cards use only a long posting ID as their anchor text.
+            # Treat that as missing and walk backward through the URL until a
+            # non-numeric title slug is found (some URLs have two numeric
+            # suffix segments).
+            if re.fullmatch(r"\d+", title or "") or (title or "").startswith("/"):
+                title = ""
             if not title or len(title) < 4:
                 parts = [p for p in urlparse(abs_url).path.rstrip("/").split("/") if p]
-                seg   = parts[-1] if parts else ""
-                if re.fullmatch(r"\d+", seg or "") and len(parts) >= 2:
-                    seg = parts[-2]
+                seg = next(
+                    (
+                        part for part in reversed(parts)
+                        if not re.fullmatch(r"\d+", part)
+                        and part.lower() not in {"job", "jobs", "careers"}
+                    ),
+                    "",
+                )
                 title = re.sub(r"[-_]"," ", seg).strip()
             if not title or len(title) < 4:
                 continue
@@ -286,12 +449,24 @@ def fetch_html(scrape, seen, company):
                 t = norm(parent.get_text(" ", strip=True))
                 if len(t) > 20:
                     parent_text = t
-                    if len(t) < 600:
+                    # A title is often wrapped by an h2/h3 while location is
+                    # stored one card level higher (notably Etsy and FanDuel).
+                    # Keep climbing until the card actually contains a
+                    # location, but stop before entering a multi-card page.
+                    location_probe = extract_location_from_text(
+                        t if len(t) <= 500 else t[:300]
+                    )
+                    if location_probe or len(t) >= 600:
                         break
 
             # Try parent text first (skip if huge multi-card container).
             # Also try the raw anchor text and the cleaned title for embedded locations.
-            loc_candidate = (
+            loc_candidate = ""
+            if location_regex:
+                match = re.search(location_regex, parent_text, re.I)
+                if match:
+                    loc_candidate = normalize_location(norm(match.group(1)))
+            loc_candidate = loc_candidate or (
                 (extract_location_from_text(parent_text) if len(parent_text) <= 500 else "")
                 or extract_location_from_text(raw_anchor)
                 or extract_location_from_text(title)
@@ -307,11 +482,19 @@ def fetch_html(scrape, seen, company):
                 loc_candidate = extract_location_from_text(parent_text[:300])
                 if loc_candidate and loc_candidate.lower() == title.lower():
                     loc_candidate = ""
-            if default_location and loc_candidate in ("", "Remote", "Multiple Locations"):
+            if scrape.get("force_default_location") and default_location:
                 loc_candidate = default_location
+            elif default_location and loc_candidate in ("", "Remote", "Multiple Locations"):
+                loc_candidate = default_location
+            ats_id = None
+            if ats_id_regex:
+                ats_match = re.search(ats_id_regex, abs_url, re.I)
+                if ats_match:
+                    ats_id = ats_match.group(1)
             found[abs_url] = {
                 "title": title,
                 "url": abs_url,
+                "ats_id": ats_id,
                 "location": loc_candidate,
                 "source": "html",
                 "posted": extract_posted_from_text(parent_text),
@@ -381,7 +564,19 @@ def fetch_html(scrape, seen, company):
             current = next_url
             time.sleep(page_delay)
 
-    if expected_total is not None and len(all_jobs) < expected_total:
+    total_tolerance = max(0, int(scrape.get("reported_total_tolerance") or 0))
+    if expected_total is not None and len(all_jobs) + total_tolerance < expected_total:
         partial_err = f"partial listing: fetched {len(all_jobs)} of {expected_total} jobs"
         first_err = f"{first_err}; {partial_err}" if first_err else partial_err
-    return list(all_jobs.values()), first_err
+    jobs = list(all_jobs.values())
+    if jobs and scrape.get("fetch_experience_details"):
+        limit_details = int(scrape.get("max_experience_details") or scrape.get("max_desc_details") or 0)
+        targets = [j for j in jobs if not j.get("description")]
+        if limit_details > 0:
+            targets = targets[:limit_details]
+        verify = bool(scrape.get("verify_ssl", True))
+        with concurrent.futures.ThreadPoolExecutor(max_workers=min(8, max(1, len(targets)))) as executor:
+            for job, detail in zip(targets, executor.map(lambda j: fetch_detail_description(j.get("url") or "", verify=verify), targets)):
+                if detail.get("description"):
+                    job.update(detail)
+    return jobs, first_err

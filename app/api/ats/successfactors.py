@@ -65,9 +65,15 @@ def _fetch_sf_detail(jurl, timeout=15):
             if el:
                 text = norm(el.get_text(" ", strip=True))
                 if len(text) > 100:
-                    return {"description": text, "location": _sf_detail_location(text)}
+                    return {
+                        "description": str(el),
+                        "location": _sf_detail_location(text),
+                    }
         text = norm(soup.get_text(" ", strip=True))
-        return {"description": text if len(text) > 100 else "", "location": _sf_detail_location(text)}
+        return {
+            "description": str(soup.body or soup) if len(text) > 100 else "",
+            "location": _sf_detail_location(text),
+        }
     except Exception:
         return {"description": "", "location": ""}
 
@@ -83,6 +89,8 @@ def fetch_successfactors(scrape, seen, company):
         return [], "no list_url"
     max_pages = int(scrape.get("hard_max_pages") or 100)
     jobs = {}
+    stop_on_seen = bool(scrape.get("stop_on_seen"))
+    consecutive_seen_pages = 0
 
     for idx in range(max_pages):
         purl = list_url if idx == 0 else make_paged_url(list_url, {"param": "startrow", "start": idx * 25}, 0)
@@ -97,6 +105,7 @@ def fetch_successfactors(scrape, seen, company):
             return list(jobs.values()), str(e)
         soup = BeautifulSoup(r.text, "lxml")
         before = len(jobs)
+        page_seen = []
         for a in soup.find_all("a", href=True):
             href = a.get("href") or ""
             # Match both /job/ path links AND direct SF host links with career_job_req_id=
@@ -115,27 +124,69 @@ def fetch_successfactors(scrape, seen, company):
             row = a.find_parent("tr") or a.find_parent("li") or a.find_parent("div")
             parent_text = norm(row.get_text(" ", strip=True)) if row else title
             loc_el = row.select_one(".jobLocation") if row else None
-            loc = normalize_location(norm(loc_el.get_text(" ", strip=True))) if loc_el else ""
+            loc_raw = norm(loc_el.get_text(" ", strip=True)) if loc_el else ""
+            loc = normalize_location(loc_raw) if loc_raw else ""
             loc = loc or extract_location_from_text(parent_text)
             if not loc:
                 path_bits = [unquote(x) for x in urlparse(jurl).path.split("/") if x]
                 loc = extract_location_from_text(" ".join(path_bits)) or ""
             posted = extract_posted_from_text(parent_text)
             if len(title) >= 4:
-                jobs[jurl] = {"title": title, "url": jurl, "location": loc, "source": "successfactors", "posted": posted}
+                query_id = (parse_qs(urlparse(jurl).query).get("career_job_req_id") or [None])[0]
+                path_id = re.search(r"/(?:job|jobs)/[^/?#]*/?(\d+)(?:/|$)", urlparse(jurl).path)
+                ats_id = query_id or (path_id.group(1) if path_id else None)
+                stable_id = make_id(
+                    company,
+                    jurl,
+                    title,
+                    "successfactors",
+                    ats_id,
+                )
+                legacy_id = make_id(company, jurl, title)
+                page_seen.append(
+                    stable_id in seen or legacy_id in seen
+                )
+                jobs[jurl] = {
+                    "title": title,
+                    "url": jurl,
+                    "ats_id": ats_id,
+                    "location": loc,
+                    "location_raw": loc_raw or loc or None,
+                    "locations_raw": [loc] if loc else [],
+                    "source": "successfactors",
+                    "posted": posted or None,
+                }
         if len(jobs) == before:
             break
+        if stop_on_seen and page_seen:
+            consecutive_seen_pages = (
+                consecutive_seen_pages + 1
+                if all(page_seen)
+                else 0
+            )
+            if consecutive_seen_pages >= 2:
+                break
     if not jobs and scrape.get("allow_browser_fallback") is not False and scrape.get("list_url") and (scrape.get("prefix") or scrape.get("include")):
         from .playwright import _fetch_playwright_with_source
         return _fetch_playwright_with_source(scrape, seen, company, "successfactors")
 
     # Fetch descriptions for jobs that don't have them yet
-    max_desc = int(scrape.get("max_desc_details", 500))
+    max_desc = (
+        int(scrape.get("max_fresh_desc_details") or 0)
+        if stop_on_seen
+        else int(scrape.get("max_desc_details", 500))
+    )
     desc_workers = int(scrape.get("desc_workers", 4))
     desc_targets = []
     for j in jobs.values():
-        jid_key = make_id(company, j["url"], j["title"])
-        existing = seen.get(jid_key) if isinstance(seen, dict) else None
+        jid_key = make_id(
+            company, j["url"], j["title"], "successfactors", j.get("ats_id")
+        )
+        existing = (
+            seen.get(jid_key)
+            or seen.get(make_id(company, j["url"], j["title"]))
+            if isinstance(seen, dict) else None
+        )
         incomplete_location = (not j.get("location")) or re.search(r'\+\s*\d+\s+more', j.get("location") or "", re.I)
         if incomplete_location or not (isinstance(existing, dict) and existing.get("has_description")):
             desc_targets.append(j)
@@ -146,7 +197,14 @@ def fetch_successfactors(scrape, seen, company):
             for job, detail in ex.map(_get_desc, desc_targets[:max_desc]):
                 if detail.get("location"):
                     job["location"] = detail["location"]
+                    job["location_raw"] = detail["location"]
+                    job["locations_raw"] = [
+                        part.strip()
+                        for part in detail["location"].split(";")
+                        if part.strip()
+                    ]
                 if detail.get("description"):
                     job["description"] = detail["description"]
+                    job["description_raw"] = detail["description"]
 
     return list(jobs.values()), None

@@ -3,6 +3,7 @@ import unittest
 
 from app.api.search import (
     JOB_DATE_ORDER_SQL,
+    display_title,
     keyword_groups,
     keyword_matches,
     keyword_where,
@@ -107,6 +108,33 @@ class JobSearchTests(unittest.TestCase):
         self.assertEqual(
             [row[0] for row in rows],
             ["Python Application Developer", "Software Engineer"],
+        )
+
+    def test_unitedhealth_titles_drop_card_metadata_and_numeric_anchor_text(self):
+        self.assertEqual(
+            "State Government Account Executive -Reside in PST",
+            display_title(
+                "State Government Account Executive -Reside in PST 2380844 | "
+                "Eden Prairie, Minnesota | Remote",
+                "https://careers.unitedhealthgroup.com/job/eden-prairie/"
+                "state-government-account-executive-reside-in-pst/34088/98803641072",
+            ),
+        )
+        self.assertEqual(
+            "Annual Wellness Visit Coordinator CMA Colonial Healthcare",
+            display_title(
+                "98803641056",
+                "https://careers.unitedhealthgroup.com/job/sumter/"
+                "annual-wellness-visit-coordinator-cma-colonial-heathcare/34088/98803641056",
+            ),
+        )
+        self.assertEqual(
+            "GYN Surgeon (No OB)",
+            display_title(
+                "GYN Surgeon (No OB)| Corvallis, OR",
+                "https://careers.unitedhealthgroup.com/job/corvallis/"
+                "gyn-surgeon-no-ob-corvallis-or/34088/98854406704",
+            ),
         )
 
 

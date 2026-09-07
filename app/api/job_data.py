@@ -9,6 +9,13 @@ from .search import keyword_groups, keyword_matches
 from .taxonomy import normalize_categories, normalize_tags
 from .utils import extract_experience, extract_keywords, location_matches, make_id, normalize_location, _parse_posted
 
+
+def _text_or_json(value):
+    if value is None or isinstance(value, (str, int, float)):
+        return value
+    return json.dumps(value, ensure_ascii=False)
+
+
 def _backfill_has_description_once(conn):
     """One-time migration flag for the expensive description scan."""
     row = conn.execute(
@@ -26,27 +33,29 @@ def _backfill_has_description_once(conn):
         "ON CONFLICT(key) DO UPDATE SET value=excluded.value"
     )
 
-def _init_jobs_fts(conn):
-    if IS_POSTGRES:
-        return
-    conn.execute("""
-        CREATE VIRTUAL TABLE IF NOT EXISTS jobs_fts
-        USING fts5(job_id UNINDEXED, title, company, location)
-    """)
-    row = conn.execute("SELECT COUNT(*) FROM jobs_fts").fetchone()
-    count = row[0] if row else 0
-    if count == 0:
-        conn.execute("""
-            INSERT INTO jobs_fts(job_id, title, company, location)
-            SELECT id, title, company, location FROM jobs WHERE is_open=1
-        """)
-
 def init_db():
     with connect_db() as conn:
         if IS_POSTGRES:
             initialize_postgres_schema(conn)
-            add_column_if_missing(conn, "jobs", "has_description INTEGER DEFAULT 0")
-            add_column_if_missing(conn, "jobs", "keywords TEXT DEFAULT '[]'")
+            for column_sql in (
+                "has_description INTEGER DEFAULT 0",
+                "keywords TEXT DEFAULT '[]'",
+                "ats_id TEXT",
+                "requisition_id TEXT",
+                "apply_url TEXT",
+                "location_raw TEXT",
+                "locations JSONB",
+                "country_iso TEXT",
+                "remote_mode TEXT",
+                "posted_at TIMESTAMPTZ",
+                "posted_raw TEXT",
+                "description_raw TEXT",
+                "employment_type_raw TEXT",
+                "department TEXT",
+                "team TEXT",
+                "raw_data JSONB",
+            ):
+                add_column_if_missing(conn, "jobs", column_sql)
             add_column_if_missing(conn, "scan_runs", "scheduled_for TEXT DEFAULT ''")
             add_column_if_missing(conn, "scan_runs", "send_alerts_after INTEGER DEFAULT 0")
             _backfill_has_description_once(conn)
@@ -57,11 +66,20 @@ def init_db():
                 title      TEXT NOT NULL,
                 url        TEXT DEFAULT '',
                 company    TEXT NOT NULL,
+                ats_id     TEXT,
+                requisition_id TEXT,
+                apply_url  TEXT,
                 location   TEXT DEFAULT '',
+                location_raw TEXT,
+                locations  TEXT,
+                country_iso TEXT,
+                remote_mode TEXT,
                 source     TEXT DEFAULT '',
                 categories TEXT DEFAULT '[]',
                 first_seen TEXT NOT NULL,
-                posted     TEXT DEFAULT '',
+                posted     TEXT,
+                posted_at  TEXT,
+                posted_raw TEXT,
                 last_seen_at TEXT DEFAULT '',
                 is_open    INTEGER DEFAULT 1,
                 exp_min    REAL,
@@ -116,10 +134,24 @@ def init_db():
             "exp_label TEXT DEFAULT ''",
             "exp_source TEXT DEFAULT ''",
             "description TEXT DEFAULT ''",
+            "description_raw TEXT",
             "has_description INTEGER DEFAULT 0",
             "skills TEXT DEFAULT '[]'",
             "keywords TEXT DEFAULT '[]'",
-            "employment_type TEXT DEFAULT ''",
+            "employment_type TEXT",
+            "employment_type_raw TEXT",
+            "ats_id TEXT",
+            "requisition_id TEXT",
+            "apply_url TEXT",
+            "location_raw TEXT",
+            "locations TEXT",
+            "country_iso TEXT",
+            "remote_mode TEXT",
+            "posted_at TEXT",
+            "posted_raw TEXT",
+            "department TEXT",
+            "team TEXT",
+            "raw_data TEXT",
         ):
             add_column_if_missing(conn, "jobs", column_sql)
         for column_sql in (
@@ -128,7 +160,6 @@ def init_db():
         ):
             add_column_if_missing(conn, "scan_runs", column_sql)
         _backfill_has_description_once(conn)
-        _init_jobs_fts(conn)
         conn.execute("CREATE INDEX IF NOT EXISTS idx_jobs_open ON jobs(is_open)")
         conn.execute("CREATE INDEX IF NOT EXISTS idx_jobs_company_open ON jobs(company, is_open)")
         conn.execute("""
@@ -212,14 +243,31 @@ def upsert_jobs(job_list):
     if not job_list:
         return
     now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    columns = (
+        "id", "title", "url", "company", "ats_id", "requisition_id",
+        "apply_url", "location", "location_raw", "locations", "country_iso",
+        "remote_mode", "source", "categories", "first_seen", "posted",
+        "posted_at", "posted_raw", "last_seen_at", "is_open", "exp_min",
+        "exp_max", "exp_label", "exp_source", "description",
+        "description_raw", "has_description", "skills", "keywords",
+        "employment_type", "employment_type_raw", "department", "team",
+        "raw_data",
+    )
     with connect_db() as conn:
         conn.executemany(
-            "INSERT INTO jobs "
-            "(id, title, url, company, location, source, categories, first_seen, posted, last_seen_at, is_open, exp_min, exp_max, exp_label, exp_source, description, has_description, skills, keywords, employment_type) "
-            "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) "
+            f"INSERT INTO jobs ({', '.join(columns)}) "
+            f"VALUES ({placeholders(len(columns))}) "
             "ON CONFLICT(id) DO UPDATE SET "
             "title=excluded.title, "
-            "location=CASE WHEN excluded.location != '' THEN excluded.location ELSE jobs.location END, "
+            "url=CASE WHEN COALESCE(excluded.url, '') != '' THEN excluded.url ELSE jobs.url END, "
+            "ats_id=COALESCE(excluded.ats_id, jobs.ats_id), "
+            "requisition_id=COALESCE(excluded.requisition_id, jobs.requisition_id), "
+            "apply_url=COALESCE(excluded.apply_url, jobs.apply_url), "
+            "location=CASE WHEN COALESCE(excluded.location, '') != '' THEN excluded.location ELSE jobs.location END, "
+            "location_raw=COALESCE(excluded.location_raw, jobs.location_raw), "
+            "locations=CASE WHEN COALESCE(excluded.locations, '[]') != '[]' THEN excluded.locations ELSE jobs.locations END, "
+            "country_iso=COALESCE(excluded.country_iso, jobs.country_iso), "
+            "remote_mode=excluded.remote_mode, "
             "source=excluded.source, "
             "categories=excluded.categories, "
             # first_seen intentionally excluded — never overwrite the original discovery date
@@ -228,44 +276,66 @@ def upsert_jobs(job_list):
             # the first valid source date; if it was initially missing, only
             # accept a later-discovered date that is not after first_seen.
             "posted=CASE "
-            "WHEN jobs.posted != '' THEN jobs.posted "
-            "WHEN excluded.posted != '' AND excluded.posted <= substr(jobs.first_seen,1,10) "
+            "WHEN COALESCE(jobs.posted, '') != '' THEN jobs.posted "
+            "WHEN COALESCE(excluded.posted, '') != '' AND excluded.posted <= substr(jobs.first_seen,1,10) "
             "THEN excluded.posted "
             "ELSE jobs.posted END, "
+            "posted_at=COALESCE(jobs.posted_at, excluded.posted_at), "
+            "posted_raw=COALESCE(excluded.posted_raw, jobs.posted_raw), "
             "last_seen_at=excluded.last_seen_at, "
             "is_open=excluded.is_open, "
-            "exp_min=CASE WHEN excluded.exp_label != '' THEN excluded.exp_min WHEN jobs.exp_source='title' THEN NULL ELSE jobs.exp_min END, "
-            "exp_max=CASE WHEN excluded.exp_label != '' THEN excluded.exp_max WHEN jobs.exp_source='title' THEN NULL ELSE jobs.exp_max END, "
-            "exp_label=CASE WHEN excluded.exp_label != '' THEN excluded.exp_label WHEN jobs.exp_source='title' THEN '' ELSE jobs.exp_label END, "
-            "exp_source=CASE WHEN excluded.exp_source != '' THEN excluded.exp_source WHEN jobs.exp_source='title' THEN '' ELSE jobs.exp_source END, "
-            "description=CASE WHEN excluded.description != '' THEN excluded.description ELSE jobs.description END, "
+            "exp_min=CASE WHEN excluded.exp_source IS NOT NULL THEN excluded.exp_min WHEN jobs.exp_source IN ('title','company_peer') THEN NULL ELSE jobs.exp_min END, "
+            "exp_max=CASE WHEN excluded.exp_source IS NOT NULL THEN excluded.exp_max WHEN jobs.exp_source IN ('title','company_peer') THEN NULL ELSE jobs.exp_max END, "
+            "exp_label=CASE WHEN excluded.exp_source IS NOT NULL THEN excluded.exp_label WHEN jobs.exp_source IN ('title','company_peer') THEN NULL ELSE jobs.exp_label END, "
+            "exp_source=CASE WHEN excluded.exp_source IS NOT NULL THEN excluded.exp_source WHEN jobs.exp_source IN ('title','company_peer') THEN NULL ELSE jobs.exp_source END, "
+            "description=CASE WHEN COALESCE(excluded.description, '') != '' THEN excluded.description ELSE jobs.description END, "
+            "description_raw=CASE WHEN COALESCE(excluded.description_raw, '') != '' THEN excluded.description_raw ELSE jobs.description_raw END, "
             "has_description=CASE WHEN excluded.has_description != 0 THEN excluded.has_description ELSE jobs.has_description END, "
             "skills=CASE WHEN excluded.skills != '[]' THEN excluded.skills ELSE jobs.skills END, "
             "keywords=CASE WHEN excluded.keywords != '[]' THEN excluded.keywords ELSE jobs.keywords END, "
-            "employment_type=CASE WHEN excluded.employment_type != '' THEN excluded.employment_type ELSE jobs.employment_type END",
-            [(j["id"], j["title"], j.get("url",""), j["company"],
-              j.get("location",""), j.get("source",""),
-              json.dumps(j.get("categories",[])), j["first_seen"],
-              j.get("posted",""), now_str, True, j.get("exp_min"), j.get("exp_max"),
-              j.get("exp_label",""), j.get("exp_source",""),
-              j.get("description",""), int(bool((j.get("description") or "").strip())),
-              json.dumps(j.get("skills",[])),
-              json.dumps(j.get("keywords") or extract_keywords(j.get("title", ""), j.get("description", ""), j.get("skills") or [])),
-              j.get("employment_type",""))
-             for j in job_list],
-        )
-        if not IS_POSTGRES:
-            fts_rows = [
-                (j["id"], j["title"], j["company"], j.get("location", ""))
-                for j in job_list
-                if j.get("fts_changed", True)
-            ]
-            if fts_rows:
-                conn.executemany("DELETE FROM jobs_fts WHERE job_id=?", [(row[0],) for row in fts_rows])
-                conn.executemany(
-                    "INSERT INTO jobs_fts(job_id, title, company, location) VALUES (?,?,?,?)",
-                    fts_rows,
+            "employment_type=excluded.employment_type, "
+            "employment_type_raw=COALESCE(excluded.employment_type_raw, jobs.employment_type_raw), "
+            "department=COALESCE(excluded.department, jobs.department), "
+            "team=COALESCE(excluded.team, jobs.team), "
+            "raw_data=COALESCE(excluded.raw_data, jobs.raw_data)",
+            [
+                (
+                    j["id"], j["title"], j.get("url") or "", j["company"],
+                    j.get("ats_id"), j.get("requisition_id"), j.get("apply_url"),
+                    j.get("location"), j.get("location_raw"),
+                    json.dumps(j.get("locations") or [], ensure_ascii=False),
+                    j.get("country_iso"), j.get("remote_mode"),
+                    j.get("source") or "",
+                    json.dumps(j.get("categories") or [], ensure_ascii=False),
+                    j["first_seen"], j.get("posted"), j.get("posted_at"),
+                    j.get("posted_raw"), now_str, True, j.get("exp_min"),
+                    j.get("exp_max"), j.get("exp_label"), j.get("exp_source"),
+                    j.get("description"), j.get("description_raw"),
+                    int(bool((j.get("description") or "").strip())),
+                    json.dumps(j.get("skills") or [], ensure_ascii=False),
+                    json.dumps(
+                        j.get("keywords")
+                        or extract_keywords(
+                            j.get("title", ""),
+                            j.get("description", ""),
+                            j.get("skills") or [],
+                        ),
+                        ensure_ascii=False,
+                    ),
+                    j.get("employment_type"), _text_or_json(j.get("employment_type_raw")),
+                    j.get("department"), j.get("team"),
+                    json.dumps(j.get("raw_data"), ensure_ascii=False)
+                    if j.get("raw_data") is not None else None,
                 )
+                for j in job_list
+            ],
+        )
+        # Do not maintain the legacy jobs_fts table. No application query
+        # reads it (search is served from jobs/the seen cache), while
+        # incrementally updating its unindexed job_id column made large scans
+        # repeatedly walk a multi-gigabyte derived index. Existing deployments
+        # may retain the table for rollback compatibility; it is intentionally
+        # left untouched and can be removed in a separate maintenance window.
 
 def get_app_state(key, default=""):
     with connect_db() as conn:
@@ -374,29 +444,44 @@ def load_seen():
     try:
         with connect_db(rows=True) as conn:
             rows = conn.execute(
-                "SELECT company, url, title, location, source, first_seen, posted, "
-                "exp_min, exp_max, exp_label, exp_source, skills, keywords, has_description "
+                "SELECT id, company, url, title, ats_id, location, location_raw, "
+                "locations, country_iso, remote_mode, source, first_seen, posted, "
+                "posted_at, exp_min, exp_max, exp_label, exp_source, skills, "
+                "keywords, has_description "
                 "FROM jobs WHERE is_open = 1"
             ).fetchall()
-        return {
-            make_id(r["company"], r["url"], r["title"]): {
+        seen = {}
+        for r in rows:
+            entry = {
+                "_stored_id": r["id"],
                 "first_seen": r["first_seen"],
                 "company":    r["company"],
                 "title":      r["title"],
                 "url":        r["url"],
-                "location":   r["location"] or "",
+                "ats_id":     r["ats_id"],
+                "location":   r["location"],
+                "location_raw": r["location_raw"],
+                "locations":  json.loads(r["locations"] or "[]"),
+                "country_iso": r["country_iso"],
+                "remote_mode": r["remote_mode"],
                 "source":     r["source"] or "",
-                "posted":     r["posted"] or "",
+                "posted":     r["posted"],
+                "posted_at":  r["posted_at"],
                 "exp_min":    r["exp_min"],
                 "exp_max":    r["exp_max"],
-                "exp_label":  r["exp_label"] or "",
-                "exp_source": r["exp_source"] or "",
+                "exp_label":  r["exp_label"],
+                "exp_source": r["exp_source"],
                 "skills":     json.loads(r["skills"] or "[]"),
                 "keywords":   json.loads(r["keywords"] or "[]"),
                 "has_description": bool(r["has_description"]),
             }
-            for r in rows
-        }
+            stable_id = make_id(
+                r["company"], r["url"], r["title"], r["source"], r["ats_id"]
+            )
+            legacy_id = make_id(r["company"], r["url"], r["title"])
+            for key in {r["id"], stable_id, legacy_id}:
+                seen[key] = entry
+        return seen
     except Exception as e:
         print(f"⚠  load_seen failed: {e}")
         return {}
@@ -431,9 +516,14 @@ def jobs_from_seen_fallback(keyword, location, since, category, companies, limit
     company_set = set(companies or [])
     groups = keyword_groups(keyword)
     jobs = []
+    emitted = set()
     for jid, item in load_seen().items():
         if not isinstance(item, dict):
             continue
+        stored_id = item.get("_stored_id") or jid
+        if stored_id in emitted:
+            continue
+        emitted.add(stored_id)
         if item.get("is_open") is False:
             continue
         title      = item.get("title", "")
@@ -454,19 +544,24 @@ def jobs_from_seen_fallback(keyword, location, since, category, companies, limit
             continue
         fs = first_seen[:10]
         jobs.append({
-            "id":         jid,
+            "id":         stored_id,
             "title":      title,
             "url":        item.get("url", ""),
             "company":    company,
             "location":   loc,
+            "location_raw": item.get("location_raw"),
+            "locations":  item.get("locations") or [],
+            "country_iso": item.get("country_iso"),
+            "remote_mode": item.get("remote_mode"),
             "source":     item.get("source", "seen"),
             "categories": cats,
             "first_seen": first_seen,
-            "posted":     _parse_posted(posted),
+            "posted":     _parse_posted(posted) or None,
+            "posted_at":  item.get("posted_at"),
             "exp_min":    item.get("exp_min"),
             "exp_max":    item.get("exp_max"),
-            "exp_label":  item.get("exp_label", ""),
-            "exp_source": item.get("exp_source", ""),
+            "exp_label":  item.get("exp_label"),
+            "exp_source": item.get("exp_source"),
             "skills":     item.get("skills") or [],
             "is_new":     fs == today,
         })
@@ -474,22 +569,5 @@ def jobs_from_seen_fallback(keyword, location, since, category, companies, limit
     return jobs[offset:offset + limit], len(jobs)
 
 def backfill_experience_from_titles():
-    """Fill missing experience estimates from titles for existing DB rows."""
-    try:
-        with connect_db(rows=True) as conn:
-            rows = conn.execute(
-                "SELECT id, title FROM jobs WHERE exp_min IS NULL AND exp_max IS NULL"
-            ).fetchall()
-            updates = []
-            for row in rows:
-                exp = extract_experience(row["title"] or "")
-                if exp.get("label"):
-                    updates.append((exp["min"], exp["max"], exp["label"], exp["source"], row["id"]))
-            if updates:
-                conn.executemany(
-                    "UPDATE jobs SET exp_min=?, exp_max=?, exp_label=?, exp_source=? WHERE id=?",
-                    updates,
-                )
-            return len(updates)
-    except Exception:
-        return 0
+    """Legacy no-op: titles are not evidence of a numeric requirement."""
+    return 0

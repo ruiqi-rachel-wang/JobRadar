@@ -44,11 +44,13 @@ from .job_data import (
 )
 from .common import DATA_DIR
 from .apis import fetch_jobs
-from .utils import experience_match_score, extract_keywords
+from .utils import (
+    experience_match_score, extract_keywords, normalize_datetime_utc,
+)
 from .search import (
     JOB_DATE_ORDER_SQL, display_location, display_title, keyword_groups, keyword_where,
 )
-from .taxonomy import migrate_saved_filter
+from .taxonomy import migrate_saved_filter, normalize_categories
 
 SECRET_KEY = os.environ.get("SECRET_KEY") or os.environ.get("JOBRADAR_SECRET_KEY")
 IS_PRODUCTION = (
@@ -75,7 +77,7 @@ ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD") or os.environ.get("JOBRADAR_AD
 STRIPE_PRICE_ID = os.environ.get("STRIPE_PRICE_ID") or os.environ.get("JOBDROP_STRIPE_PRICE_ID")
 STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY") or os.environ.get("JOBDROP_STRIPE_SECRET_KEY")
 STRIPE_WEBHOOK_SECRET = os.environ.get("STRIPE_WEBHOOK_SECRET") or os.environ.get("JOBDROP_STRIPE_WEBHOOK_SECRET")
-FREE_APPLY_LIMIT = int(os.environ.get("JOBDROP_FREE_APPLY_LIMIT", "30"))
+FREE_APPLY_LIMIT = int(os.environ.get("JOBDROP_FREE_APPLY_LIMIT", "15"))
 SMTP_HOST = os.environ.get("JOBDROP_SMTP_HOST", "")
 SMTP_PORT = int(os.environ.get("JOBDROP_SMTP_PORT", "587"))
 SMTP_USER = os.environ.get("JOBDROP_SMTP_USER", "")
@@ -90,6 +92,11 @@ EMAIL_ALERTS_CONFIGURED = bool(
 _EMAIL_ALERT_LOCK = threading.Lock()
 if stripe and STRIPE_SECRET_KEY:
     stripe.api_key = STRIPE_SECRET_KEY
+
+
+@app.context_processor
+def inject_plan_limits():
+    return {"free_apply_limit": FREE_APPLY_LIMIT}
 
 
 @app.after_request
@@ -243,8 +250,13 @@ def _company_is_public(company, locks=None):
     name = company.get("name")
     return (
         bool(name)
-        and company.get("scan_enabled", True) is not False
-        and not company.get("policy")
+        and (
+            company.get("catalog_visible") is True
+            or (
+                company.get("scan_enabled", True) is not False
+                and not company.get("policy")
+            )
+        )
         and name not in locks
     )
 
@@ -474,9 +486,9 @@ def _saved_search_alert_jobs(search_row, cutoff, window_end):
             "company": row["company"] or "",
             "location": display_location(row["location"] or "", row["title"] or "", row["url"] or ""),
             "url": row["url"] or "",
-            "posted": (row["posted"] or "")[:10],
+            "posted": row["posted"][:10] if row["posted"] else None,
             "first_seen": (row["first_seen"] or "")[:10],
-            "exp_label": row["exp_label"] or "",
+            "exp_label": row["exp_label"],
         }
         for row in rows
     ]
@@ -1012,9 +1024,9 @@ def _job_query(where_sql="", params=(), limit=60):
             "url": row["url"] or "",
             "company": row["company"] or "",
             "location": display_location(row["location"] or "", row["title"] or "", row["url"] or ""),
-            "posted": (row["posted"] or "")[:10],
+            "posted": row["posted"][:10] if row["posted"] else None,
             "first_seen": (row["first_seen"] or "")[:10],
-            "exp_label": row["exp_label"] or "",
+            "exp_label": row["exp_label"],
             "skills": skills,
             "keywords": keywords,
             "description": desc[:320],
@@ -1741,15 +1753,17 @@ def reenrich_jobs():
     import threading
     def _run():
         try:
-            from .apis import _strip_html
-            from .utils import extract_experience, extract_skills, extract_employment_type as et
+            from .utils import (
+                extract_experience, extract_skills,
+                extract_employment_type as et, normalize_description,
+            )
             with connect_db(rows=True) as conn:
                 rows = conn.execute(
                     "SELECT id, title, description FROM jobs WHERE length(description) > 0"
                 ).fetchall()
             updates = []
             for r in rows:
-                clean = _strip_html(r["description"] or "")
+                clean = normalize_description(r["description"] or "")
                 if not clean:
                     continue
                 exp    = extract_experience(r["title"] or "", clean, allow_title_fallback=False)
@@ -1757,7 +1771,7 @@ def reenrich_jobs():
                 emp    = et(r["title"] or "", clean)
                 updates.append((
                     clean,
-                    exp.get("min"), exp.get("max"), exp.get("label", ""), exp.get("source", ""),
+                    exp.get("min"), exp.get("max"), exp.get("label"), exp.get("source"),
                     json.dumps(skills or []),
                     emp,
                     r["id"],
@@ -1792,8 +1806,10 @@ def backfill_descriptions():
         import concurrent.futures
         import requests
         from bs4 import BeautifulSoup
-        from .apis import _strip_html
-        from .utils import extract_experience, extract_skills, extract_employment_type as et
+        from .utils import (
+            extract_experience, extract_skills,
+            extract_employment_type as et, normalize_description,
+        )
         from .common import HEADERS
 
         _SELECTORS = [
@@ -1812,9 +1828,9 @@ def backfill_descriptions():
                 for sel in _SELECTORS:
                     el = soup.select_one(sel)
                     if el:
-                        text = " ".join(el.get_text(" ", strip=True).split())
-                        if len(text) > 100:
-                            return row["id"], text
+                        raw_html = str(el)
+                        if len(normalize_description(raw_html) or "") > 100:
+                            return row["id"], raw_html
                 return row["id"], ""
             except Exception:
                 return row["id"], ""
@@ -1837,22 +1853,23 @@ def backfill_descriptions():
 
             if updates:
                 enrich_updates = []
-                for job_id, desc in updates:
-                    clean = _strip_html(desc)
+                for job_id, desc_raw in updates:
+                    clean = normalize_description(desc_raw)
                     title = next((r["title"] for r in rows if r["id"] == job_id), "")
                     exp    = extract_experience(title, clean)
                     skills = extract_skills(title, clean)
                     emp    = et(title, clean)
                     enrich_updates.append((
                         clean,
-                        exp.get("min"), exp.get("max"), exp.get("label", ""), exp.get("source", ""),
+                        exp.get("min"), exp.get("max"), exp.get("label"), exp.get("source"),
                         json.dumps(skills or []),
                         emp,
+                        desc_raw,
                         job_id,
                     ))
                 with connect_db() as conn:
                     conn.executemany(
-                        "UPDATE jobs SET description=?,exp_min=?,exp_max=?,exp_label=?,exp_source=?,skills=?,employment_type=?,has_description=1 WHERE id=?",
+                        "UPDATE jobs SET description=?,exp_min=?,exp_max=?,exp_label=?,exp_source=?,skills=?,employment_type=?,description_raw=?,has_description=1 WHERE id=?",
                         enrich_updates,
                     )
 
@@ -2083,8 +2100,11 @@ def api_job_detail(job_id):
     interview_map = {c["name"]: c.get("interview") for c in company_configs if c.get("interview")}
     with connect_db(rows=True) as conn:
         row = conn.execute(
-            "SELECT id, title, url, company, location, source, posted, first_seen, "
-            "exp_label, exp_min, exp_max, skills, keywords, categories, employment_type, description "
+            "SELECT id, title, url, company, ats_id, requisition_id, apply_url, "
+            "location, location_raw, locations, country_iso, remote_mode, source, "
+            "posted, posted_at, posted_raw, first_seen, exp_label, exp_min, exp_max, "
+            "skills, keywords, categories, employment_type, employment_type_raw, "
+            "department, team, description, description_raw "
             "FROM jobs WHERE id = ?",
             (job_id,)
         ).fetchone()
@@ -2092,35 +2112,59 @@ def api_job_detail(job_id):
         return jsonify({"error": "Job not found"}), 404
     if row["company"] not in allowed_company_names:
         return jsonify({"error": "Job not found"}), 404
-    skills = json.loads(row["skills"] or "[]") if row["skills"] else []
-    keywords = json.loads(row["keywords"] or "[]") if row["keywords"] else []
+    skills = json.loads(row["skills"] or "[]") if isinstance(row["skills"], str) else (row["skills"] or [])
+    keywords = json.loads(row["keywords"] or "[]") if isinstance(row["keywords"], str) else (row["keywords"] or [])
     if not keywords:
         keywords = extract_keywords(row["title"] or "", row["description"] or "", skills)
-    cats   = json.loads(row["categories"] or "[]") if row["categories"] else []
+    cats = normalize_categories(
+        json.loads(row["categories"] or "[]")
+        if isinstance(row["categories"], str)
+        else (row["categories"] or [])
+    )
+    locations = json.loads(row["locations"] or "[]") if isinstance(row["locations"], str) else (row["locations"] or [])
     return jsonify({
         "id":              row["id"],
         "title":           row["title"] or "",
         "company":         row["company"] or "",
+        "ats_id":          row["ats_id"],
+        "requisition_id":  row["requisition_id"],
+        "apply_url":       row["apply_url"],
         "location":        display_location(row["location"] or "", row["title"] or "", row["url"] or ""),
+        "location_raw":    row["location_raw"],
+        "locations":       locations,
+        "country_iso":     row["country_iso"],
+        "remote_mode":     row["remote_mode"],
         "source":          row["source"] or "",
-        "posted":          (row["posted"] or "")[:10],
+        "posted":          row["posted"][:10] if row["posted"] else None,
+        "posted_at":       normalize_datetime_utc(row["posted_at"]),
+        "posted_raw":      row["posted_raw"],
         "first_seen":      (row["first_seen"] or "")[:10],
         "url":             row["url"] or "",
-        "exp_label":       row["exp_label"] or "",
-        "employment_type": row["employment_type"] or "",
+        "exp_label":       row["exp_label"],
+        "employment_type": row["employment_type"],
+        "employment_type_raw": row["employment_type_raw"],
+        "department":      row["department"],
+        "team":            row["team"],
         "skills":          skills,
         "keywords":        keywords,
         "categories":      cats,
         "interview":       interview_map.get(row["company"] or ""),
-        "description":     row["description"] or "",
+        "description":     row["description"],
+        "description_raw": row["description_raw"],
     })
 
-@app.route("/api/jobs")
+@app.route("/api/jobs", methods=["GET", "POST"])
 def api_jobs():
-    keyword  = (request.args.get("keyword")  or "").strip().lower()
-    location = (request.args.get("location") or "").strip().lower()
-    since    = (request.args.get("since")    or "").strip()
-    exp_years_raw = (request.args.get("experience") or request.args.get("years") or "").strip()
+    body = request.get_json(silent=True) or {} if request.method == "POST" else None
+
+    def search_value(name, default=""):
+        value = body.get(name, default) if body is not None else request.args.get(name, default)
+        return str(value or "").strip()
+
+    keyword  = search_value("keyword").lower()
+    location = search_value("location").lower()
+    since    = search_value("since")
+    exp_years_raw = search_value("experience") or search_value("years")
     exp_years = None
     if exp_years_raw:
         try:
@@ -2128,15 +2172,24 @@ def api_jobs():
         except ValueError:
             exp_years = None
     category, tag = migrate_saved_filter(
-        request.args.get("category") or "",
-        request.args.get("tag") or "",
+        search_value("category"),
+        search_value("tag"),
     )
     if category == "All":
         category = ""
-    companies = [c.strip() for c in request.args.getlist("company") if c.strip()]
+    if body is not None:
+        raw_company_values = body.get("companies", body.get("company", []))
+        if isinstance(raw_company_values, str):
+            raw_company_values = raw_company_values.split(",")
+        elif not isinstance(raw_company_values, list):
+            raw_company_values = []
+        companies = [str(c).strip() for c in raw_company_values if str(c).strip()]
+    else:
+        companies = [c.strip() for c in request.args.getlist("company") if c.strip()]
     if not companies:
-        raw_companies = (request.args.get("companies") or "").strip()
+        raw_companies = search_value("companies")
         companies = [c.strip() for c in raw_companies.split(",") if c.strip()]
+    companies = list(dict.fromkeys(companies))
     requested_company_filter = bool(companies)
     all_company_names = {company.get("name") for company in current_companies() if company.get("name")}
     company_configs = _admin_companies() if _is_admin() else _public_companies()
@@ -2153,11 +2206,11 @@ def api_jobs():
         companies = [name for name in companies if name in active_company_names]
         no_visible_company_match = requested_company_filter and not companies
     try:
-        limit = min(int(request.args.get("limit", 100) or 100), 5000)
+        limit = min(int(search_value("limit", 100) or 100), 5000)
     except (ValueError, TypeError):
         limit = 100
     try:
-        page = max(int(request.args.get("page", 1) or 1), 1)
+        page = max(int(search_value("page", 1) or 1), 1)
     except (ValueError, TypeError):
         page = 1
     offset   = (page - 1) * limit
@@ -2217,8 +2270,10 @@ def api_jobs():
         if company.get("interview")
     }
     select_cols = (
-        "id, title, url, company, location, source, categories, first_seen, posted, "
-        "exp_min, exp_max, exp_label, exp_source, skills, keywords, employment_type"
+        "id, title, url, company, ats_id, location, location_raw, locations, "
+        "country_iso, remote_mode, source, categories, first_seen, posted, posted_at, "
+        "exp_min, exp_max, exp_label, exp_source, skills, keywords, employment_type, "
+        "department, team"
     )
     sql = (f"SELECT {select_cols} FROM {from_sql} {where} "
            f"ORDER BY {JOB_DATE_ORDER_SQL} LIMIT ? OFFSET ?")
@@ -2241,9 +2296,9 @@ def api_jobs():
             total_exact = exact_count or not has_more
         jobs = []
         for r in rows:
-            cats   = json.loads(r["categories"] or "[]")
+            cats   = normalize_categories(json.loads(r["categories"] or "[]"))
             fs     = (r["first_seen"] or "")[:10]
-            posted = (r["posted"] or "")[:10]
+            posted = r["posted"][:10] if r["posted"] else None
             title  = display_title(r["title"], r["url"])
             loc    = display_location(r["location"] or "", r["title"], r["url"])
             jobs.append({
@@ -2251,19 +2306,27 @@ def api_jobs():
                 "title":      title,
                 "url":        r["url"],
                 "company":    r["company"],
+                "ats_id":     r["ats_id"],
                 "location":   loc,
+                "location_raw": r["location_raw"],
+                "locations":  json.loads(r["locations"] or "[]") if isinstance(r["locations"], str) else (r["locations"] or []),
+                "country_iso": r["country_iso"],
+                "remote_mode": r["remote_mode"],
                 "source":     r["source"] or "",
                 "categories": cats,
                 "first_seen": r["first_seen"],
                 "posted":     posted,
+                "posted_at":  normalize_datetime_utc(r["posted_at"]),
                 "exp_min":    r["exp_min"],
                 "exp_max":    r["exp_max"],
-                "exp_label":  r["exp_label"] or "",
-                "exp_source": r["exp_source"] or "",
+                "exp_label":  r["exp_label"],
+                "exp_source": r["exp_source"],
                 "exp_score":  experience_match_score(exp_years, r["exp_min"], r["exp_max"]) if exp_years is not None else 0,
                 "skills":           json.loads(r["skills"] or "[]"),
                 "keywords":         json.loads(r["keywords"] or "[]") or extract_keywords(r["title"] or "", "", json.loads(r["skills"] or "[]")),
-                "employment_type":  r["employment_type"] or "",
+                "employment_type":  r["employment_type"],
+                "department":       r["department"],
+                "team":             r["team"],
                 "interview":        company_interviews.get(r["company"]),
                 "is_new":     fs == today,
             })

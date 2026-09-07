@@ -7,6 +7,7 @@ from urllib.parse import urljoin, urlparse
 
 import requests as _requests
 from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 DATA_DIR = Path(os.environ.get("JOBRADAR_DATA_DIR", BASE_DIR / "data")).expanduser()
@@ -39,7 +40,26 @@ def http_session():
     session = getattr(_THREAD_HTTP, "session", None)
     if session is None:
         session = _requests.Session()
-        adapter = HTTPAdapter(pool_connections=32, pool_maxsize=32)
+        retry = Retry(
+            total=int(os.environ.get("JOBRADAR_HTTP_RETRIES", "3")),
+            connect=3,
+            read=3,
+            status=3,
+            backoff_factor=float(
+                os.environ.get("JOBRADAR_HTTP_RETRY_BACKOFF_SECONDS", "1.0")
+            ),
+            status_forcelist=(408, 429, 500, 502, 503, 504),
+            allowed_methods=frozenset(
+                {"GET", "HEAD", "OPTIONS", "POST"}
+            ),
+            respect_retry_after_header=True,
+            raise_on_status=False,
+        )
+        adapter = HTTPAdapter(
+            pool_connections=32,
+            pool_maxsize=32,
+            max_retries=retry,
+        )
         session.mount("https://", adapter)
         session.mount("http://", adapter)
         _THREAD_HTTP.session = session

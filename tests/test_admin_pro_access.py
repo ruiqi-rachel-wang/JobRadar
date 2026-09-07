@@ -1,6 +1,7 @@
 import os
 import tempfile
 import unittest
+import uuid
 from pathlib import Path
 
 
@@ -60,6 +61,38 @@ class AdminProAccessTests(unittest.TestCase):
         })
         self.assertEqual(saved_search.status_code, 200)
         self.assertEqual(saved_search.get_json()["name"], "Admin search")
+
+    def test_free_account_apply_list_is_limited_to_fifteen(self):
+        self.assertEqual(15, main.FREE_APPLY_LIMIT)
+        username = f"free-limit-{uuid.uuid4().hex}"
+        with connect_auth_db() as conn:
+            cursor = conn.execute(
+                "INSERT INTO users (username, password_hash, role, plan_status) "
+                "VALUES (?, ?, 'user', 'free')",
+                (username, "unused"),
+            )
+            user_id = cursor.lastrowid
+            conn.executemany(
+                "INSERT INTO user_apply_list (user_id, job_id, stage) VALUES (?, ?, ?)",
+                [(user_id, f"saved-{index}", "to-apply") for index in range(15)],
+            )
+
+        client = main.app.test_client()
+        with client.session_transaction() as session:
+            session["user_id"] = user_id
+            session["username"] = username
+
+        response = client.post("/api/apply", json={"job_id": "saved-16"})
+
+        self.assertEqual(402, response.status_code)
+        self.assertEqual("apply_limit_reached", response.get_json()["code"])
+        self.assertEqual(15, response.get_json()["limit"])
+
+    def test_signup_copy_uses_configured_free_limit(self):
+        response = self.client.get("/signup")
+
+        self.assertEqual(200, response.status_code)
+        self.assertIn(b"track up to 15 jobs", response.data)
 
 
 if __name__ == "__main__":

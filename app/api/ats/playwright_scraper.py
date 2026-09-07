@@ -12,6 +12,11 @@ except ImportError:
     from api.utils import _parse_posted
 
 try:
+    from .base import fetch_detail_description
+except ImportError:
+    from api.ats.base import fetch_detail_description
+
+try:
     from job_identity import make_job_id
 except ModuleNotFoundError:
     from ...job_identity import make_job_id
@@ -542,6 +547,7 @@ def fetch_playwright(scrape: dict, seen: dict, company: str):
     stop_on_seen     = bool(scrape.get("stop_on_seen", False))
     fetch_posted_details = bool(scrape.get("fetch_posted_details", False))
     posted_detail_limit = int(scrape.get("max_posted_details", 100000))
+    nav_retries      = max(0, int(scrape.get("nav_retries") or 0))
     url_exclude      = [s.lower() for s in (scrape.get("url_exclude") or [])]
     drop_query_params = {
         str(name).strip() for name in (scrape.get("drop_job_query_params") or [])
@@ -692,7 +698,15 @@ def fetch_playwright(scrape: dict, seen: dict, company: str):
 
     try:
         with sync_playwright() as p:
-            browser = p.chromium.launch(headless=True)
+            launch_args = (
+                ["--disable-http2"]
+                if scrape.get("disable_http2")
+                else []
+            )
+            browser = p.chromium.launch(
+                headless=True,
+                args=launch_args,
+            )
             ctx = browser.new_context(
                 user_agent=UA,
                 viewport={"width": 1440, "height": 900},
@@ -702,8 +716,24 @@ def fetch_playwright(scrape: dict, seen: dict, company: str):
 
             empty_streak = 0
 
+            def navigate(url):
+                last_error = None
+                for attempt in range(nav_retries + 1):
+                    try:
+                        page.goto(
+                            url,
+                            wait_until="commit",
+                            timeout=nav_timeout,
+                        )
+                        return
+                    except Exception as exc:
+                        last_error = exc
+                        if attempt < nav_retries:
+                            page.wait_for_timeout(1000 * (attempt + 1))
+                raise last_error
+
             if pg_type == "none":
-                page.goto(list_url, wait_until="commit", timeout=nav_timeout)
+                navigate(list_url)
                 page.wait_for_timeout(1200)
                 added, hit_seen = process_one_page(page)
                 if added == 0:
@@ -716,7 +746,7 @@ def fetch_playwright(scrape: dict, seen: dict, company: str):
                 for i in range(max_pages):
                     val  = start + i * step
                     purl = _make_paged_url(list_url, param, val)
-                    page.goto(purl, wait_until="commit", timeout=nav_timeout)
+                    navigate(purl)
                     page.wait_for_timeout(1200)
                     added, hit_seen = process_one_page(page)
                     if added == 0:
@@ -737,7 +767,7 @@ def fetch_playwright(scrape: dict, seen: dict, company: str):
                 for i in range(max_pages):
                     val  = start + i * step
                     purl = f"{base}/{segment}/{val}/" if i > 0 else list_url
-                    page.goto(purl, wait_until="commit", timeout=nav_timeout)
+                    navigate(purl)
                     page.wait_for_timeout(1200)
                     added, hit_seen = process_one_page(page)
                     if added == 0:
@@ -750,7 +780,7 @@ def fetch_playwright(scrape: dict, seen: dict, company: str):
                         break
 
             elif pg_type == "next_link":
-                page.goto(list_url, wait_until="commit", timeout=nav_timeout)
+                navigate(list_url)
                 page.wait_for_timeout(1200)
                 for _ in range(max_pages):
                     added, hit_seen = process_one_page(page)
@@ -777,6 +807,16 @@ def fetch_playwright(scrape: dict, seen: dict, company: str):
                     return [], f"[{company}] include base seems wrong or blocked. test={jobs_out[0]['url']} ({info})"
 
             browser.close()
+            if jobs_out and scrape.get("fetch_experience_details"):
+                limit_details = int(scrape.get("max_experience_details") or scrape.get("max_desc_details") or 0)
+                targets = [j for j in jobs_out if not j.get("description")]
+                if limit_details > 0:
+                    targets = targets[:limit_details]
+                with concurrent.futures.ThreadPoolExecutor(max_workers=min(8, max(1, len(targets)))) as executor:
+                    details = executor.map(lambda j: fetch_detail_description(j.get("url") or ""), targets)
+                    for job, detail in zip(targets, details):
+                        if detail.get("description"):
+                            job.update(detail)
             if fetch_posted_details and jobs_out:
                 targets = []
                 for job in jobs_out:

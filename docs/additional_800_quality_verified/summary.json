@@ -1,0 +1,12 @@
+{
+  "companies_with_exact_source_collision": 0,
+  "companies_with_high_job_overlap": 0,
+  "companies_with_only_non_job_titles": 0,
+  "configured_imported_companies": 516,
+  "imported_companies": 516,
+  "open_jobs": 75386,
+  "recommendations": {
+    "keep_or_manual_review": 375,
+    "keep_with_us_filter": 141
+  }
+}

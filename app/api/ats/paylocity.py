@@ -42,6 +42,17 @@ def _location(job):
     return normalize_location(", ".join(str(part) for part in parts if part))
 
 
+def _raw_location(job):
+    if job.get("IsRemote"):
+        return "Remote"
+    location = job.get("JobLocation") or {}
+    return ", ".join(
+        str(location.get(key))
+        for key in ("City", "State", "Country")
+        if isinstance(location, dict) and location.get(key)
+    )
+
+
 def _jsonld_location(value):
     values = value if isinstance(value, list) else [value]
     locations = []
@@ -60,6 +71,25 @@ def _jsonld_location(value):
         if location and location.lower() not in {existing.lower() for existing in locations}:
             locations.append(location)
     return "; ".join(locations)
+
+
+def _jsonld_raw_locations(value):
+    values = value if isinstance(value, list) else [value]
+    locations = []
+    for item in values:
+        if not isinstance(item, dict):
+            continue
+        address = item.get("address") or {}
+        if not isinstance(address, dict):
+            continue
+        raw = ", ".join(
+            str(address.get(key))
+            for key in ("addressLocality", "addressRegion", "addressCountry")
+            if address.get(key)
+        )
+        if raw and raw not in locations:
+            locations.append(raw)
+    return locations
 
 
 def fetch_paylocity(scrape, seen, company):
@@ -84,12 +114,31 @@ def fetch_paylocity(scrape, seen, company):
         if not job_id or not title:
             continue
         url = urljoin(response.url, f"/Recruiting/Jobs/Details/{job_id}")
+        raw_location = _raw_location(raw)
+        published = raw.get("PublishedDate")
         jobs.append({
             "title": title,
             "url": url,
+            "ats_id": str(job_id),
+            "requisition_id": raw.get("JobCode") or raw.get("RequisitionNumber"),
             "location": _location(raw),
+            "location_raw": raw_location,
+            "locations_raw": [raw_location] if raw_location else [],
+            "remote_mode": "remote" if raw.get("IsRemote") else None,
             "source": "paylocity",
-            "posted": _parse_posted(raw.get("PublishedDate") or ""),
+            "posted": _parse_posted(published or ""),
+            "posted_at": published,
+            "posted_raw": published,
+            "employment_type_raw": raw.get("JobType") or raw.get("EmploymentType"),
+            "department": raw.get("DepartmentName"),
+            "raw_data": {
+                key: raw.get(key)
+                for key in (
+                    "JobLocation", "IsRemote", "JobType",
+                    "EmploymentType", "DepartmentName",
+                )
+                if raw.get(key) is not None
+            },
         })
 
     fetch_details = bool(scrape.get("fetch_experience_details") or scrape.get("fetch_details"))
@@ -100,8 +149,13 @@ def fetch_paylocity(scrape, seen, company):
     max_details = int(scrape.get("max_desc_details", 100))
     targets = []
     for job in jobs:
-        jid = make_id(company, job["url"], job["title"])
-        existing = seen.get(jid) if isinstance(seen, dict) else None
+        jid = make_id(
+            company, job["url"], job["title"], "paylocity", job.get("ats_id", "")
+        )
+        existing = (
+            seen.get(jid) or seen.get(make_id(company, job["url"], job["title"]))
+            if isinstance(seen, dict) else None
+        )
         if refresh or not (isinstance(existing, dict) and existing.get("has_description")):
             targets.append(job)
 
@@ -110,13 +164,17 @@ def fetch_paylocity(scrape, seen, company):
             detail = requests.get(job["url"], headers=headers, timeout=20, verify=verify_ssl)
             detail.raise_for_status()
             posting = _jsonld_job(detail.text)
-            description = norm(
-                BeautifulSoup(posting.get("description") or "", "lxml").get_text(" ", strip=True)
-            )
+            description_raw = posting.get("description") or ""
+            raw_locations = _jsonld_raw_locations(posting.get("jobLocation"))
             return job, {
-                "description": description,
+                "description": normalize_description(description_raw),
+                "description_raw": description_raw,
                 "location": _jsonld_location(posting.get("jobLocation")),
+                "locations_raw": raw_locations,
                 "posted": _parse_posted(posting.get("datePosted") or ""),
+                "posted_at": posting.get("datePosted"),
+                "posted_raw": posting.get("datePosted"),
+                "employment_type_raw": posting.get("employmentType"),
             }
         except Exception:
             return job, {}
@@ -127,9 +185,18 @@ def fetch_paylocity(scrape, seen, company):
             for job, detail in executor.map(fetch_detail, targets[:max_details]):
                 if detail.get("description"):
                     job["description"] = detail["description"]
+                    job["description_raw"] = detail.get("description_raw")
                 if detail.get("location"):
                     job["location"] = detail["location"]
+                if detail.get("locations_raw"):
+                    job["locations_raw"] = detail["locations_raw"]
+                    job["location_raw"] = detail["locations_raw"][0]
                 if detail.get("posted"):
                     job["posted"] = detail["posted"]
+                if detail.get("posted_at"):
+                    job["posted_at"] = detail["posted_at"]
+                    job["posted_raw"] = detail.get("posted_raw")
+                if detail.get("employment_type_raw"):
+                    job["employment_type_raw"] = detail["employment_type_raw"]
 
     return jobs, None

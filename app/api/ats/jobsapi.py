@@ -35,6 +35,8 @@ def fetch_jobsapi(scrape, seen, company):
     seen_page_signatures = set()
 
     for page in range(max_pages):
+        if scan_deadline_exceeded(scrape):
+            return jobs, "company scan deadline reached (partial results)"
         offset = page * limit
         params = {"limit": limit}
         if page_param:
@@ -85,23 +87,56 @@ def fetch_jobsapi(scrape, seen, company):
             city    = j.get("city") or ""
             state   = j.get("state") or ""
             country = j.get("country") or j.get("country_code") or ""
-            loc = normalize_location(norm(", ".join(x for x in [city, state, country] if x)))
+            location_raw = norm(", ".join(x for x in [city, state, country] if x))
+            loc = normalize_location(location_raw)
 
             raw_date = j.get("posted_date") or j.get("create_date") or j.get("update_date") or ""
             posted = _parse_posted(raw_date[:10] if raw_date else "")
 
-            desc_parts = [j.get("description") or j.get("description_short") or ""]
-            for extra in ("basic_qualifications", "preferred_qualifications"):
+            desc_parts = []
+            description = j.get("description") or j.get("description_short") or ""
+            if description:
+                desc_parts.append(str(description))
+            for extra, heading in (
+                ("basic_qualifications", "Basic qualifications"),
+                ("preferred_qualifications", "Preferred qualifications"),
+            ):
                 if j.get(extra):
-                    desc_parts.append(str(j[extra]))
-            desc = " ".join(p for p in desc_parts if p).strip()
+                    desc_parts.append(f"<h3>{heading}</h3>\n{j[extra]}")
+            desc = "\n\n".join(desc_parts).strip()
 
-            jid = make_id(company, jurl, title)
-            if stop_on_seen and jid in seen:
+            jid = make_id(company, jurl, title, "jobsapi", req_id)
+            if stop_on_seen and (
+                jid in seen or make_id(company, jurl, title) in seen
+            ):
                 return jobs, None
 
-            jobs.append({"title": title, "url": jurl, "location": loc, "description": desc,
-                         "source": "jobsapi", "posted": posted})
+            jobs.append({
+                "title": title,
+                "url": jurl,
+                "ats_id": req_id,
+                "requisition_id": req_id,
+                "location": loc,
+                "location_raw": location_raw or None,
+                "locations_raw": [location_raw] if location_raw else [],
+                "description": desc or None,
+                "description_raw": desc or None,
+                "source": "jobsapi",
+                "posted": posted or None,
+                "posted_at": raw_date or None,
+                "posted_raw": raw_date or None,
+                "employment_type_raw": j.get("employment_type")
+                    or j.get("job_type"),
+                "department": j.get("department"),
+                "raw_data": {
+                    key: j.get(key)
+                    for key in (
+                        "city", "state", "country", "country_code",
+                        "employment_type", "job_type", "department",
+                    )
+                    if j.get(key) is not None
+                },
+            })
 
         total = int(data.get("totalCount") or data.get("total") or 0)
         if total and offset + limit >= total:

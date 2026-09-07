@@ -1,7 +1,7 @@
 """Keyword parsing, SQL query builders, and display-formatting helpers for job search."""
 import re
 from functools import lru_cache
-from urllib.parse import unquote
+from urllib.parse import unquote, urlparse
 
 from .utils import (
     _CANADA_PROVINCES,
@@ -358,6 +358,10 @@ def display_title(title, url=""):
     if slug_title:
         return slug_title
     title = norm(title)
+    if "careers.unitedhealthgroup.com/job/" in (url or "").lower():
+        title = re.sub(r"\s*(?:\d+\s*)?\|.*$", "", title).strip()
+        if not title or re.fullmatch(r"\d+", title):
+            title = _unitedhealth_title_from_url(url)
     if "·" in title:
         title = title.split("·", 1)[0].strip()
     title = _dedupe_joined_city(title)
@@ -374,6 +378,23 @@ def display_title(title, url=""):
         r'\1', title,
     )
     return norm(title)
+
+
+def _unitedhealth_title_from_url(url):
+    try:
+        path = urlparse(url).path.rstrip("/")
+    except Exception:
+        return ""
+    match = re.search(r"/job/[^/]+/([^/]+)/\d+/\d+$", path, re.I)
+    if not match:
+        return ""
+    words = match.group(1).replace("-", " ").split()
+    acronyms = {
+        "apc", "cdi", "cma", "ehr", "emr", "ft", "hcc", "ii", "iii",
+        "iv", "la", "lpn", "lvn", "ma", "np", "pa", "rn", "tx",
+    }
+    title = " ".join(word.upper() if word.lower() in acronyms else word.title() for word in words)
+    return title.replace("Heathcare", "Healthcare")
 
 @lru_cache(maxsize=8192)
 def display_location(raw_location, title, url=""):

@@ -40,7 +40,7 @@ def _ashby_location(job):
     return ""
 
 def _fetch_ashby_public_api(slug, company):
-    url = f"https://api.ashbyhq.com/posting-api/job-board/{quote(slug, safe='')}?includeCompensation=false"
+    url = f"https://api.ashbyhq.com/posting-api/job-board/{quote(slug, safe='')}"
     try:
         r = requests.get(url, headers={**HEADERS, "Accept": "application/json"}, timeout=25)
         r.raise_for_status()
@@ -55,19 +55,43 @@ def _fetch_ashby_public_api(slug, company):
         jurl = j.get("jobUrl") or j.get("applyUrl") or ""
         if not jurl and j.get("id"):
             jurl = f"https://jobs.ashbyhq.com/{slug}/{j.get('id')}"
-        posted = _parse_posted(j.get("publishedAt") or j.get("publishedDate") or "")
-        loc = _ashby_location(j)
+        posted_raw = j.get("publishedAt") or j.get("publishedDate")
+        raw_locations = []
+        if j.get("location"):
+            raw_locations.append(j.get("location"))
+        for secondary in j.get("secondaryLocations") or []:
+            if isinstance(secondary, dict) and secondary.get("location"):
+                raw_locations.append(secondary["location"])
+        loc = raw_locations[0] if raw_locations else _ashby_location(j)
         desc = j.get("descriptionHtml") or j.get("descriptionPlain") or ""
         if title and jurl:
             job = {
                 "title": title,
                 "url": jurl,
+                "ats_id": str(j.get("id") or "") or None,
+                "apply_url": j.get("applyUrl"),
                 "location": loc,
+                "location_raw": loc or None,
+                "locations_raw": raw_locations or ([loc] if loc else []),
                 "source": "ashby",
-                "posted": posted,
+                "posted_at": posted_raw,
+                "employment_type": j.get("employmentType"),
+                "employment_type_raw": j.get("employmentType"),
+                "department": j.get("department") if isinstance(j.get("department"), str) else None,
+                "team": j.get("team") if isinstance(j.get("team"), str) else None,
+                "workplace_type": j.get("workplaceType"),
+                "remote_mode": "remote" if j.get("isRemote") is True else None,
+                "raw_data": {
+                    key: value for key, value in {
+                        "address": j.get("address"),
+                        "secondary_locations": j.get("secondaryLocations"),
+                        "workplace_type": j.get("workplaceType"),
+                    }.items() if value
+                } or None,
             }
             if desc:
                 job["description"] = desc
+                job["description_raw"] = desc
             jobs.append(job)
     return jobs, None
 
@@ -112,6 +136,9 @@ def fetch_ashby(scrape, seen, company):
         for job in public_jobs or []:
             if (job.get("location") or "") in ("", "Remote", "Multiple Locations", "Austin HQ"):
                 job["location"] = default_location
+                job["locations_raw"] = [default_location]
+                job.setdefault("raw_data", {})
+                job["raw_data"]["configured_default_location"] = default_location
     if public_jobs:
         return public_jobs, None
 
@@ -173,7 +200,11 @@ def fetch_ashby(scrape, seen, company):
             if not jid:
                 continue
             jurl = f"https://jobs.ashbyhq.com/{slug}/{jid}"
-            existing = seen.get(make_id(company, jurl, title)) if isinstance(seen, dict) and title else None
+            existing = (
+                seen.get(make_id(company, jurl, title, "ashby", jid))
+                or seen.get(make_id(company, jurl, title))
+                if isinstance(seen, dict) and title else None
+            )
             existing_posted = _parse_posted((existing or {}).get("posted") or "") if isinstance(existing, dict) else ""
             existing_has_desc = isinstance(existing, dict) and existing.get("has_description")
             if existing_posted:
@@ -197,8 +228,19 @@ def fetch_ashby(scrape, seen, company):
         posted  = dates.get(jid, "")
         emp_type = norm(j.get("employmentType") or "")
         if title:
-            job = {"title":title,"url":jurl,"location":loc,"source":"ashby","posted":posted,"employment_type":emp_type}
+            job = {
+                "title": title,
+                "url": jurl,
+                "ats_id": jid or None,
+                "location": raw_loc,
+                "location_raw": raw_loc or None,
+                "source": "ashby",
+                "posted": posted or None,
+                "employment_type": emp_type or None,
+                "employment_type_raw": emp_type or None,
+            }
             if descs.get(jid):
                 job["description"] = descs[jid]
+                job["description_raw"] = descs[jid]
             jobs.append(job)
     return jobs, None

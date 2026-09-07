@@ -11,6 +11,7 @@ CATEGORY_ALIASES = {
     "Asset Management": "Investment & Asset Management",
     "Banking": "Finance & Banking",
     "Cloud": "Cloud & Infrastructure",
+    "Climate & Energy": "Climate Tech",
     "Construction & Real Estate": "Real Estate & Construction",
     "Consumer": "Consumer Tech",
     "Customer Support": "Software & SaaS",

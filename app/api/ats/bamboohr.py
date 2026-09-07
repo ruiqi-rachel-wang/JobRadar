@@ -31,13 +31,35 @@ def fetch_bamboohr(scrape, seen, company):
         jid   = j.get("id") or ""
         loc_data = j.get("location") or {}
         if isinstance(loc_data, dict):
-            loc = normalize_location(norm(", ".join(
-                x for x in [loc_data.get("city"), loc_data.get("state")] if x
-            )))
+            raw_location = norm(", ".join(
+                x for x in [
+                    loc_data.get("city"), loc_data.get("state"),
+                    loc_data.get("country"),
+                ] if x
+            ))
         else:
-            loc = normalize_location(norm(loc_data))
+            raw_location = norm(loc_data)
+        loc = normalize_location(raw_location)
         jurl = f"https://{slug}.bamboohr.com/careers/view/{jid}" if jid else ""
         if title and jurl:
-            jobs.append({"title":title,"url":jurl,"location":loc,"source":"bamboohr","posted":""})
+            jobs.append({
+                "title": title,
+                "url": jurl,
+                "ats_id": str(jid),
+                "location": loc,
+                "location_raw": raw_location or None,
+                "locations_raw": [raw_location] if raw_location else [],
+                "source": "bamboohr",
+                "posted": None,
+                "department": j.get("departmentLabel") or j.get("department"),
+                "employment_type_raw": j.get("employmentStatusLabel"),
+                "raw_data": {
+                    key: j.get(key)
+                    for key in (
+                        "location", "departmentLabel",
+                        "department", "employmentStatusLabel",
+                    )
+                    if j.get(key) is not None
+                },
+            })
     return jobs, None
-
