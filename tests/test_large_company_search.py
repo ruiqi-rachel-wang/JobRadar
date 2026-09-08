@@ -31,6 +31,7 @@ class LargeCompanySearchTests(unittest.TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.get_json()["jobs"], [])
+        _fallback.assert_not_called()
         sql, params = conn.execute.call_args.args
         self.assertIn("company IN", sql)
         self.assertEqual(len(params), 352)

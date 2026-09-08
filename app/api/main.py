@@ -2330,14 +2330,6 @@ def api_jobs():
                 "interview":        company_interviews.get(r["company"]),
                 "is_new":     fs == today,
             })
-        if not jobs and total == 0:
-            jobs, total = jobs_from_seen_fallback(keyword, location, since, category, companies, limit, offset, today)
-            for job in jobs:
-                job["location"] = display_location(
-                    job.get("location", ""),
-                    job.get("title", ""),
-                    job.get("url", ""),
-                )
         return jsonify({
             "jobs": jobs,
             "total": total,
