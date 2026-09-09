@@ -2258,6 +2258,16 @@ def api_jobs():
         company_marks = placeholders(len(companies))
         clauses.append(f"company IN ({company_marks})")
         params.extend(companies)
+    elif tag:
+        # A positive tag filter must positively constrain company names. Using
+        # only NOT IN for every other catalog company lets stale/orphaned jobs
+        # from removed companies leak into tagged results.
+        if active_company_names:
+            company_marks = placeholders(len(active_company_names))
+            clauses.append(f"company IN ({company_marks})")
+            params.extend(sorted(active_company_names))
+        else:
+            clauses.append("1 = 0")
     elif hidden_company_names:
         hidden_marks = placeholders(len(hidden_company_names))
         clauses.append(f"company NOT IN ({hidden_marks})")

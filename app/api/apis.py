@@ -95,6 +95,9 @@ from .ats.mckinsey import fetch_mckinsey
 from .ats.mobileye import fetch_mobileye
 from .ats.kula import fetch_kula
 from .ats.tiktok import fetch_tiktok
+from .ats.gem import fetch_gem
+from .ats.dover import fetch_dover
+from .ats.careyaya import fetch_careyaya
 
 # Map mode name → fetcher function.
 FETCHERS = {
@@ -141,6 +144,9 @@ FETCHERS = {
     "mobileye":        fetch_mobileye,
     "kula":            fetch_kula,
     "tiktok":          fetch_tiktok,
+    "gem":             fetch_gem,
+    "dover":           fetch_dover,
+    "careyaya":        fetch_careyaya,
 }
 
 # Modes served by JSON APIs (not browser automation).

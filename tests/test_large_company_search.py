@@ -36,6 +36,31 @@ class LargeCompanySearchTests(unittest.TestCase):
         self.assertIn("company IN", sql)
         self.assertEqual(len(params), 352)
 
+    @patch("app.api.main.connect_db")
+    @patch("app.api.main._public_companies")
+    @patch("app.api.main.current_companies")
+    def test_tag_search_uses_positive_company_filter(
+        self, current_companies, public_companies, connect_db
+    ):
+        companies = [
+            {"name": "Tagged Co", "tags": ["Curated List"]},
+            {"name": "Other Co", "tags": []},
+        ]
+        current_companies.return_value = companies
+        public_companies.return_value = companies
+
+        conn = MagicMock()
+        conn.execute.return_value.fetchall.return_value = []
+        connect_db.return_value.__enter__.return_value = conn
+
+        response = self.client.get("/api/jobs?tag=Curated+List&limit=100")
+
+        self.assertEqual(response.status_code, 200)
+        sql, params = conn.execute.call_args.args
+        self.assertIn("company IN", sql)
+        self.assertNotIn("company NOT IN", sql)
+        self.assertEqual(params, ["Tagged Co", 100, 0])
+
 
 if __name__ == "__main__":
     unittest.main()

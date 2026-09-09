@@ -1261,7 +1261,10 @@
     "scrape": {
       "mode": "ashby",
       "ashby_slug": "ambiencehealthcare"
-    }
+    },
+    "tags": [
+      "LinkedIn Top Startups 2025"
+    ]
   },
   {
     "name": "Amcor",
@@ -1873,7 +1876,10 @@
     "scrape": {
       "mode": "ashby",
       "ashby_slug": "arb-interactive"
-    }
+    },
+    "tags": [
+      "LinkedIn Top Startups 2025"
+    ]
   },
   {
     "name": "Arcadia",
@@ -2054,6 +2060,22 @@
     }
   },
   {
+    "name": "ARMRA",
+    "categories": [
+      "Consumer Goods & Retail",
+      "Food & Beverage"
+    ],
+    "scrape": {
+      "mode": "html",
+      "list_url": "https://armra.app.loxo.co/armra",
+      "include": "armra.app.loxo.co/job/",
+      "require_job_path": true
+    },
+    "tags": [
+      "LinkedIn Top Startups 2025"
+    ]
+  },
+  {
     "name": "Array Labs",
     "categories": [
       "Data & Analytics",
@@ -2118,7 +2140,10 @@
     "scrape": {
       "mode": "ashby",
       "ashby_slug": "artisan"
-    }
+    },
+    "tags": [
+      "LinkedIn Top Startups 2025"
+    ]
   },
   {
     "name": "Artsy",
@@ -3246,6 +3271,20 @@
     }
   },
   {
+    "name": "Bilt Rewards",
+    "categories": [
+      "FinTech & Payments",
+      "Real Estate & Construction"
+    ],
+    "scrape": {
+      "mode": "gem",
+      "gem_board": "bilt"
+    },
+    "tags": [
+      "LinkedIn Top Startups 2025"
+    ]
+  },
+  {
     "name": "Bio-Techne",
     "categories": [
       "Healthcare & Biotech"
@@ -4233,6 +4272,19 @@
     }
   },
   {
+    "name": "Cadence",
+    "categories": [
+      "Healthcare & Biotech"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "cadencehealth"
+    },
+    "tags": [
+      "LinkedIn Top Startups 2025"
+    ]
+  },
+  {
     "name": "Cadence Design Systems",
     "categories": [
       "Developer Tools",
@@ -4524,6 +4576,19 @@
       "mode": "workday",
       "list_url": "https://cardinalhealth.wd1.myworkdayjobs.com/ext"
     }
+  },
+  {
+    "name": "CareYaya Health Technologies",
+    "categories": [
+      "Healthcare & Biotech"
+    ],
+    "scrape": {
+      "mode": "careyaya",
+      "list_url": "https://www.careyaya.org/careers"
+    },
+    "tags": [
+      "LinkedIn Top Startups 2025"
+    ]
   },
   {
     "name": "Caribou Biosciences, Inc.",
@@ -4841,7 +4906,10 @@
     "scrape": {
       "board_token": "chainguard",
       "mode": "greenhouse"
-    }
+    },
+    "tags": [
+      "LinkedIn Top Startups 2025"
+    ]
   },
   {
     "name": "Champlain Rehab Solutions",
@@ -4934,7 +5002,10 @@
     "scrape": {
       "mode": "greenhouse",
       "board_token": "charliehealth"
-    }
+    },
+    "tags": [
+      "LinkedIn Top Startups 2025"
+    ]
   },
   {
     "name": "Charm Industrial",
@@ -6071,7 +6142,10 @@
     "scrape": {
       "mode": "ashby",
       "ashby_slug": "commonroom"
-    }
+    },
+    "tags": [
+      "LinkedIn Top Startups 2025"
+    ]
   },
   {
     "name": "Commonwealth Fusion Systems",
@@ -6836,7 +6910,10 @@
     "scrape": {
       "mode": "comeet",
       "list_url": "https://www.comeet.co/careers-api/2.0/company/17.008/positions/?token=7182A90154871823783FD838C031A802378"
-    }
+    },
+    "tags": [
+      "LinkedIn Top Startups 2025"
+    ]
   },
   {
     "name": "d-Matrix",
@@ -6952,7 +7029,10 @@
     "scrape": {
       "mode": "ashby",
       "ashby_slug": "dandy"
-    }
+    },
+    "tags": [
+      "LinkedIn Top Startups 2025"
+    ]
   },
   {
     "name": "Dartmouth College",
@@ -7115,6 +7195,20 @@
       "mode": "greenhouse",
       "board_token": "datavant2"
     }
+  },
+  {
+    "name": "David",
+    "categories": [
+      "Consumer Goods & Retail",
+      "Food & Beverage"
+    ],
+    "scrape": {
+      "mode": "workable",
+      "workable_slug": "david-protein"
+    },
+    "tags": [
+      "LinkedIn Top Startups 2025"
+    ]
   },
   {
     "name": "David Energy",
@@ -7756,7 +7850,10 @@
     },
     "interview": {
       "source": "Direct ATS final fill"
-    }
+    },
+    "tags": [
+      "LinkedIn Top Startups 2025"
+    ]
   },
   {
     "name": "drchrono",
@@ -8081,7 +8178,10 @@
     "scrape": {
       "mode": "ashby",
       "ashby_slug": "edia"
-    }
+    },
+    "tags": [
+      "LinkedIn Top Startups 2025"
+    ]
   },
   {
     "name": "Edra",
@@ -8224,7 +8324,10 @@
     "scrape": {
       "mode": "ashby",
       "ashby_slug": "elevenlabs"
-    }
+    },
+    "tags": [
+      "LinkedIn Top Startups 2025"
+    ]
   },
   {
     "name": "Eli Lilly",
@@ -9101,7 +9204,10 @@
     "scrape": {
       "mode": "greenhouse",
       "board_token": "feastables"
-    }
+    },
+    "tags": [
+      "LinkedIn Top Startups 2025"
+    ]
   },
   {
     "name": "Federato",
@@ -9112,7 +9218,10 @@
     "scrape": {
       "mode": "greenhouse",
       "board_token": "federato"
-    }
+    },
+    "tags": [
+      "LinkedIn Top Startups 2025"
+    ]
   },
   {
     "name": "FedEx",
@@ -9256,7 +9365,10 @@
     },
     "interview": {
       "source": "Forbes AI 50"
-    }
+    },
+    "tags": [
+      "LinkedIn Top Startups 2025"
+    ]
   },
   {
     "name": "Fiserv",
@@ -9812,6 +9924,20 @@
       "mode": "ashby",
       "ashby_slug": "fullstory"
     }
+  },
+  {
+    "name": "Function Health",
+    "categories": [
+      "Health & Fitness",
+      "Healthcare & Biotech"
+    ],
+    "scrape": {
+      "mode": "gem",
+      "gem_board": "function-health"
+    },
+    "tags": [
+      "LinkedIn Top Startups 2025"
+    ]
   },
   {
     "name": "Further",
@@ -10695,6 +10821,22 @@
     }
   },
   {
+    "name": "GOODLES",
+    "categories": [
+      "Consumer Goods & Retail",
+      "Food & Beverage"
+    ],
+    "scan_enabled": false,
+    "catalog_visible": true,
+    "policy": {
+      "message": "GOODLES has no public job board. Apply manually by emailing a resume to joinus@GOODLES.com.",
+      "careers_url": "mailto:joinus@GOODLES.com"
+    },
+    "tags": [
+      "LinkedIn Top Startups 2025"
+    ]
+  },
+  {
     "name": "Goodwin",
     "categories": [
       "Legal Tech"
@@ -10977,7 +11119,10 @@
     "scrape": {
       "mode": "ashby",
       "ashby_slug": "grow-therapy"
-    }
+    },
+    "tags": [
+      "LinkedIn Top Startups 2025"
+    ]
   },
   {
     "name": "Groww",
@@ -11357,7 +11502,10 @@
     "scrape": {
       "mode": "ashby",
       "ashby_slug": "harvey"
-    }
+    },
+    "tags": [
+      "LinkedIn Top Startups 2025"
+    ]
   },
   {
     "name": "Hashrocket",
@@ -11377,6 +11525,21 @@
     },
     "tags": [
       "Interview Friendly"
+    ]
+  },
+  {
+    "name": "Haus",
+    "categories": [
+      "Ad Tech & MarTech",
+      "Data & Analytics",
+      "Software & SaaS"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "haus"
+    },
+    "tags": [
+      "LinkedIn Top Startups 2025"
     ]
   },
   {
@@ -12818,6 +12981,21 @@
     }
   },
   {
+    "name": "Inworld AI",
+    "categories": [
+      "AI & Machine Learning",
+      "Gaming",
+      "Software & SaaS"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "inworld-ai"
+    },
+    "tags": [
+      "LinkedIn Top Startups 2025"
+    ]
+  },
+  {
     "name": "IonQ",
     "categories": [
       "AI & Machine Learning",
@@ -13539,7 +13717,10 @@
     "scrape": {
       "mode": "ashby",
       "ashby_slug": "kindred"
-    }
+    },
+    "tags": [
+      "LinkedIn Top Startups 2025"
+    ]
   },
   {
     "name": "Kinsta",
@@ -14504,7 +14685,10 @@
     "scrape": {
       "mode": "ashby",
       "ashby_slug": "lumos"
-    }
+    },
+    "tags": [
+      "LinkedIn Top Startups 2025"
+    ]
   },
   {
     "name": "Luvata Appleton, LLC",
@@ -14652,7 +14836,10 @@
       "ashby_slug": "magicschool",
       "allow_empty_full_scan": true
     },
-    "note": "Official Ashby board was reachable and empty on 2026-07-29"
+    "note": "Official Ashby board was reachable and empty on 2026-07-29",
+    "tags": [
+      "LinkedIn Top Startups 2025"
+    ]
   },
   {
     "name": "Magna",
@@ -15222,7 +15409,10 @@
     "scrape": {
       "mode": "greenhouse",
       "board_token": "medallionakafirstlayerai"
-    }
+    },
+    "tags": [
+      "LinkedIn Top Startups 2025"
+    ]
   },
   {
     "name": "Medical Home Network",
@@ -15362,7 +15552,10 @@
     "scrape": {
       "mode": "ashby",
       "ashby_slug": "mercor"
-    }
+    },
+    "tags": [
+      "LinkedIn Top Startups 2025"
+    ]
   },
   {
     "name": "Mercury",
@@ -15383,7 +15576,10 @@
     "scrape": {
       "mode": "ashby",
       "ashby_slug": "merge"
-    }
+    },
+    "tags": [
+      "LinkedIn Top Startups 2025"
+    ]
   },
   {
     "name": "Merlin Labs",
@@ -15578,7 +15774,10 @@
     "scrape": {
       "mode": "greenhouse",
       "board_token": "midihealth"
-    }
+    },
+    "tags": [
+      "LinkedIn Top Startups 2025"
+    ]
   },
   {
     "name": "Milk Makeup",
@@ -18570,7 +18769,10 @@
     "scrape": {
       "mode": "ashby",
       "ashby_slug": "perplexity"
-    }
+    },
+    "tags": [
+      "LinkedIn Top Startups 2025"
+    ]
   },
   {
     "name": "Persado",
@@ -18651,7 +18853,10 @@
     "scrape": {
       "mode": "ashby",
       "ashby_slug": "phantom"
-    }
+    },
+    "tags": [
+      "LinkedIn Top Startups 2025"
+    ]
   },
   {
     "name": "Philo",
@@ -20457,7 +20662,10 @@
     "scrape": {
       "mode": "ashby",
       "ashby_slug": "reprise"
-    }
+    },
+    "tags": [
+      "LinkedIn Top Startups 2025"
+    ]
   },
   {
     "name": "Republic Services",
@@ -21103,6 +21311,20 @@
       "mode": "workday",
       "list_url": "https://ryder.wd5.myworkdayjobs.com/RyderCareers"
     }
+  },
+  {
+    "name": "RYZE",
+    "categories": [
+      "Consumer Goods & Retail",
+      "Food & Beverage"
+    ],
+    "scrape": {
+      "mode": "workday",
+      "list_url": "https://ryzesuperfoods.wd108.myworkdayjobs.com/en-US/Ryze_External_Career_Site"
+    },
+    "tags": [
+      "LinkedIn Top Startups 2025"
+    ]
   },
   {
     "name": "S&P Global",
@@ -22519,7 +22741,10 @@
     "scrape": {
       "mode": "ashby",
       "ashby_slug": "solace"
-    }
+    },
+    "tags": [
+      "LinkedIn Top Startups 2025"
+    ]
   },
   {
     "name": "Solar Turbines",
@@ -23359,6 +23584,21 @@
     }
   },
   {
+    "name": "Subject",
+    "categories": [
+      "EdTech"
+    ],
+    "scan_enabled": false,
+    "catalog_visible": true,
+    "policy": {
+      "message": "Subject does not publish a first-party searchable job board. Check its current roles and apply manually on Wellfound.",
+      "careers_url": "https://wellfound.com/company/trysubject/jobs"
+    },
+    "tags": [
+      "LinkedIn Top Startups 2025"
+    ]
+  },
+  {
     "name": "Substack",
     "categories": [
       "Media & Entertainment",
@@ -23574,7 +23814,10 @@
     "scrape": {
       "mode": "ashby",
       "ashby_slug": "surge-ai"
-    }
+    },
+    "tags": [
+      "LinkedIn Top Startups 2025"
+    ]
   },
   {
     "name": "SurveyMonkey",
@@ -23694,7 +23937,10 @@
     "scrape": {
       "mode": "ashby",
       "ashby_slug": "synctera"
-    }
+    },
+    "tags": [
+      "LinkedIn Top Startups 2025"
+    ]
   },
   {
     "name": "Synechron",
@@ -24400,7 +24646,10 @@
     "scrape": {
       "mode": "greenhouse",
       "board_token": "thenuclearcompany"
-    }
+    },
+    "tags": [
+      "LinkedIn Top Startups 2025"
+    ]
   },
   {
     "name": "The RealReal",
@@ -24516,7 +24765,10 @@
     "scrape": {
       "mode": "ashby",
       "ashby_slug": "ThinkingMachines"
-    }
+    },
+    "tags": [
+      "LinkedIn Top Startups 2025"
+    ]
   },
   {
     "name": "Thomson Reuters",
@@ -24757,7 +25009,10 @@
     "scrape": {
       "mode": "greenhouse",
       "board_token": "togetherai"
-    }
+    },
+    "tags": [
+      "LinkedIn Top Startups 2025"
+    ]
   },
   {
     "name": "Tokai Rika Group",
@@ -24947,7 +25202,10 @@
     "scrape": {
       "mode": "darwinbox",
       "darwinbox_tenant": "transcarent.com"
-    }
+    },
+    "tags": [
+      "LinkedIn Top Startups 2025"
+    ]
   },
   {
     "name": "TransMarket Group",
@@ -25173,7 +25431,10 @@
     "scrape": {
       "mode": "greenhouse",
       "board_token": "truveta"
-    }
+    },
+    "tags": [
+      "LinkedIn Top Startups 2025"
+    ]
   },
   {
     "name": "TSC",
@@ -25240,6 +25501,23 @@
       "mode": "lever",
       "lever_slug": "tutorintelligence"
     }
+  },
+  {
+    "name": "tvScientific",
+    "categories": [
+      "Ad Tech & MarTech",
+      "Software & SaaS"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "pinterest",
+      "greenhouse_content": false,
+      "text_include": "tvscientific"
+    },
+    "note": "tvScientific careers now redirect to Pinterest's dedicated tvScientific team page; listings are filtered from Pinterest's official board (verified 2026-09-08).",
+    "tags": [
+      "LinkedIn Top Startups 2025"
+    ]
   },
   {
     "name": "Twelve",
@@ -25622,7 +25900,10 @@
     },
     "interview": {
       "source": "LinkedIn Top Startups"
-    }
+    },
+    "tags": [
+      "LinkedIn Top Startups 2025"
+    ]
   },
   {
     "name": "Unilever",
@@ -26296,7 +26577,10 @@
     "scrape": {
       "board_token": "vast",
       "mode": "greenhouse"
-    }
+    },
+    "tags": [
+      "LinkedIn Top Startups 2025"
+    ]
   },
   {
     "name": "VCU Health",
@@ -26491,6 +26775,21 @@
     },
     "tags": [
       "Interview Friendly"
+    ]
+  },
+  {
+    "name": "Vial",
+    "categories": [
+      "Healthcare & Biotech",
+      "Pharmaceuticals"
+    ],
+    "scrape": {
+      "mode": "dover",
+      "careers_page_id": "6776553e-ab26-4a2b-8bd3-6a776b773fa1",
+      "company_slug": "Vial"
+    },
+    "tags": [
+      "LinkedIn Top Startups 2025"
     ]
   },
   {
@@ -27703,7 +28002,8 @@
       "source_url": "https://ziphq.com/careers"
     },
     "tags": [
-      "Interview Friendly"
+      "Interview Friendly",
+      "LinkedIn Top Startups 2025"
     ]
   },
   {
