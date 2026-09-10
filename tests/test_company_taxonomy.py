@@ -182,6 +182,17 @@ class CompanyTaxonomyTests(unittest.TestCase):
                 )
         self.assertGreaterEqual(len(matched), 10)
 
+    def test_recruiting_firms_are_not_scanned_or_public(self):
+        recruiting_firms = [
+            company
+            for company in self.companies
+            if "Recruiting" in (company.get("categories") or [])
+        ]
+        self.assertGreaterEqual(len(recruiting_firms), 5)
+        for company in recruiting_firms:
+            self.assertIs(company.get("scan_enabled"), False, company["name"])
+            self.assertIsNot(company.get("catalog_visible"), True, company["name"])
+
 
 if __name__ == "__main__":
     unittest.main()

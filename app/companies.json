@@ -10794,7 +10794,9 @@
       "mode": "html",
       "list_url": "https://www.goliathpartners.com/jobs",
       "include": "goliathpartners.com/job"
-    }
+    },
+    "scan_enabled": false,
+    "note": "Excluded because Goliath Partners is a third-party recruiting firm whose board advertises roles for client companies (verified 2026-09-09)."
   },
   {
     "name": "Gong",
@@ -18150,7 +18152,9 @@
     "scrape": {
       "mode": "workday",
       "list_url": "https://oxfordcorp.wd108.myworkdayjobs.com/Oxford_Careers"
-    }
+    },
+    "scan_enabled": false,
+    "note": "Excluded because Oxford Global Resources is a staffing and recruiting firm (verified 2026-09-09)."
   },
   {
     "name": "OXM | Oxford Industries Inc",
