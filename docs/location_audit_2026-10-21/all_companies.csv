@@ -1,0 +1,2223 @@
+company,mode,scan_enabled,open_jobs_reviewed,stored_multi_location,stored_missing_location,stored_placeholders,source_status,fresh_source_jobs,source_errors,detail_checks,detail_blocked_or_failed,location_repairs_proposed
+#paid,lever,True,5,1,0,0,listed,5,,1,0,0
+10x Genomics,html,True,36,0,0,0,not_freshly_probed,0,,1,0,0
+160over90,workday,True,23,7,0,3,not_freshly_probed,0,,1,0,5
+1Password,ashby,True,76,6,0,0,not_freshly_probed,0,,2,0,0
+2brains,lever,True,10,0,0,0,listed,10,,1,1,0
+3M,workday,True,743,35,0,40,not_freshly_probed,0,,1,0,49
+4Degrees,html,True,3,0,0,0,not_freshly_probed,0,,1,0,0
+8th Light,greenhouse,True,5,0,0,0,listed,5,,1,0,0
+A+E Networks,workday,True,2,0,0,0,not_freshly_probed,0,,1,0,0
+A24,greenhouse,True,5,0,0,1,listed,5,,2,0,0
+ABB,workday,True,2047,147,18,131,not_freshly_probed,0,,3,0,176
+Abbott,workday,True,2644,192,1,78,not_freshly_probed,0,,3,0,265
+AbbVie,html,True,28,0,0,0,not_freshly_probed,0,,1,1,0
+ABC Financial Services,workday,True,37,6,0,3,not_freshly_probed,0,,2,0,9
+Able,greenhouse,True,7,0,0,0,listed,7,,1,0,0
+Abnormal Security,greenhouse,True,81,0,0,0,listed,79,,1,0,0
+Above and Beyond Therapy,lever,True,253,0,0,0,listed,253,,1,0,1
+Abridge,ashby,True,44,14,0,0,not_freshly_probed,0,,1,0,0
+Acceldata,lever,True,38,0,0,0,listed,38,,1,0,13
+Accelentertainment,workday,True,27,0,0,1,not_freshly_probed,0,,2,0,1
+Accenture,accenture,True,1013,768,0,0,not_freshly_probed,0,,0,0,0
+Accredible,html,False,0,0,0,0,not_freshly_probed,0,,0,0,0
+Acselhealth,lever,True,2,0,0,0,listed,2,,1,1,0
+Activision Blizzard,workday,True,48,2,0,1,not_freshly_probed,0,,2,0,3
+AcuityMD,greenhouse,True,10,9,0,0,listed,10,,1,0,0
+Ad Hoc,html,True,21,0,14,0,not_freshly_probed,0,,2,0,0
+Ad Hoc Labs,lever,True,1,0,0,0,listed,1,,1,0,0
+Addepar,greenhouse,True,112,2,0,0,listed,112,,2,0,0
+Adidas,xml_feed,True,1181,0,0,0,not_freshly_probed,0,,1,0,0
+ADM,html,True,130,0,64,0,not_freshly_probed,0,,1,1,0
+Admiral,html,True,24,0,23,0,not_freshly_probed,0,,1,0,0
+Adobe,workday,True,308,99,0,22,not_freshly_probed,0,,2,0,80
+Adora Technologies Inc,lever,True,4,0,0,0,listed,4,,1,0,1
+Advance Auto Parts,phenom,True,1015,0,0,0,partial,9990,partial Phenom listing: fetched 9990 of 16569 jobs,1,0,1
+Adventisthealthcare,workday,True,7,1,0,0,not_freshly_probed,0,,2,0,0
+"Adverum Biotechnologies, Inc.",lever,True,3,0,0,0,empty,0,,1,1,0
+Advocate Health,workday,True,5459,242,0,210,not_freshly_probed,0,,2,0,290
+Adyen,greenhouse,True,248,15,0,0,listed,245,,2,0,0
+Aerospace Corporation,workday,True,434,66,0,71,not_freshly_probed,0,,2,0,71
+AffiniPay,greenhouse,True,29,1,0,0,listed,29,,2,0,0
+Affirm,greenhouse,True,219,1,0,0,listed,219,,2,0,0
+Affordable Care,icims,True,32,0,0,0,not_freshly_probed,0,,32,32,0
+Aflac,successfactors,True,30,0,0,0,not_freshly_probed,0,,0,0,0
+AGC Biologics,workday,True,33,0,0,0,not_freshly_probed,0,,1,0,0
+Agency Enterprise Studio,greenhouse,True,7,6,0,0,listed,7,,2,0,0
+Agilent,workday,True,387,48,0,20,not_freshly_probed,0,,2,0,62
+Agility Robotics,greenhouse,True,74,3,0,0,listed,73,,2,0,0
+Agilon Health,workday,True,15,0,0,0,not_freshly_probed,0,,1,0,0
+AIA,workday,True,4,0,0,1,not_freshly_probed,0,,2,0,1
+Aicrete,lever,True,3,0,0,0,listed,3,,1,1,0
+AiFi,lever,True,2,0,0,0,listed,2,,1,0,2
+AIFund,lever,True,46,0,0,0,listed,46,,1,0,0
+AIG,workday,True,439,104,0,32,not_freshly_probed,0,,2,0,99
+Air Liquide,workday,True,1088,25,0,60,not_freshly_probed,0,,2,0,63
+Air Products,workday,True,179,31,0,14,not_freshly_probed,0,,2,0,16
+AirAsia,workday,True,117,0,4,2,not_freshly_probed,0,,3,0,4
+Airbase,html,True,1,0,1,0,not_freshly_probed,0,,1,0,0
+Airbnb,greenhouse,True,185,1,0,0,listed,182,,2,1,0
+Airbus,workday,True,2976,55,62,130,not_freshly_probed,0,,3,0,179
+Airbyte,ashby,True,13,0,0,0,not_freshly_probed,0,,1,0,0
+Aircall,greenhouse,True,75,10,0,0,listed,75,,2,0,0
+AirDNA,lever,True,6,0,0,0,listed,6,,1,0,0
+airSlate,lever,True,15,0,0,0,listed,15,,1,0,7
+Airtable,greenhouse,True,4,0,0,0,listed,4,,1,0,0
+Airwallex,ashby,True,502,86,0,0,not_freshly_probed,0,,2,0,0
+Akamai,oraclecloud,True,223,0,0,0,empty,0,,1,1,0
+Akuna Capital,greenhouse,True,40,0,0,0,listed,39,,1,0,0
+AkzoNobel,phenom,True,228,0,1,0,listed,225,,2,0,4
+Alaskacommunications,workday,True,16,1,0,2,not_freshly_probed,0,,2,0,2
+Alation,workday,True,22,0,0,0,not_freshly_probed,0,,1,0,0
+Albemarle Corporation,eightfold,True,66,6,0,0,not_freshly_probed,0,,2,0,0
+Alchemy,ashby,True,22,18,0,0,not_freshly_probed,0,,1,0,0
+Aledade,lever,True,36,0,0,0,listed,36,,1,0,9
+Alexander Chapman,html,False,0,0,0,0,not_freshly_probed,0,,0,0,0
+Algolia,greenhouse,True,34,0,0,0,listed,34,,1,0,0
+Alignment Health,workday,True,1,0,0,0,not_freshly_probed,0,,1,0,0
+Allbirds,html,True,0,0,0,0,not_freshly_probed,0,,0,0,0
+Allegion,workday,True,336,35,0,7,not_freshly_probed,0,,2,0,23
+Alliant Energy,workday,True,37,7,0,10,not_freshly_probed,0,,2,0,10
+Alloy,greenhouse,True,27,0,0,0,listed,27,,1,0,0
+Alloy.ai,lever,True,9,0,0,0,listed,9,,1,0,0
+Allstate,workday,True,433,35,0,17,not_freshly_probed,0,,2,0,47
+AllTrails,lever,True,1,0,0,0,listed,1,,1,0,0
+Ally,workday,True,78,0,0,31,not_freshly_probed,0,,2,1,31
+Alma,ashby,True,6,0,0,0,not_freshly_probed,0,,1,0,0
+Alnylam Pharmaceuticals,html,True,49,0,16,0,not_freshly_probed,0,,2,0,0
+Aloft,html,True,32,0,19,0,not_freshly_probed,0,,2,0,0
+AlphaSense,greenhouse,True,213,24,0,0,listed,212,,2,0,0
+AlphaSights,html,True,38,0,22,0,not_freshly_probed,0,,2,2,0
+Alteryx,workday,True,65,9,0,8,not_freshly_probed,0,,2,0,8
+Alto Pharmacy,workday,True,1,0,0,0,not_freshly_probed,0,,1,0,1
+Altos Labs,greenhouse,True,15,3,0,0,listed,15,,2,0,0
+Altria,html,True,68,0,20,0,not_freshly_probed,0,,1,0,0
+AMAROK Security,greenhouse,True,13,0,0,0,listed,13,,1,0,0
+Amazon,jobsapi,False,30,0,0,0,not_freshly_probed,0,,0,0,0
+Ambience Healthcare,ashby,True,19,0,0,0,not_freshly_probed,0,,1,0,0
+Amcor,workday,True,770,48,4,9,not_freshly_probed,0,,3,0,39
+AMD,jobsapi,True,110,0,0,0,listed,100,,0,0,41
+AMDT School of Creativity,smartrecruiters,True,3,0,0,0,not_freshly_probed,0,,1,0,0
+Amentum,taleo,True,35,0,0,0,not_freshly_probed,0,,0,0,0
+Ameren,workday,True,85,1,1,6,not_freshly_probed,0,,3,0,6
+American Express,oraclecloud,True,479,0,0,0,listed,464,,1,0,97
+American Fidelity,workday,True,75,8,0,8,not_freshly_probed,0,,2,0,9
+American Iron and Metal,smartrecruiters,True,329,0,0,0,not_freshly_probed,0,,1,0,0
+American Specialty Health,workday,True,212,1,0,0,not_freshly_probed,0,,2,0,0
+Ameriprise Financial,workday,True,237,39,0,41,not_freshly_probed,0,,2,0,40
+Amgen,workday,True,1660,88,0,41,not_freshly_probed,0,,2,0,129
+Amplify Health,workday,True,2,0,0,0,not_freshly_probed,0,,1,0,0
+Amplitude,ashby,True,42,3,0,0,not_freshly_probed,0,,2,0,0
+Anaheim Ducks Hockey,workday,True,5,0,0,0,not_freshly_probed,0,,1,0,0
+Analog Devices,workday,True,831,122,0,31,not_freshly_probed,0,,2,0,31
+Anaplan,greenhouse,True,133,0,0,0,listed,134,,1,0,0
+Ancestry,workday,True,31,0,0,0,not_freshly_probed,0,,1,0,0
+Anchorage Digital,lever,True,24,0,0,0,listed,24,,1,0,4
+Anderson Merchandisers,html,True,10,0,8,0,not_freshly_probed,0,,1,0,0
+Anduril,greenhouse,True,2558,202,0,0,listed,2529,,2,0,0
+AnewHealth,workday,True,74,0,0,1,not_freshly_probed,0,,2,0,2
+AngelList,lever,True,25,0,0,0,listed,25,,1,0,19
+Angi,ashby,True,19,2,0,0,not_freshly_probed,0,,2,0,0
+Anomalo,html,True,32,0,27,0,not_freshly_probed,0,,1,0,0
+Anterior,ashby,True,4,0,0,0,not_freshly_probed,0,,1,0,0
+Anthropic,greenhouse,True,679,412,0,0,listed,674,,2,0,0
+AntiCapital,html,True,3,0,0,0,not_freshly_probed,0,,1,0,0
+Antora Energy,greenhouse,True,39,0,0,0,listed,38,,1,0,0
+Anyscale,ashby,True,20,3,0,0,not_freshly_probed,0,,2,0,0
+Aon,jobsapi,True,100,0,0,0,listed,100,,0,0,31
+APA Corporation,workday,True,13,3,0,3,not_freshly_probed,0,,2,1,5
+Apex,ashby,True,142,0,0,0,not_freshly_probed,0,,1,0,0
+Apollo Global Management,workday,True,55,2,0,2,not_freshly_probed,0,,2,0,4
+Apollo GraphQL,ashby,True,8,1,0,0,not_freshly_probed,0,,2,0,0
+Apollo.io,greenhouse,True,56,3,0,0,listed,56,,2,0,0
+AppFolio,ashby,True,34,21,0,0,not_freshly_probed,0,,2,0,0
+Appian,html,True,11,0,7,0,not_freshly_probed,0,,2,0,0
+Apple,playwright,False,25,0,20,0,not_freshly_probed,0,,2,0,0
+Apple Tree Dental,lever,True,50,0,0,0,listed,50,,1,0,1
+Applebank,workday,True,41,1,0,0,not_freshly_probed,0,,2,0,0
+ApplePie Capital,smartrecruiters,True,2,0,0,0,not_freshly_probed,0,,1,0,0
+Applied Compute,ashby,True,12,0,0,0,not_freshly_probed,0,,1,0,0
+Applied Intuition,ashby,True,330,7,0,0,not_freshly_probed,0,,2,0,0
+Applied Materials,workday,True,2154,167,0,29,not_freshly_probed,0,,2,1,30
+AppLovin,greenhouse,True,44,5,0,0,listed,41,,2,0,0
+AppsFlyer,greenhouse,True,49,2,0,0,listed,49,,2,0,0
+Apptronik,greenhouse,True,81,0,0,0,listed,80,,1,0,0
+Aptiv,workday,True,811,9,0,1,not_freshly_probed,0,,2,0,1
+AQR,greenhouse,True,56,0,0,0,listed,56,,1,0,0
+Aquatic Capital Management,greenhouse,True,10,4,0,0,listed,10,,2,0,0
+Aramark,successfactors,True,1038,0,0,0,not_freshly_probed,0,,0,0,0
+ARB Interactive,ashby,True,4,0,0,0,not_freshly_probed,0,,1,0,0
+Arcadia,rippling,True,20,1,0,0,not_freshly_probed,0,,1,0,0
+Arcellx,html,False,0,0,0,0,not_freshly_probed,0,,0,0,0
+Arch Capital Group Ltd,workday,True,206,53,0,39,not_freshly_probed,0,,1,0,49
+Archer,greenhouse,True,111,2,0,0,listed,109,,2,0,0
+Archer Aviation,html,False,14,0,14,0,not_freshly_probed,0,,1,1,0
+Arctic Wolf,workday,True,118,11,0,8,not_freshly_probed,0,,2,0,9
+Ares Management,workday,True,245,17,0,12,not_freshly_probed,0,,2,0,12
+Arine,rippling,True,10,0,0,0,not_freshly_probed,0,,1,0,0
+Arista Networks,smartrecruiters,True,241,0,0,0,not_freshly_probed,0,,1,0,0
+Arizona State University,workday,True,149,4,0,3,not_freshly_probed,0,,2,0,6
+Arkansas Children's,workday,True,5,0,0,0,not_freshly_probed,0,,1,0,0
+Arm,talentbrew,True,43,8,0,0,not_freshly_probed,0,,2,0,0
+Armis,smartrecruiters,True,2,0,0,0,not_freshly_probed,0,,1,0,0
+Armor Health,icims,True,55,0,0,0,not_freshly_probed,0,,55,3,0
+ARMRA,html,True,1,0,0,0,not_freshly_probed,0,,1,0,0
+Array Labs,lever,True,33,0,0,0,listed,33,,1,0,0
+Arrowstreet Capital,workday,True,17,0,0,0,not_freshly_probed,0,,1,0,0
+Artefact,greenhouse,True,140,13,0,0,listed,140,,2,0,0
+Articulate,lever,True,1,0,0,0,listed,1,,1,0,0
+Artisan,ashby,True,4,2,0,0,not_freshly_probed,0,,1,0,0
+Artsy,ashby,True,7,1,0,0,not_freshly_probed,0,,2,0,0
+"Arvor Insurance, Inc",lever,True,3,0,0,0,listed,3,,1,0,0
+Asana,greenhouse,True,105,0,0,0,listed,104,,1,0,0
+Ashby,html,True,24,0,2,0,not_freshly_probed,0,,2,0,0
+ASML,workday,True,659,1,0,4,not_freshly_probed,0,,2,0,4
+Aspora,ashby,True,10,1,0,0,not_freshly_probed,0,,2,0,0
+Assembled,ashby,True,17,10,0,0,not_freshly_probed,0,,1,0,0
+AssemblyAI,greenhouse,True,15,0,0,0,listed,15,,1,0,0
+Associated Bank,workday,True,170,9,0,8,not_freshly_probed,0,,2,0,19
+Assurant,workday,True,122,5,0,10,not_freshly_probed,0,,2,0,11
+Astera,ashby,True,42,1,0,0,not_freshly_probed,0,,2,0,0
+Astera Labs,greenhouse,True,182,0,0,0,listed,182,,1,0,0
+Astranis,greenhouse,True,182,0,0,0,listed,182,,1,0,0
+Astreya,workday,True,257,12,0,3,not_freshly_probed,0,,2,0,6
+Astronomer,ashby,True,18,1,0,0,not_freshly_probed,0,,2,0,0
+AT&T,workday,True,1180,85,0,69,not_freshly_probed,0,,2,1,74
+Athenahealth,workday,True,87,9,0,4,not_freshly_probed,0,,2,0,5
+Atlassian,icims,True,108,0,0,0,not_freshly_probed,0,,108,0,34
+Atmos Energy,workday,True,43,2,0,1,not_freshly_probed,0,,2,1,3
+Attentive,greenhouse,True,27,0,0,0,listed,27,,1,0,0
+Auctor,ashby,True,11,0,0,0,not_freshly_probed,0,,1,0,0
+Audible,talentbrew,True,16,0,0,0,not_freshly_probed,0,,1,0,0
+Aura Frames,greenhouse,True,4,0,0,0,listed,4,,1,0,0
+Aurora,ashby,True,104,49,0,0,not_freshly_probed,0,,2,0,0
+Aurora Labs,lever,True,2,0,0,0,listed,2,,1,0,0
+Authentic Insurance,greenhouse,True,12,1,0,0,listed,12,,2,0,0
+Authorium,ashby,True,6,0,0,0,not_freshly_probed,0,,1,0,0
+Auto-Owners Insurance,workday,True,270,55,0,11,not_freshly_probed,0,,2,0,12
+Autodesk,workday,True,262,55,0,37,not_freshly_probed,0,,2,0,67
+Automattic,html,True,23,0,10,0,not_freshly_probed,0,,1,0,0
+AutoZone,oraclecloud,True,11656,0,0,0,listed,11421,,1,0,447
+Ava Labs,ashby,True,7,3,0,0,not_freshly_probed,0,,1,0,0
+Availity,workday,True,12,0,0,0,not_freshly_probed,0,,1,0,0
+Avalara,careerpuck,True,162,0,0,0,not_freshly_probed,0,,0,0,0
+AVANCO GmbH,smartrecruiters,True,11,0,0,0,not_freshly_probed,0,,1,0,0
+Aviator,playwright,True,5,0,1,0,not_freshly_probed,0,,1,1,0
+Away,ashby,True,30,0,0,0,not_freshly_probed,0,,1,0,0
+Axios,greenhouse,True,39,1,0,0,listed,39,,2,0,0
+AXIS Capital,workday,True,70,16,0,28,not_freshly_probed,0,,1,0,32
+Axon,greenhouse,True,488,13,0,0,listed,483,,2,0,0
+Axonius,greenhouse,True,20,0,0,0,listed,20,,1,1,0
+B12,greenhouse,True,4,0,0,0,listed,4,,1,0,0
+Babble Cloud,smartrecruiters,True,29,0,0,1,not_freshly_probed,0,,2,0,0
+Babylist,greenhouse,True,40,0,0,0,listed,40,,1,0,0
+BAE Systems,html,True,1,0,1,0,not_freshly_probed,0,,1,1,0
+Bain,playwright,True,32,2,21,0,not_freshly_probed,0,,3,0,0
+"Bain Capital, LP",workday,True,28,2,0,0,not_freshly_probed,0,,2,0,2
+Baker Hughes,workday,True,695,32,0,25,not_freshly_probed,0,,2,0,53
+Balyasny Asset Management,salesforce,True,131,52,0,0,not_freshly_probed,0,,0,0,0
+Bank of America,workday,True,1741,698,0,0,not_freshly_probed,0,,2,0,0
+Banner Bank,lever,True,64,0,0,0,listed,63,,1,0,13
+Banner Health,workday,True,1289,69,1,24,not_freshly_probed,0,,3,0,78
+Barclays,workday,True,692,80,1,6,not_freshly_probed,0,,2,0,23
+Barnes & Noble,barnes_noble,True,806,0,0,0,not_freshly_probed,0,,0,0,0
+Barracuda View Team,html,False,118,0,114,0,not_freshly_probed,0,,1,0,0
+Base Power,ashby,True,192,7,0,0,not_freshly_probed,0,,2,0,0
+Basecamp,xml_feed,True,0,0,0,0,not_freshly_probed,0,,0,0,0
+Baseten,ashby,True,104,51,0,0,not_freshly_probed,0,,2,0,0
+Basis,ashby,True,44,0,0,0,not_freshly_probed,0,,1,0,0
+Baton Corporation,ashby,True,10,0,0,0,not_freshly_probed,0,,1,0,0
+BD,workday,True,651,82,0,69,not_freshly_probed,0,,2,0,145
+Beam Therapeutics,greenhouse,True,48,0,0,0,listed,48,,1,0,0
+Beauty Health,workday,True,35,0,1,0,not_freshly_probed,0,,2,0,0
+Beckley Clinical,lever,True,12,0,0,0,listed,12,,1,0,0
+Bedrock,ashby,True,57,11,0,0,not_freshly_probed,0,,2,0,0
+Beehiiv,bamboohr,True,1,0,1,0,not_freshly_probed,0,,1,0,0
+Belvedere Trading,lever,True,19,0,0,0,listed,18,,1,0,1
+Benchling,ashby,True,53,12,0,0,not_freshly_probed,0,,2,0,0
+Bendyworks,html,True,6,0,6,0,not_freshly_probed,0,,1,0,0
+Bentley Systems,workday,True,89,0,0,19,not_freshly_probed,0,,1,0,19
+Berkley,icims,True,8,0,0,0,not_freshly_probed,0,,8,0,0
+Berkshire Hathaway,oraclecloud,True,122,0,0,0,listed,121,,1,0,29
+Best Buy,smartrecruiters,True,3,0,0,0,not_freshly_probed,0,,1,0,0
+BETA Technologies,greenhouse,True,130,25,0,0,listed,130,,2,0,0
+BetMGM,workday,True,13,2,0,1,not_freshly_probed,0,,2,0,2
+Betterment,greenhouse,True,24,0,0,0,listed,24,,1,0,0
+BetterUp,ashby,True,6,5,0,0,not_freshly_probed,0,,1,0,0
+Beyond Cloud Consulting Inc.,lever,True,3,0,0,0,listed,3,,1,0,0
+Beyond Meat,workday,True,13,0,0,0,not_freshly_probed,0,,1,0,0
+Beyond Menu,lever,True,2,0,0,0,listed,2,,1,0,0
+Beyondsoft Consulting,icims,True,22,0,0,0,not_freshly_probed,0,,22,1,4
+BeyondTrust,smartrecruiters,True,2,0,0,0,not_freshly_probed,0,,1,0,0
+Bicycle Health,greenhouse,True,10,0,0,0,listed,10,,1,0,0
+Big Health,lever,True,1,0,0,0,listed,1,,1,0,0
+BigBinary,html,True,19,0,11,0,not_freshly_probed,0,,1,0,0
+BigCommerce,workday,True,18,7,0,2,not_freshly_probed,0,,2,0,9
+BILL Holdings,greenhouse,True,47,7,0,0,listed,45,,2,0,0
+BillionToOne,greenhouse,True,88,0,0,0,listed,85,,1,0,0
+Bilt Rewards,gem,True,19,1,0,0,not_freshly_probed,0,,0,0,0
+Bio-Techne,workday,True,85,4,0,2,not_freshly_probed,0,,2,0,7
+BioAgilytix,lever,True,14,0,0,0,listed,13,,1,0,0
+BioBus,lever,True,1,0,0,0,listed,1,,1,0,0
+BioCatch,lever,True,13,0,0,0,listed,13,,1,0,0
+BioCryst Pharmaceuticals,workday,True,24,5,0,8,not_freshly_probed,0,,2,0,13
+Biodigital,lever,True,3,2,0,0,listed,3,,1,1,0
+Biogen,workday,True,270,10,0,23,not_freshly_probed,0,,1,0,22
+Biointellisense,lever,True,6,0,0,0,listed,6,,1,0,0
+Bitpanda,greenhouse,True,32,2,0,0,listed,32,,2,0,0
+Bitso,greenhouse,True,4,0,0,0,error,0,404 board not found: bitso,1,1,0
+Bitwarden,html,True,93,0,54,0,not_freshly_probed,0,,1,0,0
+Black Box,oraclecloud,True,271,0,0,0,listed,266,,1,0,51
+Black Forest Labs,ashby,True,13,7,0,0,not_freshly_probed,0,,2,0,0
+BlackRock,workday,True,287,23,0,5,not_freshly_probed,0,,2,0,7
+BlackSky,greenhouse,True,34,9,0,0,listed,34,,2,0,0
+Blackstone,workday,True,148,8,0,3,not_freshly_probed,0,,2,0,7
+Bland,ashby,True,16,4,0,0,not_freshly_probed,0,,2,0,0
+Blattner Energy,workday,True,37,9,1,0,not_freshly_probed,0,,2,0,1
+Blend,greenhouse,True,15,0,0,0,listed,15,,1,0,0
+Block,greenhouse,True,217,0,0,0,listed,210,,1,0,0
+Blockchain.com,greenhouse,True,44,0,0,0,listed,44,,1,0,0
+Blockdaemon,ashby,True,2,1,0,0,not_freshly_probed,0,,1,0,0
+Bloom Energy,workday,True,192,0,0,0,not_freshly_probed,0,,1,0,0
+Bloom Works,html,True,10,0,10,0,not_freshly_probed,0,,1,0,0
+Bloomberg,avature,True,340,0,26,0,not_freshly_probed,0,,2,1,0
+Blue Origin,workday,True,1828,488,0,231,not_freshly_probed,0,,2,0,372
+"BlueCloud Services, Inc.",lever,True,9,0,0,0,listed,9,,1,0,1
+BNY,oraclecloud,True,1385,0,0,0,listed,9,,1,0,2
+Bocoup,html,True,7,0,7,0,not_freshly_probed,0,,1,0,0
+Boeing,workday,True,799,77,0,75,not_freshly_probed,0,,2,0,72
+Bonusly,html,True,5,0,0,0,not_freshly_probed,0,,1,0,0
+Booking Holdings,workday,True,21,3,0,1,not_freshly_probed,0,,2,0,1
+Boomi,greenhouse,True,21,1,0,0,listed,21,,2,0,0
+BoomTown,html,True,20,0,20,0,not_freshly_probed,0,,1,0,0
+Booz Allen Hamilton,workday,True,2328,246,0,175,not_freshly_probed,0,,2,0,177
+BorgWarner,workday,True,346,2,0,2,not_freshly_probed,0,,2,0,2
+Bosch Group,smartrecruiters,True,5073,0,0,0,not_freshly_probed,0,,1,0,0
+Bosch-HomeComfort,smartrecruiters,True,224,0,0,0,not_freshly_probed,0,,1,0,0
+Boson AI,lever,True,7,0,0,0,listed,7,,1,0,0
+Boston Consulting Group (BCG),phenom,True,912,0,1,0,listed,908,,2,0,259
+Boston Properties,oraclecloud,True,32,0,0,0,listed,32,,1,0,0
+Boston Scientific,eightfold,True,504,13,0,0,not_freshly_probed,0,,2,0,0
+Boston University,html,True,198,0,3,0,not_freshly_probed,0,,2,0,0
+Box,greenhouse,True,119,0,0,0,listed,119,,1,0,0
+Boys Town,workday,True,159,10,0,10,not_freshly_probed,0,,2,0,10
+Bozeman Health,workday,True,222,2,0,7,not_freshly_probed,0,,2,0,0
+Brain Co.,ashby,True,41,6,0,0,not_freshly_probed,0,,2,0,0
+BrainChild Bio,lever,True,7,0,0,0,listed,7,,1,0,0
+"BrainStorm, Inc.",lever,True,1,0,0,0,empty,0,,1,0,0
+Braintrust,ashby,True,28,14,0,0,not_freshly_probed,0,,1,0,0
+Branch,greenhouse,True,2,0,0,0,listed,2,,1,0,0
+Braze,greenhouse,True,323,1,0,0,listed,323,,2,0,0
+Bread Financial Us,workday,True,11,3,0,3,not_freshly_probed,0,,1,0,4
+BreezeBio,lever,True,5,0,0,0,listed,5,,1,0,0
+Brex,greenhouse,True,263,3,0,0,listed,263,,2,0,0
+Bridgewater,greenhouse,True,16,0,0,0,listed,16,,1,0,0
+Brightline,ashby,True,5,0,0,0,not_freshly_probed,0,,1,0,0
+Brindley Engineering,lever,True,33,0,0,0,listed,33,,1,0,0
+Bristol Myers Squibb,workday,True,673,77,0,59,not_freshly_probed,0,,2,0,60
+Broadcom,workday,True,369,60,0,27,not_freshly_probed,0,,2,0,84
+Brooklinen,ashby,True,13,0,0,0,not_freshly_probed,0,,1,0,0
+Brown & Brown Insurance,workday,True,277,23,1,18,not_freshly_probed,0,,3,3,33
+Brown University,workday,True,104,0,0,0,not_freshly_probed,0,,1,0,0
+Brown University Health,workday,True,1489,0,3,0,not_freshly_probed,0,,2,0,1
+Brunswick,workday,True,409,13,0,9,not_freshly_probed,0,,1,0,9
+BSI Group,workday,True,230,15,3,42,not_freshly_probed,0,,3,0,47
+Bubble,ashby,True,4,0,0,0,not_freshly_probed,0,,1,0,0
+Buckeye,icims,True,9,0,0,0,not_freshly_probed,0,,9,0,0
+"Buckeye Corrugated, Inc.",lever,True,67,0,0,0,listed,67,,1,0,0
+Buffer,ashby,True,1,0,0,0,not_freshly_probed,0,,1,0,0
+Bugcrowd,html,True,69,0,69,0,not_freshly_probed,0,,1,0,0
+Buildkite,html,True,53,0,52,0,not_freshly_probed,0,,1,0,0
+Bumble,lever,True,24,0,0,0,empty,0,,1,1,0
+Bustle Digital Group,lever,True,15,0,0,0,listed,15,,1,0,0
+Butterfly Network,greenhouse,True,21,2,0,0,listed,21,,2,0,3
+C3 AI,greenhouse,True,93,6,0,0,listed,93,,2,0,0
+Cabinetworks Group,workday,True,18,0,0,0,not_freshly_probed,0,,1,0,0
+CACI,workday,True,1737,155,0,127,not_freshly_probed,0,,2,0,143
+Cadence,greenhouse,True,18,0,0,0,listed,18,,1,0,0
+Cadence Design Systems,workday,True,659,84,0,32,not_freshly_probed,0,,2,0,68
+Calendly,greenhouse,True,9,0,0,0,listed,9,,1,0,0
+Calico,greenhouse,True,21,0,0,0,listed,21,,1,0,0
+Califia Farms,icims,True,17,0,0,0,not_freshly_probed,0,,17,1,1
+Calm,greenhouse,True,2,0,0,0,listed,2,,1,0,0
+Caltech,taleo,True,89,2,50,0,not_freshly_probed,0,,0,0,0
+Campbell Soup Company,workday,True,310,1,0,1,not_freshly_probed,0,,2,0,2
+Canary Technologies Corp,lever,True,35,0,0,0,listed,35,,1,0,12
+Candid Health,ashby,True,36,16,0,0,not_freshly_probed,0,,1,0,0
+Canfield Imaging Systems,html,True,27,0,0,0,not_freshly_probed,0,,1,0,0
+Cano Health,workday,True,83,4,0,5,not_freshly_probed,0,,2,0,6
+Canonical,greenhouse,True,310,60,0,0,listed,310,,2,0,0
+Canva,smartrecruiters,True,109,0,0,0,not_freshly_probed,0,,1,0,0
+Canvas Medical,ashby,True,4,0,0,0,not_freshly_probed,0,,1,0,0
+Capchase,ashby,True,6,3,0,0,not_freshly_probed,0,,1,0,0
+Cape,ashby,True,26,7,0,0,not_freshly_probed,0,,1,0,0
+Capgemini,successfactors,True,630,176,0,0,not_freshly_probed,0,,0,0,0
+Capital Group,workday,True,210,27,0,19,not_freshly_probed,0,,2,2,43
+Capital Health,workday,True,534,16,4,14,not_freshly_probed,0,,3,0,22
+Capital One,workday,True,1998,796,0,515,not_freshly_probed,0,,2,0,549
+Capital Solutions Group,lever,True,29,0,0,0,listed,29,,1,0,0
+Capsule,ashby,True,9,0,0,0,not_freshly_probed,0,,1,0,0
+Captivation,greenhouse,True,69,0,0,0,listed,69,,1,0,0
+Carbon Health,rippling,True,252,44,0,0,not_freshly_probed,0,,2,0,0
+Carbon Robotics,greenhouse,True,9,0,0,0,error,0,404 board not found: carbonrobotics,1,0,0
+Cardinal Health,workday,True,833,23,0,31,not_freshly_probed,0,,2,0,52
+CareYaya Health Technologies,careyaya,True,9,0,0,0,not_freshly_probed,0,,0,0,0
+"Caribou Biosciences, Inc.",greenhouse,True,1,0,0,1,listed,1,,1,0,0
+Carlyle Group,workday,True,77,3,0,5,not_freshly_probed,0,,2,0,7
+CarMax,workday,True,1188,3,0,0,not_freshly_probed,0,,2,0,3
+Carnegie Mellon University,workday,True,189,3,0,15,not_freshly_probed,0,,2,0,15
+Carnival Cruise Line,talentbrew,True,15,0,0,0,not_freshly_probed,0,,1,1,0
+Carrier,workday,True,1055,104,0,64,not_freshly_probed,0,,2,0,62
+Carta,greenhouse,True,75,20,0,0,listed,75,,2,0,0
+Cartesia,ashby,True,25,0,0,0,not_freshly_probed,0,,1,0,0
+Carvana,greenhouse,True,1741,0,0,0,listed,1725,,1,1,0
+Catalina Island Company,workday,True,5,0,0,0,not_freshly_probed,0,,1,0,0
+Caterpillar Inc.,playwright,True,9,0,6,0,not_freshly_probed,0,,2,2,0
+Cato Networks,greenhouse,True,107,6,0,0,listed,107,,2,1,0
+Cboe Global Markets,phenom,True,117,0,0,0,listed,116,,1,0,25
+Cedar,ashby,True,1,1,0,0,not_freshly_probed,0,,1,0,0
+Celonis,greenhouse,True,209,0,0,0,listed,209,,1,0,0
+Cencora,workday,True,1014,99,0,51,not_freshly_probed,0,,2,0,137
+Census,html,True,60,0,59,0,not_freshly_probed,0,,1,0,0
+Centene Corporation,workday,True,360,69,0,25,not_freshly_probed,0,,2,0,97
+Centerfield,ashby,True,17,1,0,0,not_freshly_probed,0,,2,0,0
+Cerebras,ashby,True,121,35,0,0,not_freshly_probed,0,,2,0,0
+CesiumAstro,lever,True,342,0,0,0,listed,341,,1,0,0
+CF Industries,workday,True,56,2,0,3,not_freshly_probed,0,,2,1,4
+CGM,workday,True,240,24,6,46,not_freshly_probed,0,,2,0,75
+Chai Discovery,ashby,True,21,0,0,0,not_freshly_probed,0,,1,0,0
+Chainalysis,ashby,True,50,13,0,0,not_freshly_probed,0,,2,0,0
+Chainguard,greenhouse,True,77,6,0,0,listed,77,,2,0,0
+Champlain Rehab Solutions,workday,True,1,0,0,0,not_freshly_probed,0,,1,0,0
+Chapters Health System,workday,True,232,11,0,4,not_freshly_probed,0,,2,0,5
+Character.AI,ashby,True,13,1,0,0,not_freshly_probed,0,,2,0,0
+Chargezoom,lever,True,1,0,0,0,listed,1,,1,1,0
+Chargify,html,True,14,0,14,0,not_freshly_probed,0,,1,0,0
+Charles River Associates,greenhouse,True,87,53,0,0,listed,89,,2,0,0
+Charles Schwab,talentbrew,True,45,10,0,0,not_freshly_probed,0,,2,0,0
+Charlie Health,greenhouse,True,258,0,0,0,listed,258,,1,0,0
+Charm Industrial,lever,True,10,0,0,0,listed,10,,1,0,0
+CHAS Health,workday,True,51,3,0,0,not_freshly_probed,0,,2,0,0
+Checkout.com,ashby,True,175,7,0,0,not_freshly_probed,0,,2,0,0
+Checkr,greenhouse,True,44,23,0,0,listed,42,,2,0,0
+Chef,html,True,31,0,31,0,not_freshly_probed,0,,1,0,0
+Chesapeake Technology,html,False,0,0,0,0,not_freshly_probed,0,,0,0,0
+Chevron,workday,True,155,0,0,1,not_freshly_probed,0,,2,0,1
+Chewy,phenom,True,248,0,6,0,listed,246,,2,0,48
+CHG Healthcare,workday,True,35,9,0,8,not_freshly_probed,0,,1,0,16
+Chick-fil-A,jobsapi,True,79,0,0,0,listed,79,,0,0,3
+Chime,greenhouse,True,70,26,0,0,listed,70,,2,0,0
+Chipotle,talentbrew,True,38,0,0,0,not_freshly_probed,0,,1,0,0
+Chomps,greenhouse,True,1,0,0,0,listed,1,,1,0,0
+Chord Energy,workday,True,17,1,0,0,not_freshly_probed,0,,2,0,0
+Chroma,html,True,17,0,11,0,not_freshly_probed,0,,1,0,0
+Chronosphere,html,True,215,0,11,0,not_freshly_probed,0,,2,1,0
+Chubb,oraclecloud,True,729,0,0,0,listed,722,,1,0,156
+CI&T,lever,True,183,0,0,0,listed,178,,1,0,3
+CIBC,workday,True,43,3,1,2,not_freshly_probed,0,,3,0,3
+Ciena,workday,True,148,19,0,5,not_freshly_probed,0,,2,0,24
+Cigna,workday,True,531,49,0,33,not_freshly_probed,0,,2,0,44
+Cintas,successfactors,True,2529,0,0,0,not_freshly_probed,0,,0,0,0
+CIP Terra Technologies,workday,True,8,0,0,1,not_freshly_probed,0,,2,0,1
+CircleCI,html,True,13,0,0,0,not_freshly_probed,0,,1,0,0
+Cisco,workday,True,1454,263,0,175,not_freshly_probed,0,,2,0,173
+Citadel,playwright,False,10,0,2,0,not_freshly_probed,0,,2,2,0
+Citadel Securities,playwright,False,10,0,4,0,not_freshly_probed,0,,2,2,0
+Citi,workday,True,4065,170,1,230,not_freshly_probed,0,,3,0,319
+City of Boston's Analytics Team,icims,True,20,0,0,0,not_freshly_probed,0,,20,0,0
+Cityblock Health,workday,True,35,3,1,1,not_freshly_probed,0,,3,0,4
+Civis Analytics,greenhouse,True,2,1,0,0,listed,2,,1,0,0
+CJ Affiliate,html,True,26,0,24,0,not_freshly_probed,0,,1,0,0
+Claire's,workday,True,12,0,0,0,not_freshly_probed,0,,1,0,0
+Clara Lending,greenhouse,True,146,22,0,0,listed,146,,2,0,0
+Clarisights,ashby,True,2,0,0,0,not_freshly_probed,0,,1,0,0
+Clarity Innovations,greenhouse,True,44,0,0,0,listed,44,,1,0,0
+ClassDojo,ashby,True,10,0,0,0,not_freshly_probed,0,,1,0,0
+ClassPass,greenhouse,True,34,0,0,0,listed,34,,1,0,0
+Clay,ashby,True,60,10,0,0,not_freshly_probed,0,,2,0,0
+CLEAR,greenhouse,True,64,0,0,0,listed,64,,1,0,0
+ClearSky Health,workday,True,295,0,1,0,not_freshly_probed,0,,2,0,1
+Clearwater Analytics,workday,True,278,23,3,11,not_freshly_probed,0,,2,0,24
+Clerk,ashby,True,2,0,0,0,not_freshly_probed,0,,1,0,0
+Clever,greenhouse,True,2,0,0,0,listed,2,,1,0,0
+ClickHouse,ashby,True,202,62,0,0,not_freshly_probed,0,,1,0,0
+ClickUp,html,True,52,0,51,0,not_freshly_probed,0,,1,0,0
+Clifford Chance,smartrecruiters,True,180,0,0,0,not_freshly_probed,0,,1,0,0
+Clinical Architecture,greenhouse,True,1,0,0,0,listed,1,,1,0,0
+Clinical Health Network For Transformation,lever,True,6,0,0,0,listed,6,,1,0,0
+Clipboard,ashby,True,39,7,0,0,not_freshly_probed,0,,2,0,0
+Close,ashby,True,6,0,0,0,not_freshly_probed,0,,1,0,0
+Cloud Imperium Games,workday,True,54,0,0,0,not_freshly_probed,0,,1,0,0
+CloudBees,html,True,41,0,39,0,not_freshly_probed,0,,2,0,0
+Cloudera,workday,True,61,11,0,4,not_freshly_probed,0,,1,0,18
+Cloudflare,greenhouse,True,439,0,333,0,listed,439,,2,0,337
+Cloudforce,lever,True,2,0,0,0,listed,2,,1,0,0
+Cloudinary,lever,True,10,0,0,0,listed,10,,1,0,0
+Clover Health,greenhouse,True,57,0,0,0,listed,57,,1,0,0
+CME Group,workday,True,65,1,0,1,not_freshly_probed,0,,2,0,2
+CNO Financial Group,workday,True,10,4,0,3,not_freshly_probed,0,,2,0,3
+Coactive AI,html,True,30,0,30,0,not_freshly_probed,0,,1,0,0
+Cockroach Labs,greenhouse,True,14,4,0,0,listed,14,,2,0,0
+Coda,lever,True,14,0,0,0,listed,14,,1,0,0
+CodaMetrix,ashby,True,5,1,0,0,not_freshly_probed,0,,2,0,0
+Coffee 'n Clothes,html,False,10,0,0,0,not_freshly_probed,0,,1,0,0
+Cognition,ashby,True,104,22,0,0,not_freshly_probed,0,,2,0,0
+Cognizant,workday,True,67,21,0,21,not_freshly_probed,0,,1,0,42
+Cohere,ashby,True,116,86,0,0,not_freshly_probed,0,,2,0,0
+Coherent Corp.,oraclecloud,True,327,0,0,0,listed,326,,1,0,29
+Cohesity,html,True,109,0,106,0,not_freshly_probed,0,,1,1,0
+Coinbase,greenhouse,True,230,0,0,0,listed,230,,1,1,1
+CoinTracker,ashby,True,1,1,0,0,not_freshly_probed,0,,1,0,0
+Colgate-Palmolive,playwright,True,26,0,21,0,not_freshly_probed,0,,1,0,0
+Collabora,lever,True,2,0,0,0,listed,2,,1,0,0
+Collective,ashby,True,20,0,0,0,not_freshly_probed,0,,1,0,0
+Collective Health,greenhouse,True,1,1,0,0,empty,0,,1,0,0
+Collibra,greenhouse,True,32,3,0,0,listed,31,,2,0,0
+Columbia Bank,workday,True,238,37,0,25,not_freshly_probed,0,,2,0,36
+Columbia University,html,True,31,0,0,0,not_freshly_probed,0,,1,1,0
+Columbus Regional Airport Authority,workday,True,11,0,5,0,not_freshly_probed,0,,1,0,0
+Column,ashby,True,22,1,0,0,not_freshly_probed,0,,2,0,0
+Comcast,talentbrew,True,639,9,0,0,not_freshly_probed,0,,2,2,0
+Comfort Systems USA,workday,True,134,2,0,1,not_freshly_probed,0,,2,0,1
+Commerce Bank,workday,True,159,8,0,2,not_freshly_probed,0,,2,0,11
+Common Room,ashby,True,4,0,0,0,not_freshly_probed,0,,1,0,0
+Commonwealth Fusion Systems,lever,True,125,0,0,0,listed,125,,1,0,0
+CommuniCare Health Services,workday,True,2100,0,0,32,not_freshly_probed,0,,2,1,32
+Commure,ashby,True,81,31,0,0,not_freshly_probed,0,,2,0,0
+Commvault,greenhouse,True,51,2,0,0,listed,51,,1,0,0
+Compa,ashby,True,3,1,0,0,not_freshly_probed,0,,2,0,0
+Compass,html,True,67,0,23,0,not_freshly_probed,0,,2,1,0
+Component Repair Technologies,lever,True,69,0,0,0,listed,69,,1,0,0
+Conagra Brands,workday,True,227,8,0,8,not_freshly_probed,0,,2,0,8
+Concentrix,workday,True,1677,190,0,6,not_freshly_probed,0,,2,0,175
+Condé Nast,workday,False,133,0,0,3,not_freshly_probed,0,,2,2,0
+Confluent,ashby,True,17,8,0,0,not_freshly_probed,0,,2,0,0
+ConocoPhillips,workday,True,39,4,0,8,not_freshly_probed,0,,2,0,8
+Consensys,greenhouse,True,9,0,0,0,listed,9,,1,0,0
+Constellation Energy,jobsapi,True,105,0,2,0,listed,100,,0,0,10
+"Constellation Technologies, Inc",lever,True,37,0,0,1,listed,37,,2,0,18
+Contentful,greenhouse,True,24,0,0,0,listed,24,,1,0,0
+Contentstack,html,True,55,0,55,0,not_freshly_probed,0,,1,0,0
+Continental,smartrecruiters,True,569,0,0,0,not_freshly_probed,0,,1,0,0
+Cooley,workday,True,84,30,0,33,not_freshly_probed,0,,1,0,59
+Copart,workday,True,400,1,1,2,not_freshly_probed,0,,3,0,3
+Copley Health Systems,icims,True,78,0,0,0,not_freshly_probed,0,,78,0,8
+Core & Main,workday,True,251,3,0,2,not_freshly_probed,0,,2,0,14
+Corebridge Financial,workday,True,158,10,0,7,not_freshly_probed,0,,2,2,13
+CoreOS,playwright,False,6,0,4,0,not_freshly_probed,0,,2,0,0
+CoreWeave,greenhouse,True,323,186,0,1,listed,322,,2,0,0
+Corewell Health,workday,True,69,1,1,0,not_freshly_probed,0,,3,0,1
+Corgi,html,True,43,0,43,0,not_freshly_probed,0,,1,0,0
+Cornell University,workday,True,192,0,0,0,not_freshly_probed,0,,1,0,0
+Corpay,workday,True,51,6,0,2,not_freshly_probed,0,,2,0,8
+CorroHealth,workday,True,40,0,0,1,not_freshly_probed,0,,2,2,0
+Corteva,workday,True,30,4,0,6,not_freshly_probed,0,,1,0,6
+Cossack Labs,html,True,8,0,0,0,not_freshly_probed,0,,1,0,0
+CoStar Group,workday,True,431,0,0,0,not_freshly_probed,0,,1,0,0
+Costco,jobsapi,True,5097,0,0,0,listed,5100,,0,0,50
+"Coupa Software, Inc.",lever,True,32,0,0,0,listed,32,,1,0,0
+Coursera,greenhouse,True,29,0,0,0,listed,28,,1,0,0
+Cox,workday,True,713,34,0,19,not_freshly_probed,0,,2,0,31
+Cox Health,workday,True,517,2,0,2,not_freshly_probed,0,,2,0,2
+Creative Artists Agency,workday,True,8,0,1,0,not_freshly_probed,0,,2,0,0
+Crescent Biopharma,lever,True,11,0,0,0,listed,11,,1,0,0
+Cresta,greenhouse,True,84,4,0,0,listed,84,,2,0,0
+CRH,successfactors,True,11,0,4,0,not_freshly_probed,0,,0,0,0
+Cribl,greenhouse,True,74,0,0,0,listed,74,,1,0,0
+Criteo,playwright,True,17,0,17,0,not_freshly_probed,0,,1,1,0
+Crosslake Technologies LLC,lever,True,13,0,0,0,listed,13,,1,0,0
+Crossover Health,workday,True,72,1,0,2,not_freshly_probed,0,,2,0,3
+CrowdStrike,workday,True,349,53,0,23,not_freshly_probed,0,,2,0,90
+"Crunchyroll, LLC",greenhouse,True,107,8,0,0,listed,106,,2,0,0
+Crusoe,ashby,True,350,94,0,0,not_freshly_probed,0,,2,0,0
+Crux Climate,ashby,True,17,0,0,0,not_freshly_probed,0,,1,0,0
+CSA Group,workday,True,82,20,0,7,not_freshly_probed,0,,2,0,19
+CSAA Insurance Group,workday,True,23,6,0,12,not_freshly_probed,0,,2,0,19
+CSX,oraclecloud,True,66,0,0,0,listed,63,,1,0,0
+Culture Amp,greenhouse,True,33,0,0,0,listed,32,,1,0,0
+Culture Foundry,html,True,61,0,30,0,not_freshly_probed,0,,1,0,0
+Cumberland Farms,smartrecruiters,True,23,0,0,0,not_freshly_probed,0,,1,0,0
+Cummins,jobsyn,True,1487,0,0,0,not_freshly_probed,0,,0,0,0
+Curai,lever,True,5,0,0,0,listed,5,,1,0,0
+Cursor,ashby,True,134,61,0,0,not_freshly_probed,0,,2,0,0
+Customer.io,greenhouse,True,26,1,0,0,listed,26,,2,0,0
+Customers Bank,workday,True,27,6,0,7,not_freshly_probed,0,,2,2,8
+CVS Health,workday,True,19755,296,18,289,not_freshly_probed,0,,3,0,569
+CyberOne Security,lever,True,3,0,0,0,listed,3,,1,0,0
+Cyera,comeet,True,253,0,0,0,not_freshly_probed,0,,0,0,0
+d-Matrix,ashby,True,43,6,0,0,not_freshly_probed,0,,2,0,0
+D. E. Shaw,playwright,False,1,0,0,0,not_freshly_probed,0,,1,0,0
+D3,greenhouse,True,8,0,0,0,listed,8,,1,0,0
+Dagster Labs,html,True,20,0,16,0,not_freshly_probed,0,,2,2,0
+Daikin Applied,workday,True,244,23,0,18,not_freshly_probed,0,,2,0,21
+Daily Wire,lever,True,10,0,0,0,listed,10,,1,0,0
+Danaher,phenom,True,1081,0,0,0,listed,1438,,1,0,181
+Dandelion Energy,ashby,True,11,1,0,0,not_freshly_probed,0,,2,0,0
+Dandy,ashby,True,77,3,0,0,not_freshly_probed,0,,2,0,0
+Dartmouth College,html,False,0,0,0,0,not_freshly_probed,0,,0,0,0
+Data Intellect,smartrecruiters,True,33,0,0,0,not_freshly_probed,0,,1,0,0
+Data Theorem,html,True,45,0,20,0,not_freshly_probed,0,,1,0,0
+Databricks,greenhouse,True,901,157,0,0,listed,900,,2,0,0
+Datadog,greenhouse,True,436,110,0,0,listed,435,,2,0,0
+Dataiku,greenhouse,True,14,4,0,0,listed,14,,2,0,0
+Datalab USA,lever,True,16,0,0,0,listed,15,,1,0,0
+DataMade,html,True,4,0,4,0,not_freshly_probed,0,,1,0,0
+Dataminr,workday,True,25,10,0,2,not_freshly_probed,0,,1,0,12
+DataRobot,workday,True,16,8,0,1,not_freshly_probed,0,,2,0,4
+Datavant,greenhouse,True,126,2,0,0,listed,121,,1,0,0
+David,workable,True,33,0,0,0,not_freshly_probed,0,,1,0,0
+David Energy,ashby,True,2,0,1,0,not_freshly_probed,0,,2,0,0
+DaVita,workday,True,3410,274,0,121,not_freshly_probed,0,,2,0,389
+DBS Bank,workday,True,1500,4,0,5,not_freshly_probed,0,,2,0,9
+dbt Labs,html,True,176,0,1,0,not_freshly_probed,0,,2,0,0
+Dealpath,greenhouse,True,21,0,0,0,listed,21,,1,0,0
+Decagon,ashby,True,135,36,0,0,not_freshly_probed,0,,1,0,0
+Deciphera Pharmaceuticals,smartrecruiters,True,15,0,0,0,not_freshly_probed,0,,1,0,0
+Deel,html,True,256,0,0,0,not_freshly_probed,0,,1,0,0
+DeepFin Research,greenhouse,True,4,3,0,0,listed,4,,2,0,0
+Deepgram,ashby,True,93,15,0,0,not_freshly_probed,0,,2,0,0
+DeepL,html,True,106,0,104,0,not_freshly_probed,0,,1,0,0
+Deeplocal,greenhouse,True,5,0,0,0,listed,5,,1,0,0
+Deer Valley Resort,workday,True,35,0,0,0,not_freshly_probed,0,,1,1,0
+Deliveroo,ashby,True,8,0,0,0,not_freshly_probed,0,,1,0,0
+Dell,oraclecloud,True,467,0,0,0,listed,6,,1,0,1
+Deloitte,avature,True,1475,0,0,940,not_freshly_probed,0,,2,1,0
+Delta Air Lines,playwright,True,11,0,3,0,not_freshly_probed,0,,1,1,0
+Delta Dental,workday,True,30,2,0,2,not_freshly_probed,0,,2,0,2
+Dempsey Uniform & Linen Supply,lever,True,15,0,0,0,listed,15,,1,0,1
+Dendreon Pharmaceuticals LLC,icims,True,1,0,0,0,not_freshly_probed,0,,1,1,0
+Denver Health,workday,True,360,6,0,29,not_freshly_probed,0,,2,1,31
+Deriva Energy,workday,True,12,1,0,0,not_freshly_probed,0,,2,0,1
+Descript,greenhouse,True,10,9,0,0,listed,10,,1,0,0
+Deutsche Bank,workday,True,1170,65,0,10,not_freshly_probed,0,,2,1,33
+Deutsche Pruefservice GmbH,smartrecruiters,True,46,0,0,0,not_freshly_probed,0,,1,0,0
+Deutsche Telekom,playwright,True,1,0,1,0,not_freshly_probed,0,,1,1,0
+Devoted,workday,True,74,6,0,5,not_freshly_probed,0,,2,0,11
+DevRev,greenhouse,True,44,4,0,0,listed,43,,2,0,0
+Dexcom,workday,True,294,15,0,12,not_freshly_probed,0,,1,0,23
+DHL,phenom,True,1011,0,0,0,partial,9816,partial Phenom listing: fetched 9816 of 9819 jobs,1,0,5
+Dialpad,greenhouse,True,18,0,0,0,listed,18,,1,0,0
+Diamondback Energy,workday,True,31,9,1,1,not_freshly_probed,0,,3,0,2
+DigiKey,workday,True,21,2,0,3,not_freshly_probed,0,,2,0,3
+Digital Media Management,lever,True,12,0,0,0,listed,11,,1,0,0
+Digital Realty,oraclecloud,True,184,0,0,0,listed,184,,1,0,34
+Digital Turbine,workday,True,25,3,0,2,not_freshly_probed,0,,2,0,4
+"DigitalFish, Inc",lever,True,3,0,0,0,listed,3,,1,0,0
+DigitalOcean,html,True,61,0,60,0,not_freshly_probed,0,,1,0,0
+Diligent Robotics,greenhouse,True,10,0,0,0,listed,8,,1,0,0
+DISCO,greenhouse,True,41,0,0,0,listed,41,,1,0,0
+Discord,greenhouse,True,45,4,0,0,listed,45,,2,0,0
+Disney,workday,True,398,83,0,0,not_freshly_probed,0,,2,0,0
+Docker,ashby,True,70,43,0,0,not_freshly_probed,0,,2,0,0
+Docugami,greenhouse,True,7,0,0,0,listed,7,,1,0,0
+Dollar General,jobsapi,True,100,0,0,0,error,0,404 Client Error: Not Found for url: https://careers.dollargeneral.com/api/jobs?limit=100&offset=0,0,0,0
+Dollar Tree,workday,True,447,0,0,0,not_freshly_probed,0,,1,0,0
+Dominion Energy,successfactors,True,149,1,0,0,not_freshly_probed,0,,0,0,0
+Doonails,lever,True,13,0,0,0,listed,13,,1,0,0
+DoorDash,greenhouse,True,460,211,0,0,listed,457,,2,0,0
+Doppler,ashby,True,1,0,0,0,not_freshly_probed,0,,1,0,0
+Dow Inc.,workday,True,186,17,0,18,not_freshly_probed,0,,2,0,23
+Doximity,greenhouse,True,15,10,0,0,listed,15,,1,0,0
+DraftKings,workday,True,75,5,0,6,not_freshly_probed,0,,1,0,9
+Dragonfly,ashby,False,0,0,0,0,not_freshly_probed,0,,0,0,0
+Drata,ashby,True,30,0,0,0,not_freshly_probed,0,,1,0,0
+drchrono,html,True,36,0,35,0,not_freshly_probed,0,,1,0,0
+Drivetrain,lever,True,35,0,0,0,listed,35,,1,0,0
+DroneDeploy,html,True,39,0,34,0,not_freshly_probed,0,,1,1,0
+Dropbox,greenhouse,True,21,1,0,0,listed,21,,2,2,0
+Druva,greenhouse,True,31,0,0,0,listed,30,,1,0,0
+DRW,greenhouse,True,166,1,0,0,listed,163,,2,0,0
+dubizzle,workable,True,41,1,0,0,not_freshly_probed,0,,2,0,0
+DuckDuckGo,ashby,True,11,9,0,0,not_freshly_probed,0,,1,0,0
+Duke Energy,workday,True,81,11,0,17,not_freshly_probed,0,,2,0,17
+Duke University,html,True,108,0,1,0,not_freshly_probed,0,,2,2,0
+Duolingo,greenhouse,True,62,28,0,0,listed,62,,1,0,0
+DuPont,phenom,True,195,0,1,0,listed,195,,2,0,65
+Dust,ashby,True,25,4,0,0,not_freshly_probed,0,,2,0,0
+Dusty Robotics,rippling,True,2,0,0,0,not_freshly_probed,0,,1,0,0
+Dutch Bros,workday,True,944,1,0,0,not_freshly_probed,0,,2,2,0
+DXC Technology,workday,True,1194,42,0,63,not_freshly_probed,0,,2,0,102
+Dynatrace,playwright,True,20,0,13,0,not_freshly_probed,0,,1,1,0
+E. Breuninger GmbH & Co.,smartrecruiters,True,160,0,0,0,not_freshly_probed,0,,1,0,0
+EarnIn,greenhouse,True,22,0,0,0,listed,22,,1,0,0
+eBay,workday,True,2,0,0,0,not_freshly_probed,0,,1,0,0
+Echo Global Logistics,workday,True,41,0,0,2,not_freshly_probed,0,,2,0,2
+Echobind,html,True,9,0,3,0,not_freshly_probed,0,,2,1,0
+Ecolab,workday,True,1065,68,0,82,not_freshly_probed,0,,2,0,150
+Edia,ashby,True,6,0,0,0,not_freshly_probed,0,,1,0,0
+Edra,ashby,True,21,0,0,0,not_freshly_probed,0,,1,0,0
+Edwards Lifesciences,workday,True,398,21,0,27,not_freshly_probed,0,,2,0,44
+Egis Group,smartrecruiters,True,1577,0,0,0,not_freshly_probed,0,,1,0,0
+eHealth,workday,True,2,0,0,0,not_freshly_probed,0,,1,0,0
+Eight Sleep,ashby,True,39,10,0,0,not_freshly_probed,0,,2,0,0
+Eikon Therapeutics,greenhouse,True,26,11,0,0,listed,26,,2,0,0
+Eisai,workday,True,64,13,0,1,not_freshly_probed,0,,2,0,1
+Elastic,greenhouse,True,371,1,0,0,listed,371,,2,0,0
+Elatec GmbH,smartrecruiters,True,8,0,0,0,not_freshly_probed,0,,1,0,0
+Elation Health,greenhouse,True,18,0,0,0,listed,17,,1,0,0
+Electronic Arts,avature,True,367,0,0,0,not_freshly_probed,0,,1,0,0
+Elevance Health,workday,True,261,86,0,95,not_freshly_probed,0,,2,0,116
+ElevenLabs,ashby,True,158,92,0,0,not_freshly_probed,0,,1,0,0
+Eli Lilly,playwright,True,10,0,10,0,not_freshly_probed,0,,1,0,0
+Ellipsis Labs,ashby,True,13,0,0,0,not_freshly_probed,0,,1,0,0
+Ellucian,jobsapi,True,60,0,0,0,listed,59,,0,0,11
+Elroy Air,lever,True,8,0,0,0,listed,8,,1,0,0
+EMCOR,icims,True,1529,0,0,0,not_freshly_probed,0,,1529,5,32
+Emergent Software,html,True,56,0,43,0,not_freshly_probed,0,,1,0,0
+Emerson,oraclecloud,True,1119,0,0,0,listed,1099,,1,0,118
+Emory University,multi,True,640,0,0,0,not_freshly_probed,0,,640,6,0
+Enbridge,workday,True,55,7,0,10,not_freshly_probed,0,,2,0,10
+Encore Global,talentbrew,True,16,1,0,0,not_freshly_probed,0,,2,1,0
+End Point Dev,html,True,0,0,0,0,not_freshly_probed,0,,0,0,0
+Energy Northwest,workday,True,14,0,0,0,not_freshly_probed,0,,1,0,0
+Engel & Völkers Technology,html,True,109,0,15,0,not_freshly_probed,0,,2,0,0
+Enigma,greenhouse,True,9,0,0,0,listed,9,,1,0,0
+Enigma Aerospace,lever,True,3,0,0,0,listed,3,,1,0,0
+Ensemble Health Partners,workday,True,472,114,4,211,not_freshly_probed,0,,3,0,324
+Ensign InfoSecurity,workday,True,59,1,5,0,not_freshly_probed,0,,3,2,1
+Ensora Health,workday,True,6,4,1,0,not_freshly_probed,0,,3,3,4
+Envoy,ashby,True,23,0,0,0,not_freshly_probed,0,,1,0,0
+EPAM Systems,html,True,1,0,1,0,not_freshly_probed,0,,1,0,0
+Epic Games,greenhouse,True,141,0,0,40,listed,139,,2,2,0
+Epic Kids,greenhouse,True,11,0,0,0,listed,11,,1,0,0
+Epirus,greenhouse,True,29,1,0,0,listed,29,,2,0,0
+Epoch AI,lever,True,7,0,0,0,listed,7,,1,0,0
+Equifax,workday,True,176,11,0,22,not_freshly_probed,0,,2,0,33
+Equinix,workday,True,284,31,0,58,not_freshly_probed,0,,2,0,88
+EquipmentShare,equipmentshare,True,1044,78,0,0,not_freshly_probed,0,,0,0,0
+Essentia Health,workday,True,779,28,0,26,not_freshly_probed,0,,2,2,27
+Estee Lauder,eightfold,True,2162,54,0,0,not_freshly_probed,0,,2,0,0
+Estia Health,workday,True,484,6,3,11,not_freshly_probed,0,,3,0,17
+Etched,ashby,True,117,0,0,0,not_freshly_probed,0,,1,0,0
+Etsy,html,True,71,0,0,0,not_freshly_probed,0,,1,0,0
+Eulerity,greenhouse,True,14,0,0,0,listed,14,,1,0,0
+Eurofins,smartrecruiters,True,2599,1,0,0,not_freshly_probed,0,,2,0,0
+European Homecare GmbH,smartrecruiters,True,94,0,0,0,not_freshly_probed,0,,1,0,0
+"Eventbrite, Inc.",html,True,10,0,0,0,not_freshly_probed,0,,1,0,0
+EvenUp,ashby,True,50,0,0,0,not_freshly_probed,0,,1,0,0
+EverCommerce,workday,True,36,2,0,4,not_freshly_probed,0,,2,2,7
+Everlane,greenhouse,True,37,0,0,0,listed,36,,1,0,0
+Everlaw,greenhouse,True,36,0,0,0,listed,36,,1,0,0
+Evolutionary Scale,html,True,0,0,0,0,not_freshly_probed,0,,0,0,0
+Evolver,greenhouse,True,19,0,0,0,listed,18,,1,0,0
+Exa,ashby,True,56,3,0,0,not_freshly_probed,0,,2,0,0
+Exact Sciences,workday,False,151,0,0,20,not_freshly_probed,0,,2,0,0
+EXL,oraclecloud,True,2852,0,0,0,listed,147,,1,0,1
+Expedia,playwright,True,45,0,44,0,not_freshly_probed,0,,1,1,0
+Expensify,ashby,True,2,1,0,0,not_freshly_probed,0,,1,0,0
+Extend,html,True,35,0,35,0,not_freshly_probed,0,,1,0,0
+ExxonMobil,successfactors,True,520,4,0,0,not_freshly_probed,0,,0,0,0
+EY,successfactors,True,2773,14,0,404,not_freshly_probed,0,,0,0,0
+Facile.it,html,True,0,0,0,0,not_freshly_probed,0,,0,0,0
+Factory,ashby,True,62,9,0,0,not_freshly_probed,0,,2,0,0
+FactSet,workday,True,92,32,0,2,not_freshly_probed,0,,2,0,2
+Faire,greenhouse,True,75,36,0,0,listed,75,,2,0,0
+Fairfield,workday,True,99,0,0,2,not_freshly_probed,0,,2,2,2
+Fairmat,lever,True,12,0,0,0,listed,12,,1,0,2
+Fairwinds,html,True,30,0,27,0,not_freshly_probed,0,,1,0,0
+fal,ashby,True,44,0,0,0,not_freshly_probed,0,,1,0,0
+Fanatics,oraclecloud,True,14,0,0,0,listed,14,,1,0,2
+FanDuel,html,True,82,8,0,0,not_freshly_probed,0,,2,0,0
+Fannie Mae,workday,True,56,14,2,19,not_freshly_probed,0,,2,2,20
+Fastly,html,True,120,0,56,0,not_freshly_probed,0,,2,0,0
+"Fate Therapeutics, Inc.",lever,True,6,0,0,0,listed,6,,1,0,0
+Fay,greenhouse,True,2,1,0,0,listed,2,,2,0,0
+Feastables,greenhouse,True,8,0,0,0,listed,7,,1,0,0
+Federato,greenhouse,True,8,0,0,0,listed,8,,1,0,0
+FedEx,paradox,True,4714,93,0,0,not_freshly_probed,0,,0,0,0
+Feld Entertainment,lever,True,58,0,0,0,listed,58,,1,0,0
+FHLBank Topeka,workday,True,5,0,0,0,not_freshly_probed,0,,1,0,0
+Fidelity,workday,True,754,69,0,95,not_freshly_probed,0,,2,0,108
+Field AI,lever,True,110,0,0,0,listed,110,,1,0,18
+Fiera Capital,workday,True,22,3,0,0,not_freshly_probed,0,,2,0,0
+Fife Council,oraclecloud,True,127,0,0,0,listed,123,,1,0,42
+Figma,greenhouse,True,141,0,0,0,listed,141,,1,0,0
+Figure,greenhouse,True,100,0,0,0,listed,100,,1,0,0
+Figure AI,html,True,7,0,6,0,not_freshly_probed,0,,1,0,0
+Fireblocks,greenhouse,True,26,3,0,0,listed,26,,2,0,0
+Fireworks AI,ashby,True,90,28,0,0,not_freshly_probed,0,,2,0,0
+Fiserv,workday,True,353,35,0,26,not_freshly_probed,0,,2,0,32
+Fitch Solutions (dv01),greenhouse,True,5,0,0,0,listed,5,,1,0,0
+Five Rings,greenhouse,True,17,0,0,0,listed,17,,1,0,0
+Five9,greenhouse,True,88,0,0,0,listed,87,,1,0,0
+Fivetran,greenhouse,True,176,0,0,0,listed,175,,1,0,0
+Flagright,ashby,True,9,0,0,0,not_freshly_probed,0,,1,0,0
+"Flagstar Bank, N.A",workday,True,255,11,0,16,not_freshly_probed,0,,2,0,25
+Flatiron Health,greenhouse,True,21,1,0,0,listed,21,,2,0,0
+Flexera,workday,True,18,0,0,0,not_freshly_probed,0,,1,0,0
+Flexport,greenhouse,True,203,20,0,0,listed,202,,2,0,0
+Flock Safety,html,True,69,0,62,0,not_freshly_probed,0,,2,0,0
+Flow Traders,greenhouse,True,45,0,0,0,listed,44,,1,0,0
+Flower Labs,html,True,2,0,2,0,not_freshly_probed,0,,1,0,0
+Fluence Energy,workday,True,92,24,0,11,not_freshly_probed,0,,1,0,34
+Fluidstack,ashby,True,246,174,0,0,not_freshly_probed,0,,1,0,0
+Fluxergy,lever,True,6,0,0,0,listed,6,,1,0,0
+Foley & Lardner LLP,icims,True,22,0,0,0,not_freshly_probed,0,,22,0,0
+Fonoa,ashby,True,22,5,0,0,not_freshly_probed,0,,2,0,0
+Ford,oraclecloud,True,876,0,0,0,listed,27,,1,0,2
+Ford Foundation,workday,True,3,0,0,0,not_freshly_probed,0,,1,0,0
+Form Energy,ashby,True,203,20,0,0,not_freshly_probed,0,,2,0,0
+Form3,greenhouse,True,6,1,0,0,listed,6,,2,0,0
+Formation Bio,greenhouse,True,20,19,0,0,listed,20,,1,0,0
+Formidable Labs,greenhouse,True,23,1,0,0,listed,23,,2,0,0
+Forter,greenhouse,True,18,1,0,0,listed,18,,2,0,0
+Fortinet,oraclecloud,True,1027,0,0,0,listed,1,,1,0,0
+Foster Farms,smartrecruiters,True,10,0,0,0,not_freshly_probed,0,,1,1,0
+FourKites,greenhouse,True,16,14,0,0,listed,16,,2,0,0
+Fox Corporation (Class A),workday,True,321,2,0,3,not_freshly_probed,0,,2,0,3
+Foxglove,ashby,True,5,0,0,0,not_freshly_probed,0,,1,0,0
+Frappe,html,True,17,0,17,0,not_freshly_probed,0,,1,0,0
+Freddie Mac,workday,True,82,5,0,8,not_freshly_probed,0,,2,0,8
+Freedom Technology Solutions Group,greenhouse,True,101,0,0,0,listed,101,,1,0,0
+Freeman Health System,workday,True,496,3,2,3,not_freshly_probed,0,,3,2,6
+Freenome,greenhouse,True,30,0,0,0,listed,30,,1,0,0
+Freeport-McMoRan,eightfold,True,334,14,0,0,not_freshly_probed,0,,2,2,0
+Fresenius Medical Care,workday,True,3432,77,1,66,not_freshly_probed,0,,3,0,76
+FreshDirect,icims,False,0,0,0,0,not_freshly_probed,0,,0,0,0
+Freshworks,smartrecruiters,True,132,0,0,0,not_freshly_probed,0,,1,0,0
+Front,ashby,True,6,0,0,0,not_freshly_probed,0,,1,0,0
+Frost Bank,workday,True,189,9,0,7,not_freshly_probed,0,,2,0,15
+Fujifilm Healthcare,workday,True,1,0,0,0,not_freshly_probed,0,,1,0,0
+Full Sail University,workday,True,78,0,0,0,not_freshly_probed,0,,1,0,0
+Fullbay,bamboohr,True,13,0,4,0,not_freshly_probed,0,,1,0,0
+Fullstory,ashby,True,10,0,0,0,not_freshly_probed,0,,1,0,0
+Function Health,gem,True,31,11,0,0,not_freshly_probed,0,,0,0,0
+Further,greenhouse,True,2,0,0,0,empty,0,,1,0,0
+G-Research,html,True,67,0,0,0,not_freshly_probed,0,,1,0,0
+Gainsight,ashby,True,17,2,0,0,not_freshly_probed,0,,2,0,0
+"Galatea Bio, Inc.",lever,True,2,0,0,0,listed,2,,1,1,0
+Gallagher,jobsapi,True,100,0,0,0,listed,100,,0,0,36
+Gamma,ashby,True,21,0,0,0,not_freshly_probed,0,,1,0,0
+Gap Inc.,workday,True,255,11,0,23,not_freshly_probed,0,,2,0,32
+Garmin,jobsapi,True,100,0,0,0,listed,100,,0,0,7
+Garner Health,greenhouse,True,80,1,0,0,listed,80,,2,0,0
+Gartner,workday,True,785,166,0,55,not_freshly_probed,0,,2,0,148
+Gator Bio,lever,True,3,0,0,0,listed,3,,1,0,0
+Gauntlet,lever,True,6,3,0,0,listed,6,,2,0,0
+Gauss Labs,lever,True,9,1,0,0,listed,9,,2,0,0
+GCI,oraclecloud,True,49,0,0,0,listed,49,,1,0,2
+Gcore,smartrecruiters,True,17,0,0,0,not_freshly_probed,0,,1,0,0
+GE Aerospace,workday,True,614,71,0,42,not_freshly_probed,0,,2,0,112
+GE Healthcare,workday,True,1019,99,0,71,not_freshly_probed,0,,2,0,179
+GE Vernova,workday,True,2237,264,0,162,not_freshly_probed,0,,2,0,433
+Gecko Robotics,ashby,True,21,10,0,0,not_freshly_probed,0,,1,0,0
+Gelber Group,greenhouse,True,13,0,0,0,listed,13,,1,0,0
+Gemini,greenhouse,True,31,14,0,0,listed,30,,2,0,0
+Gen Digital,ashby,True,120,20,0,0,not_freshly_probed,0,,2,0,0
+GenBio AI,lever,True,5,0,0,0,listed,5,,1,0,0
+Generac,workday,True,93,1,0,0,not_freshly_probed,0,,2,0,0
+General Assembly,greenhouse,True,26,0,0,0,listed,26,,1,0,0
+General Dynamics,icims,True,329,0,0,0,not_freshly_probed,0,,329,2,19
+General Dynamics - Bath Iron Works,icims,True,93,0,0,0,not_freshly_probed,0,,93,2,4
+General Dynamics Electric Boat,icims,True,238,0,0,0,not_freshly_probed,0,,238,14,0
+General Dynamics Information Technology,workday,True,1248,205,1,31,not_freshly_probed,0,,3,3,110
+General Dynamics Missions System International,smartrecruiters,True,107,0,0,0,not_freshly_probed,0,,1,0,0
+General Dynamics Ordnance & Tactical Systems,icims,True,40,0,0,0,not_freshly_probed,0,,40,0,0
+General Mills,html,True,4,0,3,0,not_freshly_probed,0,,1,0,0
+General Motors,workday,True,826,156,0,70,not_freshly_probed,0,,2,0,85
+Generate Biomedicines,greenhouse,True,17,0,0,0,listed,17,,1,0,0
+Genesis Molecular AI,ashby,True,11,6,0,0,not_freshly_probed,0,,2,0,0
+Geneva Trading,greenhouse,True,13,0,0,0,listed,13,,1,0,0
+GenScript,greenhouse,True,73,2,0,0,listed,74,,2,0,2
+Gensler,xml_feed,True,20,0,20,0,not_freshly_probed,0,,1,0,0
+Genspark,ashby,True,10,0,0,0,not_freshly_probed,0,,1,0,0
+Genuine Parts Company,workday,True,2778,86,0,96,not_freshly_probed,0,,2,0,124
+Georgetown University,workday,True,133,0,0,0,not_freshly_probed,0,,1,0,0
+Georgia Tech,html,False,0,0,0,0,not_freshly_probed,0,,0,0,0
+Getaround,html,True,24,0,6,0,not_freshly_probed,0,,2,0,0
+Geyen + del Campo,smartrecruiters,True,1,0,0,0,not_freshly_probed,0,,1,0,0
+Giant Spoon,html,True,0,0,0,0,not_freshly_probed,0,,0,0,0
+GIANTS Software GmbH,smartrecruiters,True,3,0,0,0,not_freshly_probed,0,,1,0,0
+Giga AI,ashby,True,33,1,0,0,not_freshly_probed,0,,2,0,0
+Gilead Sciences,workday,True,404,21,0,43,not_freshly_probed,0,,2,0,64
+Ginkgo Bioworks,greenhouse,True,19,0,0,0,listed,19,,1,0,0
+GitHub,html,True,44,0,32,0,not_freshly_probed,0,,1,0,0
+GitLab,greenhouse,True,232,91,0,0,listed,232,,2,0,0
+Glass Health Inc.,lever,True,4,0,0,0,listed,4,,1,0,0
+Glassdoor,greenhouse,False,0,0,0,0,not_freshly_probed,0,,0,0,0
+Glean,greenhouse,True,119,21,0,0,listed,119,,2,0,0
+Global Payments,workday,True,413,42,0,39,not_freshly_probed,0,,2,0,42
+Globe Life,workday,True,28,0,0,1,not_freshly_probed,0,,2,0,1
+Globus Medical,workday,True,340,10,2,2,not_freshly_probed,0,,3,0,9
+Glossier,greenhouse,True,22,0,0,0,listed,22,,1,0,0
+GM Financial,oraclecloud,True,128,0,0,0,listed,125,,1,0,18
+GMO,lever,True,11,0,0,0,listed,11,,1,0,0
+Goalbook,lever,True,7,0,0,0,listed,7,,1,0,0
+GOAT Group,greenhouse,True,18,1,0,0,listed,18,,2,0,0
+GoDaddy,greenhouse,True,34,0,0,0,listed,34,,1,0,30
+GoFundMe,greenhouse,True,24,1,0,0,listed,24,,2,0,0
+GoGoGrandparent,html,True,57,0,42,11,not_freshly_probed,0,,2,0,0
+GoGuardian,greenhouse,True,14,0,0,0,listed,14,,1,0,0
+GoHealth Urgent Care,workday,True,447,80,0,33,not_freshly_probed,0,,2,0,36
+Goldman Sachs,playwright,False,0,0,0,0,not_freshly_probed,0,,0,0,0
+Goliath Partners,html,False,0,0,0,0,not_freshly_probed,0,,0,0,0
+Gong,greenhouse,True,96,20,0,0,listed,96,,2,0,0
+GoodLeap,lever,True,27,0,0,0,listed,27,,1,0,5
+GOODLES,html,False,0,0,0,0,not_freshly_probed,0,,0,0,0
+Goodwin,workday,True,40,16,0,8,not_freshly_probed,0,,1,0,21
+Goodyear,workday,True,59,1,0,2,not_freshly_probed,0,,2,0,3
+Google,xml_feed,False,3531,0,3531,0,not_freshly_probed,0,,2,0,0
+Google DeepMind,greenhouse,True,9,4,0,0,error,0,404 board not found: deepmind,1,1,0
+Gopuff,lever,True,802,0,0,0,listed,791,,1,0,6
+Gorgias,ashby,True,16,0,0,0,not_freshly_probed,0,,1,0,0
+GovWell,ashby,True,13,0,0,0,not_freshly_probed,0,,1,0,0
+Gower Street Analytics,html,False,0,0,0,0,not_freshly_probed,0,,0,0,0
+Grab,html,True,64,0,33,0,not_freshly_probed,0,,2,0,0
+Gradient Experience,bamboohr,True,13,0,4,0,not_freshly_probed,0,,1,0,0
+Grafana Labs,greenhouse,True,133,0,0,0,listed,133,,1,0,0
+Grammarly,ashby,True,69,15,0,0,not_freshly_probed,0,,2,0,0
+Granola,ashby,True,21,0,0,0,not_freshly_probed,0,,1,0,0
+Graphistry,html,True,29,0,24,0,not_freshly_probed,0,,1,0,0
+Great Plains Health,workday,True,104,0,0,0,not_freshly_probed,0,,1,0,0
+Great Question,ashby,True,4,0,0,0,not_freshly_probed,0,,1,0,0
+Great River Health,workday,True,228,7,0,2,not_freshly_probed,0,,2,0,4
+Greenlight Financial Technology,lever,True,13,1,0,0,listed,13,,1,0,0
+"Greyhound Lines, Inc.",icims,True,70,0,0,0,not_freshly_probed,0,,70,0,0
+Greystar,workday,True,1520,18,0,47,not_freshly_probed,0,,2,0,53
+Groq,html,True,4,0,4,0,not_freshly_probed,0,,1,0,0
+Grow Therapy,ashby,True,27,8,0,0,not_freshly_probed,0,,2,0,0
+Groww,greenhouse,True,10,0,0,0,listed,10,,1,0,0
+Grubhub,workday,True,33,4,0,4,not_freshly_probed,0,,2,0,7
+Gruntwork,ashby,True,1,0,0,0,not_freshly_probed,0,,1,0,0
+GSK,workday,True,804,181,0,100,not_freshly_probed,0,,2,0,276
+GTE Financial,workday,True,18,0,0,0,not_freshly_probed,0,,1,0,0
+Guardant Health,html,True,26,0,26,0,not_freshly_probed,0,,1,0,0
+Guardsquare,lever,True,1,0,0,0,listed,1,,1,0,0
+Guideline,html,True,3,0,3,0,not_freshly_probed,0,,1,0,0
+Guidewire,workday,True,123,12,0,6,not_freshly_probed,0,,2,0,17
+Guild,ashby,True,1,1,0,0,not_freshly_probed,0,,1,0,0
+Gursey,lever,True,17,0,0,0,listed,17,,1,0,2
+Gusto,greenhouse,True,97,64,0,0,listed,96,,2,0,0
+"H&R Block Management, LLC",icims,True,1309,0,0,0,not_freshly_probed,0,,1309,43,0
+H-E-B,html,True,17,0,1,0,not_freshly_probed,0,,2,0,0
+H.I.G. Capital,workday,True,8,3,0,0,not_freshly_probed,0,,2,0,2
+HackerOne,ashby,True,8,4,0,0,not_freshly_probed,0,,2,0,0
+Hadrian,ashby,True,140,18,0,0,not_freshly_probed,0,,2,0,0
+Hai Hospitality,workday,True,72,5,0,4,not_freshly_probed,0,,2,0,4
+Haley Mechanical,icims,True,12,0,0,0,not_freshly_probed,0,,12,0,0
+Halifax Health,workday,True,308,9,0,1,not_freshly_probed,0,,2,0,10
+Hancock Whitney,workday,True,165,23,0,17,not_freshly_probed,0,,2,0,17
+Handshake,ashby,True,87,17,0,0,not_freshly_probed,0,,2,0,0
+HARMAN International,workday,True,521,49,0,13,not_freshly_probed,0,,2,0,29
+Harmonic Design,lever,True,1,0,0,0,empty,0,,1,0,0
+Harmony,lever,True,9,0,0,0,listed,9,,1,1,0
+Harness,greenhouse,True,66,4,0,0,listed,66,,2,0,0
+Harpeth Valley Utilities District,smartrecruiters,True,3,0,0,0,not_freshly_probed,0,,1,0,0
+Harry's,greenhouse,True,15,0,0,0,listed,15,,1,0,0
+Harvard Library Innovation Lab,html,True,2,0,2,0,not_freshly_probed,0,,1,0,0
+Harvard University,playwright,False,0,0,0,0,not_freshly_probed,0,,0,0,0
+Harvey,ashby,True,345,17,0,0,not_freshly_probed,0,,2,0,0
+Hashrocket,html,True,14,0,7,0,not_freshly_probed,0,,1,0,0
+Haus,ashby,True,7,3,0,0,not_freshly_probed,0,,1,0,0
+Hawaiian Host Group,lever,True,12,0,0,0,listed,12,,1,0,0
+Hazel Health,greenhouse,True,19,0,0,0,listed,19,,1,0,0
+HCA Healthcare,playwright,False,27,1,2,0,not_freshly_probed,0,,2,2,0
+Headspace,greenhouse,True,1,0,0,0,listed,1,,1,0,0
+Headway,ashby,True,89,32,0,0,not_freshly_probed,0,,2,0,0
+Health Catalyst,workday,True,3,1,0,0,not_freshly_probed,0,,1,0,1
+Healthcare Realty,workday,True,21,1,0,0,not_freshly_probed,0,,2,0,0
+Healthfirst,workday,True,74,7,0,8,not_freshly_probed,0,,2,0,15
+HealthMark Group,lever,True,1,0,0,0,error,0,404 Client Error: Not Found for url: https://api.lever.co/v0/postings/healthmark-group?mode=json,1,1,0
+Heartflow,greenhouse,True,106,42,0,0,listed,106,,2,0,0
+Hebbia,ashby,True,22,10,0,0,not_freshly_probed,0,,2,0,0
+Heidelberg Materials,workday,True,831,17,0,0,not_freshly_probed,0,,2,0,7
+Helion Energy,ashby,True,66,0,0,0,not_freshly_probed,0,,1,0,0
+HelloFresh,greenhouse,True,390,22,0,0,listed,389,,2,0,0
+Helsing,greenhouse,True,157,28,0,0,listed,157,,2,2,0
+Henry Schein,workday,True,247,7,0,6,not_freshly_probed,0,,2,0,11
+Hermeus,lever,True,81,0,0,0,listed,80,,1,0,9
+Hero Digital,html,False,0,0,0,0,not_freshly_probed,0,,0,0,0
+Heron Power,ashby,True,51,0,0,0,not_freshly_probed,0,,1,0,0
+Hershey,successfactors,True,313,0,0,17,not_freshly_probed,0,,0,0,0
+Hevo Data,lever,True,54,0,0,0,listed,54,,1,0,0
+Hex Technologies,ashby,True,44,24,0,0,not_freshly_probed,0,,2,0,0
+Hexagon,playwright,True,19,0,18,0,not_freshly_probed,0,,2,2,0
+Hey Jane,lever,True,4,0,0,0,listed,4,,1,0,0
+HeyGen,greenhouse,True,22,0,0,0,listed,22,,1,0,0
+Higharc,ashby,True,13,1,0,0,not_freshly_probed,0,,2,0,0
+Highmark Health,workday,True,1928,56,6,74,not_freshly_probed,0,,3,0,80
+Highspot,lever,True,9,0,0,0,empty,0,,1,0,0
+Hightouch,ashby,True,87,11,0,0,not_freshly_probed,0,,2,0,0
+Hilton,playwright,True,1,0,1,0,not_freshly_probed,0,,1,0,0
+Hims & Hers,ashby,True,152,4,0,0,not_freshly_probed,0,,2,0,0
+Hinge Health,ashby,True,75,1,0,0,not_freshly_probed,0,,2,0,0
+Hippocratic AI,ashby,True,38,0,0,0,not_freshly_probed,0,,1,0,0
+HOKA / Deckers Brands,workday,True,386,14,0,9,not_freshly_probed,0,,2,0,11
+Hologram,greenhouse,True,3,0,0,0,listed,3,,1,0,0
+Home Chef,greenhouse,True,28,0,0,0,listed,28,,1,0,0
+Home Depot,workday,True,998,16,0,5,not_freshly_probed,0,,2,0,19
+Homebound,ashby,True,16,1,0,0,not_freshly_probed,0,,2,0,0
+HomeLight,greenhouse,True,16,0,0,0,listed,16,,1,0,0
+Homeward,greenhouse,True,2,0,0,0,listed,2,,1,0,0
+Honest Health,workday,True,10,1,0,0,not_freshly_probed,0,,1,0,0
+HoneyBook,ashby,True,7,1,0,0,not_freshly_probed,0,,1,0,0
+Honeycomb,greenhouse,True,24,0,0,0,listed,24,,1,0,0
+Honeywell,oraclecloud,True,1216,0,0,0,listed,1199,,1,0,234
+Honor,greenhouse,True,15,0,0,0,listed,14,,1,0,0
+HonorHealth,workday,True,69,0,0,1,not_freshly_probed,0,,2,0,1
+Hopper,ashby,True,13,12,0,0,not_freshly_probed,0,,1,0,0
+Horizon Media,workday,True,83,0,0,0,not_freshly_probed,0,,1,0,0
+Hotjar,html,True,69,0,68,0,not_freshly_probed,0,,1,1,0
+Houzz,lever,True,6,0,0,0,listed,6,,1,0,0
+Howard University,workday,True,164,0,0,0,not_freshly_probed,0,,1,0,0
+HP,workday,True,858,150,0,86,not_freshly_probed,0,,2,0,85
+HPE,workday,True,1640,301,0,152,not_freshly_probed,0,,2,0,152
+HSBC,playwright,True,3,0,3,0,not_freshly_probed,0,,1,0,0
+HubSpot,playwright,True,18,0,12,0,not_freshly_probed,0,,2,0,0
+Hudson River Trading,greenhouse,True,87,36,0,0,listed,87,,2,2,0
+HudsonGray,html,False,0,0,0,0,not_freshly_probed,0,,0,0,0
+Hugging Face,workable,True,6,0,0,0,not_freshly_probed,0,,1,0,0
+Human API,workday,True,211,46,1,29,not_freshly_probed,0,,3,0,45
+Human Interest,greenhouse,True,66,0,0,0,listed,66,,1,0,0
+Humana,workday,True,281,73,0,28,not_freshly_probed,0,,2,0,79
+Huntington Bank,html,True,11,1,1,0,not_freshly_probed,0,,2,2,0
+Hyundai,successfactors,True,278,0,0,0,not_freshly_probed,0,,0,0,0
+IBM,playwright,False,7,0,7,0,not_freshly_probed,0,,1,0,0
+Icon,ashby,True,6,6,0,0,not_freshly_probed,0,,1,0,0
+ICW Group,workday,True,41,11,0,5,not_freshly_probed,0,,2,0,7
+IDEO,html,True,20,0,4,0,not_freshly_probed,0,,2,0,0
+IEX,greenhouse,True,11,0,0,0,listed,11,,1,0,0
+iHeartMedia,workday,True,303,27,0,3,not_freshly_probed,0,,2,0,3
+iHerb,workday,True,40,3,0,0,not_freshly_probed,0,,2,0,3
+Illumina,workday,True,161,12,0,8,not_freshly_probed,0,,2,0,22
+Illumio,ashby,True,66,0,0,0,not_freshly_probed,0,,1,0,0
+IMC,greenhouse,True,169,16,0,0,listed,169,,2,0,0
+Imerys,workday,True,34,1,0,0,not_freshly_probed,0,,2,0,0
+ImmobilienScout24,greenhouse,True,15,0,0,0,listed,15,,1,0,0
+ImmunityBio,workday,True,48,1,0,0,not_freshly_probed,0,,2,0,1
+IMO Health,lever,True,9,0,0,0,listed,9,,1,0,5
+Imperative Logistics Group,workday,True,33,2,0,0,not_freshly_probed,0,,2,0,1
+Impulse Space,pinpoint,True,217,0,0,0,not_freshly_probed,0,,1,0,0
+IMS Nanofabrication GmbH,smartrecruiters,True,18,0,0,0,not_freshly_probed,0,,1,0,0
+Incident.io,ashby,True,34,6,0,0,not_freshly_probed,0,,2,0,0
+Included Health,lever,True,52,0,0,0,listed,52,,1,0,0
+Industrious,ashby,True,61,3,0,0,not_freshly_probed,0,,2,0,0
+Infinitus Systems,ashby,True,7,0,0,0,not_freshly_probed,0,,1,0,0
+Infisical,ashby,True,10,6,0,0,not_freshly_probed,0,,2,0,0
+InfluxData,ashby,True,5,2,0,0,not_freshly_probed,0,,1,0,0
+Informatica,html,False,53,0,42,1,not_freshly_probed,0,,3,0,0
+Infosys,brassring,False,5,0,5,0,not_freshly_probed,0,,0,0,0
+Ingenovis Health,workday,True,10,2,0,2,not_freshly_probed,0,,2,0,3
+Inizio,greenhouse,True,18,3,0,0,listed,18,,2,0,0
+Inmar,workday,True,58,11,0,6,not_freshly_probed,0,,2,0,8
+Innodata,lever,True,3,0,0,0,listed,3,,1,0,0
+Insider Intelligence,greenhouse,True,7,0,0,0,listed,7,,1,0,0
+Insitro,ashby,True,13,0,0,0,not_freshly_probed,0,,1,0,0
+instabase,greenhouse,True,3,0,0,0,error,0,404 board not found: instabase,1,1,0
+Instacart,greenhouse,True,125,3,0,0,listed,125,,2,0,0
+Instead,greenhouse,True,11,0,0,0,listed,11,,1,0,0
+Institute of Foundation Models,lever,True,45,0,0,0,listed,45,,1,0,0
+InStride Health,greenhouse,True,20,0,0,0,listed,20,,1,0,0
+"Instructure, Inc.",ashby,True,59,3,0,0,not_freshly_probed,0,,2,0,0
+Insulet Corporation,workday,True,194,21,0,15,not_freshly_probed,0,,2,0,16
+Integral.,html,True,1,0,1,0,not_freshly_probed,0,,1,0,0
+Intel,workday,True,730,81,0,90,not_freshly_probed,0,,2,0,90
+IntelligenceBank,smartrecruiters,True,1,0,0,0,not_freshly_probed,0,,1,0,0
+Intelogix,workday,True,47,6,0,0,not_freshly_probed,0,,2,0,0
+intenseye,lever,True,5,0,0,0,listed,5,,1,0,0
+Interactive Brokers,playwright,True,25,0,0,0,not_freshly_probed,0,,1,0,0
+Intercom,greenhouse,True,107,11,0,0,listed,107,,2,0,0
+Intercontinental Exchange,jobsapi,True,101,0,0,0,listed,100,,0,0,20
+InterDigital,workday,True,15,4,0,2,not_freshly_probed,0,,1,0,5
+Intrinsic,greenhouse,True,24,3,0,0,listed,24,,2,0,0
+Intuit,avature,True,34,0,21,0,not_freshly_probed,0,,2,0,1
+Intuitive Surgical,smartrecruiters,True,744,0,0,0,not_freshly_probed,0,,1,0,0
+Invenergy,workday,True,181,9,0,16,not_freshly_probed,0,,2,0,17
+Invesco,workday,True,231,15,0,34,not_freshly_probed,0,,2,2,36
+Invinity Energy Systems,lever,True,5,0,0,0,listed,5,,1,0,1
+Inworld AI,ashby,True,19,0,0,0,not_freshly_probed,0,,1,0,0
+IonQ,html,True,40,0,40,0,not_freshly_probed,0,,1,0,0
+IQVIA,workday,True,1881,194,0,494,not_freshly_probed,0,,2,0,494
+Iron Mountain,workday,True,347,27,0,17,not_freshly_probed,0,,2,0,34
+Ironclad,ashby,True,33,13,0,0,not_freshly_probed,0,,2,0,0
+Ironflow AI,lever,True,5,0,0,0,listed,5,,1,0,0
+iSpot.tv,greenhouse,True,9,0,0,0,listed,9,,1,0,0
+Iterable,greenhouse,True,13,2,0,0,empty,0,,2,0,0
+Itron,workday,True,14,1,0,1,not_freshly_probed,0,,1,0,1
+IXL Learning,greenhouse,True,118,0,0,0,listed,118,,1,0,0
+Jabil,workday,True,2192,64,1,38,not_freshly_probed,0,,3,0,75
+Jack Morton,greenhouse,True,67,29,0,0,listed,65,,2,0,0
+Jackson Healthcare,workday,True,43,0,0,0,not_freshly_probed,0,,1,1,0
+Jamasoftware,greenhouse,True,1,0,0,0,empty,0,,1,0,0
+Jamf,greenhouse,True,29,5,0,0,listed,29,,1,0,0
+Jane Street,greenhouse,True,223,0,0,0,listed,222,,1,0,0
+Jasper,ashby,True,11,0,0,0,not_freshly_probed,0,,1,0,0
+Jefferies,oraclecloud,True,160,0,0,0,listed,160,,1,1,3
+Jefferson Health,workday,True,1443,25,4,13,not_freshly_probed,0,,3,0,20
+JetBlue Airways,successfactors,True,59,10,0,0,not_freshly_probed,0,,0,0,0
+JFrog,greenhouse,True,65,0,0,0,listed,65,,1,1,0
+JINGDONG,workday,True,82,4,0,0,not_freshly_probed,0,,2,0,4
+Jito Labs,lever,True,3,0,0,0,listed,3,,1,0,0
+Joby Aviation,icims,True,171,0,0,0,not_freshly_probed,0,,171,0,19
+John Muir Health,workday,True,43,0,0,0,not_freshly_probed,0,,1,1,0
+Johns Hopkins University,eightfold,True,624,19,0,0,not_freshly_probed,0,,2,0,0
+Johnson & Johnson,workday,True,1966,260,0,223,not_freshly_probed,0,,2,0,241
+Johnson Controls,workday,True,2722,127,0,61,not_freshly_probed,0,,2,0,154
+Journal Tech,html,True,14,0,13,0,not_freshly_probed,0,,1,0,0
+Journey Clinical,lever,True,14,0,0,0,listed,14,,1,0,0
+JPMorgan Chase,oraclecloud,True,7286,0,0,0,listed,7199,,1,0,1479
+Julius AI,ashby,True,4,0,0,0,not_freshly_probed,0,,1,0,0
+Jump Trading,greenhouse,True,99,20,0,0,listed,95,,2,0,0
+Juniper Square,ashby,True,49,3,0,0,not_freshly_probed,0,,2,0,0
+"Jupiter Intelligence, Inc.",lever,True,1,1,0,0,listed,1,,1,0,1
+Justworks,greenhouse,True,99,6,0,0,listed,97,,2,0,0
+K Health,greenhouse,True,18,0,0,0,listed,18,,1,0,0
+Kainos,workday,True,120,58,0,37,not_freshly_probed,0,,1,0,90
+Kaiser Permanente,talentbrew,True,57,20,1,0,not_freshly_probed,0,,3,1,0
+Kalshi,ashby,True,47,0,0,0,not_freshly_probed,0,,1,0,0
+"Kaplan, Inc",workday,True,36,28,0,0,not_freshly_probed,0,,2,0,0
+Karat,greenhouse,True,16,0,0,0,listed,16,,1,0,0
+KarmaCheck,lever,True,1,0,0,0,listed,1,,1,0,0
+Karyopharm Therapeutics Inc.,icims,True,3,0,0,0,not_freshly_probed,0,,3,0,0
+Kaweah Health,workday,True,208,0,0,3,not_freshly_probed,0,,2,2,3
+KBR,workday,True,1834,234,0,32,not_freshly_probed,0,,2,0,82
+KCAS Bio,lever,True,10,0,0,0,listed,10,,1,0,0
+Kellanova,successfactors,True,113,0,0,0,not_freshly_probed,0,,0,0,0
+Kelley Kronenberg,icims,True,65,0,0,0,not_freshly_probed,0,,65,0,12
+Kenko AI,lever,True,5,0,0,0,listed,5,,1,0,0
+Kentucky Farm Bureau Mutual Ins Co,icims,True,11,0,0,0,not_freshly_probed,0,,11,3,0
+Kestrel Intelligence,lever,True,11,0,0,0,listed,11,,1,0,0
+Key Cyber Solutions,smartrecruiters,True,1,0,0,0,not_freshly_probed,0,,1,0,0
+KeyBank,workday,True,562,55,0,47,not_freshly_probed,0,,2,0,46
+Keyloop,lever,True,68,0,0,0,listed,68,,1,0,6
+Keypath Education,smartrecruiters,True,3,0,0,0,not_freshly_probed,0,,1,0,0
+Keysight Technologies,jobsapi,True,121,0,0,0,listed,100,,0,0,42
+Khan Academy,greenhouse,True,6,6,0,0,listed,6,,1,0,0
+Kimberly-Clark,workday,True,158,5,0,3,not_freshly_probed,0,,2,0,6
+Kimley-Horn,icims,True,9,0,0,0,not_freshly_probed,0,,9,0,0
+Kindred,ashby,True,5,1,0,0,not_freshly_probed,0,,2,0,0
+Kinsta,html,True,52,0,42,0,not_freshly_probed,0,,1,0,0
+Kittitas Valley Healthcare,smartrecruiters,True,45,0,0,0,not_freshly_probed,0,,1,0,0
+KKR,playwright,True,6,0,6,0,not_freshly_probed,0,,1,0,0
+KLA,workday,True,1081,27,0,71,not_freshly_probed,0,,2,0,77
+Klarity,ashby,True,14,1,0,0,not_freshly_probed,0,,2,0,0
+Klaviyo,html,True,107,0,90,0,not_freshly_probed,0,,1,0,0
+KlearNow.ai,lever,True,4,0,0,0,listed,4,,1,0,0
+Knock.com,greenhouse,True,7,0,0,0,listed,7,,1,0,0
+KoBold Metals,greenhouse,True,30,0,0,0,listed,29,,1,0,0
+Kodiak,greenhouse,True,68,0,0,0,listed,67,,1,0,0
+Komodo Health,greenhouse,True,23,0,0,0,listed,23,,1,0,0
+Kong,ashby,True,90,10,0,0,not_freshly_probed,0,,2,0,0
+Kongregate,html,True,10,0,10,0,not_freshly_probed,0,,1,0,0
+Korro Bio,lever,True,5,0,0,0,listed,5,,1,0,0
+Kraken,ashby,True,85,50,0,0,not_freshly_probed,0,,2,0,0
+Krea AI,ashby,True,12,4,0,0,not_freshly_probed,0,,1,0,0
+Kroger,oraclecloud,True,10207,0,0,0,listed,10000,,1,0,0
+KUNGFU.AI,greenhouse,True,2,0,0,0,listed,2,,1,0,0
+Kustomer,ashby,True,2,0,0,0,not_freshly_probed,0,,1,0,0
+L3Harris,talentbrew,True,45,2,0,0,not_freshly_probed,0,,2,0,0
+Lab49,html,True,14,0,14,0,not_freshly_probed,0,,1,0,0
+Labcorp,phenom,True,1046,0,0,0,listed,1896,,1,0,65
+Lam Research,eightfold,True,1413,0,0,0,not_freshly_probed,0,,1,0,0
+Lambda,ashby,True,96,69,0,0,not_freshly_probed,0,,2,0,0
+LangChain,ashby,True,104,20,0,0,not_freshly_probed,0,,2,0,0
+Last Energy,lever,True,24,0,0,0,listed,24,,1,0,0
+LatchBio,lever,True,2,0,0,0,listed,2,,1,1,0
+Lattice,greenhouse,True,9,0,0,0,listed,9,,1,0,0
+LaunchDarkly,greenhouse,True,52,1,0,0,listed,49,,2,0,0
+Layer Health,greenhouse,True,17,1,0,0,listed,17,,2,0,0
+LB Capital,lever,True,129,0,0,0,listed,129,,1,0,0
+LCMC Health,workday,True,856,0,0,2,not_freshly_probed,0,,2,0,2
+Lear Corporation,successfactors,True,281,19,0,0,not_freshly_probed,0,,0,0,0
+Legora,ashby,True,310,8,0,0,not_freshly_probed,0,,2,0,0
+Leidos,workday,True,2210,292,0,74,not_freshly_probed,0,,2,0,92
+Lendmark Financial,workday,True,174,2,0,3,not_freshly_probed,0,,2,0,4
+Lennar,workday,True,311,23,0,39,not_freshly_probed,0,,2,2,42
+Level AI,lever,True,19,0,0,0,listed,19,,1,0,11
+Leverton,workday,True,89,8,1,2,not_freshly_probed,0,,3,0,4
+Levi Strauss,workday,True,1416,7,207,0,not_freshly_probed,0,,3,0,207
+LG Ad Solutions,ashby,True,15,7,0,0,not_freshly_probed,0,,2,0,0
+LGT Capital Partners,workday,True,20,1,0,1,not_freshly_probed,0,,2,0,0
+Life Fitness,workday,True,76,2,0,2,not_freshly_probed,0,,2,0,2
+LifeStance Health,workday,True,118,7,0,5,not_freshly_probed,0,,2,0,12
+Liftoff,greenhouse,True,17,0,0,0,listed,17,,1,0,0
+Lightfield,ashby,True,23,4,0,0,not_freshly_probed,0,,2,0,0
+Lila Sciences,greenhouse,True,108,30,0,0,listed,106,,2,0,0
+Lilly (Eli),workday,True,751,62,0,49,not_freshly_probed,0,,2,0,97
+Lindy,html,True,5,0,3,0,not_freshly_probed,0,,2,0,0
+Linear,ashby,True,29,4,0,0,not_freshly_probed,0,,1,0,0
+LinearB,html,True,2,0,0,0,not_freshly_probed,0,,1,0,0
+Link Logistics,workday,True,25,10,0,2,not_freshly_probed,0,,1,0,6
+Liquid,ashby,True,2,0,0,0,not_freshly_probed,0,,1,0,0
+Liquid AI,ashby,True,22,10,0,0,not_freshly_probed,0,,1,0,0
+Liquid Death,greenhouse,True,1,0,0,0,listed,1,,1,0,0
+Lithic,greenhouse,True,11,1,0,0,listed,11,,2,0,0
+Live Nation,workday,True,1326,39,1,10,not_freshly_probed,0,,3,0,34
+LiveKit,ashby,True,26,12,0,0,not_freshly_probed,0,,2,0,0
+LiveRamp,workday,True,39,8,0,14,not_freshly_probed,0,,2,0,4
+LlamaIndex,html,True,36,0,34,0,not_freshly_probed,0,,1,0,0
+Lob,html,True,43,0,41,0,not_freshly_probed,0,,1,0,0
+Lockheed Martin,brassring,True,15,0,8,0,not_freshly_probed,0,,0,0,0
+locusrobotics,greenhouse,True,4,0,0,0,listed,4,,1,0,0
+Loom,html,True,2,0,0,0,not_freshly_probed,0,,1,0,0
+Lord Abbett,icims,True,19,0,0,0,not_freshly_probed,0,,19,0,0
+Louis Dreyfus Company,smartrecruiters,True,370,0,0,0,not_freshly_probed,0,,1,0,0
+Lovable,ashby,True,81,26,0,0,not_freshly_probed,0,,2,0,0
+Lowe's,workday,True,12842,12,5,11,not_freshly_probed,0,,3,0,17
+Lower,workday,True,1,0,0,1,not_freshly_probed,0,,1,0,0
+LPL Financial,workday,True,311,37,0,64,not_freshly_probed,0,,2,2,84
+Lucid Motors,greenhouse,True,450,0,0,0,listed,446,,1,0,0
+Lululemon,avature,True,7,0,4,0,not_freshly_probed,0,,2,2,0
+Lumentum,workday,True,277,3,0,5,not_freshly_probed,0,,2,0,8
+Luminance,workable,True,52,4,0,0,not_freshly_probed,0,,1,0,0
+Lumos,ashby,True,12,2,0,0,not_freshly_probed,0,,2,0,0
+"Luvata Appleton, LLC",icims,True,2,0,0,0,not_freshly_probed,0,,2,0,0
+Lyell Immunopharma,greenhouse,True,6,0,0,0,listed,5,,1,0,0
+Lyft,greenhouse,True,180,3,0,0,listed,179,,2,0,0
+Lyft's Mobile Team,html,True,42,0,40,0,not_freshly_probed,0,,1,0,0
+Lyra Health,lever,True,476,0,0,0,listed,476,,1,0,62
+Mach Industries,greenhouse,True,157,14,0,0,listed,157,,2,0,0
+Macy's,oraclecloud,True,6314,0,0,0,listed,6239,,1,0,0
+MadHive,ashby,True,11,1,0,0,not_freshly_probed,0,,2,0,0
+Madrigal Pharmaceuticals,workday,True,60,11,0,2,not_freshly_probed,0,,2,1,12
+Magellan Health,workday,True,420,36,12,6,not_freshly_probed,0,,3,0,33
+Magic Eden,ashby,True,1,0,0,0,not_freshly_probed,0,,1,0,0
+MagicSchool AI,ashby,True,3,1,0,0,not_freshly_probed,0,,2,0,0
+Magna,workday,True,1407,35,0,13,not_freshly_probed,0,,2,0,0
+MaineGeneral Health,workday,True,207,13,4,8,not_freshly_probed,0,,3,0,8
+MaintainX,ashby,True,166,49,0,0,not_freshly_probed,0,,2,0,0
+Major League Soccer,icims,True,24,0,0,0,not_freshly_probed,0,,24,0,0
+MakeMusic,html,True,25,0,25,0,not_freshly_probed,0,,1,0,0
+Malley,workday,True,7,0,0,0,not_freshly_probed,0,,1,0,0
+Mama Money,smartrecruiters,True,1,0,0,0,not_freshly_probed,0,,1,0,0
+Mammoth Mountain,workday,True,79,0,0,0,not_freshly_probed,0,,1,0,0
+Man Group,greenhouse,True,56,9,0,0,listed,56,,2,0,0
+ManTech,avature,True,877,0,0,0,not_freshly_probed,0,,1,0,0
+Mapbox,ashby,True,32,4,0,0,not_freshly_probed,0,,1,0,0
+Maple,ashby,True,14,0,0,0,not_freshly_probed,0,,1,0,0
+Marathon Health,workday,True,545,84,0,19,not_freshly_probed,0,,2,0,102
+Marathon Petroleum,workday,True,124,29,0,31,not_freshly_probed,0,,2,0,32
+Marigold,workday,True,7,0,0,1,not_freshly_probed,0,,2,0,1
+MarketAxess,greenhouse,True,5,0,0,0,listed,5,,1,1,0
+Marmon,workday,True,731,7,1,34,not_freshly_probed,0,,3,0,39
+Marqeta,ashby,True,45,7,0,0,not_freshly_probed,0,,2,0,0
+Marriott,html,True,25,0,14,0,not_freshly_probed,0,,2,0,0
+Marsh McLennan,workday,True,1955,182,0,282,not_freshly_probed,0,,2,0,454
+Marvell,workday,True,330,21,0,39,not_freshly_probed,0,,2,0,44
+Mary Lanning Healthcare,workday,True,92,0,0,1,not_freshly_probed,0,,2,0,1
+Mary Washington Healthcare,workday,True,321,2,0,1,not_freshly_probed,0,,2,0,3
+Maschmeyer Concrete,workday,True,54,0,4,0,not_freshly_probed,0,,2,0,0
+Masco,workday,True,37,0,0,0,not_freshly_probed,0,,1,0,0
+Mastercard,workday,True,1123,56,1,53,not_freshly_probed,0,,3,0,55
+MasterClass,greenhouse,True,5,0,0,0,listed,5,,1,0,0
+Match Group / Tinder,lever,True,66,0,0,0,listed,65,,1,0,12
+Material Security,ashby,True,4,1,0,0,not_freshly_probed,0,,2,0,0
+Materialize,html,True,23,0,23,0,not_freshly_probed,0,,1,0,0
+MathWorks,xml_feed,True,190,0,0,0,not_freshly_probed,0,,1,1,0
+Mattel,talentbrew,True,26,0,0,0,not_freshly_probed,0,,1,0,0
+Matter Labs,ashby,True,5,3,0,0,not_freshly_probed,0,,2,0,0
+Mattermost,greenhouse,True,11,3,0,0,listed,11,,1,0,0
+Maurices,workday,True,3297,0,0,0,not_freshly_probed,0,,1,0,0
+Maven,ashby,True,3,0,0,0,not_freshly_probed,0,,1,0,0
+Maven Clinic,greenhouse,True,33,23,0,0,listed,33,,1,0,0
+Mavenlink,html,True,37,0,37,0,not_freshly_probed,0,,1,0,0
+Max Retail,lever,True,2,0,0,0,listed,2,,1,0,0
+"Maxor National Pharmacy Services, LLC",icims,True,45,0,0,0,not_freshly_probed,0,,45,0,0
+May Mobility,greenhouse,True,41,0,0,0,listed,41,,1,0,0
+McDonald's Corporation,smartrecruiters,True,4,0,0,0,not_freshly_probed,0,,1,0,0
+McKesson,workday,True,689,79,1,48,not_freshly_probed,0,,3,0,67
+McKinsey,mckinsey,True,614,266,0,0,not_freshly_probed,0,,0,0,0
+Medallion,greenhouse,True,7,0,0,0,listed,7,,1,0,0
+Medical Home Network,lever,True,2,0,0,0,listed,2,,1,0,0
+MedImpact,workday,True,49,1,0,3,not_freshly_probed,0,,2,0,4
+Medium,greenhouse,True,1,0,0,0,listed,1,,1,0,0
+Medtronic,workday,True,1094,68,0,99,not_freshly_probed,0,,2,0,99
+Meesho,lever,True,59,0,0,0,listed,59,,1,0,3
+Melotech,ashby,True,13,3,0,0,not_freshly_probed,0,,2,0,0
+Memora Health,ashby,False,0,0,0,0,not_freshly_probed,0,,0,0,0
+Memorial Healthcare System,workday,True,617,12,3,13,not_freshly_probed,0,,3,0,27
+Menasha Corporation,workday,True,209,4,2,1,not_freshly_probed,0,,3,0,6
+Meow Wolf,workday,True,24,1,0,0,not_freshly_probed,0,,2,0,0
+Mercedes-Benz,lever,True,13,4,0,0,listed,13,,2,0,0
+Merck,workday,True,981,128,0,114,not_freshly_probed,0,,2,0,230
+Mercor,ashby,True,111,10,0,0,not_freshly_probed,0,,1,0,0
+Mercury,greenhouse,True,75,15,0,0,listed,74,,1,0,0
+Merge,ashby,True,15,2,0,0,not_freshly_probed,0,,2,0,0
+Merlin Labs,lever,True,25,7,0,0,listed,25,,2,0,0
+Meshy,ashby,True,25,6,0,0,not_freshly_probed,0,,2,0,0
+Meta,playwright,False,1,0,1,0,not_freshly_probed,0,,1,0,0
+Metabase,html,True,62,0,52,0,not_freshly_probed,0,,2,0,0
+Metabo,workday,True,28,0,0,0,not_freshly_probed,0,,1,0,0
+"Metabolon, Inc",icims,True,4,0,0,0,not_freshly_probed,0,,4,0,0
+Metagenics,icims,True,11,0,0,0,not_freshly_probed,0,,11,0,0
+Metal Exchange,icims,True,5,0,0,0,not_freshly_probed,0,,5,0,0
+"Metalcraft of Mayville, Inc.",icims,True,66,0,0,0,not_freshly_probed,0,,66,1,0
+Metaprise,lever,True,9,0,0,0,listed,9,,1,0,0
+Metawealth,lever,True,2,0,0,0,listed,2,,1,1,0
+Methodist Le Bonheur Healthcare,workday,True,504,27,1,7,not_freshly_probed,0,,3,0,35
+MGM Resorts,workday,True,508,3,1,4,not_freshly_probed,0,,3,0,4
+Michigan Farm Bureau,icims,True,1,0,0,0,not_freshly_probed,0,,1,1,0
+Micron,workday,True,3207,71,0,206,not_freshly_probed,0,,2,0,206
+Microsoft,playwright,False,22,0,0,2,not_freshly_probed,0,,2,0,0
+Midi Health,greenhouse,True,52,0,0,0,listed,52,,1,0,0
+Milk Makeup,lever,False,0,0,0,0,not_freshly_probed,0,,0,0,0
+Millennium,eightfold,True,224,12,0,0,not_freshly_probed,0,,2,0,0
+Mintlify,ashby,True,15,2,0,0,not_freshly_probed,0,,2,0,0
+Mirage,ashby,True,14,1,0,0,not_freshly_probed,0,,2,0,0
+Miro,playwright,True,2,0,2,0,not_freshly_probed,0,,1,0,0
+Misfits Market,greenhouse,True,67,1,0,0,listed,67,,2,0,0
+Mistral AI,ashby,True,217,93,0,0,not_freshly_probed,0,,2,0,0
+MIT,html,False,0,0,0,0,not_freshly_probed,0,,0,0,0
+Mitsubishi Chemical Group,workday,True,124,1,0,1,not_freshly_probed,0,,2,0,1
+Mixmax,greenhouse,True,2,0,0,0,listed,2,,1,1,0
+Mixpanel,greenhouse,True,46,0,0,0,listed,46,,1,0,0
+MKG,paylocity,True,6,0,0,0,not_freshly_probed,0,,0,0,0
+Mobileye,mobileye,True,178,0,0,0,not_freshly_probed,0,,0,0,0
+Modal,ashby,True,43,19,0,0,not_freshly_probed,0,,2,0,0
+"MODE, Inc.",ashby,True,4,0,0,0,not_freshly_probed,0,,1,0,0
+Modern Health,greenhouse,True,8,0,0,0,listed,8,,1,0,0
+Modern Intelligence,lever,True,7,0,0,0,listed,7,,1,0,0
+Modern Treasury,ashby,True,9,6,0,0,not_freshly_probed,0,,2,0,0
+Moderna,workday,True,15,2,2,0,not_freshly_probed,0,,2,0,1
+Molina Healthcare,oraclecloud,True,399,0,0,0,listed,119,,1,0,43
+Moloco,greenhouse,True,42,12,0,0,listed,42,,1,0,0
+Momentus,greenhouse,True,9,0,0,0,listed,9,,1,0,0
+Monday.com,html,True,10,0,0,0,not_freshly_probed,0,,1,0,0
+Mondelez International,workday,True,1375,205,1,247,not_freshly_probed,0,,2,1,253
+Moneytree,html,True,5,0,0,0,not_freshly_probed,0,,1,0,0
+MongoDB,greenhouse,True,395,86,0,0,listed,394,,1,0,0
+Monolithic Power Systems,workday,True,240,42,1,5,not_freshly_probed,0,,3,0,38
+Montage Health,workday,True,93,0,0,1,not_freshly_probed,0,,2,0,1
+montamo GmbH,smartrecruiters,True,11,0,0,0,not_freshly_probed,0,,1,0,0
+Monte Carlo,ashby,True,10,1,0,0,not_freshly_probed,0,,2,0,0
+Monterey Technologies Inc,lever,True,3,0,0,0,listed,3,,1,0,0
+Monzo,greenhouse,True,70,40,0,0,listed,69,,2,0,0
+Moody’s,talentbrew,True,347,33,2,0,not_freshly_probed,0,,2,0,0
+MoonPay,lever,True,20,0,0,0,listed,20,,1,0,10
+Morgan Stanley,workday,True,1253,67,0,23,not_freshly_probed,0,,2,0,39
+Mosaic Company (The),workday,True,102,7,13,6,not_freshly_probed,0,,2,0,9
+Mosaic Health,workday,True,10,0,0,1,not_freshly_probed,0,,2,0,1
+MotherDuck,ashby,True,3,2,0,0,not_freshly_probed,0,,1,0,0
+Motional,greenhouse,True,82,41,0,0,listed,82,,2,0,0
+Motive,html,True,89,0,80,0,not_freshly_probed,0,,1,0,0
+Motorola Solutions,workday,True,173,0,1,0,not_freshly_probed,0,,2,0,1
+Moveworks,smartrecruiters,True,75,0,0,0,not_freshly_probed,0,,1,0,0
+Mozilla,greenhouse,True,103,5,0,0,listed,103,,2,0,0
+MSCI,icims,True,37,0,0,0,not_freshly_probed,0,,37,0,5
+MTA,playwright,False,0,0,0,0,not_freshly_probed,0,,0,0,0
+MTM Health,workday,True,35,3,0,5,not_freshly_probed,0,,1,0,8
+Munters,workday,True,175,15,0,5,not_freshly_probed,0,,2,0,17
+Mural,ashby,True,13,5,0,0,not_freshly_probed,0,,1,0,0
+Muttdata,lever,True,30,0,0,0,listed,29,,1,0,0
+Mux,ashby,True,1,0,0,0,not_freshly_probed,0,,1,0,0
+MyFitnessPal,greenhouse,True,11,0,0,0,listed,11,,1,0,0
+myPlace Health,workday,True,19,1,0,0,not_freshly_probed,0,,2,0,0
+N1,ashby,True,10,6,0,0,not_freshly_probed,0,,1,0,0
+n8n,ashby,True,40,35,0,0,not_freshly_probed,0,,1,0,0
+Nabla,ashby,True,10,2,0,0,not_freshly_probed,0,,1,0,0
+Nango,ashby,True,7,4,0,0,not_freshly_probed,0,,1,0,0
+"Nasdaq, Inc.",workday,True,166,8,0,12,not_freshly_probed,0,,2,0,14
+Nash,ashby,True,23,6,0,0,not_freshly_probed,0,,2,0,0
+Natera,greenhouse,True,229,22,0,0,listed,229,,2,0,0
+Nationwide,oraclecloud,True,241,0,0,0,listed,1,,1,0,1
+Nationwide Children's Hospital,workday,True,572,7,6,2,not_freshly_probed,0,,3,0,3
+Natuvion GmbH,smartrecruiters,True,1,0,0,0,not_freshly_probed,0,,1,0,0
+Naughty Dog,greenhouse,True,13,0,0,0,listed,13,,1,0,0
+Navan,greenhouse,True,215,5,0,0,listed,215,,2,0,0
+NBCUniversal,smartrecruiters,True,462,0,0,0,not_freshly_probed,0,,1,0,0
+NCR Voyix,workday,True,174,4,0,4,not_freshly_probed,0,,2,0,4
+Nearmap,smartrecruiters,True,42,0,0,0,not_freshly_probed,0,,1,0,0
+NEC Software Solutions,smartrecruiters,True,99,1,0,0,not_freshly_probed,0,,2,0,0
+Neighborly,workday,True,18,5,0,3,not_freshly_probed,0,,2,0,4
+Nelnet,workday,True,65,12,0,11,not_freshly_probed,0,,2,0,17
+Nelson Mullins Riley & Scarborough,icims,True,50,0,0,0,not_freshly_probed,0,,50,0,15
+Neon,ashby,True,4,1,0,0,not_freshly_probed,0,,2,0,0
+NerdWallet,ashby,True,22,0,0,0,not_freshly_probed,0,,1,0,0
+NetApp,playwright,True,15,0,7,0,not_freshly_probed,0,,2,2,0
+Netflix,eightfold,True,394,73,0,0,not_freshly_probed,0,,2,0,0
+Netguru,workable,True,26,0,0,0,not_freshly_probed,0,,1,0,0
+Netlify,greenhouse,True,4,0,0,0,listed,4,,1,0,0
+Netskope,greenhouse,True,128,2,0,0,listed,128,,2,0,0
+Neuberger Berman,workday,True,93,6,0,2,not_freshly_probed,0,,2,0,2
+Neuralink,greenhouse,True,79,41,0,0,listed,79,,2,0,0
+New Balance,phenom,True,310,0,0,0,error,0,"HTTPSConnectionPool(host='jobs.newbalance.com', port=443): Max retries exceeded with url: /global/en/search-results (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self signed certificate in certificate chain (_ssl.c:997)')))",1,1,0
+New Charter Technologies,workday,True,30,7,0,1,not_freshly_probed,0,,1,0,4
+New Jersey Innovation Authority,lever,True,7,0,0,0,listed,7,,1,0,0
+New Relic,greenhouse,True,54,17,0,0,listed,55,,2,0,0
+New York University,icims,True,226,0,0,0,not_freshly_probed,0,,226,1,0
+Newfront,ashby,False,22,0,0,0,not_freshly_probed,0,,1,0,0
+NewLimit,greenhouse,True,15,0,0,0,listed,15,,1,0,0
+News Corp,workday,True,26,1,0,2,not_freshly_probed,0,,2,0,3
+NewsBreak,greenhouse,True,66,5,0,0,listed,66,,2,0,0
+Newsela,greenhouse,True,13,3,0,0,listed,12,,2,0,0
+NewStore,html,True,30,0,30,0,not_freshly_probed,0,,1,1,0
+nexos.ai,lever,True,9,0,0,0,listed,9,,1,1,9
+Next Health,lever,True,16,0,0,0,listed,16,,1,0,0
+Nextdoor,greenhouse,True,24,0,0,0,listed,24,,1,0,0
+NextEra Energy,successfactors,True,281,17,0,0,not_freshly_probed,0,,0,0,0
+nEye.ai,lever,True,16,0,0,0,listed,16,,1,0,0
+Niantic,ashby,True,15,2,0,0,not_freshly_probed,0,,2,0,0
+Nightwing Intelligence Solutions,workday,True,365,21,0,3,not_freshly_probed,0,,2,0,3
+Nike,workday,True,814,0,0,0,not_freshly_probed,0,,1,0,0
+Nintendo,greenhouse,True,64,0,0,0,listed,64,,1,0,0
+NiSource,workday,True,40,8,1,7,not_freshly_probed,0,,2,0,13
+Nitro,html,True,99,0,62,0,not_freshly_probed,0,,2,0,0
+Nokia,oraclecloud,True,596,0,0,0,listed,591,,1,0,134
+Nomi Health,lever,True,5,0,0,0,listed,5,,1,0,0
+Noom,greenhouse,True,6,3,0,0,listed,6,,1,0,0
+Nordstrom,workday,True,1520,5,0,7,not_freshly_probed,0,,2,0,9
+NoRedInk,html,True,17,0,17,0,not_freshly_probed,0,,1,0,0
+Norfolk Southern,successfactors,True,96,1,0,2,not_freshly_probed,0,,0,0,0
+Norm AI,ashby,True,20,0,0,0,not_freshly_probed,0,,1,0,0
+North Cloud,rippling,True,11,0,0,0,not_freshly_probed,0,,1,0,0
+Northeastern University,workday,True,465,3,0,5,not_freshly_probed,0,,2,0,6
+Northern Trust,workday,True,629,22,0,50,not_freshly_probed,0,,2,0,50
+Northrop Grumman,playwright,True,3,0,3,0,not_freshly_probed,0,,1,0,0
+Northslope Technologies,ashby,True,5,1,0,0,not_freshly_probed,0,,2,0,0
+Northwestern University,html,False,1,0,1,0,not_freshly_probed,0,,1,1,0
+Northwood Space,ashby,True,75,9,0,0,not_freshly_probed,0,,2,0,0
+Notable,ashby,True,10,1,0,0,not_freshly_probed,0,,2,0,0
+Notion,ashby,True,135,42,0,0,not_freshly_probed,0,,2,0,0
+Nourish,greenhouse,True,81,12,0,0,listed,81,,2,0,0
+NOV,oraclecloud,True,714,0,0,0,listed,712,,1,0,43
+Nova Credit,greenhouse,True,8,0,0,0,listed,8,,1,0,0
+"Noven Pharmaceuticals, Inc.",icims,True,16,0,0,0,not_freshly_probed,0,,16,0,0
+NRG Energy,successfactors,True,33,3,0,0,not_freshly_probed,0,,0,0,0
+Nscale,greenhouse,True,293,109,0,0,listed,291,,1,0,0
+NTT Global Data Centers,workday,True,259,8,0,8,not_freshly_probed,0,,2,0,8
+Nubank,greenhouse,False,1,0,0,0,not_freshly_probed,0,,1,0,0
+Nuclear Promise X,ashby,True,14,1,0,0,not_freshly_probed,0,,2,0,0
+Numeral,ashby,True,23,9,0,0,not_freshly_probed,0,,2,0,0
+Nuna,ashby,True,5,0,0,0,not_freshly_probed,0,,1,0,0
+Nuro,greenhouse,True,107,0,0,0,listed,107,,1,0,0
+Nurx,greenhouse,False,4,0,0,0,not_freshly_probed,0,,1,1,0
+Nutanix,jobvite,True,126,0,4,22,not_freshly_probed,0,,3,0,0
+NuvoAir,lever,True,8,0,0,0,listed,8,,1,0,0
+NVE Experience Agency,greenhouse,True,20,10,0,0,listed,20,,2,0,0
+NVIDIA,workday,True,2776,814,0,198,not_freshly_probed,0,,2,0,488
+NXP Semiconductors,workday,True,813,111,0,37,not_freshly_probed,0,,2,0,116
+NXTKEY CORPORATION,smartrecruiters,True,8,0,0,0,not_freshly_probed,0,,1,0,0
+NYU Langone,html,True,25,0,0,0,not_freshly_probed,0,,1,0,0
+O'Reilly Media,jobvite,True,1,0,0,0,not_freshly_probed,0,,1,0,0
+Observe,html,True,1,0,1,0,not_freshly_probed,0,,1,1,0
+observeai,greenhouse,True,9,0,0,0,listed,9,,1,0,0
+Obsidian Security,greenhouse,True,14,1,0,0,listed,14,,2,0,0
+Ochsner Health,workday,True,4,0,0,0,not_freshly_probed,0,,1,0,0
+Octave,greenhouse,True,16,0,0,0,listed,16,,1,0,0
+Octopus Energy,lever,True,175,0,0,0,listed,175,,1,0,54
+Odeko,greenhouse,True,19,4,0,0,listed,19,,2,0,0
+ODION GmbH,smartrecruiters,True,2,0,0,0,not_freshly_probed,0,,1,0,0
+"Odyssey Systems Consulting Group, Ltd.",icims,True,213,0,0,0,not_freshly_probed,0,,213,2,12
+Offchain,lever,True,12,0,0,0,listed,12,,1,0,0
+OfferUp,greenhouse,True,4,1,0,0,listed,4,,2,0,0
+Office Hours,ashby,True,14,2,0,0,not_freshly_probed,0,,2,0,0
+Ohio State University,workday,True,1074,0,0,6,not_freshly_probed,0,,2,0,6
+OhioHealth,workday,True,4,1,0,2,not_freshly_probed,0,,1,0,3
+Oklahoma State Government,workday,True,555,10,0,20,not_freshly_probed,0,,2,0,25
+Oklo,greenhouse,True,71,54,0,0,listed,70,,2,0,0
+Okta,greenhouse,True,398,96,0,0,listed,395,,2,1,0
+Old Mission Capital,greenhouse,True,41,0,0,0,empty,0,,1,0,0
+OLIPOP,greenhouse,True,11,0,0,0,listed,11,,1,0,0
+Omada Health,greenhouse,True,18,0,0,0,listed,18,,1,0,0
+Omni,ashby,True,36,7,0,0,not_freshly_probed,0,,2,0,0
+Once Upon a Farm,lever,True,1,0,0,0,listed,1,,1,0,0
+One80 Intermediaries,workday,True,2,0,0,0,not_freshly_probed,0,,1,0,0
+OneDigital,workday,True,79,6,1,3,not_freshly_probed,0,,3,0,4
+OneMain Financial,workday,True,372,1,0,1,not_freshly_probed,0,,2,0,1
+OneSignal,html,True,53,0,44,0,not_freshly_probed,0,,2,0,0
+OpenAI,ashby,True,811,142,0,0,not_freshly_probed,0,,2,0,0
+Opendoor,html,True,44,0,0,0,not_freshly_probed,0,,1,0,0
+OpenEvidence,ashby,True,10,7,0,0,not_freshly_probed,0,,2,0,0
+OpenSea,ashby,True,2,2,0,0,not_freshly_probed,0,,2,0,0
+openspace,greenhouse,True,6,0,0,0,listed,6,,1,0,0
+OpenTable,greenhouse,True,117,0,0,0,listed,115,,1,0,0
+Ophelia,greenhouse,True,15,0,0,0,listed,15,,1,0,0
+Optiver,html,True,17,0,0,0,not_freshly_probed,0,,1,0,0
+Oracle,oraclecloud,True,2337,0,0,0,listed,2297,,1,0,777
+OraSure Technologies Inc.,lever,True,4,0,0,0,listed,4,,1,0,1
+Orb,ashby,True,23,0,0,0,not_freshly_probed,0,,1,0,0
+Orca Bio,lever,True,47,0,0,0,listed,47,,1,0,6
+orcasecurity,greenhouse,True,10,0,0,0,listed,10,,1,0,0
+Orchestra,greenhouse,True,41,9,0,1,listed,41,,2,0,0
+Oscar Health,greenhouse,True,246,0,0,0,listed,247,,1,0,0
+Oshi Health,greenhouse,True,1,0,0,0,empty,0,,1,0,0
+OU Health,workday,True,438,7,0,3,not_freshly_probed,0,,2,0,5
+OutcomesAI,lever,True,3,0,0,0,listed,3,,1,0,0
+Outreach,lever,True,24,0,0,0,listed,24,,1,0,2
+Outschool,ashby,True,7,0,0,0,not_freshly_probed,0,,1,0,0
+OutSystems,workday,True,72,1,0,0,not_freshly_probed,0,,2,0,0
+Overlake Medical Center,workday,True,2,1,0,0,not_freshly_probed,0,,1,0,0
+Owensboro Health,workday,True,8,0,0,0,not_freshly_probed,0,,1,0,0
+Owkin,ashby,True,6,4,0,0,not_freshly_probed,0,,2,0,0
+Owner.com,html,True,47,0,47,0,not_freshly_probed,0,,1,0,0
+Oxfordcorp,workday,False,0,0,0,0,not_freshly_probed,0,,0,0,0
+OXM | Oxford Industries Inc,workday,True,8,0,0,0,not_freshly_probed,0,,1,0,0
+Oxylabs,lever,True,62,0,0,0,error,0,404 Client Error: Not Found for url: https://api.lever.co/v0/postings/oxylabs?mode=json,1,1,0
+O’Reilly Automotive,workday,True,19021,0,0,1,not_freshly_probed,0,,2,0,1
+pacaso,greenhouse,True,5,0,0,0,listed,5,,1,0,0
+PacBio,workday,True,11,1,0,0,not_freshly_probed,0,,2,0,1
+PACCAR,successfactors,True,234,13,0,0,not_freshly_probed,0,,0,0,0
+Pager,greenhouse,True,1,0,0,0,empty,0,,1,1,0
+PagerDuty,greenhouse,True,54,4,0,0,listed,54,,2,0,0
+Palantir,lever,True,306,0,0,0,listed,306,,1,0,0
+palmetto,greenhouse,True,1,0,0,0,listed,1,,1,0,0
+Palo Alto Networks,workday,True,1430,175,0,53,not_freshly_probed,0,,2,0,101
+Papa,greenhouse,True,3,0,0,0,listed,3,,1,0,0
+Paradigm,ashby,True,8,0,0,0,not_freshly_probed,0,,1,0,0
+Paradigm Health,lever,True,6,0,0,0,listed,6,,1,0,0
+Paradromics,jazzhr,True,1,0,0,0,not_freshly_probed,0,,0,0,0
+Parafin,ashby,True,4,0,0,0,not_freshly_probed,0,,1,0,0
+Parallel Web Systems,ashby,True,27,6,0,0,not_freshly_probed,0,,2,0,0
+Paramount,successfactors,True,8,0,0,0,not_freshly_probed,0,,0,0,0
+Paramount Residential Mortgage Group,icims,True,254,0,0,0,not_freshly_probed,0,,254,1,0
+Parker Hannifin,playwright,False,0,0,0,0,not_freshly_probed,0,,0,0,0
+Parman Energy,smartrecruiters,True,1,0,0,0,not_freshly_probed,0,,1,0,0
+Parsley Health,greenhouse,True,9,2,0,0,listed,9,,2,0,0
+Parsons,html,True,61,0,48,0,not_freshly_probed,0,,1,0,0
+Particle Health,html,True,0,0,0,0,not_freshly_probed,0,,0,0,0
+Partiful,ashby,True,9,1,0,0,not_freshly_probed,0,,2,0,0
+Patch,ashby,True,5,1,0,0,not_freshly_probed,0,,2,0,0
+PathAI,greenhouse,True,14,8,0,0,listed,14,,1,0,0
+Pathos Ethos,html,True,3,0,2,0,not_freshly_probed,0,,2,1,0
+PatientNow,rippling,True,2,0,0,0,not_freshly_probed,0,,1,0,0
+Patreon,ashby,True,18,9,0,0,not_freshly_probed,0,,1,0,0
+Pave,greenhouse,True,17,0,0,0,listed,17,,1,0,0
+PayPal,workday,True,345,50,0,71,not_freshly_probed,0,,2,0,71
+Paystack,html,True,13,0,6,0,not_freshly_probed,0,,1,0,0
+PCI Pharma Services,workday,True,268,12,0,10,not_freshly_probed,0,,2,0,14
+PDT Partners,greenhouse,True,11,0,0,0,listed,11,,1,0,0
+Peak6,workday,True,15,0,0,1,not_freshly_probed,0,,2,0,1
+"Peaksware Companies (TrainingPeaks, TrainHeroic, MakeMusic)",html,True,3,0,3,0,not_freshly_probed,0,,1,0,0
+Pearson,oraclecloud,True,379,0,0,0,listed,237,,1,0,28
+Pebl,ashby,True,32,2,0,0,not_freshly_probed,0,,1,0,0
+Peloton,greenhouse,True,60,0,0,0,listed,60,,1,1,0
+Pendo,greenhouse,True,26,1,0,0,listed,26,,2,0,0
+Penn State,workday,True,1463,9,0,32,not_freshly_probed,0,,2,0,40
+Pentair,workday,True,133,15,0,12,not_freshly_probed,0,,2,0,15
+PepsiCo,talentbrew,True,1,0,1,0,not_freshly_probed,0,,1,1,0
+Peregrine,greenhouse,True,93,0,0,0,listed,93,,1,0,0
+Periodic Labs,ashby,True,34,3,0,0,not_freshly_probed,0,,2,0,0
+PermitFlow,ashby,True,44,6,0,0,not_freshly_probed,0,,2,0,0
+Perpay,greenhouse,True,22,0,0,0,listed,22,,1,0,0
+Perplexity AI,ashby,True,134,87,0,0,not_freshly_probed,0,,2,0,0
+Persado,workable,True,1,0,0,0,not_freshly_probed,0,,1,0,0
+Persona,ashby,True,13,3,0,0,not_freshly_probed,0,,2,0,0
+Pex,html,True,18,0,18,0,not_freshly_probed,0,,1,0,0
+Pfizer,workday,True,561,33,0,64,not_freshly_probed,0,,2,0,95
+Phantom,ashby,True,14,0,0,0,not_freshly_probed,0,,1,0,0
+Philo,ashby,True,2,2,0,0,not_freshly_probed,0,,1,0,0
+Photoroom,ashby,True,11,1,0,0,not_freshly_probed,0,,2,0,0
+Physical Intelligence,playwright,True,1,0,0,0,not_freshly_probed,0,,1,0,0
+Pie Insurance,html,True,29,0,26,0,not_freshly_probed,0,,2,0,0
+Pierre Computer,html,True,2,0,0,0,not_freshly_probed,0,,1,0,0
+Pigment,lever,True,139,0,0,0,listed,139,,1,0,21
+Pika,ashby,True,15,0,0,0,not_freshly_probed,0,,1,0,0
+Pilot,greenhouse,True,10,0,0,0,listed,10,,1,0,0
+Pine Park Health,rippling,True,11,2,0,0,not_freshly_probed,0,,2,0,0
+Pinecone,ashby,True,6,0,0,0,not_freshly_probed,0,,1,0,0
+Ping Identity,greenhouse,True,57,0,0,0,listed,57,,1,0,0
+PingWind,lever,True,98,0,0,12,listed,98,,2,0,0
+Pinterest,greenhouse,True,159,94,0,0,listed,158,,2,2,10
+PIP Labs,lever,True,1,0,0,0,listed,1,,1,0,0
+Pismo,smartrecruiters,True,1,0,0,0,not_freshly_probed,0,,1,0,0
+Pivot Energy,lever,True,7,0,0,0,listed,7,,1,0,3
+pivotbio,greenhouse,True,13,0,0,0,listed,13,,1,0,0
+Plaid,ashby,True,132,68,0,0,not_freshly_probed,0,,1,0,0
+Plains,workday,True,2,0,0,0,not_freshly_probed,0,,1,0,0
+Planet,greenhouse,True,122,4,0,0,listed,122,,2,0,0
+PlanetScale,greenhouse,True,11,0,0,0,listed,11,,1,0,0
+Planned Parenthood Keystone,lever,True,2,0,0,0,listed,2,,1,0,1
+Platform.sh,greenhouse,True,9,0,0,0,listed,9,,1,0,0
+Pleo,ashby,True,29,12,0,0,not_freshly_probed,0,,1,0,0
+PlusAI,lever,True,43,0,0,0,listed,43,,1,0,0
+PNC,workday,True,2153,316,1,150,not_freshly_probed,0,,3,0,460
+Podium,greenhouse,True,59,1,1,0,listed,59,,3,0,0
+Point72,greenhouse,True,215,5,0,0,listed,215,,2,0,0
+Polar Semiconductor,workday,True,20,0,0,0,not_freshly_probed,0,,1,0,0
+Poll Everywhere,html,True,28,0,28,0,not_freshly_probed,0,,1,1,0
+Polygon Labs,ashby,True,3,1,0,0,not_freshly_probed,0,,1,0,0
+Polymarket,ashby,True,51,5,0,0,not_freshly_probed,0,,2,0,0
+Pomelo Care,greenhouse,True,74,0,0,0,error,0,404 board not found: pomelocare,1,1,0
+Poolside,ashby,True,2,0,0,0,not_freshly_probed,0,,1,0,0
+PortKey Delivery LLC,smartrecruiters,True,1,0,0,0,not_freshly_probed,0,,1,0,0
+Portland General Electric,workday,True,30,1,0,0,not_freshly_probed,0,,2,0,0
+Poshmark,ashby,True,34,0,0,0,not_freshly_probed,0,,1,0,0
+Posit,greenhouse,True,8,0,0,0,listed,8,,1,0,0
+PostHog,ashby,True,10,2,0,0,not_freshly_probed,0,,2,0,0
+Postman,html,True,71,0,71,0,not_freshly_probed,0,,1,0,0
+Postscript,greenhouse,True,3,0,0,0,listed,3,,1,0,0
+Precision Neuroscience,kula,True,11,4,0,0,not_freshly_probed,0,,0,0,0
+Precoat Metals,smartrecruiters,True,65,0,0,0,not_freshly_probed,0,,1,0,0
+Prefect,ashby,True,8,0,0,0,not_freshly_probed,0,,1,0,0
+Press Ganey,workday,True,19,2,0,4,not_freshly_probed,0,,2,0,5
+Prime Intellect,ashby,True,44,27,0,0,not_freshly_probed,0,,2,0,0
+Prime Medicine,greenhouse,True,9,0,0,0,listed,9,,1,0,0
+Primer,ashby,True,23,6,0,0,not_freshly_probed,0,,2,0,0
+Princeton University,icims,True,67,0,0,0,not_freshly_probed,0,,67,0,0
+Principal Financial Group,jobsapi,True,100,0,0,0,listed,100,,0,0,66
+Prisma Health,workday,True,1800,15,0,11,not_freshly_probed,0,,2,0,13
+Procter & Gamble,workday,True,855,67,0,25,not_freshly_probed,0,,2,0,84
+Profluent,greenhouse,True,16,1,0,0,listed,16,,2,0,0
+Profound,ashby,True,80,48,0,0,not_freshly_probed,0,,2,0,0
+Progressive Insurance,playwright,True,297,0,0,0,not_freshly_probed,0,,1,1,0
+project44,greenhouse,True,27,1,0,0,listed,27,,2,0,0
+Prokeep,ashby,True,2,0,0,0,not_freshly_probed,0,,1,0,0
+Prologis,workday,True,101,16,0,15,not_freshly_probed,0,,2,0,16
+Proofpoint,workday,True,120,13,0,11,not_freshly_probed,0,,2,0,19
+ProPharma Group,workday,True,67,5,1,4,not_freshly_probed,0,,2,0,7
+"PROS, Inc",workday,True,8,0,0,0,not_freshly_probed,0,,1,0,0
+Prudential,workday,True,158,12,0,15,not_freshly_probed,0,,2,0,24
+PsiQuantum,html,True,13,0,6,0,not_freshly_probed,0,,1,0,0
+PTC Inc.,workday,True,175,9,1,8,not_freshly_probed,0,,3,0,10
+PTC Therapeutics,workday,True,46,6,0,5,not_freshly_probed,0,,2,0,5
+Publix Super Markets,html,True,395,0,0,17,not_freshly_probed,0,,2,0,0
+Pulley,greenhouse,True,0,0,0,0,empty,0,,0,0,0
+PulteGroup,workday,True,133,3,2,3,not_freshly_probed,0,,3,0,3
+Pulumi,html,True,39,0,24,0,not_freshly_probed,0,,1,0,0
+Purdue University,successfactors,False,0,0,0,0,not_freshly_probed,0,,0,0,0
+Pure Storage,greenhouse,True,378,23,0,0,listed,375,,2,0,0
+PursueCare,html,True,0,0,0,0,not_freshly_probed,0,,0,0,0
+PwC,workday,True,558,350,0,171,not_freshly_probed,0,,2,0,373
+Pylon,ashby,True,15,0,0,0,not_freshly_probed,0,,1,0,0
+Q2,workday,True,57,7,0,10,not_freshly_probed,0,,2,0,10
+Qonto,lever,True,43,0,0,0,listed,43,,1,0,6
+Quadric,ashby,True,15,2,0,0,not_freshly_probed,0,,2,0,0
+Qualcomm,eightfold,True,2128,225,0,0,not_freshly_probed,0,,2,0,0
+Qualtrics,html,True,3,0,3,0,not_freshly_probed,0,,1,0,0
+Quanta Services,icims,True,538,0,0,0,not_freshly_probed,0,,538,1,32
+QuEra Computing,greenhouse,True,77,0,0,0,listed,77,,1,0,0
+Quest Diagnostics,oraclecloud,True,2197,0,0,0,listed,2181,,1,0,0
+QuikTrip,html,True,33,0,20,0,not_freshly_probed,0,,1,1,0
+Quince,greenhouse,True,154,44,0,0,listed,153,,2,0,0
+Quora,ashby,True,8,8,0,0,not_freshly_probed,0,,1,0,0
+R1,workday,True,426,43,0,18,not_freshly_probed,0,,2,0,22
+Rabobank,workday,True,199,5,0,4,not_freshly_probed,0,,2,0,8
+Rad AI,ashby,True,19,9,0,0,not_freshly_probed,0,,2,0,0
+Radical AI,lever,True,2,0,0,0,listed,2,,1,1,0
+Radio Systems Corporation,workday,True,15,0,2,0,not_freshly_probed,0,,2,0,0
+Radix Trading,multi,True,15,5,0,0,not_freshly_probed,0,,2,0,0
+"Railroad19, Inc",lever,True,2,0,0,0,listed,2,,1,0,0
+Railway,html,True,46,0,28,0,not_freshly_probed,0,,2,0,0
+Raine Group,lever,True,2,0,0,0,listed,2,,1,0,0
+RainFocus,lever,True,14,0,0,0,listed,13,,1,0,0
+Rainmaker,lever,True,25,0,0,0,listed,25,,1,0,1
+Ralliant,oraclecloud,True,330,0,0,0,listed,327,,1,0,48
+Ralph Lauren,avature,False,0,0,0,0,not_freshly_probed,0,,0,0,0
+Ramp,ashby,True,169,101,0,0,not_freshly_probed,0,,1,0,0
+Range Energy,lever,True,3,0,0,0,listed,3,,1,0,0
+Rapid Micro Biosystems,lever,True,10,0,0,0,listed,10,,1,0,1
+Rapid7,html,True,31,0,3,0,not_freshly_probed,0,,2,0,0
+RapidAI,lever,True,6,0,0,0,listed,6,,1,0,0
+Raymond James,workday,True,104,1,1,0,not_freshly_probed,0,,3,1,1
+Raytheon (RTX),workday,True,4842,214,0,117,not_freshly_probed,0,,2,0,285
+RBC,workday,True,859,66,0,41,not_freshly_probed,0,,2,0,58
+Read AI,ashby,True,17,0,0,0,not_freshly_probed,0,,1,0,0
+Reaktor,html,True,38,0,18,0,not_freshly_probed,0,,2,0,0
+Realm,ashby,True,10,0,0,0,not_freshly_probed,0,,1,0,0
+Realync,html,True,3,0,2,0,not_freshly_probed,0,,1,0,0
+Recorded Future,greenhouse,True,47,0,0,0,listed,46,,1,0,0
+Recursion,greenhouse,True,13,4,0,0,listed,13,,2,0,0
+Red Balloon Security,html,True,26,0,26,0,not_freshly_probed,0,,1,0,0
+Red Hat,workday,True,174,14,0,10,not_freshly_probed,0,,2,0,28
+Red Ventures,greenhouse,True,61,6,0,0,listed,61,,2,0,0
+Redcare Pharmacy,smartrecruiters,True,241,0,0,0,not_freshly_probed,0,,1,0,0
+Reddit,greenhouse,True,157,10,0,0,listed,155,,2,0,0
+Redfin,html,True,1,0,0,0,not_freshly_probed,0,,1,1,0
+Redis,ashby,True,32,0,0,0,not_freshly_probed,0,,1,0,0
+Redwood Materials,greenhouse,True,143,10,0,0,listed,141,,2,0,0
+Reflection AI,ashby,True,45,42,0,0,not_freshly_probed,0,,1,0,0
+Reflektive,html,True,14,0,3,0,not_freshly_probed,0,,2,2,0
+Regard,ashby,True,6,6,0,0,not_freshly_probed,0,,1,0,0
+Regeneron,workday,True,597,86,0,53,not_freshly_probed,0,,2,0,128
+Regions Bank,workday,True,490,67,0,33,not_freshly_probed,0,,1,0,45
+REI,html,True,12,0,11,0,not_freshly_probed,0,,1,0,0
+Reka AI,ashby,True,9,1,0,0,not_freshly_probed,0,,2,0,0
+Relativity Space,greenhouse,True,384,1,0,0,listed,383,,2,0,0
+RELX,workday,True,817,197,3,85,not_freshly_probed,0,,3,0,214
+Remitly,workday,True,160,9,0,3,not_freshly_probed,0,,2,0,3
+Remote,remote_ats,True,51,0,0,0,not_freshly_probed,0,,0,0,0
+Renaissance Technologies,html,True,13,0,0,0,not_freshly_probed,0,,1,0,0
+Render,ashby,True,38,10,0,0,not_freshly_probed,0,,1,0,0
+Rent the Runway,greenhouse,True,28,2,0,0,listed,28,,2,0,0
+Replicate,html,True,9,0,8,0,not_freshly_probed,0,,1,0,0
+Replit,ashby,True,59,1,0,0,not_freshly_probed,0,,2,0,0
+Reply,lever,True,49,6,0,0,listed,49,,2,0,32
+Reprise,ashby,True,1,0,0,0,not_freshly_probed,0,,1,0,0
+Republic Services,phenom,True,1016,0,0,0,listed,1732,,1,0,8
+Rescale,ashby,True,17,0,0,0,not_freshly_probed,0,,1,0,0
+ResMed,workday,True,279,11,0,2,not_freshly_probed,0,,2,0,4
+Retell AI,ashby,True,28,3,0,0,not_freshly_probed,0,,1,0,0
+Retool,html,True,25,0,0,0,not_freshly_probed,0,,1,0,0
+revel,greenhouse,True,1,0,0,0,listed,1,,1,0,0
+ReviewTrackers,html,True,32,0,29,0,not_freshly_probed,0,,1,0,0
+Revin,ashby,True,8,0,0,0,not_freshly_probed,0,,1,0,0
+Revolut,html,True,126,0,125,0,not_freshly_probed,0,,1,1,0
+rEvolution,bamboohr,True,6,0,0,0,not_freshly_probed,0,,1,0,0
+Reynolds Consumer Products,multi,True,114,0,0,0,not_freshly_probed,0,,114,1,0
+Rezolve Ai,lever,True,2,0,0,0,listed,2,,1,1,0
+RHA Health Services,workday,True,626,27,1,8,not_freshly_probed,0,,3,0,9
+Rho,ashby,True,42,4,0,0,not_freshly_probed,0,,2,0,0
+Rice University,oraclecloud,True,59,0,0,0,listed,59,,1,0,0
+Rigetti Computing,lever,True,15,0,0,1,listed,15,,2,0,0
+RightEye,smartrecruiters,True,1,0,0,0,not_freshly_probed,0,,1,0,0
+Rilla,ashby,True,29,0,0,0,not_freshly_probed,0,,1,0,0
+Rio Tinto,workday,True,171,7,0,3,not_freshly_probed,0,,2,0,6
+Riot Games,greenhouse,True,175,10,0,0,listed,178,,2,0,0
+Ripple,greenhouse,True,102,0,0,0,listed,99,,1,0,0
+Rippling,rippling,True,380,137,0,0,not_freshly_probed,0,,2,0,0
+Rite Aid,workday,True,17,0,0,0,not_freshly_probed,0,,1,0,0
+Rivian,jobsapi,True,100,0,0,0,listed,100,,0,0,9
+RIVR,lever,True,24,0,0,0,listed,24,,1,0,0
+Ro,lever,True,52,12,0,0,listed,52,,2,0,0
+Robinhood,greenhouse,True,156,87,0,0,listed,156,,2,0,0
+Roblox,greenhouse,True,263,1,0,0,listed,262,,2,2,0
+Robotics and AI Institute,lever,True,4,0,0,0,listed,4,,1,0,0
+Robust.ai,lever,True,7,0,0,0,listed,7,,1,0,0
+Roche,workday,True,1272,120,6,72,not_freshly_probed,0,,3,0,162
+Rocket Lab,greenhouse,True,590,0,0,0,listed,582,,1,0,0
+Rocket Pharmaceuticals,icims,True,13,0,0,0,not_freshly_probed,0,,13,0,0
+Rockford Bride,smartrecruiters,True,3,0,0,0,not_freshly_probed,0,,1,0,0
+Rockwell Automation,workday,True,436,71,1,53,not_freshly_probed,0,,3,0,70
+Rokt,workable,True,11,0,0,0,not_freshly_probed,0,,1,0,0
+Roku,greenhouse,True,90,0,0,0,listed,90,,1,1,0
+Rondo Energy,greenhouse,True,11,0,0,0,listed,11,,1,0,0
+roofstock,greenhouse,True,10,3,0,0,listed,10,,2,0,0
+Ross Stores,playwright,True,6,0,3,0,not_freshly_probed,0,,1,0,0
+Rothy's,ashby,True,101,2,0,0,not_freshly_probed,0,,1,0,0
+Royal Caribbean,successfactors,True,265,0,0,0,not_freshly_probed,0,,0,0,0
+RR Donnelley,smartrecruiters,True,582,0,0,0,not_freshly_probed,0,,1,0,0
+Rubrik,greenhouse,True,141,0,0,0,listed,141,,1,1,0
+RudderStack,html,True,3,0,0,0,not_freshly_probed,0,,1,0,0
+Rula,ashby,True,40,0,0,0,not_freshly_probed,0,,1,0,0
+Runpod,ashby,True,28,1,0,0,not_freshly_probed,0,,2,0,0
+Runway,ashby,True,52,27,0,0,not_freshly_probed,0,,1,0,0
+Rupa Health,lever,True,1,0,0,0,listed,1,,1,1,0
+Rutter,ashby,True,1,0,0,0,not_freshly_probed,0,,1,0,0
+RWS TrainAI,lever,True,97,0,0,0,listed,96,,1,0,1
+Ryder System,workday,True,453,45,0,15,not_freshly_probed,0,,2,0,31
+RYZE,workday,True,23,0,0,1,not_freshly_probed,0,,2,0,7
+S&P Global,workday,True,314,62,0,30,not_freshly_probed,0,,2,0,40
+Safe Superintelligence,ashby,True,0,0,0,0,not_freshly_probed,0,,0,0,0
+SafeButler,html,True,13,0,13,0,not_freshly_probed,0,,1,0,0
+Sahaj Software,html,True,21,0,16,0,not_freshly_probed,0,,1,0,0
+Saia,workday,True,201,0,0,1,not_freshly_probed,0,,2,0,1
+SAIC,oraclecloud,True,1082,0,0,0,listed,1066,,1,0,58
+Saildrone,greenhouse,True,42,0,0,0,listed,42,,1,0,0
+SailPoint,workday,True,104,8,1,4,not_freshly_probed,0,,3,0,18
+Saintlukes,workday,True,575,0,1,0,not_freshly_probed,0,,2,0,0
+Sakana AI,html,True,37,0,0,0,not_freshly_probed,0,,1,0,0
+Sakari,html,True,51,0,32,0,not_freshly_probed,0,,1,0,0
+Salesforce,workday,True,1620,336,0,209,not_freshly_probed,0,,2,0,429
+Salesloft,greenhouse,True,30,0,0,0,listed,30,,1,0,0
+Salinas Valley Health,workday,True,2,0,0,0,not_freshly_probed,0,,1,0,0
+Salvo Health,lever,True,6,0,0,0,listed,6,,1,0,3
+SambaNova Systems,html,True,36,0,33,0,not_freshly_probed,0,,1,0,0
+Samsara,greenhouse,True,289,16,0,0,listed,285,,2,0,0
+Samsung,workday,True,664,14,9,10,not_freshly_probed,0,,3,0,10
+Samsung E&A,smartrecruiters,True,104,0,0,0,not_freshly_probed,0,,1,0,0
+San Francisco Giants,lever,True,3,0,0,0,listed,3,,1,0,0
+Sana,ashby,True,11,0,0,0,not_freshly_probed,0,,1,0,0
+Sana Biotechnology,greenhouse,True,8,0,0,0,listed,8,,1,0,0
+SandboxAQ,html,True,15,0,15,0,not_freshly_probed,0,,1,0,0
+Sandisk,smartrecruiters,True,2,0,0,0,not_freshly_probed,0,,1,0,0
+Sandvik,workday,True,377,32,0,13,not_freshly_probed,0,,2,0,13
+Sanford Health,workday,True,4072,117,0,79,not_freshly_probed,0,,2,0,91
+Sanofi,html,True,25,0,0,5,not_freshly_probed,0,,1,0,1
+Santander,workday,True,1086,24,41,10,not_freshly_probed,0,,3,0,32
+SAP,successfactors,True,10,0,6,0,not_freshly_probed,0,,0,0,0
+Sardine,ashby,True,47,20,0,0,not_freshly_probed,0,,2,0,0
+Saronic,ashby,True,234,32,0,0,not_freshly_probed,0,,2,0,0
+SAS,icims,True,200,0,0,0,not_freshly_probed,0,,200,2,37
+Sauk Prairie Healthcare,workday,True,48,7,0,4,not_freshly_probed,0,,2,0,6
+Savvy Wealth,ashby,True,29,0,0,0,not_freshly_probed,0,,1,0,0
+Saxo Bank,workday,True,58,0,0,0,not_freshly_probed,0,,1,0,0
+SBB Cargo Deutschland GmbH,smartrecruiters,True,20,0,0,0,not_freshly_probed,0,,1,0,0
+Scale AI,greenhouse,True,179,77,0,0,listed,178,,2,0,0
+Schonfeld,greenhouse,True,68,1,0,0,listed,68,,2,0,0
+Schrödinger,greenhouse,True,33,12,0,0,listed,33,,2,0,0
+Scopely,greenhouse,True,171,10,0,0,listed,171,,2,0,0
+Scout AI,greenhouse,True,28,0,0,0,error,0,404 board not found: scoutai,1,1,0
+Scribe,ashby,True,33,6,0,0,not_freshly_probed,0,,1,0,0
+Seagate,successfactors,True,5,0,4,0,not_freshly_probed,0,,0,0,0
+seatgeek,greenhouse,True,38,0,0,0,listed,38,,1,1,0
+SeaWorld Entertainment,workday,True,380,11,4,5,not_freshly_probed,0,,3,3,18
+Second Dinner,ashby,True,1,0,0,0,not_freshly_probed,0,,1,0,0
+Seesaw,greenhouse,True,7,0,0,0,listed,7,,1,0,0
+Semafor,greenhouse,True,21,2,0,0,listed,21,,2,0,0
+Semgrep,ashby,True,12,3,0,0,not_freshly_probed,0,,2,0,0
+Sempra,adp,False,0,0,0,0,not_freshly_probed,0,,0,0,0
+Sensor Tower,html,True,9,0,8,0,not_freshly_probed,0,,1,1,0
+Sentara Health,workday,True,2269,78,8,50,not_freshly_probed,0,,3,0,64
+SentiLink,ashby,True,45,0,0,0,not_freshly_probed,0,,1,0,0
+SentinelOne,greenhouse,True,256,4,0,0,listed,256,,2,0,0
+Sentry,ashby,True,45,1,0,0,not_freshly_probed,0,,2,0,0
+Sentry Insurance,workday,True,43,6,0,5,not_freshly_probed,0,,2,0,9
+SerpApi,html,True,28,0,0,0,not_freshly_probed,0,,1,0,0
+Serve Robotics,ashby,True,32,4,0,0,not_freshly_probed,0,,2,0,0
+Serverfarm,lever,True,41,0,0,0,listed,41,,1,0,30
+ServiceNow,smartrecruiters,True,721,0,0,0,not_freshly_probed,0,,1,0,0
+Sharp HealthCare,workday,True,2,0,0,0,not_freshly_probed,0,,1,0,0
+SHEIN,oraclecloud,True,6,0,0,0,listed,6,,1,0,0
+Shell,workday,True,139,13,0,8,not_freshly_probed,0,,2,1,19
+Shelter Insurance® group of companies,workday,True,103,0,0,0,not_freshly_probed,0,,1,1,0
+Sherwin-Williams,oraclecloud,True,2344,0,0,0,listed,45,,1,0,1
+Shield AI,lever,True,659,0,0,0,listed,655,,1,0,196
+ShipBob,greenhouse,True,58,1,0,0,listed,58,,2,0,0
+Shirley,workday,True,39,36,0,0,not_freshly_probed,0,,1,0,0
+Shogun,html,True,38,0,27,0,not_freshly_probed,0,,1,0,0
+Shopify,playwright,True,36,0,30,0,not_freshly_probed,0,,2,0,0
+Shortcut,bamboohr,True,0,0,0,0,not_freshly_probed,0,,0,0,0
+ShyftLabs,lever,True,23,0,0,0,listed,23,,1,0,0
+Siemens,avature,True,2028,27,16,380,not_freshly_probed,0,,3,0,0
+Siemens Healthineers,workday,True,502,92,1,18,not_freshly_probed,0,,3,0,88
+Sierra,ashby,True,189,65,0,0,not_freshly_probed,0,,2,0,0
+Sieve,ashby,True,14,1,0,0,not_freshly_probed,0,,1,0,0
+Sift,ashby,True,7,5,0,0,not_freshly_probed,0,,2,0,0
+SIG,playwright,False,245,0,224,0,not_freshly_probed,0,,1,1,0
+Sigma Computing,greenhouse,True,78,0,0,0,listed,77,,1,0,0
+Sigma Software,smartrecruiters,True,88,0,0,0,not_freshly_probed,0,,1,0,0
+Signal AI,ashby,True,2,0,0,0,not_freshly_probed,0,,1,0,0
+SigNoz,ashby,True,15,2,0,0,not_freshly_probed,0,,2,0,0
+Sila Nanotechnologies,greenhouse,True,42,1,0,0,listed,42,,2,0,0
+Silicon Labs,workday,True,88,0,0,1,not_freshly_probed,0,,2,2,1
+Simmons Bank,workday,True,136,24,0,6,not_freshly_probed,0,,2,0,6
+SimpleClosure,ashby,True,13,4,0,0,not_freshly_probed,0,,2,0,0
+Simply Business,workday,True,13,1,0,0,not_freshly_probed,0,,2,0,1
+Simulmedia,lever,True,6,0,0,0,listed,6,,1,0,0
+SingleStore,greenhouse,True,44,1,0,0,listed,43,,2,0,0
+Skechers,phenom,True,1041,0,0,0,listed,1812,,1,0,13
+Skild,greenhouse,True,50,0,0,0,listed,50,,1,0,0
+Skydio,ashby,True,160,3,0,0,not_freshly_probed,0,,2,0,0
+Skylight Digital,html,True,1,0,1,0,not_freshly_probed,0,,1,0,0
+Slack,workday,True,18,5,0,10,not_freshly_probed,0,,1,0,10
+Slangai,lever,True,4,0,0,0,listed,4,,1,1,0
+Smart Energy Group,lever,True,26,0,0,0,listed,25,,1,0,0
+SmartAsset,greenhouse,True,3,0,0,0,listed,3,,1,0,0
+SmarterDx,greenhouse,True,3,0,0,0,listed,3,,1,0,0
+Smartkarma,smartrecruiters,True,9,0,0,0,not_freshly_probed,0,,1,0,0
+Smartsheet,greenhouse,True,88,0,0,0,listed,88,,1,0,0
+Smile Digital Health,lever,True,16,0,0,0,listed,16,,1,0,0
+Snap,playwright,True,201,0,172,0,not_freshly_probed,0,,2,0,0
+Snap-on,icims,True,212,0,0,0,not_freshly_probed,0,,212,0,27
+Snorkel AI,greenhouse,True,46,32,0,0,listed,46,,2,0,0
+Snowflake,ashby,True,362,90,0,0,not_freshly_probed,0,,2,0,0
+Snyk,workday,True,17,1,0,3,not_freshly_probed,0,,1,0,4
+Socket,ashby,True,28,10,0,0,not_freshly_probed,0,,2,0,0
+Socotec,smartrecruiters,True,727,0,0,0,not_freshly_probed,0,,1,0,0
+Socure,ashby,True,87,45,0,0,not_freshly_probed,0,,2,0,0
+SoFi,greenhouse,True,51,15,0,0,listed,51,,2,0,19
+Solace,ashby,True,28,0,0,0,not_freshly_probed,0,,1,0,0
+Solar Turbines,workday,True,105,5,1,6,not_freshly_probed,0,,3,0,12
+Solidigm,smartrecruiters,True,70,0,0,0,not_freshly_probed,0,,1,0,0
+SOLV Energy,workday,True,179,48,0,43,not_freshly_probed,0,,2,2,48
+Solventum,workday,True,428,55,0,20,not_freshly_probed,0,,2,0,40
+SonderMind,ashby,True,135,7,0,0,not_freshly_probed,0,,1,0,0
+Sonic Healthcare USA,workday,True,307,15,0,4,not_freshly_probed,0,,2,0,6
+Sonoma Valley Hospital,icims,True,25,0,0,0,not_freshly_probed,0,,25,0,0
+Sonrai Security,lever,True,2,0,0,0,listed,2,,1,0,0
+Sony,workday,True,128,2,0,8,not_freshly_probed,0,,2,0,12
+Sony Interactive Entertainment,greenhouse,True,198,0,0,0,listed,196,,1,0,0
+Sotera Health,workday,True,144,4,0,0,not_freshly_probed,0,,2,0,3
+Sourcegraph,greenhouse,True,8,0,0,0,listed,7,,1,0,0
+South Shore Health,workday,True,237,8,0,7,not_freshly_probed,0,,2,2,10
+Southeast Health,workday,True,208,1,0,1,not_freshly_probed,0,,2,0,2
+Southern Company,playwright,True,42,0,23,0,not_freshly_probed,0,,2,0,0
+Southwest Airlines,workday,True,57,0,0,0,not_freshly_probed,0,,1,0,0
+SpaceX,greenhouse,True,2788,0,0,0,listed,2779,,1,0,0
+Span,ashby,True,3,1,0,0,not_freshly_probed,0,,2,0,0
+Speak,ashby,True,34,1,0,0,not_freshly_probed,0,,2,0,0
+Spear AI,lever,True,11,0,0,0,listed,11,,1,0,0
+Spectrum,playwright,True,35,0,4,0,not_freshly_probed,0,,2,0,0
+Spencer's and Spirit Halloween,icims,True,23,0,0,0,not_freshly_probed,0,,23,2,0
+Spice AI,lever,True,1,0,0,0,empty,0,,1,1,0
+Spine Media,lever,True,2,0,0,0,listed,2,,1,1,0
+Spire,html,True,51,0,20,0,not_freshly_probed,0,,2,0,0
+Splice,greenhouse,True,6,1,0,0,listed,6,,2,0,1
+Spotify,lever,True,81,0,0,0,listed,81,,1,0,31
+Spreedly,lever,True,4,0,0,0,listed,4,,1,0,0
+Spring Health,ashby,True,87,10,0,0,not_freshly_probed,0,,2,0,0
+Springboard,greenhouse,True,15,4,0,0,listed,15,,1,0,0
+Sprinklr,workday,True,70,14,0,14,not_freshly_probed,0,,2,0,32
+Sprinter Health,ashby,True,45,11,0,0,not_freshly_probed,0,,1,0,0
+Squarepoint Capital,greenhouse,True,93,0,0,0,listed,93,,1,0,0
+Squarespace,greenhouse,True,26,1,0,0,listed,26,,2,0,0
+SquareTrade,smartrecruiters,True,26,0,0,0,not_freshly_probed,0,,1,0,0
+St. Charles Health System,workday,True,273,22,0,7,not_freshly_probed,0,,2,2,8
+Stability AI,greenhouse,True,6,1,0,0,listed,6,,2,0,0
+StackBlitz,greenhouse,True,6,0,0,0,listed,6,,1,0,0
+Stackgenie,html,True,3,0,0,0,not_freshly_probed,0,,1,0,0
+Stacklok,greenhouse,True,4,0,0,0,listed,4,,1,0,0
+Standard BioTools,workday,True,2,0,0,0,not_freshly_probed,0,,1,0,0
+Stanford Medicine Children's Health,smartrecruiters,True,137,0,0,0,not_freshly_probed,0,,1,0,0
+Stanford University,oraclecloud,True,442,0,0,0,listed,197,,1,0,2
+Stanley Consultants,lever,True,100,0,0,0,listed,99,,1,0,26
+Starbucks,eightfold,True,2457,105,0,0,not_freshly_probed,0,,1,0,0
+Starburst,html,True,28,0,25,0,not_freshly_probed,0,,1,0,0
+Starcloud,html,True,17,0,0,0,not_freshly_probed,0,,1,0,0
+State Farm,playwright,True,21,0,17,0,not_freshly_probed,0,,2,0,0
+State Street,workday,True,1305,161,0,153,not_freshly_probed,0,,2,0,170
+Steel Dynamics,icims,True,136,0,0,0,not_freshly_probed,0,,136,2,0
+Stella McCartney,workday,True,27,0,0,0,not_freshly_probed,0,,1,0,0
+Stellantis,workday,True,26,0,0,0,not_freshly_probed,0,,1,0,0
+STEMCELL Technologies Inc,workday,True,36,0,0,0,not_freshly_probed,0,,1,0,0
+Stibo Systems,workday,True,8,0,0,0,not_freshly_probed,0,,1,0,0
+Stitch Fix,greenhouse,True,15,0,0,0,listed,15,,1,0,0
+StockX,greenhouse,True,34,0,0,0,listed,34,,1,0,0
+Stoke Space,greenhouse,True,72,1,0,0,listed,72,,2,0,0
+Storm,html,True,8,0,1,0,not_freshly_probed,0,,1,1,0
+Strategic Data Systems,lever,True,22,0,0,0,listed,22,,1,0,0
+Strava,ashby,True,34,3,0,0,not_freshly_probed,0,,2,0,0
+"Stride, Inc",workday,True,110,20,0,17,not_freshly_probed,0,,2,0,29
+Stripe,greenhouse,True,734,31,0,0,listed,732,,2,0,2
+STRV,html,True,11,0,11,0,not_freshly_probed,0,,1,0,0
+Stryker Corporation,workday,True,1489,186,2,92,not_freshly_probed,0,,3,0,92
+StubHub,greenhouse,True,25,0,0,0,listed,25,,1,0,0
+Stytch,ashby,True,5,0,0,0,not_freshly_probed,0,,1,0,0
+Subject,html,False,0,0,0,0,not_freshly_probed,0,,0,0,0
+Substack,ashby,True,17,8,0,0,not_freshly_probed,0,,1,0,0
+SugarAI,lever,True,6,0,0,0,empty,0,,1,1,0
+Suki,greenhouse,True,11,0,0,0,listed,11,,1,0,0
+Sulvo,html,True,15,0,15,0,not_freshly_probed,0,,1,0,0
+"Sumitomo Pharma Co., Ltd",workday,True,35,3,0,5,not_freshly_probed,0,,2,0,8
+Summer Health,ashby,True,2,0,0,0,not_freshly_probed,0,,1,0,0
+Sumo Logic,greenhouse,True,12,0,0,0,listed,12,,1,0,0
+SumUp,html,True,68,0,48,9,not_freshly_probed,0,,2,0,0
+Sunday Robotics,ashby,True,24,0,0,0,not_freshly_probed,0,,1,0,0
+Sundt,oraclecloud,True,383,0,0,0,listed,377,,1,0,46
+Suno,ashby,True,69,23,0,0,not_freshly_probed,0,,2,0,0
+Sunwater Capital,lever,True,3,0,0,0,listed,3,,1,0,0
+Supabase,ashby,True,55,1,0,0,not_freshly_probed,0,,2,0,0
+Super,ashby,True,18,16,0,0,not_freshly_probed,0,,1,0,0
+supercell,ashby,True,38,9,0,0,not_freshly_probed,0,,2,0,0
+Supermicro,successfactors,True,1051,3,0,0,not_freshly_probed,0,,0,0,0
+Surge AI,ashby,True,28,0,0,0,not_freshly_probed,0,,1,0,0
+SurveyMonkey,ashby,True,17,1,0,0,not_freshly_probed,0,,2,0,0
+Svix,html,True,64,0,63,0,not_freshly_probed,0,,2,0,0
+Swiftly,html,True,8,4,0,0,not_freshly_probed,0,,2,0,0
+SwiftLynx AI,lever,True,2,0,0,0,listed,2,,1,0,0
+Sword Health,lever,True,3,0,0,0,empty,0,,1,1,0
+Symbotic,workday,True,126,0,0,0,not_freshly_probed,0,,1,0,0
+Synchrony,talentbrew,True,15,10,0,0,not_freshly_probed,0,,2,0,0
+Synchrony Financial,workday,True,40,11,0,13,not_freshly_probed,0,,2,0,16
+Synctera,ashby,True,3,3,0,0,not_freshly_probed,0,,1,0,0
+Synechron,workday,True,129,10,0,13,not_freshly_probed,0,,2,0,23
+Syneos Health,workday,True,744,94,5,29,not_freshly_probed,0,,3,0,132
+Synopsys,avature,True,638,0,0,0,not_freshly_probed,0,,1,0,0
+Syntax,lever,True,3,0,0,0,listed,3,,1,0,0
+Synthesia,html,True,73,0,72,0,not_freshly_probed,0,,1,0,0
+Sysco,workday,True,2190,32,0,13,not_freshly_probed,0,,2,1,41
+Sysdig,lever,True,31,0,0,0,listed,31,,1,0,2
+T-Mobile,workday,True,2534,121,0,42,not_freshly_probed,0,,2,0,89
+T. Rowe Price,workday,True,132,23,0,12,not_freshly_probed,0,,2,0,12
+Tailscale,greenhouse,True,61,0,0,0,listed,59,,1,0,0
+Take-Two Interactive,html,True,3,0,1,0,not_freshly_probed,0,,2,0,0
+TAKRAF Group,workday,True,30,0,0,2,not_freshly_probed,0,,2,0,2
+Talkdesk,greenhouse,True,35,0,0,0,listed,35,,1,0,0
+Tandem,html,True,26,0,13,0,not_freshly_probed,0,,2,0,0
+Tanium,greenhouse,True,74,25,0,0,listed,74,,2,0,0
+TAO Group Hospitality,oraclecloud,True,178,0,0,0,listed,178,,1,0,0
+Tapestry,workday,True,2646,0,2,0,not_freshly_probed,0,,2,0,0
+Target,workday,True,14190,84,0,7,not_freshly_probed,0,,2,0,7
+Taskrabbit,greenhouse,True,19,7,0,0,listed,19,,2,0,0
+TBK Bank,workday,True,18,0,0,1,not_freshly_probed,0,,2,0,1
+TC Energy,workday,True,79,7,0,6,not_freshly_probed,0,,2,0,6
+TD Bank,workday,True,1581,151,0,90,not_freshly_probed,0,,2,0,90
+Teamwork.com,html,True,6,0,0,0,not_freshly_probed,0,,1,0,0
+Teamworks,ashby,True,13,3,0,0,not_freshly_probed,0,,1,0,0
+Tebra,greenhouse,True,11,0,0,0,listed,11,,1,0,0
+Technergetics,greenhouse,True,3,1,0,0,listed,3,,2,0,0
+Tekion,ashby,True,92,3,0,0,not_freshly_probed,0,,2,0,0
+Teleport,ashby,True,26,7,0,0,not_freshly_probed,0,,2,0,0
+TelevisaUnivision,workday,True,87,2,0,2,not_freshly_probed,0,,2,0,2
+Temple Square Hospitality,workday,True,7,0,0,0,not_freshly_probed,0,,1,0,0
+Tempo,ashby,True,19,14,0,0,not_freshly_probed,0,,2,0,0
+Temporal,ashby,True,73,29,0,0,not_freshly_probed,0,,2,0,0
+Tenable,greenhouse,True,35,0,0,0,listed,35,,1,0,0
+Tencent,workday,True,312,24,2,7,not_freshly_probed,0,,3,0,33
+Tenet Health,oraclecloud,True,3031,0,0,0,listed,22,,1,0,1
+Tenstorrent,greenhouse,True,12,10,0,0,listed,12,,1,0,0
+Teradata,playwright,True,372,0,366,0,not_freshly_probed,0,,2,0,0
+Teradyne,successfactors,True,501,2,0,0,not_freshly_probed,0,,0,0,0
+Tesla,playwright,False,0,0,0,0,not_freshly_probed,0,,0,0,0
+Tessera Therapeutics,greenhouse,True,5,0,0,0,listed,5,,1,0,0
+Test Double,html,True,27,0,25,0,not_freshly_probed,0,,1,0,0
+Texas A&M University,workday,True,126,0,3,2,not_freshly_probed,0,,3,0,3
+Texas Capital,workday,True,114,6,2,13,not_freshly_probed,0,,2,0,16
+Texas Instruments,playwright,True,304,0,123,0,not_freshly_probed,0,,2,0,0
+Texas Roadhouse,html,True,2,0,1,0,not_freshly_probed,0,,2,0,0
+Textio,html,True,22,0,19,0,not_freshly_probed,0,,1,0,0
+Textron,html,True,14,0,12,0,not_freshly_probed,0,,1,0,0
+Thalo Labs,lever,True,1,0,0,0,listed,1,,1,0,0
+The Athletic,lever,True,13,0,0,0,listed,13,,1,0,0
+The Bradford Group,icims,True,3,0,0,0,not_freshly_probed,0,,3,3,0
+The Coca-Cola Company,workday,True,217,7,0,7,not_freshly_probed,0,,2,0,11
+The Hartford,workday,True,250,66,0,38,not_freshly_probed,0,,1,0,70
+The Knot Worldwide,greenhouse,True,27,0,0,0,listed,27,,1,0,0
+The New York Times,greenhouse,True,150,15,0,0,listed,150,,2,0,0
+The Nuclear Company,greenhouse,True,64,0,12,0,listed,64,,1,0,0
+The RealReal,phenom,True,122,0,0,0,listed,121,,1,0,16
+The Salvation Army,multi,True,694,0,0,5,not_freshly_probed,0,,2,0,5
+The Trade Desk,greenhouse,True,104,20,0,0,listed,103,,2,0,0
+The Zebra,ashby,True,6,0,0,0,not_freshly_probed,0,,1,0,0
+Thea Energy,lever,True,50,0,0,0,listed,50,,1,0,0
+TheKey,workday,True,36,3,0,0,not_freshly_probed,0,,2,0,1
+Thermo Fisher Scientific,workday,True,2972,228,0,71,not_freshly_probed,0,,2,0,131
+THE•TEAM,workday,True,131,21,0,16,not_freshly_probed,0,,1,0,33
+Thinking Machines Lab,ashby,True,53,11,0,0,not_freshly_probed,0,,2,0,0
+Thomson Reuters,workday,True,98,26,0,0,not_freshly_probed,0,,1,0,0
+thoughtbot,html,True,43,0,28,0,not_freshly_probed,0,,1,0,0
+ThoughtSpot,workday,True,0,0,0,0,not_freshly_probed,0,,0,0,0
+ThoughtWorks,html,True,92,0,42,0,not_freshly_probed,0,,1,0,0
+ThousandEyes,playwright,True,28,0,25,0,not_freshly_probed,0,,2,0,0
+thrivemarket,greenhouse,True,17,7,0,0,listed,15,,1,0,0
+Thumbtack,ashby,True,52,0,0,0,not_freshly_probed,0,,1,0,0
+Tia,greenhouse,True,34,9,0,0,listed,33,,2,0,0
+Tiberius Aerospace Inc.,lever,True,16,0,0,0,error,0,"HTTPSConnectionPool(host='api.lever.co', port=443): Max retries exceeded with url: /v0/postings/tiberius?mode=json (Caused by ReadTimeoutError(""HTTPSConnectionPool(host='api.lever.co', port=443): Read timed out. (read timeout=20)""))",1,0,0
+Tidelands Health,workday,True,133,8,0,5,not_freshly_probed,0,,2,0,5
+Tiffany,oraclecloud,True,468,0,0,0,listed,78,,1,0,1
+TikTok,tiktok,True,4312,0,0,0,not_freshly_probed,0,,0,0,0
+Tines,greenhouse,True,36,3,0,0,listed,36,,2,0,0
+Tinybird,lever,True,2,0,0,0,listed,2,,1,0,2
+Titan,ashby,True,7,6,0,0,not_freshly_probed,0,,1,0,0
+TJX,workday,True,11412,47,1,19,not_freshly_probed,0,,3,0,7
+TLC Management,icims,True,2,0,0,0,not_freshly_probed,0,,2,0,0
+Toast,greenhouse,True,315,0,0,0,listed,311,,1,1,0
+Together AI,greenhouse,True,78,0,0,0,listed,78,,1,0,0
+Tokai Rika Group,lever,True,11,0,0,0,listed,11,,1,0,0
+Tomorrow Health,greenhouse,True,0,0,0,0,error,0,404 board not found: tomorrowhealth,0,0,0
+Tonal,ashby,True,21,0,0,0,not_freshly_probed,0,,1,0,0
+Top Hat,ashby,True,5,0,0,0,not_freshly_probed,0,,1,0,0
+Torc Robotics,greenhouse,True,47,4,0,0,listed,47,,2,0,0
+Tower Research,greenhouse,True,98,0,0,1,listed,98,,2,0,0
+Toyota,workday,True,119,2,0,0,not_freshly_probed,0,,2,0,0
+Toyota Research Institute,lever,True,11,1,0,0,listed,10,,2,1,0
+TPG,greenhouse,True,16,1,0,0,listed,16,,2,0,0
+Traba,ashby,True,29,14,0,0,not_freshly_probed,0,,1,0,0
+Tractor Supply,successfactors,True,2503,0,0,0,not_freshly_probed,0,,0,0,0
+Tradeweb,jobsyn,True,47,0,0,0,not_freshly_probed,0,,0,0,0
+TrainingPeaks,workable,True,4,0,0,0,not_freshly_probed,0,,1,0,0
+Trane Technologies,phenom,True,1011,0,0,0,listed,1702,,1,1,127
+Transcarent,darwinbox,True,32,4,0,0,not_freshly_probed,0,,0,0,0
+TransMarket Group,greenhouse,True,18,0,0,0,listed,18,,1,0,0
+Travelers,workday,True,395,127,0,73,not_freshly_probed,0,,2,0,186
+Travere Therapeutics,workday,True,45,23,0,13,not_freshly_probed,0,,2,2,16
+Trexon,greenhouse,True,69,65,0,0,listed,69,,2,0,0
+TribalScale,greenhouse,True,14,0,0,0,listed,14,,1,0,0
+Trimble Inc.,workday,True,196,40,1,14,not_freshly_probed,0,,2,0,50
+Trinity Health,workday,True,6724,221,4,99,not_freshly_probed,0,,3,0,250
+Tripadvisor,greenhouse,True,90,0,0,0,listed,90,,1,0,0
+Triveni Bio,lever,True,4,0,0,0,listed,4,,1,0,0
+TRM Labs,ashby,True,112,29,0,0,not_freshly_probed,0,,1,0,0
+Trove,ashby,True,5,0,0,0,not_freshly_probed,0,,1,0,0
+True Anomaly,greenhouse,True,207,91,0,0,listed,207,,2,0,0
+Truebill,greenhouse,True,17,0,0,0,listed,17,,1,0,0
+TrueBuilt,greenhouse,True,1,0,0,0,listed,1,,1,0,0
+Truefit,html,True,6,0,6,0,not_freshly_probed,0,,1,0,0
+Truepill,greenhouse,True,2,0,0,0,error,0,404 board not found: fuzehealth,1,1,0
+Truist Financial,workday,True,1519,261,0,192,not_freshly_probed,0,,2,0,227
+Truss,greenhouse,True,1,0,0,0,listed,1,,1,0,0
+Truveta,greenhouse,True,36,0,0,0,listed,35,,1,0,0
+TSC,workday,True,108,7,0,4,not_freshly_probed,0,,2,0,8
+TSMC,successfactors,True,330,0,0,0,not_freshly_probed,0,,0,0,0
+TTEC Digital,lever,True,61,0,0,0,listed,61,,1,0,0
+Turbopuffer,ashby,True,6,0,0,0,not_freshly_probed,0,,1,0,0
+Turo,workday,True,45,1,0,0,not_freshly_probed,0,,2,0,1
+Tutor Intelligence,lever,True,52,0,0,0,listed,52,,1,0,0
+tvScientific,greenhouse,True,6,4,0,0,listed,6,,1,1,1
+Twelve,ashby,True,5,0,0,0,not_freshly_probed,0,,1,0,0
+Twilio,greenhouse,True,133,3,0,0,listed,132,,2,0,0
+Twingate,lever,True,1,0,0,0,listed,1,,1,0,0
+Twitch,greenhouse,True,58,1,0,0,listed,58,,2,0,0
+Two Sigma,avature,True,63,0,0,0,not_freshly_probed,0,,1,0,0
+Typeface,greenhouse,True,19,0,0,0,listed,19,,1,0,0
+Typeform,greenhouse,True,12,6,0,0,listed,12,,2,0,0
+Tyson Foods,workday,True,54,0,0,0,not_freshly_probed,0,,1,0,0
+U.S. Bank,workday,True,1237,225,0,190,not_freshly_probed,0,,2,0,196
+Uare.ai,greenhouse,True,9,0,0,0,listed,9,,1,0,0
+Uber,oraclecloud,True,722,0,0,0,listed,8,,1,0,1
+Ubisoft,html,True,23,0,0,0,not_freshly_probed,0,,1,0,0
+UC Berkeley,html,False,0,0,0,0,not_freshly_probed,0,,0,0,0
+UC San Diego,html,True,55,0,13,0,not_freshly_probed,0,,2,1,0
+UCLA,avature,True,715,0,0,0,not_freshly_probed,0,,1,0,0
+UCSF,html,True,26,0,12,7,not_freshly_probed,0,,2,0,0
+udemy,greenhouse,True,2,0,0,0,listed,2,,1,0,0
+UiPath,ashby,True,107,11,0,0,not_freshly_probed,0,,2,0,0
+UKG,playwright,True,31,0,8,0,not_freshly_probed,0,,2,0,0
+UL Solutions,oraclecloud,True,470,0,0,0,listed,3,,1,0,2
+Ulta Beauty,talentbrew,True,1,0,1,0,not_freshly_probed,0,,1,0,0
+Ultra Health,lever,True,13,0,0,0,listed,13,,1,0,11
+UMC Health System,workday,True,128,1,2,0,not_freshly_probed,0,,3,0,3
+UNC Chapel Hill,html,False,0,0,0,0,not_freshly_probed,0,,0,0,0
+Uncountable,ashby,True,31,2,0,0,not_freshly_probed,0,,2,0,0
+Under Armour,successfactors,True,478,0,0,1,not_freshly_probed,0,,0,0,0
+Underdog Fantasy,greenhouse,True,9,9,0,0,listed,9,,1,0,0
+Unilever,workday,True,250,0,0,2,not_freshly_probed,0,,2,0,2
+Union Pacific,successfactors,True,71,2,0,0,not_freshly_probed,0,,0,0,0
+Uniswap Labs,ashby,True,6,0,0,0,not_freshly_probed,0,,1,0,0
+Unit,ashby,True,2,0,0,0,not_freshly_probed,0,,1,0,0
+United Airlines,workday,True,2,0,0,0,not_freshly_probed,0,,1,0,0
+United Rentals,workday,True,1306,40,0,19,not_freshly_probed,0,,2,0,20
+UnitedHealth Group,html,True,5525,0,0,0,not_freshly_probed,0,,1,1,0
+Unity,workday,True,130,24,0,18,not_freshly_probed,0,,2,0,21
+Universal Health Services,icims,True,157,0,0,0,not_freshly_probed,0,,157,0,0
+Universal Logistics Holdings,workday,True,618,0,0,0,not_freshly_probed,0,,1,0,0
+University of Arkansas,workday,True,778,31,3,20,not_freshly_probed,0,,3,0,49
+University of Chicago,workday,True,385,5,0,2,not_freshly_probed,0,,2,0,4
+University of Colorado Boulder,html,True,88,0,61,0,not_freshly_probed,0,,2,0,0
+University of Illinois Urbana-Champaign,cornerstone,True,141,2,0,0,not_freshly_probed,0,,0,0,0
+University of Iowa,html,True,13,0,0,0,not_freshly_probed,0,,1,0,0
+University of Kansas Health System,workday,True,1035,29,0,16,not_freshly_probed,0,,2,0,25
+University of Michigan,html,True,14,0,9,0,not_freshly_probed,0,,1,1,0
+University of Notre Dame,html,True,76,0,0,0,not_freshly_probed,0,,1,0,0
+University of Pennsylvania,workday,True,479,12,6,0,not_freshly_probed,0,,3,0,12
+University of Southern California,workday,True,688,2,0,0,not_freshly_probed,0,,2,2,1
+University of Texas at Austin,workday,True,614,47,0,9,not_freshly_probed,0,,2,0,46
+University of Virginia,phenom,True,908,0,0,0,listed,906,,1,0,13
+University of Washington,workday,True,588,3,0,0,not_freshly_probed,0,,2,2,0
+University System of New Hampshire,workday,True,270,0,0,0,not_freshly_probed,0,,1,0,0
+Unstructured,ashby,True,5,0,0,0,not_freshly_probed,0,,1,0,0
+Untappd,html,True,11,0,2,0,not_freshly_probed,0,,1,1,0
+UofL Health,workday,True,484,8,0,6,not_freshly_probed,0,,2,0,8
+Updater,html,True,5,0,5,0,not_freshly_probed,0,,1,0,0
+UPS,workday,True,2182,38,0,26,not_freshly_probed,0,,2,0,44
+Upstart,greenhouse,True,92,85,0,0,listed,92,,2,2,0
+Upstatement,html,False,0,0,0,0,not_freshly_probed,0,,0,0,0
+US Foods,workday,True,629,30,0,24,not_freshly_probed,0,,2,0,27
+USAA,workday,True,227,58,0,59,not_freshly_probed,0,,2,0,104
+UserTesting,workday,True,13,2,2,0,not_freshly_probed,0,,3,0,2
+UVM Health Network,workday,True,126,1,0,0,not_freshly_probed,0,,2,2,0
+Vail Systems Inc.,lever,True,3,0,0,0,listed,3,,1,0,0
+Valassis Digital,html,True,87,0,22,1,not_freshly_probed,0,,3,0,0
+Valley Children's Healthcare,workday,True,81,0,0,1,not_freshly_probed,0,,2,0,1
+Valve,html,True,26,0,26,0,not_freshly_probed,0,,1,0,0
+Vanderbilt University,oraclecloud,True,141,0,0,0,listed,138,,1,0,0
+Vanguard,icims,True,15,0,0,0,not_freshly_probed,0,,15,0,0
+Vanta,ashby,True,85,2,0,0,not_freshly_probed,0,,2,0,0
+Vapi,ashby,True,8,1,0,0,not_freshly_probed,0,,2,0,0
+Varda Space Industries,greenhouse,True,110,1,0,0,listed,110,,2,0,0
+Varsity Tutors,html,True,14,0,14,0,not_freshly_probed,0,,1,1,0
+VAST Data,playwright,True,267,0,6,0,not_freshly_probed,0,,1,0,0
+Vast Space,greenhouse,True,191,0,0,0,listed,189,,1,0,0
+VCU Health,workday,True,410,27,1,15,not_freshly_probed,0,,3,0,39
+Veeva Systems,lever,True,932,0,0,0,listed,932,,1,0,0
+Velir,greenhouse,True,3,0,0,0,listed,3,,1,0,0
+Veolia,smartrecruiters,True,2809,0,0,0,not_freshly_probed,0,,1,0,0
+Veradigm,workday,True,2,0,0,0,not_freshly_probed,0,,1,0,0
+Veralto,workday,True,105,6,0,10,not_freshly_probed,0,,2,0,11
+Verana Health,greenhouse,True,9,0,0,0,listed,9,,1,0,0
+Vercel,greenhouse,True,95,0,0,0,listed,94,,1,0,0
+Verily,workday,True,84,13,0,14,not_freshly_probed,0,,2,2,20
+Verisign,greenhouse,True,14,0,0,0,listed,14,,1,0,0
+Verisk,oraclecloud,True,148,0,0,0,listed,148,,1,0,11
+Verizon,workday,True,1273,83,0,56,not_freshly_probed,0,,2,0,54
+Verkada,greenhouse,True,329,0,0,0,listed,327,,1,0,0
+Vertex Pharmaceuticals,workday,True,311,4,0,7,not_freshly_probed,0,,2,0,12
+Vertiv,oraclecloud,True,2356,0,0,0,listed,2346,,1,0,337
+Verve Industrial Protection,html,True,50,0,46,0,not_freshly_probed,0,,1,0,0
+Vial,dover,True,4,1,0,0,not_freshly_probed,0,,0,0,0
+Viatris,workday,True,352,148,0,0,not_freshly_probed,0,,2,0,0
+Vida Health,lever,True,18,0,0,0,listed,18,,1,0,0
+Vimeo,html,False,0,0,0,0,not_freshly_probed,0,,0,0,0
+Vira Insight,workday,True,18,1,0,0,not_freshly_probed,0,,2,0,1
+Viridien,workday,True,72,1,0,1,not_freshly_probed,0,,2,0,1
+Virta Health,ashby,True,23,4,0,0,not_freshly_probed,0,,2,0,0
+Virtu,greenhouse,True,49,3,0,0,listed,49,,2,0,0
+Visa,workday,True,851,28,0,20,not_freshly_probed,0,,2,0,21
+Vistra,workday,True,149,17,0,5,not_freshly_probed,0,,2,1,11
+VITAS Healthcare,oraclecloud,True,920,0,0,0,listed,918,,1,0,44
+vivenu GmbH,lever,True,33,0,0,0,listed,33,,1,0,0
+Viz.ai,ashby,True,22,0,0,0,not_freshly_probed,0,,1,0,0
+Vocal Media,lever,True,7,0,0,0,listed,7,,1,0,0
+Voleon,ashby,True,59,29,0,0,not_freshly_probed,0,,2,0,0
+"Volta Labs, Inc.",lever,True,2,0,0,0,listed,2,,1,0,0
+"Vox Media, LLC",greenhouse,True,19,0,0,0,listed,19,,1,0,0
+"Voya Financial, Inc",workday,True,95,19,0,14,not_freshly_probed,0,,2,2,14
+Waabi,lever,True,92,0,0,0,listed,92,,1,0,61
+Wabash Valley Power Alliance,smartrecruiters,True,15,0,0,0,not_freshly_probed,0,,1,0,0
+WaitWhat,lever,True,1,0,0,0,empty,0,,1,1,0
+Walmart,workday,True,19720,309,2,171,not_freshly_probed,0,,3,0,397
+Walsh Group,workday,True,26,4,0,2,not_freshly_probed,0,,2,0,6
+Warner Bros. Discovery,workday,True,286,23,0,6,not_freshly_probed,0,,2,0,16
+Warp,ashby,True,21,0,0,0,not_freshly_probed,0,,1,0,0
+Washington University in St. Louis,workday,True,667,12,0,9,not_freshly_probed,0,,2,0,18
+Waste Management,oraclecloud,True,1211,0,0,0,listed,1191,,1,0,113
+"WatchGuard Technologies, Inc.",lever,True,32,0,0,0,listed,32,,1,0,11
+Waters Corporation,icims,True,174,0,0,0,not_freshly_probed,0,,174,0,32
+Watershed,ashby,True,39,9,0,0,not_freshly_probed,0,,1,0,0
+Wawa,phenom,True,1013,0,0,0,listed,1612,,1,0,0
+Wayfair,playwright,True,5,0,5,0,not_freshly_probed,0,,1,0,0
+Waymark,greenhouse,True,21,1,1,0,listed,21,,2,0,0
+Waymo,greenhouse,True,368,132,0,0,listed,364,,2,0,0
+Wayne Farms,workday,True,248,2,0,0,not_freshly_probed,0,,2,0,2
+Waystar,workday,True,1,1,0,0,not_freshly_probed,0,,1,0,0
+Wealth.com,ashby,True,18,1,0,0,not_freshly_probed,0,,2,0,0
+Wealthfront,lever,True,23,0,0,0,listed,23,,1,0,20
+Weave,ashby,True,28,0,0,0,not_freshly_probed,0,,1,0,0
+Weaviate,ashby,True,3,0,0,0,not_freshly_probed,0,,1,0,0
+Webflow,greenhouse,True,20,7,0,0,empty,0,,2,0,0
+WebFX,lever,True,36,0,0,0,empty,0,,1,1,0
+Weedmaps,greenhouse,True,9,0,0,0,listed,9,,1,0,0
+Wegmans Food Markets,workday,True,596,8,0,3,not_freshly_probed,0,,2,0,11
+Weights & Biases,html,True,70,0,70,0,not_freshly_probed,0,,1,0,0
+Wells Fargo,playwright,True,50,0,42,0,not_freshly_probed,0,,2,2,0
+WeRide.ai,lever,True,15,0,0,0,listed,15,,1,0,0
+Wesleyan,workday,True,20,0,1,0,not_freshly_probed,0,,2,0,0
+Western Digital,smartrecruiters,True,338,0,0,0,not_freshly_probed,0,,1,0,0
+Whatnot,ashby,True,149,0,0,0,not_freshly_probed,0,,1,0,0
+Wheel,ashby,True,7,0,0,0,not_freshly_probed,0,,1,0,0
+Whirlpool,eightfold,True,227,4,0,0,not_freshly_probed,0,,2,0,0
+Whiterabbit.ai,lever,True,1,0,0,0,listed,1,,1,0,0
+WHOOP,ashby,True,168,2,0,0,not_freshly_probed,0,,2,0,0
+Wikimedia Foundation,html,True,39,0,32,0,not_freshly_probed,0,,1,0,0
+Wilbur Labs,lever,True,1,1,0,0,listed,1,,1,0,0
+Wiley,workday,True,75,29,0,1,not_freshly_probed,0,,2,0,9
+Wise,playwright,True,47,0,45,0,not_freshly_probed,0,,2,0,0
+Wispr Flow,ashby,True,31,11,0,0,not_freshly_probed,0,,2,0,0
+Wix,smartrecruiters,True,77,0,0,0,not_freshly_probed,0,,1,0,0
+Wiz,greenhouse,True,124,9,0,0,listed,123,,2,0,0
+Wizikey,smartrecruiters,True,3,0,0,0,not_freshly_probed,0,,1,0,0
+Wofford,workday,True,14,0,1,0,not_freshly_probed,0,,2,0,1
+Wolverine Trading,pinpoint,True,19,0,0,0,not_freshly_probed,0,,1,0,0
+Wonderschool,greenhouse,True,39,1,0,0,listed,39,,1,0,0
+Workato,greenhouse,True,66,9,0,0,listed,65,,2,0,0
+Workday,workday,True,379,83,0,36,not_freshly_probed,0,,2,0,64
+WorkOS,ashby,True,28,4,0,0,not_freshly_probed,0,,2,0,0
+World Labs,ashby,True,11,0,0,0,not_freshly_probed,0,,1,0,0
+WorldQuant,greenhouse,True,95,0,0,0,listed,95,,1,0,0
+Worldscape Technology Inc.,lever,True,9,0,0,0,listed,9,,1,0,0
+Woven by Toyota,lever,True,155,0,0,0,listed,153,,1,0,13
+WRITER,ashby,True,45,29,0,0,not_freshly_probed,0,,1,0,0
+WSFS Bank,workday,True,87,9,0,11,not_freshly_probed,0,,2,2,11
+Wyetech,lever,True,269,0,0,0,listed,269,,1,0,5
+X-energy,workday,True,107,5,0,0,not_freshly_probed,0,,2,2,0
+xAI,greenhouse,True,306,160,0,0,listed,300,,1,0,0
+Xaira Therapeutics,greenhouse,True,28,2,0,0,listed,28,,2,0,0
+Xcel Energy,workday,True,131,19,0,25,not_freshly_probed,0,,2,2,26
+Xero,ashby,True,110,32,0,0,not_freshly_probed,0,,2,0,0
+XPENG Motors,greenhouse,True,22,0,0,0,listed,22,,1,0,0
+XR Trading,playwright,False,1,0,1,0,not_freshly_probed,0,,1,0,0
+XTX Markets,greenhouse,True,7,0,0,0,listed,7,,1,0,0
+Xylem Inc.,workday,True,142,47,0,14,not_freshly_probed,0,,1,1,39
+YAI,workday,True,506,65,0,3,not_freshly_probed,0,,2,0,59
+Yale University,html,True,7,0,7,0,not_freshly_probed,0,,1,0,0
+Yelp,html,True,11,0,9,0,not_freshly_probed,0,,2,0,0
+Yext,greenhouse,True,25,0,0,1,listed,25,,2,0,0
+YLD,greenhouse,True,7,0,0,0,listed,7,,1,0,0
+Yum Brands,yum,True,152,0,0,0,not_freshly_probed,0,,0,0,0
+zaimler,lever,True,10,0,0,0,listed,10,,1,0,0
+Zapier,ashby,True,12,3,0,0,not_freshly_probed,0,,1,0,0
+Zealand Pharma,workday,True,22,1,0,0,not_freshly_probed,0,,2,0,0
+Zebra Technologies,workday,True,257,17,0,11,not_freshly_probed,0,,2,0,13
+Zeiss Group,workday,True,925,50,1,19,not_freshly_probed,0,,3,0,82
+Zendesk,workday,True,142,28,0,16,not_freshly_probed,0,,2,0,26
+Zenefits (UI Team),html,True,45,0,33,0,not_freshly_probed,0,,2,2,0
+Zillow,workday,True,166,0,0,0,not_freshly_probed,0,,1,1,0
+Zip,ashby,True,118,19,0,0,not_freshly_probed,0,,2,0,0
+Zipline,greenhouse,True,351,41,0,0,listed,350,,2,0,0
+ZipRecruiter,greenhouse,True,43,6,0,0,listed,43,,2,0,0
+Zocdoc,greenhouse,True,59,17,0,0,listed,59,,2,0,0
+Zoetis,workday,True,128,1,0,3,not_freshly_probed,0,,2,2,6
+zola,greenhouse,True,3,0,0,0,listed,3,,1,0,0
+ZOLL Medical Corporation,workday,True,267,20,1,21,not_freshly_probed,0,,3,0,29
+Zone 5 Technologies,greenhouse,True,72,5,0,0,listed,72,,2,0,0
+Zoom,workday,True,84,7,0,6,not_freshly_probed,0,,2,0,13
+ZoomInfo,greenhouse,True,107,38,0,0,listed,107,,2,0,0
+Zoox,lever,True,239,0,0,0,listed,237,,1,0,33
+Zscaler,greenhouse,True,357,47,0,0,listed,353,,2,0,0
+ZT Systems,workday,True,168,8,2,12,not_freshly_probed,0,,2,2,12
+Zuora,greenhouse,True,30,3,0,0,listed,30,,2,0,0
+Zus Health,lever,True,6,0,0,0,listed,6,,1,1,0
+Zweitag,html,True,19,0,17,0,not_freshly_probed,0,,1,0,0
+zwift,greenhouse,True,5,1,0,0,listed,5,,1,0,0
+Zynga,playwright,True,6,0,6,0,not_freshly_probed,0,,1,0,0
+Ōura,greenhouse,True,81,4,0,0,listed,81,,1,0,0

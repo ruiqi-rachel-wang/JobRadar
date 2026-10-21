@@ -1,5 +1,36 @@
 from .base import *
 from urllib.parse import quote
+from ..utils import _COUNTRY_ALIASES
+
+
+def _greenhouse_locations(posting):
+    primary = norm((posting.get("location") or {}).get("name") or "")
+    normalized = normalize_location(primary)
+    # Some employers publish only "Hybrid" or a country in location.name,
+    # with the actual advertised cities in a public job-location metadata
+    # field. Office assignments alone are not reliable: a Remote office can
+    # carry the employer's headquarters address.
+    if (not normalized or normalized.lower() in {"multiple locations", "various locations"}
+            or normalized in _COUNTRY_ALIASES.values()):
+        fields = {
+            "job posting location", "job posting locations", "job location",
+            "primary posting location", "all locations",
+        }
+        values = []
+        for field in posting.get("metadata") or []:
+            if not isinstance(field, dict) or norm(field.get("name") or "").lower() not in fields:
+                continue
+            entries = field.get("value") or []
+            if isinstance(entries, str):
+                entries = [entries]
+            if not isinstance(entries, list):
+                continue
+            for entry in entries:
+                if isinstance(entry, str) and normalize_location(entry):
+                    values.extend(part.strip() for part in re.split(r'[;|│]', entry) if part.strip())
+        if values:
+            return list(dict.fromkeys(values))
+    return [part.strip() for part in re.split(r'[;|│]', primary) if part.strip()]
 
 
 def _public_job_url(scrape, token, region, posting):
@@ -77,6 +108,7 @@ def fetch_greenhouse(scrape, seen, company):
                         ),
                         "location": loc_raw,
                         "location_raw": loc_raw or None,
+                        "locations_raw": _greenhouse_locations(j),
                         "source": "greenhouse",
                         "posted_at": posted_raw,
                         "description": desc,
@@ -118,6 +150,7 @@ def fetch_greenhouse(scrape, seen, company):
                         "ats_id": str(j.get("id") or "") or None,
                         "location": norm(loc_raw),
                         "location_raw": norm(loc_raw) or None,
+                        "locations_raw": _greenhouse_locations(j),
                         "source": "greenhouse",
                         "posted_at": j.get("updated_at"),
                     })

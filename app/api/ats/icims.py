@@ -36,16 +36,20 @@ def _parse_icims_location(raw):
     parts = raw.split('-', 2)
     if len(parts) == 3:
         country, state, city = parts
+        country = _COUNTRY_CODES.get(country.upper(), country)
         city = city.replace('-', ' ')
         state = "" if state.upper() in _PLACEHOLDER else state
         loc = ", ".join(x.strip() for x in [city, state, country] if x.strip())
         return normalize_location(norm(loc))
     if len(parts) == 2:
         country, rest = parts
+        country = _COUNTRY_CODES.get(country.upper(), country)
         return normalize_location(norm(f"{rest.replace('-', ' ').strip()}, {country.strip()}"))
     # Handle comma-separated format: "London, UNAVAILABLE, GB"
     if ',' in raw:
         comma_parts = [p.strip() for p in raw.split(',')]
+        if len(comma_parts) >= 3:
+            comma_parts[-1] = _COUNTRY_CODES.get(comma_parts[-1].upper(), comma_parts[-1])
         comma_parts = [p for p in comma_parts if p.upper() not in _PLACEHOLDER]
         return normalize_location(norm(", ".join(comma_parts)))
     return normalize_location(norm(raw))
@@ -75,17 +79,20 @@ def _icims_location_from_detail(job_url, timeout=12):
         loc_raw = ""
         posted_raw = ""
 
+        locations = []
         # Primary: <dt>Location</dt><dd>US-MA-Boston</dd>
         # iCIMS HTML can have badly-nested dt/dd elements, so take only the
         # direct text nodes of the <dd> (recursive=False) to avoid spill-over.
         for dt in soup.find_all('dt'):
             label = dt.get_text(strip=True).lower()
-            if label == 'location':
+            if label in ('location', 'locations', 'job location', 'job locations'):
                 dd = dt.find_next_sibling('dd')
                 if dd:
                     raw = ' '.join(dd.find_all(string=True, recursive=False)).strip()
-                    loc_raw = raw
-                    loc = _parse_icims_location(raw)
+                    for part in re.split(r'\s*[|;]\s*|\s+(?=[A-Z]{2}-(?:[A-Z]{2,3}|UNAVAILABLE)-)', raw):
+                        candidate = _parse_icims_location(part)
+                        if candidate and candidate not in locations:
+                            locations.append(candidate)
 
         # Also grab posted date from detail if available
         for dt in soup.find_all('dt'):
@@ -97,30 +104,22 @@ def _icims_location_from_detail(job_url, timeout=12):
                     posted_raw = raw
                     posted = _parse_posted(raw)
 
-        # Fallback: JSON-LD jobLocation
-        if not loc:
-            for sc in soup.find_all('script', type='application/ld+json'):
-                try:
-                    data = json.loads(sc.string or '')
-                    jl = (data.get('jobLocation') or {})
-                    if isinstance(jl, list):
-                        jl = jl[0] if jl else {}
-                    addr = jl.get('address') or {}
-                    city    = addr.get('addressLocality') or ''
-                    state   = addr.get('addressRegion') or ''
-                    country = addr.get('addressCountry') or ''
-                    # Filter placeholder region values iCIMS uses when state is unavailable
-                    if state.upper() in ("UNAVAILABLE", "N/A", "NA", "NONE", "NULL"):
-                        state = ''
-                    candidate = ", ".join(x for x in [city, state, country] if x)
-                    if candidate:
-                        loc_raw = candidate
-                        loc = normalize_location(norm(candidate))
-                        posted_raw = posted_raw or data.get("datePosted") or ""
-                        posted = posted or _parse_posted(posted_raw)
-                        break
-                except Exception:
-                    pass
+        # Structured data may list additional places even when the visible
+        # Location field contains only the primary office.
+        for sc in soup.find_all('script', type='application/ld+json'):
+            try:
+                data = json.loads(sc.string or sc.get_text() or '')
+            except (ValueError, TypeError):
+                continue
+            for posting in _jobposting_objects(data):
+                for raw in _jobposting_locations(posting):
+                    candidate = normalize_location(raw)
+                    if candidate and candidate not in locations:
+                        locations.append(candidate)
+                posted_raw = posted_raw or posting.get("datePosted") or ""
+                posted = posted or _parse_posted(posted_raw)
+        loc = "; ".join(locations)
+        loc_raw = loc
 
         # Extract job description text
         desc_el = None
@@ -135,7 +134,7 @@ def _icims_location_from_detail(job_url, timeout=12):
 
         return loc, posted, normalize_description(desc), {
             "location_raw": loc_raw or None,
-            "locations_raw": [loc_raw] if loc_raw else [],
+            "locations_raw": locations,
             "posted_raw": posted_raw or None,
             "posted_at": posted_raw or None,
             "description_raw": desc or None,

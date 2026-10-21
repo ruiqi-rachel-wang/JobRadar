@@ -141,17 +141,23 @@ def _workday_detail_location(info):
         for part in parts
     ):
         parts = _workday_location_parts(info.get("jobRequisitionLocation"))
+    primary_count = len(parts)
     parts.extend(_workday_location_parts(info.get("additionalLocations")))
 
     normalized = []
     seen_locs = set()
-    for part in parts:
+    for index, part in enumerate(parts):
         raw = norm(str(part))
         has_country_suffix = re.search(r'\b(?:US|USA|United States(?: of America)?|[A-Z]{2})(?:\s+\d{2,6})?$', raw, re.I)
-        if country and "," not in raw and raw.lower() not in ("remote", "multiple locations") and not has_country_suffix:
-            raw = f"{raw}, {country}"
-        elif country and raw.lower() == "remote":
-            raw = f"Remote, {country}"
+        # The requisition country belongs to its primary location. An
+        # additional office can be in another country (e.g. Getafe/Hamburg).
+        part_country = country if index < primary_count else ""
+        country_prefix = bool(part_country and re.match(
+            rf'^(?:US|USA|United States(?: of America)?|{re.escape(part_country)})\s*[-,]', raw, re.I))
+        if part_country and not country_prefix and "," not in raw and raw.lower() not in ("remote", "multiple locations") and not has_country_suffix:
+            raw = f"{raw}, {part_country}"
+        elif part_country and raw.lower() == "remote":
+            raw = f"Remote, {part_country}"
         loc = normalize_location(raw)
         if len(parts) > 1 and loc in ("US", "UK", "Canada", "India", "Australia", "Germany", "France"):
             continue
@@ -585,10 +591,20 @@ def fetch_workday(scrape, seen, company):
                 if (
                     not refresh_location
                     and
-                    not _workday_location_has_country(loc)
-                    and _workday_location_has_country(existing_location)
+                    (
+                        (loc in ("", "Multiple Locations")
+                         and existing_location not in ("", "Multiple Locations"))
+                        or (not _workday_location_has_country(loc)
+                            and _workday_location_has_country(existing_location))
+                    )
                 ):
                     loc = existing_location
+                    raw_locations = [
+                        item.get("display") or item.get("raw")
+                        for item in existing.get("locations") or []
+                        if isinstance(item, dict) and (item.get("raw") or item.get("display"))
+                    ] or [existing_location]
+                    raw_location = "; ".join(raw_locations)
                 existing_exp = (
                     isinstance(existing, dict)
                     and bool(existing.get("exp_label"))
@@ -660,20 +676,35 @@ def fetch_workday(scrape, seen, company):
                     } or None,
                     "description": None,
                     "_detail_path": path if needs_detail and fetch_for_this else "",
+                    "_needs_location_detail": location_detail_needed,
                 })
 
-        detail_targets = [
-            (pos, job) for pos, job in enumerate(page_jobs)
-            if (
-                job.get("_detail_path")
-                and detail_count + pos < detail_limit
-                and not scan_deadline_exceeded(scrape)
-            )
-        ]
+        detail_targets = []
+        remaining_details = max(0, detail_limit - detail_count)
+        for pos, job in enumerate(page_jobs):
+            if not job.get("_detail_path") or scan_deadline_exceeded(scrape):
+                continue
+            if job.get("_needs_location_detail"):
+                detail_targets.append((pos, job))
+            elif remaining_details:
+                detail_targets.append((pos, job))
+                remaining_details -= 1
         if detail_targets:
             def _fetch_target(item):
                 pos, job = item
                 detail = _fetch_workday_detail(base_url, tenant, board, job["_detail_path"])
+                if not detail.get("location"):
+                    previous = (
+                        seen.get(make_id(company, job["url"], job["title"], "workday", job.get("ats_id")))
+                        or seen.get(make_id(company, job["url"], job["title"]))
+                    ) if isinstance(seen, dict) else None
+                    if isinstance(previous, dict) and previous.get("location") not in (None, "", "Multiple Locations"):
+                        cached = [
+                            value.get("display") or value.get("raw")
+                            for value in previous.get("locations") or []
+                            if isinstance(value, dict) and (value.get("display") or value.get("raw"))
+                        ] or [previous["location"]]
+                        detail.update(location="; ".join(cached), location_raw="; ".join(cached), locations_raw=cached)
                 return pos, detail
 
             with concurrent.futures.ThreadPoolExecutor(max_workers=max(1, detail_workers)) as ex:
@@ -703,6 +734,7 @@ def fetch_workday(scrape, seen, company):
                 time.sleep(detail_delay)
         for job in page_jobs:
             job.pop("_detail_path", None)
+            job.pop("_needs_location_detail", None)
         jobs.extend(page_jobs)
 
         if stop_early and seen and page_jobs:

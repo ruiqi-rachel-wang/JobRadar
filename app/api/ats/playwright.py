@@ -356,23 +356,24 @@ def fetch_phenom(scrape, seen, company):
     else:
         job_base = re.sub(r'/search(?:-results|-jobs).*', '/job/', list_url)
 
-    max_pages = int(scrape.get("hard_max_pages") or 100)
+    max_pages = int(scrape.get("hard_max_pages") or 10000)
     jobs = {}
     consec_all_seen = 0
     expected_total = None
 
     for page in range(max_pages):
+        if scan_deadline_exceeded(scrape):
+            return list(jobs.values()), "company scan deadline reached (partial Phenom results)"
         offset = page * 10  # Phenom default page size is 10
-        if offset == 0:
-            purl = list_url
-        else:
-            base = list_url.split("?")[0]
-            purl = f"{base}?from={offset}&s=1"
+        purl = list_url if page == 0 else make_paged_url(
+            list_url, {"param": "from", "start": 0, "step": 10}, page)
+        if page:
+            purl += ("&" if "?" in purl else "?") + "s=1"
         try:
             r = requests.get(purl, headers=HEADERS, timeout=25, verify=verify_ssl)
             r.raise_for_status()
-        except Exception as e:
-            return list(jobs.values()), str(e)
+        except Exception as exc:
+            return list(jobs.values()), str(exc)
 
         m = re.search(r'phApp\.ddo\s*=\s*', r.text)
         if not m:
@@ -402,12 +403,27 @@ def fetch_phenom(scrape, seen, company):
             raw_loc = (j.get("cityStateCountry") or j.get("location") or
                        j.get("city") or "")
             loc = normalize_location(norm(raw_loc))
+            locations = [norm(raw_loc)] if isinstance(raw_loc, str) and norm(raw_loc) else []
+            alternatives = j.get("multi_location_array") or j.get("multi_location") or []
+            if len(alternatives) > 1:
+                for value in alternatives:
+                    if isinstance(value, dict):
+                        value = value.get("cityStateCountry") or value.get("location") or ""
+                    if isinstance(value, str) and norm(value) and norm(value) not in locations:
+                        locations.append(norm(value))
             posted = _parse_posted(j.get("postedDate") or j.get("dateCreated") or "")
+            previous = jobs.get(jurl)
+            if previous and previous.get("title") == title:
+                locations = list(dict.fromkeys((previous.get("locations_raw") or []) + locations))
             jobs[jurl] = {"title": title, "url": jurl, "location": loc,
-                          "source": "phenom", "posted": posted}
+                          "location_raw": norm(raw_loc) or None, "locations_raw": locations,
+                          "source": "phenom", "posted": posted,
+                          "raw_data": {key: j[key] for key in
+                                       ("multi_location", "multi_location_array", "isMultiLocation")
+                                       if key in j}}
             jid = make_id(company, jurl, title)
             page_seen.append(jid in seen)
-        if len(jobs) == before:
+        if len(jobs) == before and not expected_total:
             break
         if scrape.get("stop_on_seen") and page_seen:
             consec_all_seen = consec_all_seen + 1 if all(page_seen) else 0
@@ -415,7 +431,7 @@ def fetch_phenom(scrape, seen, company):
                 break
         if total and offset + 10 >= total:
             break
-        time.sleep(0.3)
+        time.sleep(0.05)
 
     if jobs:
         result = list(jobs.values())

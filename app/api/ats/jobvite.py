@@ -58,6 +58,6 @@ def fetch_jobvite(scrape, seen, company):
                 targets,
             )
             for job, detail in zip(targets, details):
-                if detail.get("description"):
+                if detail:
                     job.update(detail)
     return result, None

@@ -133,7 +133,7 @@ def fetch_oraclecloud(scrape, seen, company):
         finder = f"findReqs;siteNumber={site},limit={limit},offset={offset},sortBy={sort_by}"
         # Pass finder inline to avoid requests URL-encoding the semicolons (Oracle rejects %3B)
         api_url = (f"https://{api_host}/hcmRestApi/resources/latest/recruitingCEJobRequisitions"
-                   f"?finder={finder}&expand=requisitionList")
+                   f"?finder={finder}&expand=requisitionList.secondaryLocations,requisitionList.otherWorkLocations")
         hdrs = {**HEADERS, "Accept": "application/json"}
         if vanity_domain:
             hdrs["ora-irc-vanity-domain"] = vanity_domain
@@ -229,6 +229,20 @@ def fetch_oraclecloud(scrape, seen, company):
             else:
                 jurl = f"https://{host}/hcmUI/CandidateExperience/en/sites/{site}/job/{jid}" if jid else ""
             loc_raw = norm(j.get("PrimaryLocation") or j.get("PrimaryLocationCountry") or "")
+            locations = [loc_raw] if loc_raw else []
+            for secondary in j.get("secondaryLocations") or []:
+                if isinstance(secondary, dict) and secondary.get("Name"):
+                    locations.append(norm(secondary["Name"]))
+            # Some Oracle tenants expose physical offices without secondary
+            # geography labels. Keep the address city, not the building name.
+            for office in j.get("otherWorkLocations") or []:
+                if not isinstance(office, dict) or not office.get("TownOrCity"):
+                    continue
+                locations.append(norm(", ".join(str(value) for value in (
+                    office.get("TownOrCity"), office.get("Region2") or office.get("Region1"),
+                    office.get("Country"),
+                ) if value)))
+            locations = list(dict.fromkeys(locations))
             posted_raw = j.get("PostedDate")
             if title and jurl:
                 desc = descriptions.get(jid) or _oraclecloud_list_text(j)
@@ -242,6 +256,7 @@ def fetch_oraclecloud(scrape, seen, company):
                     ),
                     "location": loc_raw,
                     "location_raw": loc_raw or None,
+                    "locations_raw": locations,
                     "source": "oraclecloud",
                     "posted_at": posted_raw,
                     "description": desc,
@@ -256,6 +271,7 @@ def fetch_oraclecloud(scrape, seen, company):
                             "PrimaryLocation", "PrimaryLocationCountry",
                             "RequisitionNumber", "JobCode", "WorkerType",
                             "JobType", "JobFamily",
+                            "secondaryLocations", "otherWorkLocations",
                         )
                         if j.get(key)
                     } or None,

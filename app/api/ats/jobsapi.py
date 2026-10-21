@@ -87,8 +87,17 @@ def fetch_jobsapi(scrape, seen, company):
             city    = j.get("city") or ""
             state   = j.get("state") or ""
             country = j.get("country") or j.get("country_code") or ""
-            location_raw = norm(", ".join(x for x in [city, state, country] if x))
-            loc = normalize_location(location_raw)
+            location_raw = norm(j.get("full_location") or
+                                ", ".join(x for x in [city, state, country] if x))
+            locations = [part.strip() for part in location_raw.split(";") if part.strip()]
+            for additional in j.get("additional_locations") or []:
+                if not isinstance(additional, dict):
+                    continue
+                value = norm(", ".join(str(additional.get(key)) for key in
+                                     ("city", "state", "country") if additional.get(key)))
+                if value and value not in locations:
+                    locations.append(value)
+            loc = normalize_location("; ".join(locations))
 
             raw_date = j.get("posted_date") or j.get("create_date") or j.get("update_date") or ""
             posted = _parse_posted(raw_date[:10] if raw_date else "")
@@ -118,7 +127,7 @@ def fetch_jobsapi(scrape, seen, company):
                 "requisition_id": req_id,
                 "location": loc,
                 "location_raw": location_raw or None,
-                "locations_raw": [location_raw] if location_raw else [],
+                "locations_raw": locations,
                 "description": desc or None,
                 "description_raw": desc or None,
                 "source": "jobsapi",
@@ -131,7 +140,8 @@ def fetch_jobsapi(scrape, seen, company):
                 "raw_data": {
                     key: j.get(key)
                     for key in (
-                        "city", "state", "country", "country_code",
+                        "city", "state", "country", "country_code", "full_location",
+                        "additional_locations", "multipleLocations",
                         "employment_type", "job_type", "department",
                     )
                     if j.get(key) is not None

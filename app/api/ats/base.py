@@ -42,8 +42,74 @@ from ..utils import (
     _parse_posted, _posted_from_json, extract_location_from_text,
     extract_posted_from_html, extract_posted_from_text, get_param_title,
     has_include, make_id, make_paged_url, norm, normalize_description,
-    normalize_location,
+    normalize_location, _COUNTRY_CODES, _US_STATES,
 )
+
+
+def _jobposting_objects(data):
+    """Visit JobPosting objects in JSON-LD arrays and @graph containers."""
+    if isinstance(data, list):
+        for item in data:
+            yield from _jobposting_objects(item)
+    elif isinstance(data, dict):
+        types = data.get("@type") or []
+        if isinstance(types, str):
+            types = [types]
+        if "JobPosting" in types:
+            yield data
+        yield from _jobposting_objects(data.get("@graph"))
+
+
+def _jobposting_locations(posting):
+    """All explicitly published job places, excluding employer headquarters."""
+    values = posting.get("jobLocation") or []
+    if not isinstance(values, list):
+        values = [values]
+    locations = []
+    for value in values:
+        if isinstance(value, str):
+            raw = value
+        elif isinstance(value, dict):
+            address = value.get("address") or {}
+            if isinstance(address, str):
+                raw = address
+            elif isinstance(address, dict):
+                country = address.get("addressCountry") or ""
+                if isinstance(country, dict):
+                    country = country.get("name") or country.get("identifier") or ""
+                # Country is an explicit schema field: DE is Germany here,
+                # rather than the US state Delaware in an ambiguous label.
+                country_code = str(country).upper()
+                country = _COUNTRY_CODES.get(country_code, country)
+                state = address.get("addressRegion") or ""
+                if str(state).upper() in {"UNAVAILABLE", "N/A", "NA", "NONE", "NULL"}:
+                    state = ""
+                city = address.get("addressLocality") or ""
+                # Some iCIMS feeds put several coded locations in one
+                # addressLocality, e.g. VA-Hopewell\nUS-VA-Richmond.
+                if (re.match(r'^[A-Z]{2}-(?:[A-Z]{2,3}|UNAVAILABLE)-', str(city))
+                        or (country_code == 'US' and str(city).split('-', 1)[0] in _US_STATES)):
+                    coded = str(city)
+                    if not coded.startswith(country_code + "-"):
+                        coded = country_code + "-" + coded
+                    for part in re.split(r'\s+(?=[A-Z]{2}-(?:[A-Z]{2,3}|UNAVAILABLE)-)', coded):
+                        pieces = part.split('-', 2)
+                        if len(pieces) == 3:
+                            code, region, locality = pieces
+                            label = ", ".join(x for x in (locality, region if region != 'UNAVAILABLE' else '',
+                                                          _COUNTRY_CODES.get(code, code)) if x)
+                            if norm(label) not in locations:
+                                locations.append(norm(label))
+                    continue
+                raw = ", ".join(str(part) for part in (city, state, country) if part)
+                raw = raw or value.get("name") or ""
+            else:
+                raw = ""
+        else:
+            continue
+        if raw and norm(raw) not in locations:
+            locations.append(norm(raw))
+    return locations
 
 
 def fetch_detail_description(url, *, verify=True):
@@ -78,7 +144,9 @@ def fetch_detail_description(url, *, verify=True):
             data = json.loads(node.string or node.get_text() or "")
         except Exception:
             continue
-        candidates = data if isinstance(data, list) else [data]
+        candidates = list(_jobposting_objects(data))
+        if not candidates:
+            candidates = data if isinstance(data, list) else [data]
         for item in candidates:
             if not isinstance(item, dict):
                 continue
@@ -94,6 +162,11 @@ def fetch_detail_description(url, *, verify=True):
                     result["employment_type_raw"] = item["employmentType"]
                 if item.get("datePosted"):
                     result["posted_at"] = item["datePosted"]
+                locations = _jobposting_locations(item)
+                if locations:
+                    result["locations_raw"] = locations
+                    result["location_raw"] = "; ".join(locations)
+                    result["location"] = normalize_location(result["location_raw"])
                 if result.get("description"):
                     return result
 

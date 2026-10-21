@@ -1,0 +1,16 @@
+company,mode,status,source_jobs,checked_at,errors
+Advance Auto Parts,phenom,partial,9990,2026-10-21T05:33:41Z,partial Phenom listing: fetched 9990 of 16569 jobs
+Bitso,greenhouse,error,0,2026-10-21T05:12:02Z,404 board not found: bitso
+Carbon Robotics,greenhouse,error,0,2026-10-21T05:12:05Z,404 board not found: carbonrobotics
+DHL,phenom,partial,9816,2026-10-21T05:35:10Z,partial Phenom listing: fetched 9816 of 9819 jobs
+Dollar General,jobsapi,error,0,2026-10-21T05:07:29Z,404 Client Error: Not Found for url: https://careers.dollargeneral.com/api/jobs?limit=100&offset=0
+Google DeepMind,greenhouse,error,0,2026-10-21T05:12:21Z,404 board not found: deepmind
+HealthMark Group,lever,error,0,2026-10-21T05:07:44Z,404 Client Error: Not Found for url: https://api.lever.co/v0/postings/healthmark-group?mode=json
+instabase,greenhouse,error,0,2026-10-21T05:12:25Z,404 board not found: instabase
+New Balance,phenom,error,0,2026-10-21T05:27:50Z,"HTTPSConnectionPool(host='jobs.newbalance.com', port=443): Max retries exceeded with url: /global/en/search-results (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self signed certificate in certificate chain (_ssl.c:997)')))"
+Oxylabs,lever,error,0,2026-10-21T05:08:27Z,404 Client Error: Not Found for url: https://api.lever.co/v0/postings/oxylabs?mode=json
+Pomelo Care,greenhouse,error,0,2026-10-21T05:12:43Z,404 board not found: pomelocare
+Scout AI,greenhouse,error,0,2026-10-21T05:12:48Z,404 board not found: scoutai
+Tiberius Aerospace Inc.,lever,error,0,2026-10-21T05:09:28Z,"HTTPSConnectionPool(host='api.lever.co', port=443): Max retries exceeded with url: /v0/postings/tiberius?mode=json (Caused by ReadTimeoutError(""HTTPSConnectionPool(host='api.lever.co', port=443): Read timed out. (read timeout=20)""))"
+Tomorrow Health,greenhouse,error,0,2026-10-21T05:12:57Z,404 board not found: tomorrowhealth
+Truepill,greenhouse,error,0,2026-10-21T05:12:59Z,404 board not found: fuzehealth

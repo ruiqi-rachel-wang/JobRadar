@@ -646,6 +646,20 @@ def normalize_location(loc):
     if not loc:
         return ''
     loc = ' '.join(loc.split())
+    loc = re.sub(r'(?:(?<=,)|^)\s*UNAVAILABLE\s*(?:,|$)', '', loc, flags=re.I).strip(' ,')
+    if not loc:
+        return ''
+    # Workday also advertises country/state/city with full state names.
+    # Parse the state before treating a leading USA token as a country-city
+    # pair ("USA - Texas - Lubbock" must retain TX).
+    us_address = re.fullmatch(r'(?:USA|US|United States(?: of America)?)\s*-\s*([A-Za-z ]+?)\s*-\s*([^;|│/]+)', loc, re.I)
+    if us_address:
+        state = _US_STATE_NAMES.get(us_address.group(1).strip().lower())
+        if state:
+            return f"{_title_case_city(us_address.group(2).strip())}, {state}, US"
+    remote_state = re.fullmatch(r'Remote,\s*([A-Z]{2}),\s*US', loc, re.I)
+    if remote_state and remote_state.group(1).upper() in _US_STATES:
+        return f"Remote, {remote_state.group(1).upper()}, US"
     # A slash often separates complete alternatives, not address components.
     # Preserve each alternative before the normal city/state/country parser can
     # mistake a trailing state code such as CA for the country Canada.
@@ -865,6 +879,9 @@ def normalize_location(loc):
         return normalize_location(base + ', US') if base else 'US'
 
     parts = [p.strip() for p in loc.split(',') if p.strip()]
+    country_parts = [_country_code(part) for part in parts]
+    if len(parts) > 1 and all(country_parts) and len(set(country_parts)) == 1:
+        return country_parts[0]
     if len(parts) >= 3 and re.fullmatch(r'\d{4,6}(?:-\d{4})?', parts[-1]):
         parts = parts[:-1]
     # Workday frequently returns a facility/address followed by city and state,
@@ -1058,6 +1075,12 @@ def normalize_locations(raw_value, remote_mode=None):
             seen_display.add(key)
             mode = explicit_mode or normalize_remote_mode(None, raw)
             output.append(_structured_location(raw, display_part, mode))
+
+    # Providers sometimes include a "Multiple Locations" label alongside
+    # the actual office list. Keep the explicit places rather than counting
+    # that label as an additional office; retain it when nothing is resolved.
+    if any(item["display"] != "Multiple Locations" for item in output):
+        output = [item for item in output if item["display"] != "Multiple Locations"]
 
     top_mode = explicit_mode
     if top_mode is None:

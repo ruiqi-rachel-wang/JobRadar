@@ -603,6 +603,6 @@ def fetch_html(scrape, seen, company):
         verify = bool(scrape.get("verify_ssl", True))
         with concurrent.futures.ThreadPoolExecutor(max_workers=min(8, max(1, len(targets)))) as executor:
             for job, detail in zip(targets, executor.map(lambda j: fetch_detail_description(j.get("url") or "", verify=verify), targets)):
-                if detail.get("description"):
+                if detail:
                     job.update(detail)
     return jobs, first_err

@@ -1,0 +1,60 @@
+{
+  "configured_companies": 2222,
+  "open_records_reviewed": 606363,
+  "fresh_feed_companies": 762,
+  "fresh_feed_postings": 140553,
+  "fresh_feed_statuses": {
+    "listed": 727,
+    "empty": 20,
+    "error": 13,
+    "partial": 2
+  },
+  "proposals": 29369,
+  "companies_with_proposals": 606,
+  "by_source": {
+    "workday": 22233,
+    "jobsapi": 326,
+    "oraclecloud": 4438,
+    "greenhouse": 406,
+    "lever": 841,
+    "phenom": 830,
+    "icims": 293,
+    "html": 1,
+    "avature": 1
+  },
+  "by_basis": {
+    "fresh official Workday jobPostingInfo": 13506,
+    "fresh jobsapi public job feed": 326,
+    "fresh oraclecloud public job feed": 4438,
+    "fresh greenhouse public job feed": 406,
+    "stored authoritative Workday additionalLocations; no inherited primary country": 8624,
+    "fresh lever public job feed": 841,
+    "fresh phenom public job feed": 830,
+    "fresh official JobPosting locations and visible iCIMS fields": 295,
+    "live recheck of Workday jobPostingInfo after scheduled scans": 103
+  },
+  "detail_checks": 10617,
+  "workday_detail_statuses": {
+    "resolved": 13517,
+    "error": 205,
+    "no_location": 244,
+    "title_changed": 1
+  },
+  "detail_statuses": {
+    "verified_fields": 7366,
+    "no_structured_locations": 1417,
+    "blocked": 119,
+    "http_error": 195,
+    "difference": 1482,
+    "error": 53
+  },
+  "comparison_counts": {
+    "unchanged_primary_source": 93179,
+    "update": 30872,
+    "already_correct": 28936,
+    "unchanged_display": 1296,
+    "stored_evidence_would_reduce_locations_skipped": 207,
+    "unresolved_source": 13,
+    "no_source_locations": 3
+  }
+}

@@ -1,0 +1,163 @@
+{
+  "counts": {
+    "current_source_confirmed": 9,
+    "unverified": 4,
+    "source_differs": 1
+  },
+  "results": [
+    {
+      "id": "4b7c1a091d38bca76db2",
+      "company": "Munters",
+      "current": "Ireland, UK; Holborn (GB02)",
+      "reviewed": "UK, Ireland; Holborn (GB02)",
+      "url": "https://munters.wd3.myworkdayjobs.com/external_careers/job/Ireland/Senior-Chiller-Commissioning-Engineer_R13280",
+      "title": "Senior Chiller Commissioning Engineer",
+      "source": "workday",
+      "source_location": "Ireland, UK; Holborn (GB02)",
+      "status": "current_source_confirmed"
+    },
+    {
+      "id": "898451b66bfd6c82ccf9",
+      "company": "Octopus Energy",
+      "current": "London (GB); Brighton (GB)",
+      "reviewed": "London (GB); Remote, UK; Brighton (GB)",
+      "url": "https://jobs.lever.co/octoenergy/9763fda9-49c6-4418-985e-85cfbd97ca14",
+      "title": "Product Manager",
+      "source": "lever",
+      "source_location": "London (GB); Brighton (GB)",
+      "status": "current_source_confirmed"
+    },
+    {
+      "id": "d70df45a5afa9205c2a8",
+      "company": "Ensemble Health Partners",
+      "current": "Remote; Work at Home - Ohio - Other",
+      "reviewed": "Remote, US; Work at Home - Ohio - Other",
+      "url": "https://ensemblehp.wd5.myworkdayjobs.com/ensemblehealthpartnerscareers/job/Remote---Nationwide/Contract-Management-Technician_R051607-1",
+      "title": "Contract Management Technician",
+      "source": "workday",
+      "status": "unverified",
+      "error": "403 Client Error: Forbidden for url: https://ensemblehp.wd5.myworkdayjobs.com/wday/cxs/ensemblehp/ensemblehealthpartnerscareers/job/Remote---Nationwide/Contract-Management-Technician_R051607-1"
+    },
+    {
+      "id": "7d4531684d042161f8cc",
+      "company": "Live Nation",
+      "current": "Remote; Work From Home - Wyoming; Work From Home - Wisconsin; Work From Home - West Virginia; Work From Home - Washington; Work From Home - Virginia; Work From Home - Vermont; Work From Home - Utah; Work From Home - Texas; Work From Home - South Dakota; Work From Home - South Carolina; Work From Home - Rhode Island; Work From Home - Pennsylvania; Work From Home - Oregon; Work From Home - Oklahoma; Work From Home - Ohio; Work From Home - North Dakota; Work From Home - North Carolina; Work From Home - New York; Work From Home, India; Work From Home - New Mexico; Work From Home - New Jersey; Work From Home - New Hampshire; Work From Home - Nevada; Work From Home - Nebraska; Work From Home - Montana; Work From Home - Missouri; Work From Home - Mississippi; Work From Home - Minnesota; Work From Home - Michigan; Work From Home - Massachusetts; Work From Home - Maryland; Work From Home - Maine; Work From Home - Louisiana; Work From Home - Kentucky; Work From Home - Kansas; Work From Home - Iowa; Work From Home - Indiana; Work From Home - Illinois; Work From Home - Idaho; Work From Home - Hawaii; Work From Home - Georgia; Work From Home - Florida; Work From Home - D.C.; Work From Home - Delaware; Work From Home - California; Work From Home - Arkansas; Work From Home - Arizona; Work From Home - Alaska; Work From Home - Alabama",
+      "reviewed": "Remote, US; Work From Home - Wyoming; Work From Home - Wisconsin; Work From Home - West Virginia; Work From Home - Washington; Work From Home - Virginia; Work From Home - Vermont; Work From Home - Utah; Work From Home - Texas; Work From Home - South Dakota; Work From Home - South Carolina; Work From Home - Rhode Island; Work From Home - Pennsylvania; Work From Home - Oregon; Work From Home - Oklahoma; Work From Home - Ohio; Work From Home - North Dakota; Work From Home - North Carolina; Work From Home - New York; Work From Home, India; Work From Home - New Mexico; Work From Home - New Jersey; Work From Home - New Hampshire; Work From Home - Nevada; Work From Home - Nebraska; Work From Home - Montana; Work From Home - Missouri; Work From Home - Mississippi; Work From Home - Minnesota; Work From Home - Michigan; Work From Home - Massachusetts; Work From Home - Maryland; Work From Home - Maine; Work From Home - Louisiana; Work From Home - Kentucky; Work From Home - Kansas; Work From Home - Iowa; Work From Home - Indiana; Work From Home - Illinois; Work From Home - Idaho; Work From Home - Hawaii; Work From Home - Georgia; Work From Home - Florida; Work From Home - D.C.; Work From Home - Delaware; Work From Home - California; Work From Home - Arkansas; Work From Home - Arizona; Work From Home - Alaska; Work From Home - Alabama",
+      "url": "https://livenation.wd503.myworkdayjobs.com/LNExternalSite/job/Remote---Colorado-USA/Senior-Director-of-Project-Management_JR-92924",
+      "title": "Senior Director of Project Management",
+      "source": "workday",
+      "source_location": "Remote; Work From Home - Wyoming; Work From Home - Wisconsin; Work From Home - West Virginia; Work From Home - Washington; Work From Home - Virginia; Work From Home - Vermont; Work From Home - Utah; Work From Home - Texas; Work From Home - South Dakota; Work From Home - South Carolina; Work From Home - Rhode Island; Work From Home - Pennsylvania; Work From Home - Oregon; Work From Home - Oklahoma; Work From Home - Ohio; Work From Home - North Dakota; Work From Home - North Carolina; Work From Home - New York; Work From Home, India; Work From Home - New Mexico; Work From Home - New Jersey; Work From Home - New Hampshire; Work From Home - Nevada; Work From Home - Nebraska; Work From Home - Montana; Work From Home - Missouri; Work From Home - Mississippi; Work From Home - Minnesota; Work From Home - Michigan; Work From Home - Massachusetts; Work From Home - Maryland; Work From Home - Maine; Work From Home - Louisiana; Work From Home - Kentucky; Work From Home - Kansas; Work From Home - Iowa; Work From Home - Indiana; Work From Home - Illinois; Work From Home - Idaho; Work From Home - Hawaii; Work From Home - Georgia; Work From Home - Florida; Work From Home - D.C.; Work From Home - Delaware; Work From Home - California; Work From Home - Arkansas; Work From Home - Arizona; Work From Home - Alaska; Work From Home - Alabama",
+      "status": "current_source_confirmed"
+    },
+    {
+      "id": "ea78391746ef8c3ff42d",
+      "company": "ABB",
+      "current": "Minden, North Rhine-Westphalia, Germany",
+      "reviewed": "Minden, North Rhine-Westphalia, Germany; Mannheim, Baden-Wurttemberg, Germany",
+      "url": "https://abb.wd3.myworkdayjobs.com/External_Career_Page/job/Minden-North-Rhine-Westphalia-Germany/Ausbildung-Fachinformatiker-in-Systemintegration-2027--m-w-d-_JR00038139-1",
+      "title": "Ausbildung Fachinformatiker/in Systemintegration 2027 (m/w/d)",
+      "source": "workday",
+      "source_location": "Minden, North Rhine-Westphalia, Germany",
+      "status": "current_source_confirmed"
+    },
+    {
+      "id": "809b473e4771cfb94f22",
+      "company": "Octopus Energy",
+      "current": "Teesside (GB); Darlington (GB)",
+      "reviewed": "Liverpool (GB); Teesside (GB); Darlington (GB)",
+      "url": "https://jobs.lever.co/octoenergy/e57cc1f0-fa51-49bc-ab68-deb29fcabb87",
+      "title": "Roofer - North East",
+      "source": "lever",
+      "source_location": "Teesside (GB); Darlington (GB)",
+      "status": "current_source_confirmed"
+    },
+    {
+      "id": "9deb9fb11979022a37e8",
+      "company": "Humana",
+      "current": "Remote; Work at Home - Utah; Work at Home - Washington; Work at Home - Virginia; Work at Home - Texas; Work at Home - Tennessee; Work at Home - South Carolina; Work at Home - Pennsylvania; Work at Home - Oregon; Work at Home - West Virginia; Work at Home - New York; Work at Home - Ohio; Work at Home - Wisconsin; Work at Home - North Carolina; Work at Home - New Mexico; Work at Home - New Jersey; Work at Home - New Hampshire; Work at Home - Nevada; Work at Home - Nebraska; Work at Home - Missouri; Work at Home - Massachusetts; Work at Home - Montana; Work at Home - Mississippi; Work at Home - Minnesota; Work at Home - Louisiana; Work at Home - Michigan; Work at Home - Kentucky; Work at Home - Maryland; Work at Home - Kansas; Work at Home - Iowa; Work at Home - Indiana; Work at Home - Illinois; Work at Home - Idaho; Work at Home - Georgia; Work at Home - Florida; Work at Home - Colorado; Work at Home - California; Work at Home - Arizona; Work at Home - Arkansas; Work at Home - Alabama; Work at Home - Oklahoma; Work at Home - Wyoming; Work at Home - Vermont; Work at Home - Rhode Island; Work at Home - North Dakota; Work at Home - Maine; Work at Home - Delaware; Work at Home - Connecticut",
+      "reviewed": "Remote, US; Work at Home - Utah; Work at Home - Washington; Work at Home - Virginia; Work at Home - Texas; Work at Home - Tennessee; Work at Home - South Carolina; Work at Home - Pennsylvania; Work at Home - Oregon; Work at Home - West Virginia; Work at Home - New York; Work at Home - Ohio; Work at Home - Wisconsin; Work at Home - North Carolina; Work at Home - New Mexico; Work at Home - New Jersey; Work at Home - New Hampshire; Work at Home - Nevada; Work at Home - Nebraska; Work at Home - Missouri; Work at Home - Massachusetts; Work at Home - Montana; Work at Home - Mississippi; Work at Home - Minnesota; Work at Home - Louisiana; Work at Home - Michigan; Work at Home - Kentucky; Work at Home - Maryland; Work at Home - Kansas; Work at Home - Iowa; Work at Home - Indiana; Work at Home - Illinois; Work at Home - Idaho; Work at Home - Georgia; Work at Home - Florida; Work at Home - Colorado; Work at Home - California; Work at Home - Arizona; Work at Home - Arkansas; Work at Home - Alabama; Work at Home - Oklahoma; Work at Home - Wyoming; Work at Home - Vermont; Work at Home - Rhode Island; Work at Home - North Dakota; Work at Home - Maine; Work at Home - Delaware; Work at Home - Connecticut",
+      "url": "https://humana.wd5.myworkdayjobs.com/humana_external_career_site/job/Remote-Florida/Senior-Hospital-Contracting-Strategist_R-425977",
+      "title": "Senior Hospital Contracting Negotiator",
+      "source": "workday",
+      "status": "unverified",
+      "error": "403 Client Error: Forbidden for url: https://humana.wd5.myworkdayjobs.com/wday/cxs/humana/humana_external_career_site/job/Remote-Florida/Senior-Hospital-Contracting-Strategist_R-425977"
+    },
+    {
+      "id": "c532eea6632b766776d5",
+      "company": "Octopus Energy",
+      "current": "Surrey (GB); Reading (GB)",
+      "reviewed": "Portsmouth (GB); Reading (GB); Surrey (GB)",
+      "url": "https://jobs.lever.co/octoenergy/0fa17b02-0dc4-4196-a3aa-3e3443f85abd",
+      "title": "Plumber (South East)",
+      "source": "lever",
+      "source_location": "Surrey (GB); Reading (GB)",
+      "status": "current_source_confirmed"
+    },
+    {
+      "id": "e1e3577c9e96fa31e561",
+      "company": "Iron Mountain",
+      "current": "UK, England, UK; ESP, Alcobendas, Calle Reyes Cat\u00f3licos N\u00ba 6; ROU, Cluj-Napoca, Floor 1; HUN, Budapest, 2-10 Czuczor Street; POL, Warszawa, Al. Jerozolimskie 172 Budynek E",
+      "reviewed": "UK; ESP, Alcobendas, Calle Reyes Cat\u00f3licos N\u00ba 6; ROU, Cluj-Napoca, Floor 1; HUN, Budapest, 2-10 Czuczor Street; POL, Warszawa, Al. Jerozolimskie 172 Budynek E",
+      "url": "https://ironmountain.wd5.myworkdayjobs.com/iron-mountain-jobs/job/UK--England--Remote/Senior-Director-International-Benefits_J0102680",
+      "title": "Senior Director, International Benefits",
+      "source": "workday",
+      "source_location": "UK; ESP, Alcobendas, Calle Reyes Cat\u00f3licos N\u00ba 6; ROU, Cluj-Napoca, Floor 1; HUN, Budapest, 2-10 Czuczor Street; POL, Warszawa, Al. Jerozolimskie 172 Budynek E",
+      "status": "source_differs"
+    },
+    {
+      "id": "e56ded30db7631f90d30",
+      "company": "ZOLL Medical Corporation",
+      "current": "United Kingdom Remote; Poland Remote; Spain Remote; Netherlands Remote",
+      "reviewed": "United Kingdom Remote, Germany; United Kingdom Remote; Poland Remote; Spain Remote; Netherlands Remote",
+      "url": "https://zoll.wd5.myworkdayjobs.com/zollmedicalcorp/job/Germany-Remote/Office-365-Engineer-Collaboration-and-Automation_R19369",
+      "title": "Microsoft 365 Solutions Engineer",
+      "source": "workday",
+      "status": "unverified",
+      "error": "403 Client Error: Forbidden for url: https://zoll.wd5.myworkdayjobs.com/wday/cxs/zoll/zollmedicalcorp/job/Germany-Remote/Office-365-Engineer-Collaboration-and-Automation_R19369"
+    },
+    {
+      "id": "7d35adf8a529c786cd5e",
+      "company": "DuPont",
+      "current": "Marina Bay Financial Centre Tower 2, Singapore; Greifenberg, Bavaria, Germany; Paris, France; Amsterdam, Netherlands; Stevenage, Hertfordshire, UK; Bristol, UK; Mechelen, Antwerp, Belgium; Tarragona South, Tarragona, Spain; Barcelona, Barcelona, Spain; Neu-isenburg, Hesse, Germany; Wiesbaden, Hesse, Germany; Luxembourg, Luxembourg, Luxembourg",
+      "reviewed": "Marina Bay Financial Centre Tower 2, Singapore; Luxembourg; Paris, France; Amsterdam, Netherlands; Stevenage, Hertfordshire, UK; Bristol, UK; Tarragona South, Tarragona, Spain; Barcelona, Barcelona, Spain; Neu-isenburg, Hesse, Germany; Greifenberg, Bavaria, Germany; Mechelen, Antwerp, Belgium; Wiesbaden, Hesse, Germany",
+      "url": "https://careers.dupont.com/us/en/job/249754W",
+      "title": "Global Marketing Leader - RO (m/f/d)",
+      "source": "phenom",
+      "status": "unverified",
+      "error": "source needs manual review"
+    },
+    {
+      "id": "df39d1608b0e27ffa14d",
+      "company": "RELX",
+      "current": "Home Based, Australia; Canberra; Melbourne, Australia; Brisbane",
+      "reviewed": "Home Based - Australia, Australia; Home Based, Australia; Canberra; Melbourne, Australia; Brisbane",
+      "url": "https://relx.wd3.myworkdayjobs.com/relx/job/Australia/Content-Developer---Education--Legal-Regulatory-_R113610-1",
+      "title": "Content Developer - Property, Construction, Infrastructure (Legal/Regulatory)",
+      "source": "workday",
+      "source_location": "Home Based, Australia; Canberra; Melbourne, Australia; Brisbane",
+      "status": "current_source_confirmed"
+    },
+    {
+      "id": "9d6719af81f06fad2f6c",
+      "company": "RWS TrainAI",
+      "current": "S\u00e3o Paulo, Brazil; Salvador; Fortaleza; Belo Horizonte; Manaus; Curitiba; Bel\u00e9m; Porto Alegre; Goi\u00e2nia; Campinas; Guarulhos; S\u00e3o Lu\u00eds; Macei\u00f3; Natal; Jo\u00e3o Pessoa",
+      "reviewed": "S\u00e3o Paulo, Brazil; Rio de Janeiro; Brasilia; Recife",
+      "url": "https://jobs.lever.co/rws/3d2e529c-744a-4ed6-b04d-e8e416969a1b",
+      "title": "Brazilian Portuguese - History Subject Matter Expert (SME)",
+      "source": "lever",
+      "source_location": "S\u00e3o Paulo, Brazil; Salvador; Fortaleza; Belo Horizonte; Manaus; Curitiba; Bel\u00e9m; Porto Alegre; Goi\u00e2nia; Campinas; Guarulhos; S\u00e3o Lu\u00eds; Macei\u00f3; Natal; Jo\u00e3o Pessoa",
+      "status": "current_source_confirmed"
+    },
+    {
+      "id": "29a96609a1ccaa65f798",
+      "company": "Qonto",
+      "current": "Berlin, Germany; Barcelona, Spain",
+      "reviewed": "Barcelona, Spain; Paris, France; Milan, Italy; Berlin, Germany; Lisbon, Portugal",
+      "url": "https://jobs.lever.co/qonto/522a932c-8009-4e1a-87b8-970b9d33066b",
+      "title": "Senior Product Engineer - Android/Kotlin",
+      "source": "lever",
+      "source_location": "Berlin, Germany; Barcelona, Spain",
+      "status": "current_source_confirmed"
+    }
+  ]
+}

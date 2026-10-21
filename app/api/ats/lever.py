@@ -20,6 +20,10 @@ def fetch_lever(scrape, seen, company):
         jurl = j.get("hostedUrl") or ""
         categories = j.get("categories") or {}
         location_raw = norm(categories.get("location") or "")
+        locations = list(dict.fromkeys(
+            norm(value) for value in [location_raw, *(categories.get("allLocations") or [])]
+            if isinstance(value, str) and norm(value)
+        ))
         desc_parts = []
         intro = j.get("description") or ""
         if intro:
@@ -48,6 +52,7 @@ def fetch_lever(scrape, seen, company):
                 "apply_url": j.get("applyUrl"),
                 "location": location_raw,
                 "location_raw": location_raw or None,
+                "locations_raw": locations,
                 "source": "lever",
                 "posted_at": j.get("createdAt"),
                 "description": description_raw or None,
