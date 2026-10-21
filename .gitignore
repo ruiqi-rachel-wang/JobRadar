@@ -12,6 +12,7 @@ app/data/*.sqlite*
 app/data/seen_jobs.json
 app/data/scan_summary.json
 app/data/scan_schedule.json
+app/data/company_health/
 root_layout_archive/deploy/__pycache__/
 root_layout_archive/runtime_app/app/data/*.db
 root_layout_archive/runtime_app/app/data/*.db-*

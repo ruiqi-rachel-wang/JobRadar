@@ -1,0 +1,40 @@
+company,probe_status,count,source_quality_flags,errors
+Alexander Chapman,empty,0,0,
+Arcellx,error,0,0,"HTTPSConnectionPool(host='ir.arcellx.com', port=443): Max retries exceeded with url: /careers/opportunities/default.aspx (Caused by SSLError(SSLError(1, '[SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:997)')))"
+Barracuda View Team,listed,122,96,
+Chesapeake Technology,empty,0,0,
+Coffee 'n Clothes,empty,0,0,
+Condé Nast,error,0,0,422 Client Error: Unprocessable Entity for url: https://condenast.wd5.myworkdayjobs.com/wday/cxs/condenast/CondeCareers/jobs
+CoreOS,listed,1,0,
+Dragonfly,empty,0,0,
+Exact Sciences,empty,0,0,
+FreshDirect,error,0,0,404 Client Error: Not Found for url: https://careers-freshdirect.icims.com/jobs/search?ss=1&hl=en&in_iframe=1&pr=0
+GOODLES,error,0,0,no list_url
+Georgia Tech,empty,0,0,
+Glassdoor,error,0,0,404 board not found: glassdoor
+Gower Street Analytics,empty,0,0,
+HCA Healthcare,empty,0,0,
+Harvard University,listed,39,2,
+Hero Digital,empty,0,0,
+HudsonGray,empty,0,0,
+IBM,listed,7,4,
+Informatica,empty,0,0,
+Infosys,empty,0,0,
+MIT,listed,2,0,
+MTA,error,0,0,partial listing: fetched 0 of 331 result rows
+Memora Health,empty,0,0,
+Milk Makeup,error,0,0,404 Client Error: Not Found for url: https://api.lever.co/v0/postings/milkmakeup?mode=json
+Newfront,empty,0,0,
+Northwestern University,error,0,0,404 Client Error: Not Found for url: https://careers.northwestern.edu/cw/en-us/listing/
+Nubank,empty,0,0,
+Nurx,error,0,0,404 board not found: thirtymadison
+Parker Hannifin,listed,43,17,
+Purdue University,empty,0,0,
+Ralph Lauren,error,0,0,"HTTPSConnectionPool(host='careers.ralphlauren.com', port=443): Max retries exceeded with url: /en_US/CareersCorporate/SearchJobs (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:997)')))"
+Sempra,empty,0,0,
+Subject,error,0,0,no list_url
+Tesla,empty,0,0,
+UC Berkeley,error,0,0,404 Client Error: Not Found for url: https://jobs.berkeley.edu/jobs/
+Upstatement,empty,0,0,
+Vimeo,empty,0,0,
+XR Trading,listed,2,0,

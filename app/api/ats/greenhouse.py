@@ -1,4 +1,16 @@
 from .base import *
+from urllib.parse import quote
+
+
+def _public_job_url(scrape, token, region, posting):
+    host = "job-boards.eu.greenhouse.io" if region == "eu" else "job-boards.greenhouse.io"
+    posting_id = posting.get("id")
+    if posting_id and scrape.get("use_embedded_job_urls"):
+        return (f"https://{host}/embed/job_app?for={quote(token, safe='')}"
+                f"&token={quote(str(posting_id), safe='')}")
+    if posting_id and scrape.get("use_hosted_job_urls"):
+        return f"https://{host}/{quote(token, safe='')}/jobs/{posting_id}"
+    return posting.get("absolute_url") or ""
 
 # ── Greenhouse ────────────────────────────────────────────────────────────────
 
@@ -47,7 +59,7 @@ def fetch_greenhouse(scrape, seen, company):
             jobs = []
             for j in data.get("jobs",[]):
                 title  = norm(j.get("title") or "")
-                jurl   = j.get("absolute_url") or ""
+                jurl   = _public_job_url(scrape, token, region, j)
                 loc_raw = norm((j.get("location") or {}).get("name") or "")
                 posted_raw = j.get("first_published") or j.get("published_at") or j.get("updated_at")
                 desc = j.get("content") or None if include_content else None
@@ -97,7 +109,7 @@ def fetch_greenhouse(scrape, seen, company):
             jobs = []
             for j in data.get("jobs", []):
                 title  = norm(j.get("title") or "")
-                jurl   = j.get("absolute_url") or ""
+                jurl   = _public_job_url(scrape, token, region, j)
                 loc_raw = (j.get("location") or {}).get("name") or ""
                 if title and jurl:
                     jobs.append({

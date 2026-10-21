@@ -7,14 +7,101 @@ from app.api.utils import extract_location_from_text, normalize_location
 
 
 class _Response:
-    def __init__(self, text):
+    def __init__(self, text, url=None):
         self.text = text
+        self.url = url
 
     def raise_for_status(self):
         return None
 
 
 class HtmlPathPaginationTests(unittest.TestCase):
+    @patch("app.api.ats.html.requests.get")
+    def test_card_attributes_preserve_location_without_adjacent_card_text(self, get):
+        get.return_value = _Response(
+            '<a href="/job-opening/engineer/" data-gtm-jn="Senior Engineer" '
+            'data-gtm-jl="Lakeland, FL, US" data-gtm-jdt="Oct 20, 2026">'
+            'Senior Engineer Finance Hybrid Department Apply Now</a>'
+            '<a href="/jobs/?pg=2">Next page</a>'
+        )
+        jobs, error = fetch_html({
+            "list_url": "https://careers.example/jobs/",
+            "include": "https://careers.example/job-opening/",
+            "title_attribute": "data-gtm-jn", "location_attribute": "data-gtm-jl",
+            "posted_attribute": "data-gtm-jdt",
+        }, {}, "Example")
+        self.assertIsNone(error)
+        self.assertEqual(1, len(jobs))
+        self.assertEqual("Senior Engineer", jobs[0]["title"])
+        self.assertEqual(["Lakeland, FL, US"], jobs[0]["locations_raw"])
+        self.assertEqual("Oct 20, 2026", jobs[0]["posted"])
+
+    @patch("app.api.ats.html.requests.get")
+    def test_apply_buttons_do_not_create_duplicate_jobs(self, get):
+        get.return_value = _Response(
+            '<a href="/jobs/123">Apply Now</a>'
+            '<a href="/jobs/456">Software Engineer</a>'
+        )
+        jobs, error = fetch_html({
+            "list_url": "https://careers.example/", "include": "careers.example/jobs/",
+        }, {}, "Example")
+        self.assertIsNone(error)
+        self.assertEqual(["Software Engineer"], [job["title"] for job in jobs])
+
+    @patch("app.api.ats.html.time.sleep", return_value=None)
+    @patch("app.api.ats.html.requests.get")
+    def test_redirected_document_is_base_for_jobs_and_next_page(self, get, _sleep):
+        get.side_effect = [
+            _Response(
+                "<a href='/company/careers/details/123'>Platform Engineer</a>"
+                "<a rel='next' href='?page=2'>Next</a>",
+                "https://careers.example/company/careers/all-jobs",
+            ),
+            _Response(
+                "<a href='/company/careers/details/456'>Data Engineer</a>",
+                "https://careers.example/company/careers/all-jobs?page=2",
+            ),
+        ]
+
+        jobs, error = fetch_html({
+            "list_url": "https://old.example/careers",
+            "include": "https://careers.example/company/careers/details/",
+            "pagination": {"type": "next_link"},
+        }, {}, "Example")
+
+        self.assertIsNone(error)
+        self.assertEqual([
+            "https://careers.example/company/careers/details/123",
+            "https://careers.example/company/careers/details/456",
+        ], [job["url"] for job in jobs])
+        self.assertEqual(
+            "https://careers.example/company/careers/all-jobs?page=2",
+            get.call_args_list[1].args[0],
+        )
+
+    @patch("app.api.ats.html.fetch_detail_description", return_value={})
+    @patch("app.api.ats.html.requests.get")
+    def test_loom_config_keeps_only_loom_postings_before_fetching_details(self, get, detail):
+        from pathlib import Path
+        companies = json.loads((Path(__file__).parents[1] / "app/companies.json").read_text())
+        scrape = next(c["scrape"] for c in companies if c["name"] == "Loom")
+        get.return_value = _Response(
+            "<a href='/company/careers/details/26575'>Principal Data Scientist, Loom</a>"
+            "<a href='/company/careers/details/27431'>Software Engineer, LOOM Billing</a>"
+            "<a href='/company/careers/details/24872'>Senior Director, Jira Design</a>"
+            "<a href='/software/loom'>Loom Quick, async video updates</a>",
+            scrape["list_url"],
+        )
+
+        jobs, error = fetch_html({**scrape, "fetch_experience_details": True}, {}, "Loom")
+
+        self.assertIsNone(error)
+        self.assertEqual([
+            "https://www.atlassian.com/company/careers/details/26575",
+            "https://www.atlassian.com/company/careers/details/27431",
+        ], [job["url"] for job in jobs])
+        self.assertEqual(2, detail.call_count)
+
     @patch("app.api.ats.html.requests.get")
     def test_gem_next_payload_jobs_are_decoded(self, get):
         postings = [{
@@ -298,6 +385,33 @@ class HtmlPathPaginationTests(unittest.TestCase):
         self.assertIsNone(error)
         self.assertEqual(["ACCOUNTS COORDINATOR"], [job["title"] for job in jobs])
         sleep.assert_called_once_with(2.5)
+
+    @patch("app.api.ats.html.requests.get")
+    def test_deel_uses_published_external_link_instead_of_stale_slug(self, get):
+        from pathlib import Path
+        companies = json.loads((Path(__file__).parents[1] / "app/companies.json").read_text())
+        scrape = next(c["scrape"] for c in companies if c["name"] == "Deel")
+        posting = {
+            "title": "Devsecops Engineer",
+            "slug": "/careers/position/?ashby_jid=abc-123",
+            "external_link": "https://jobs.deel.com/deel/job-details/abc-123/application",
+            "is_listed": True,
+        }
+        hidden = {**posting, "title": "Hidden Engineer", "is_listed": False}
+        flight = '3f:' + json.dumps([
+            {"attributes": posting}, {"attributes": hidden}
+        ], separators=(",", ":"))
+        get.return_value = _Response(
+            "<p>1 open position</p><script>self.__next_f.push("
+            + json.dumps([1, flight]) + ")</script>"
+        )
+
+        jobs, error = fetch_html(scrape, {}, "Deel")
+
+        self.assertIsNone(error)
+        self.assertEqual(1, len(jobs))
+        self.assertEqual(posting["external_link"], jobs[0]["url"])
+        self.assertEqual(posting["external_link"], jobs[0]["apply_url"])
 
     @patch("app.api.ats.html.requests.get")
     def test_embedded_next_jobs_are_decoded_without_browser(self, get):

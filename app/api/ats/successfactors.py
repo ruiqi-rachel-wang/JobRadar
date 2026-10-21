@@ -3,7 +3,7 @@ from .base import *
 # ── SuccessFactors ────────────────────────────────────────────────────────────
 
 _SF_DESC_SELECTORS = [
-    '.jobDescription', '#jobDescription', '[class*="job-description"]',
+    '.jobDescription', '.jobdescription', '#jobDescription', '[class*="job-description"]',
     '[class*="jobDescription"]', '[class*="job_description"]',
     '.job-content', '.jobContent', '.job_content',
     'main', 'article',
@@ -60,6 +60,14 @@ def _fetch_sf_detail(jurl, timeout=15):
             r = requests.get(jurl, headers=HEADERS, timeout=timeout, verify=REQUESTS_VERIFY_SSL)
             r.raise_for_status()
         soup = BeautifulSoup(r.text, "lxml")
+        # RMK hides additional cities on search cards, but exposes every city
+        # separately on the posting. Read these outside the description block.
+        locations = list(dict.fromkeys(
+            norm(el.get_text(" ", strip=True))
+            for el in soup.select(".jobGeoLocation")
+            if norm(el.get_text(" ", strip=True))
+        ))
+        location = "; ".join(locations)
         for sel in _SF_DESC_SELECTORS:
             el = soup.select_one(sel)
             if el:
@@ -67,12 +75,12 @@ def _fetch_sf_detail(jurl, timeout=15):
                 if len(text) > 100:
                     return {
                         "description": str(el),
-                        "location": _sf_detail_location(text),
+                        "location": location or _sf_detail_location(text),
                     }
         text = norm(soup.get_text(" ", strip=True))
         return {
             "description": str(soup.body or soup) if len(text) > 100 else "",
-            "location": _sf_detail_location(text),
+            "location": location or _sf_detail_location(text),
         }
     except Exception:
         return {"description": "", "location": ""}
@@ -91,6 +99,7 @@ def fetch_successfactors(scrape, seen, company):
     jobs = {}
     stop_on_seen = bool(scrape.get("stop_on_seen"))
     consecutive_seen_pages = 0
+    expected_total = None
 
     for idx in range(max_pages):
         purl = list_url if idx == 0 else make_paged_url(list_url, {"param": "startrow", "start": idx * 25}, 0)
@@ -104,6 +113,10 @@ def fetch_successfactors(scrape, seen, company):
         except Exception as e:
             return list(jobs.values()), str(e)
         soup = BeautifulSoup(r.text, "lxml")
+        label = soup.select_one(".paginationLabel")
+        total_match = re.search(r"\bof\s+([\d,]+)", label.get_text(" ", strip=True)) if label else None
+        if total_match:
+            expected_total = int(total_match.group(1).replace(",", ""))
         before = len(jobs)
         page_seen = []
         for a in soup.find_all("a", href=True):
@@ -178,6 +191,7 @@ def fetch_successfactors(scrape, seen, company):
     )
     desc_workers = int(scrape.get("desc_workers", 4))
     desc_targets = []
+    location_targets = []
     for j in jobs.values():
         jid_key = make_id(
             company, j["url"], j["title"], "successfactors", j.get("ats_id")
@@ -187,14 +201,20 @@ def fetch_successfactors(scrape, seen, company):
             or seen.get(make_id(company, j["url"], j["title"]))
             if isinstance(seen, dict) else None
         )
-        incomplete_location = (not j.get("location")) or re.search(r'\+\s*\d+\s+more', j.get("location") or "", re.I)
-        if incomplete_location or not (isinstance(existing, dict) and existing.get("has_description")):
+        incomplete_location = (not j.get("location")) or re.search(
+            r'\+\s*\d+\s+more', j.get("location_raw") or j.get("location") or "", re.I
+        )
+        if incomplete_location:
+            location_targets.append(j)
+        if not (isinstance(existing, dict) and existing.get("has_description")):
             desc_targets.append(j)
-    if desc_targets[:max_desc]:
+    max_locations = int(scrape.get("max_location_details", 500))
+    targets = {j["url"]: j for j in desc_targets[:max_desc] + location_targets[:max_locations]}
+    if targets:
         def _get_desc(j):
             return j, _fetch_sf_detail(j["url"])
         with concurrent.futures.ThreadPoolExecutor(max_workers=max(1, desc_workers)) as ex:
-            for job, detail in ex.map(_get_desc, desc_targets[:max_desc]):
+            for job, detail in ex.map(_get_desc, targets.values()):
                 if detail.get("location"):
                     job["location"] = detail["location"]
                     job["location_raw"] = detail["location"]
@@ -207,4 +227,12 @@ def fetch_successfactors(scrape, seen, company):
                     job["description"] = detail["description"]
                     job["description_raw"] = detail["description"]
 
-    return list(jobs.values()), None
+    errors = []
+    if expected_total is not None and not stop_on_seen and len(jobs) < expected_total:
+        errors.append(f"partial SuccessFactors listing: fetched {len(jobs)} of {expected_total} jobs")
+    if scrape.get("require_complete_locations") and any(
+        re.search(r'\+\s*\d+\s+more', j.get("location_raw") or j.get("location") or "", re.I)
+        for j in jobs.values()
+    ):
+        errors.append("incomplete SuccessFactors locations: posting details unavailable")
+    return list(jobs.values()), "; ".join(errors) or None

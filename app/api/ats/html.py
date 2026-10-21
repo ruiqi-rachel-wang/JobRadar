@@ -75,7 +75,10 @@ def fetch_html(scrape, seen, company):
                     slug = norm(attrs.get("slug") or "")
                     if "ashby_jid=" not in slug or attrs.get("is_listed") is False:
                         continue
-                    job_url = urljoin(page_url, slug)
+                    # The embedded slug may outlive a careers-site migration.
+                    # Prefer the posting's published external application URL.
+                    external_url = norm(attrs.get("external_link") or "")
+                    job_url = urljoin(page_url, external_url or slug)
                     if not has_include(job_url, include) or job_url in visited:
                         continue
                     visited.add(job_url)
@@ -86,6 +89,8 @@ def fetch_html(scrape, seen, company):
                         "source": "html",
                         "posted": _parse_posted(attrs.get("ashby_published_date") or ""),
                     }
+                    if external_url:
+                        job["apply_url"] = job_url
                     description = attrs.get("full_job_description") or attrs.get("description")
                     if description:
                         job["description"] = description
@@ -317,6 +322,12 @@ def fetch_html(scrape, seen, company):
                     break
             return found, None, None, stop
 
+        # Relative links belong to the document returned after redirects,
+        # which may live on a different host from the configured careers URL.
+        response_url = getattr(r, "url", None)
+        if isinstance(response_url, str) and response_url:
+            page_url = response_url
+
         soup  = BeautifulSoup(r.text, "lxml")
         if scrape.get("verify_reported_total"):
             page_text = norm(soup.get_text(" ", strip=True))
@@ -407,8 +418,10 @@ def fetch_html(scrape, seen, company):
             title = re.sub(r'\s+(?:learn more|apply now|view job)$', '', title, flags=re.I).strip()
             if title_suffix_regex:
                 title = re.sub(title_suffix_regex, "", title, flags=re.I).strip()
+            if scrape.get("title_attribute") and a.get(scrape["title_attribute"]):
+                title = norm(a.get(scrape["title_attribute"]))
             _NAV = {
-                "view all jobs","view all","all jobs","apply","view job","search jobs",
+                "view all jobs","view all","all jobs","apply","apply now","view job","search jobs",
                 "saved jobs","learn more","see all openings","see all jobs","open positions",
                 "view openings","view open jobs","careers","career","about","about us",
                 "contact","contact us","benefits","diversity","home","search","login",
@@ -486,6 +499,9 @@ def fetch_html(scrape, seen, company):
                 loc_candidate = default_location
             elif default_location and loc_candidate in ("", "Remote", "Multiple Locations"):
                 loc_candidate = default_location
+            attribute_location = norm(a.get(scrape.get("location_attribute") or "") or "")
+            if attribute_location:
+                loc_candidate = normalize_location(attribute_location)
             ats_id = None
             if ats_id_regex:
                 ats_match = re.search(ats_id_regex, abs_url, re.I)
@@ -496,8 +512,10 @@ def fetch_html(scrape, seen, company):
                 "url": abs_url,
                 "ats_id": ats_id,
                 "location": loc_candidate,
+                "location_raw": attribute_location or loc_candidate or None,
+                "locations_raw": [attribute_location or loc_candidate] if attribute_location or loc_candidate else [],
                 "source": "html",
-                "posted": extract_posted_from_text(parent_text),
+                "posted": a.get(scrape.get("posted_attribute") or "") or extract_posted_from_text(parent_text),
             }
 
         next_url = None
@@ -569,6 +587,14 @@ def fetch_html(scrape, seen, company):
         partial_err = f"partial listing: fetched {len(all_jobs)} of {expected_total} jobs"
         first_err = f"{first_err}; {partial_err}" if first_err else partial_err
     jobs = list(all_jobs.values())
+    title_include = scrape.get("title_include")
+    if title_include:
+        needles = title_include if isinstance(title_include, list) else [title_include]
+        needles = [str(value).lower() for value in needles if str(value).strip()]
+        if needles:
+            jobs = [job for job in jobs if any(
+                needle in (job.get("title") or "").lower() for needle in needles
+            )]
     if jobs and scrape.get("fetch_experience_details"):
         limit_details = int(scrape.get("max_experience_details") or scrape.get("max_desc_details") or 0)
         targets = [j for j in jobs if not j.get("description")]

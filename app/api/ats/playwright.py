@@ -359,6 +359,7 @@ def fetch_phenom(scrape, seen, company):
     max_pages = int(scrape.get("hard_max_pages") or 100)
     jobs = {}
     consec_all_seen = 0
+    expected_total = None
 
     for page in range(max_pages):
         offset = page * 10  # Phenom default page size is 10
@@ -373,16 +374,17 @@ def fetch_phenom(scrape, seen, company):
         except Exception as e:
             return list(jobs.values()), str(e)
 
-        m = re.search(r'phApp\.ddo\s*=\s*(\{.{100,}?\});?\s*phApp', r.text, re.S)
+        m = re.search(r'phApp\.ddo\s*=\s*', r.text)
         if not m:
             break
         try:
-            data = json.loads(m.group(1))
+            data, _ = json.JSONDecoder().raw_decode(r.text, m.end())
         except Exception:
             break
 
         search = data.get("eagerLoadRefineSearch") or {}
         total = search.get("totalHits") or 0
+        expected_total = max(expected_total or 0, int(total))
         job_list = (search.get("data") or {}).get("jobs") or []
         if not job_list:
             break
@@ -391,7 +393,8 @@ def fetch_phenom(scrape, seen, company):
         page_seen = []
         for j in job_list:
             title = norm(j.get("title") or "")
-            req_id = str(j.get("reqId") or "").strip()
+            id_field = scrape.get("job_url_id_field") or "reqId"
+            req_id = str(j.get(id_field) or "").strip()
             if not title or not req_id:
                 continue
             jurl = job_base + req_id
@@ -420,7 +423,10 @@ def fetch_phenom(scrape, seen, company):
             detail_scrape = dict(scrape)
             detail_scrape["_company_name"] = company
             _fill_reader_descriptions(result, seen, detail_scrape)
-        return result, None
+        error = None
+        if expected_total and len(jobs) < expected_total and not scrape.get("stop_on_seen"):
+            error = f"partial Phenom listing: fetched {len(jobs)} of {expected_total} jobs"
+        return result, error
 
     pw_err = "no Phenom JSON jobs found"
     if scrape.get("allow_browser_fallback") is not False:

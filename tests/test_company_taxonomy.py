@@ -128,10 +128,10 @@ class CompanyTaxonomyTests(unittest.TestCase):
     def test_manual_search_targets_with_verified_sources_are_configured(self):
         expected_modes = {
             "Activision Blizzard": "workday",
-            "AppFolio": "jobvite",
-            "Bentley Systems": "successfactors",
+            "AppFolio": "ashby",
+            "Bentley Systems": "workday",
             "BNY": "oraclecloud",
-            "Capgemini": "html",
+            "Capgemini": "successfactors",
             "Canonical": "greenhouse",
             "Commvault": "greenhouse",
             "Criteo": "playwright",

@@ -906,8 +906,11 @@
       "Materials & Chemicals"
     ],
     "scrape": {
-      "mode": "successfactors",
-      "list_url": "https://careers.akzonobel.com/go/All-Jobs/3998501/"
+      "mode": "phenom",
+      "list_url": "https://careers.akzonobel.com/gb/en/search-results",
+      "prefix": "https://careers.akzonobel.com/gb/en/job",
+      "allow_browser_fallback": false,
+      "job_url_id_field": "jobId"
     }
   },
   {
@@ -1095,11 +1098,8 @@
       "Finance & Banking"
     ],
     "scrape": {
-      "mode": "html",
-      "list_url": "https://www.ally.com/about/careers/",
-      "include": "ally.com/__no_current_openings__",
-      "reader": true,
-      "allow_empty_full_scan": true
+      "mode": "workday",
+      "list_url": "https://ally.wd1.myworkdayjobs.com/Ally"
     },
     "note": "Official applicant portal is temporarily offline for an upgrade through 2026-09-01"
   },
@@ -1414,8 +1414,8 @@
       "Developer Tools"
     ],
     "scrape": {
-      "mode": "greenhouse",
-      "board_token": "amplitude"
+      "mode": "ashby",
+      "ashby_slug": "amplitude"
     }
   },
   {
@@ -1690,8 +1690,8 @@
       "Software & SaaS"
     ],
     "scrape": {
-      "mode": "jobvite",
-      "list_url": "https://jobs.jobvite.com/appfolio/?nl=1&fr=true"
+      "mode": "ashby",
+      "ashby_slug": "13a892fa-5b4f-4539-a264-3a0452bbead3"
     }
   },
   {
@@ -1889,8 +1889,9 @@
       "Software & SaaS"
     ],
     "scrape": {
-      "board_token": "arcadiacareers",
-      "mode": "greenhouse"
+      "mode": "rippling",
+      "list_url": "https://ats.rippling.com/arcadiacareers/jobs",
+      "rippling_slug": "arcadiacareers"
     }
   },
   {
@@ -3053,8 +3054,8 @@
       "Software & SaaS"
     ],
     "scrape": {
-      "mode": "successfactors",
-      "list_url": "https://jobs.bentley.com/search/"
+      "mode": "workday",
+      "list_url": "https://bentleysystems.wd5.myworkdayjobs.com/bentley"
     }
   },
   {
@@ -3698,10 +3699,8 @@
       "Software & SaaS"
     ],
     "scrape": {
-      "mode": "html",
-      "list_url": "https://boomi.com/company/careers/",
-      "include": "boomi.com/boomi-jobs/?gh_jid=",
-      "reader": true
+      "mode": "greenhouse",
+      "board_token": "boomilp"
     }
   },
   {
@@ -4475,9 +4474,14 @@
       "Software & SaaS"
     ],
     "scrape": {
-      "mode": "html",
+      "mode": "successfactors",
       "list_url": "https://careers.capgemini.com/search/?q=&locationsearch=United%20States",
-      "include": "careers.capgemini.com/job/"
+      "include": "careers.capgemini.com/job/",
+      "max_desc_details": 1000,
+      "max_location_details": 1000,
+      "desc_workers": 8,
+      "require_complete_locations": true,
+      "allow_browser_fallback": false
     }
   },
   {
@@ -5650,8 +5654,8 @@
       "Data & Analytics"
     ],
     "scrape": {
-      "board_token": "clickhouse",
-      "mode": "greenhouse"
+      "mode": "ashby",
+      "ashby_slug": "clickhouse"
     }
   },
   {
@@ -6164,7 +6168,7 @@
     ],
     "scrape": {
       "mode": "workday",
-      "list_url": "https://communicarehealth.wd1.myworkdayjobs.com/NewVistaExternalCareerSite"
+      "list_url": "https://communicarehealth.wd1.myworkdayjobs.com/CHSExternalCareerSite"
     }
   },
   {
@@ -7297,7 +7301,7 @@
     "scrape": {
       "mode": "html",
       "list_url": "https://www.deel.com/careers/",
-      "include": "deel.com/careers/position/",
+      "include": "https://jobs.deel.com/deel/job-details/",
       "embedded_next_jobs": true,
       "verify_reported_total": true
     }
@@ -8037,8 +8041,10 @@
       "Materials & Chemicals"
     ],
     "scrape": {
-      "mode": "bamboohr",
-      "bamboohr_slug": "dupont"
+      "mode": "phenom",
+      "list_url": "https://careers.dupont.com/us/en/search-results",
+      "prefix": "https://careers.dupont.com/us/en/job",
+      "allow_browser_fallback": false
     }
   },
   {
@@ -8266,7 +8272,8 @@
     ],
     "scrape": {
       "mode": "greenhouse",
-      "board_token": "elastic"
+      "board_token": "elastic",
+      "use_hosted_job_urls": true
     }
   },
   {
@@ -9636,7 +9643,8 @@
     ],
     "scrape": {
       "mode": "greenhouse",
-      "board_token": "form3"
+      "board_token": "form3",
+      "use_embedded_job_urls": true
     },
     "interview": {
       "no_whiteboard": true,
@@ -11792,8 +11800,8 @@
       "Data & Analytics"
     ],
     "scrape": {
-      "mode": "greenhouse",
-      "board_token": "hextechnologies"
+      "mode": "ashby",
+      "ashby_slug": "hex"
     }
   },
   {
@@ -11870,8 +11878,8 @@
       "Data & Analytics"
     ],
     "scrape": {
-      "board_token": "hightouch",
-      "mode": "greenhouse"
+      "mode": "ashby",
+      "ashby_slug": "hightouch-inc"
     }
   },
   {
@@ -13577,9 +13585,9 @@
       "Food & Beverage"
     ],
     "scrape": {
-      "mode": "html",
-      "list_url": "https://jobs.kellanova.com/jobs",
-      "include": "jobs.kellanova.com"
+      "mode": "successfactors",
+      "list_url": "https://jobs.kellanova.com/search/?q=&locationsearch=",
+      "allow_browser_fallback": false
     }
   },
   {
@@ -14540,8 +14548,9 @@
     ],
     "scrape": {
       "mode": "html",
-      "list_url": "https://www.useloom.com/careers",
-      "include": "www.useloom.com"
+      "list_url": "https://www.atlassian.com/company/careers/all-jobs?search=Loom",
+      "include": "https://www.atlassian.com/company/careers/details/",
+      "title_include": "Loom"
     },
     "interview": {
       "no_whiteboard": true,
@@ -14669,9 +14678,8 @@
       "Legal Tech"
     ],
     "scrape": {
-      "mode": "html",
-      "list_url": "https://www.luminance.com/careers",
-      "include": "www.luminance.com"
+      "mode": "workable",
+      "workable_slug": "luminance-1"
     },
     "interview": {
       "source": "Forbes AI 50"
@@ -14767,8 +14775,8 @@
       "Aerospace & Defense"
     ],
     "scrape": {
-      "mode": "ashby",
-      "ashby_slug": "mach"
+      "mode": "greenhouse",
+      "board_token": "machindustries"
     },
     "interview": {
       "source": "Defense startup"
@@ -15072,8 +15080,8 @@
       "FinTech & Payments"
     ],
     "scrape": {
-      "mode": "greenhouse",
-      "board_token": "marqeta"
+      "mode": "ashby",
+      "ashby_slug": "marqeta-inc"
     }
   },
   {
@@ -16289,9 +16297,8 @@
       "Software & SaaS"
     ],
     "scrape": {
-      "mode": "html",
-      "list_url": "https://careers.mozilla.org/listings",
-      "include": "careers.mozilla.org"
+      "mode": "greenhouse",
+      "board_token": "mozilla"
     },
     "interview": {
       "no_whiteboard": true,
@@ -18086,8 +18093,8 @@
       "EdTech"
     ],
     "scrape": {
-      "mode": "greenhouse",
-      "board_token": "outschool"
+      "mode": "ashby",
+      "ashby_slug": "outschool"
     }
   },
   {
@@ -18869,8 +18876,8 @@
       "Software & SaaS"
     ],
     "scrape": {
-      "mode": "greenhouse",
-      "board_token": "philo"
+      "mode": "ashby",
+      "ashby_slug": "philo"
     },
     "interview": {
       "no_whiteboard": true,
@@ -19712,9 +19719,20 @@
       "Food & Beverage"
     ],
     "scrape": {
-      "mode": "talentbrew",
-      "list_url": "https://jobs.publix.com/search-jobs",
-      "include": "https://jobs.publix.com/job/"
+      "mode": "html",
+      "list_url": "https://jobs.publix.com/jobs/",
+      "include": "https://jobs.publix.com/job-opening/",
+      "pagination": {
+        "type": "query_page",
+        "param": "pg",
+        "start": 1,
+        "step": 1,
+        "hard_max_pages": 100
+      },
+      "require_job_path": false,
+      "title_attribute": "data-gtm-jn",
+      "location_attribute": "data-gtm-jl",
+      "posted_attribute": "data-gtm-jdt"
     },
     "interview": {
       "no_whiteboard": true,
@@ -19858,8 +19876,8 @@
       "Semiconductors & Hardware"
     ],
     "scrape": {
-      "mode": "workable",
-      "workable_slug": "quadric-dot-i-o-inc"
+      "mode": "ashby",
+      "ashby_slug": "quadric"
     }
   },
   {
@@ -20564,8 +20582,8 @@
       "Software & SaaS"
     ],
     "scrape": {
-      "mode": "greenhouse",
-      "board_token": "remotecom"
+      "mode": "remote_ats",
+      "list_url": "https://apply.remote.com/"
     },
     "interview": {
       "no_whiteboard": true,
@@ -23114,8 +23132,8 @@
       "HR Tech"
     ],
     "scrape": {
-      "mode": "greenhouse",
-      "board_token": "springhealth66"
+      "mode": "ashby",
+      "ashby_slug": "deaa6ad2-d184-436b-b69e-17f761da1d94"
     }
   },
   {
@@ -23317,7 +23335,7 @@
       "pcsx_only": true,
       "query": "software",
       "location": "US",
-      "hard_max_pages": 100
+      "hard_max_pages": 1000
     },
     "note": "Technology-focused source query avoids importing more than 20,000 retail-store postings; verified 2026-09-06"
   },
@@ -23341,8 +23359,11 @@
       "Software & SaaS"
     ],
     "scrape": {
-      "mode": "greenhouse",
-      "board_token": "starcloud"
+      "mode": "html",
+      "list_url": "https://starcloud.octbr.ai/",
+      "include": "https://starcloud.octbr.ai/jobs/",
+      "require_job_path": true,
+      "verify_reported_total": true
     },
     "interview": {
       "no_whiteboard": true,
@@ -23609,9 +23630,8 @@
       "Software & SaaS"
     ],
     "scrape": {
-      "mode": "html",
-      "list_url": "https://substack.com/jobs",
-      "include": "substack.com"
+      "mode": "ashby",
+      "ashby_slug": "substack"
     },
     "interview": {
       "no_whiteboard": true,
@@ -23863,8 +23883,9 @@
     ],
     "scrape": {
       "mode": "html",
-      "list_url": "https://www.swiftly.com/about/careers",
-      "include": "www.swiftly.com"
+      "list_url": "https://careers.kula.ai/swiftly",
+      "include": "https://careers.kula.ai/swiftly/",
+      "embedded_kula_jobs": true
     },
     "interview": {
       "no_whiteboard": true,
@@ -24024,9 +24045,8 @@
       "Software & SaaS"
     ],
     "scrape": {
-      "mode": "html",
-      "list_url": "https://sysdig.com/careers/",
-      "include": "sysdig.com"
+      "mode": "lever",
+      "lever_slug": "sysdig"
     }
   },
   {
@@ -24328,8 +24348,8 @@
       "Software & SaaS"
     ],
     "scrape": {
-      "mode": "greenhouse",
-      "board_token": "temporaltechnologies"
+      "mode": "ashby",
+      "ashby_slug": "temporal"
     },
     "interview": {
       "no_whiteboard": true,
@@ -27614,8 +27634,8 @@
       "AI & Machine Learning"
     ],
     "scrape": {
-      "mode": "greenhouse",
-      "board_token": "worldlabs"
+      "mode": "ashby",
+      "ashby_slug": "worldlabs"
     },
     "interview": {
       "source": "Forbes AI 50"

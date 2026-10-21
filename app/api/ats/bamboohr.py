@@ -40,7 +40,7 @@ def fetch_bamboohr(scrape, seen, company):
         else:
             raw_location = norm(loc_data)
         loc = normalize_location(raw_location)
-        jurl = f"https://{slug}.bamboohr.com/careers/view/{jid}" if jid else ""
+        jurl = f"https://{slug}.bamboohr.com/careers/{jid}" if jid else ""
         if title and jurl:
             jobs.append({
                 "title": title,

@@ -23,7 +23,9 @@ _TIMEOUT = 12
 
 def _parse_url(url):
     """Return a scrape config dict if url matches a known ATS pattern, else None."""
-    url = (url or "").strip()
+    # URLs extracted from JSON embedded in HTML can end in escaped quotes.
+    # Backslashes are delimiters, not part of an ATS tenant or board name.
+    url = (url or "").strip().replace("\\/", "/").rstrip("\\")
     if not url:
         return None
     # Skip static asset URLs — they're never career pages

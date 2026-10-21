@@ -98,6 +98,7 @@ from .ats.tiktok import fetch_tiktok
 from .ats.gem import fetch_gem
 from .ats.dover import fetch_dover
 from .ats.careyaya import fetch_careyaya
+from .ats.remote_ats import fetch_remote_ats
 
 # Map mode name → fetcher function.
 FETCHERS = {
@@ -147,6 +148,7 @@ FETCHERS = {
     "gem":             fetch_gem,
     "dover":           fetch_dover,
     "careyaya":        fetch_careyaya,
+    "remote_ats":      fetch_remote_ats,
 }
 
 # Modes served by JSON APIs (not browser automation).
@@ -154,6 +156,7 @@ _API_MODES = set(FETCHERS) - {"html", "playwright"}
 _EARLY_STOP_MODES = {"workday", "jobsapi", "playwright"}
 
 _NON_JOB_TITLES = {
+    "apply", "apply now",
     "claim offer", "log in", "login", "sign in", "signin",
     "learn more", "view all", "view all jobs", "search jobs",
 }

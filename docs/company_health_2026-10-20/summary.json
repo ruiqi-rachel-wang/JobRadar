@@ -1,0 +1,39 @@
+{
+  "configured_companies": 2222,
+  "resolution_counts": {
+    "source_lists_jobs": 1317,
+    "repaired_and_refreshed": 48,
+    "inconclusive_access_or_rate_limit": 62,
+    "source_lists_jobs_no_recent_discoveries": 461,
+    "intentionally_disabled": 55,
+    "suspected_navigation_or_category_results": 116,
+    "empty_source_needs_confirmation": 82,
+    "source_error_needs_followup": 67,
+    "inconclusive_probe_time_limit": 13,
+    "verified_not_hiring_expired_posting_closed": 1
+  },
+  "stored_urls_structurally_inspected": 599901,
+  "http_sampled_urls": 12665,
+  "http_result_counts": {
+    "verified_job_title": 6891,
+    "inconclusive_http": 1354,
+    "reachable_unverified": 3777,
+    "inconclusive_network": 143,
+    "broken_http": 382,
+    "broken_page": 9,
+    "redirect_loop": 2,
+    "redirected_to_landing": 107
+  },
+  "structural_flags_before_repairs": 381,
+  "unconfigured_historical_labels": 93,
+  "unconfigured_labels_with_open_jobs": 15,
+  "final_recheck": {
+    "companies": 49,
+    "jobs": 9978,
+    "failed_companies": 0,
+    "expected_empty_company": "Shortcut",
+    "tests_passed": 188,
+    "link_samples_verified": 138,
+    "browser_ui_flows": 6
+  }
+}

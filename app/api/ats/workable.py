@@ -17,24 +17,31 @@ def fetch_workable(scrape, seen, company):
         data = r.json()
     except Exception as e:
         return [], str(e)
-    jobs = []
+    jobs = {}
     for j in data.get("jobs") or []:
         title = norm(j.get("title") or "")
         shortcode = j.get("shortcode") or ""
         jurl = j.get("url") or (f"https://apply.workable.com/{slug}/j/{shortcode}/" if shortcode else "")
-        loc_data = j.get("location") or {}
-        if not loc_data and j.get("locations"):
-            loc_data = (j.get("locations") or [{}])[0]
-        if isinstance(loc_data, dict):
-            loc_raw = norm(", ".join(
-                x for x in [
-                    loc_data.get("city") or j.get("city"),
-                    loc_data.get("region") or j.get("state"),
-                    loc_data.get("country") or j.get("country"),
-                ] if x
-            ))
-        else:
-            loc_raw = norm(loc_data)
+        locations = []
+        location_keys = set()
+        primary = j.get("location") or {
+            "city": j.get("city"), "region": j.get("state"), "country": j.get("country"),
+        }
+        if isinstance(primary, dict):
+            primary = {**primary,
+                       "city": primary.get("city") or j.get("city"),
+                       "region": primary.get("region") or j.get("state"),
+                       "country": primary.get("country") or j.get("country")}
+        for value in [primary, *(j.get("locations") or [])]:
+            if isinstance(value, dict):
+                label = norm(", ".join(str(value[key]) for key in ("city", "region", "country") if value.get(key)))
+            else:
+                label = norm(value)
+            key = normalize_location(label).casefold() if label else ""
+            if key and key not in location_keys:
+                location_keys.add(key)
+                locations.append(label)
+        loc_raw = "; ".join(locations)
         posted_raw = j.get("published") or j.get("published_on") or j.get("created_at")
         desc_parts = []
         for key, heading in (
@@ -46,14 +53,14 @@ def fetch_workable(scrape, seen, company):
                 desc_parts.append(f"<h3>{heading}</h3>\n{j[key]}")
         desc = "\n\n".join(desc_parts)
         if title and jurl:
-            jobs.append({
+            job = {
                 "title": title,
                 "url": jurl,
                 "ats_id": str(shortcode) or None,
                 "apply_url": j.get("application_url"),
                 "location": loc_raw,
                 "location_raw": loc_raw or None,
-                "locations_raw": j.get("locations") or ([loc_raw] if loc_raw else []),
+                "locations_raw": locations,
                 "source": "workable",
                 "posted_at": posted_raw,
                 "description": desc or None,
@@ -67,5 +74,26 @@ def fetch_workable(scrape, seen, company):
                     for key in ("locations", "industry", "function")
                     if j.get(key)
                 } or None,
-            })
-    return jobs, None
+            }
+            # The widget may emit one row per office with the same shortcode.
+            # Keep one posting and union its offices before the database upsert.
+            key = str(shortcode).casefold() if shortcode else jurl
+            existing = jobs.get(key)
+            if existing:
+                merged = existing["locations_raw"] + locations
+                unique = {}
+                for value in merged:
+                    unique.setdefault(normalize_location(value).casefold(), value)
+                existing["locations_raw"] = list(unique.values())
+                existing["location_raw"] = "; ".join(unique.values()) or None
+                existing["location"] = existing["location_raw"] or ""
+                if not existing.get("description") and desc:
+                    existing["description"] = existing["description_raw"] = desc
+                raw = existing.get("raw_data") or {}
+                all_raw_locations = (raw.get("locations") or []) + (j.get("locations") or [])
+                if all_raw_locations:
+                    raw["locations"] = list({json.dumps(value, sort_keys=True): value for value in all_raw_locations}.values())
+                    existing["raw_data"] = raw
+            else:
+                jobs[key] = job
+    return list(jobs.values()), None
