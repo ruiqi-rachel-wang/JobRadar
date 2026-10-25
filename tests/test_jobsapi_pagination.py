@@ -55,7 +55,7 @@ class JobsApiPaginationTests(unittest.TestCase):
         }
         with patch("app.api.ats.jobsapi.requests.get", side_effect=fake_get):
             result, error = fetch_jobsapi(scrape, {}, "Example")
-        self.assertIsNone(error)
+        self.assertIn("partial", error)
         self.assertEqual(len(result), 100)
         self.assertEqual(len(calls), 2)
 

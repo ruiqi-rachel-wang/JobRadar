@@ -76,7 +76,7 @@ def probe(company, budget):
         mode = cfg.get("mode", "html")
         try:
             url = cfg.get("list_url") or cfg.get("url")
-            if url and not robots_allowed(url):
+            if url and cfg.get("respect_robots") is not False and not robots_allowed(url):
                 found, error = [], "blocked by configured robots policy"
             elif mode not in FETCHERS:
                 found, error = [], f"unsupported adapter: {mode}"

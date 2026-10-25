@@ -33,6 +33,7 @@ def fetch_jobsapi(scrape, seen, company):
     limit        = 100
     jobs         = []
     seen_page_signatures = set()
+    expected_total = 0
 
     for page in range(max_pages):
         if scan_deadline_exceeded(scrape):
@@ -51,9 +52,9 @@ def fetch_jobsapi(scrape, seen, company):
             r.raise_for_status()
             data = r.json()
         except Exception as e:
-            if jobs:
-                break
-            return [], str(e)
+            return jobs, str(e)
+
+        expected_total = int(data.get("totalCount") or data.get("total") or 0)
 
         raw_jobs = data.get("jobs") or []
         if not raw_jobs:
@@ -70,7 +71,7 @@ def fetch_jobsapi(scrape, seen, company):
             for item in raw_jobs[:10]
         )
         if signature and signature in seen_page_signatures:
-            break
+            return jobs, "jobs API repeated a page (partial results)"
         if signature:
             seen_page_signatures.add(signature)
 
@@ -154,4 +155,6 @@ def fetch_jobsapi(scrape, seen, company):
         if len(raw_jobs) < limit:
             break
 
+    if expected_total and len(jobs) < expected_total:
+        return jobs, f"partial jobs API listing: fetched {len(jobs)} of {expected_total} jobs"
     return jobs, None

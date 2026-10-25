@@ -1,0 +1,23 @@
+# Company feed follow-up — October 24–25, 2026
+
+Audited 741 configured companies with no open jobs or no discoveries in the preceding week, and separately rechecked 51 disabled sources. The initial results were 583 listing feeds, 29 errors, 76 empty results, and 53 disabled entries. These are source observations, not a certification that every listed URL is a valid current job. Two previously excluded recruiting firms remain excluded.
+
+Repaired or restored 21 source configurations, including 15 previously disabled automated sources. Amazon, Apple, Google, Microsoft, IBM, Goldman Sachs, D. E. Shaw, Citadel, Citadel Securities, SIG, Harvard, Dartmouth, UNC, Nubank, and XR Trading are enabled. Bitso now uses its official BambooHR board; Carbon Robotics, Iterable, and Scout AI use current Ashby boards. Lockheed Martin moved to Eightfold. Expensify's official careers page embeds an empty Ashby board; its two obsolete listings were soft-closed through normal reconciliation.
+
+The Workday importer assumed the first display bullet was a requisition ID. Eighteen freshly checked boards instead supplied employment labels, cities, or relative dates. Hundreds of distinct postings could therefore share identifiers such as Regular, Permanent, or Posted Today and overwrite one another. The importer now validates requisition identifiers and falls back to the posting path. A database-wide screen flagged 36 boards for refresh. After refresh, the remaining nonnumeric flags are 18 distinct Stellantis posting-path identifiers; those are valid fallbacks, not shared labels.
+
+The production passes refreshed 57 companies and added 38,745 records to JobDrop. This includes recovery of older postings that the site previously missed or overwrote; it does not mean employers newly posted that many jobs today. All 28,305 backed-up historical job IDs are still present and their first-seen timestamps are unchanged. Source posting dates and job metadata were refreshed where the employer supplied updated values. Existing saved-job references were not deleted, and these repair scans sent no alert emails.
+
+Access settings were changed at the owner's explicit request. The company-specific robots exception applies only to Goldman Sachs, Dartmouth, and UNC; the global setting remains enabled. Actual HTTP failures and technical access blocks remain failures. Meta and Tesla are visible with direct employer careers links; their job collection remains unavailable because no reliable posting feed was retrieved. Speculative Terms of Service notices were removed from the sources that were restored; this report does not assess employers' contractual terms.
+
+Amazon's public search reports a 10,000-result window. Apple's public search intermittently returns empty pages inside a nonempty advertised list; the importer retries those pages, continues to later pages, and reports incomplete coverage. Both feeds retain previously stored jobs when the listing is partial. The latest Citadel and Citadel Securities production scans returned all 63 and 80 advertised roles. Company visibility no longer disappears merely because the crawler is temporarily backing off after an access error.
+
+Validation: 234 isolated tests pass. Thirty live company-filter/job-drawer flows and three catalog checks pass with no JavaScript errors, including the earlier BOA, Capgemini, Loom, and Deel fixes. All 76 application files checked match the deployed code. Verification samples do not HTTP-test every stored employer URL.
+
+- [All-company inventory](all_companies.csv) distinguishes the 741 initial targets from companies with recent discoveries that were not freshly probed in that pass.
+- [Changed and restored sources](restored_and_changed_sources.csv) records source modes, prior counts, refresh counts, and remaining warnings.
+- [Workday identity review](workday_identity_review.csv) separates confirmed duplicate identifiers from the broader database screen.
+- [Unresolved or inactive sources](unresolved_or_inactive_sources.csv) retains empty, unavailable, deliberately disabled, and partial outcomes. An empty feed is not proof that a company stopped hiring.
+- [Verification](verification.json) and [totals](summary.json) record actual production results, preserved IDs/timestamps, live UI checks, and file hashes.
+
+Raw source payloads, database snapshots, private affected-row backups, and account data are excluded from Git. Source probes can be repeated with `scripts/audit_company_health.py --only "Company name" --cache-hours 0`; the company configuration controls whether a source is enabled and any owner-requested robots exception.

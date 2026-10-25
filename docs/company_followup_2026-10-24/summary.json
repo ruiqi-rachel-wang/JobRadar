@@ -1,0 +1,37 @@
+{
+  "audit_started_local_date": "2026-10-24",
+  "audit_completed_local_date": "2026-10-25",
+  "configured_companies": 2222,
+  "zero_or_no_recent_discovery_companies_in_initial_audit": 741,
+  "initial_audit_statuses": {
+    "listed": 583,
+    "empty": 76,
+    "disabled": 53,
+    "error": 29
+  },
+  "disabled_sources_rechecked": 51,
+  "source_configs_repaired_or_restored": 21,
+  "previously_disabled_sources_reenabled": 15,
+  "production_companies_refreshed": 57,
+  "records_newly_added_to_store": 38745,
+  "workday_companies_with_confirmed_duplicate_source_ids": 18,
+  "workday_boards_screened_and_refreshed": 36,
+  "historical_ids_checked": 28305,
+  "historical_ids_missing": 0,
+  "first_seen_changed": 0,
+  "unresolved_or_inactive_report_rows": 139,
+  "tests_passed": 234,
+  "ui_job_checks": 30,
+  "ui_catalog_checks": 3,
+  "application_files_hash_checked": 76,
+  "partial_production_feeds": {
+    "Amazon": "Amazon search hit its 10000-result window (partial results)",
+    "Apple": "Apple returned an unconfirmed empty search page (partial results)"
+  },
+  "notes": [
+    "Newly added records include recovery of previously overwritten or missed older postings; this is not a count of jobs newly posted by employers.",
+    "The initial positive source probes list posting candidates; HTTP validation of every posting was not performed.",
+    "Empty endpoints do not establish that an employer stopped hiring.",
+    "Two intentionally excluded recruiting firms were kept excluded."
+  ]
+}

@@ -1,0 +1,140 @@
+company,scan_enabled,catalog_visible_override,mode,open_before,new_last_7_days_before,latest_discovery_before,targeted_initial_zero_check,initial_probe_status,latest_probe_candidates,final_disposition,source_changed_or_restored,duplicate_workday_ids_confirmed,identity_screened_rows,production_feed_records,production_open_jobs_after,records_newly_added_to_store,latest_error,note
+160over90,True,False,workday,23,0,2026-09-25 14:08:17,True,error,0,error,False,False,0,,,,HTTP 403,
+Accredible,False,False,html,0,0,,True,disabled,37,disabled,False,False,0,,,,,robots.txt on www.accredible.com disallows all crawling (checked 2026-07-18)
+"Adverum Biotechnologies, Inc.",True,False,lever,3,0,2026-08-04 22:00:51,True,empty,0,empty,False,False,0,,,,,
+Affordable Care,True,False,icims,32,0,2026-07-29 01:01:34,True,error,0,error,False,False,0,,,,404 Client Error: Not Found for url: https://careers-affordablecare.icims.com/jobs/search?ss=1&hl=en&in_iframe=1&pr=0,
+Airbase,True,False,html,1,0,2026-06-16 03:00:15,True,empty,0,empty,False,False,0,,,,,
+Akamai,True,False,oraclecloud,223,0,2026-08-19 12:00:54,True,empty,0,empty,False,False,0,,,,,
+Alexander Chapman,False,False,html,0,0,,True,disabled,0,disabled,False,False,0,,,,,Careers page returned no job links and no verifiable public feed (verified 2026-07-21)
+Allbirds,True,False,html,0,0,,True,error,0,error,False,False,0,,,,429 Client Error: Too Many Requests for url: https://www.allbirds.com/pages/careers,Official Allbirds careers URL was reachable but exposed no individual openings on 2026-07-29
+AlphaSights,True,False,html,38,0,2026-09-23 15:24:54,True,error,0,error,False,False,0,,,,403 Client Error: Forbidden for url: https://www.alphasights.com/careers/open-roles/,
+Amazon,True,False,amazon,30,0,2026-07-21 13:00:38,True,disabled,10000,refreshed_partial,True,False,0,10000,10027,9973,Amazon search hit its 10000-result window (partial results),Current public employer source rechecked and restored at the owner's request (2026-10-24). Partial listing responses retain previously stored jobs and report incomplete coverage.
+Apple,True,False,apple,25,0,2026-07-21 13:00:38,True,disabled,3640,refreshed_partial,True,False,0,4412,4471,4363,Apple returned an unconfirmed empty search page (partial results),Current public employer source rechecked and restored at the owner's request (2026-10-24). Partial listing responses retain previously stored jobs and report incomplete coverage.
+Aramark,True,False,successfactors,1038,0,2026-09-15 18:03:42,True,empty,0,empty,False,False,0,,,,,
+Arcellx,False,False,html,0,0,,True,disabled,0,disabled,False,False,0,,,,"HTTPSConnectionPool(host='ir.arcellx.com', port=443): Max retries exceeded with url: /careers/opportunities/default.aspx (Caused by SSLError(SSLError(1, '[SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:997)')))",Standalone Arcellx careers source now redirects to Kite and exposes no Arcellx job feed (verified 2026-08-05)
+Archer Aviation,False,False,html,14,0,2026-06-03 02:51:34,True,disabled,0,disabled,False,False,0,,,,,"Careers page is crawlable, but its jobs API is disallowed by robots.txt and no allowed replacement feed was found (verified 2026-08-05)"
+BAE Systems,True,False,html,1,0,2026-07-11 14:00:22,True,error,0,error,False,False,0,,,,"HTTPSConnectionPool(host='jobs.baesystems.com', port=443): Max retries exceeded with url: /global/en/search-results (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:997)')))",
+Barracuda View Team,False,False,html,118,0,2026-07-20 22:00:41,True,disabled,124,disabled,False,False,0,,,,,
+Basecamp,True,False,xml_feed,0,0,2026-06-16 03:00:15,True,empty,0,empty,False,False,0,,,,,Official 37signals jobs RSS feed was reachable and empty on 2026-07-21
+Bozeman Health,True,False,workday,222,0,2026-09-10 15:11:31,True,error,0,error,False,False,0,,,,HTTP 403,
+"BrainStorm, Inc.",True,False,lever,1,0,2026-09-01 18:02:32,True,empty,0,empty,False,False,0,,,,,
+Buffer,True,False,ashby,1,0,2026-09-04 12:03:01,True,empty,0,empty,False,False,0,,,,,
+Bumble,True,False,lever,24,0,2026-08-20 14:01:39,True,empty,0,empty,False,False,0,,,,,
+Census,True,False,html,60,0,2026-08-21 14:01:56,True,empty,0,empty,False,False,0,,,,,
+Chargify,True,False,html,14,0,2026-10-14 08:04:06,True,empty,0,empty,False,False,0,,,,,
+Chesapeake Technology,False,False,html,0,0,,True,disabled,0,disabled,False,False,0,,,,,Current official careers page states Chesapeake is not hiring; no openings feed exists (verified 2026-08-05)
+Chronosphere,True,False,html,215,0,2026-10-13 14:03:29,True,empty,0,empty,False,False,0,,,,,
+Clarisights,True,False,ashby,2,0,2026-06-03 02:51:34,True,empty,0,empty,False,False,0,,,,,
+Coffee 'n Clothes,False,False,html,10,0,2026-06-05 01:35:30,True,disabled,0,disabled,False,False,0,,,,,Former Freshteam careers domain now returns an invalid-domain page and no replacement jobs source was found (verified 2026-08-05)
+Cohesity,True,False,html,109,0,2026-09-16 12:03:07,True,error,0,error,False,False,0,,,,403 Client Error: Forbidden for url: https://www.cohesity.com/company/careers/,
+CoinTracker,True,False,ashby,1,0,2026-07-29 03:02:20,True,empty,0,empty,False,False,0,,,,,
+Common Room,True,False,ashby,4,0,2026-07-29 03:02:20,True,empty,0,empty,False,False,0,,,,,
+Condé Nast,False,False,workday,133,0,2026-07-24 10:00:13,True,disabled,0,disabled,False,False,0,,,,422 Client Error: Unprocessable Entity for url: https://condenast.wd5.myworkdayjobs.com/wday/cxs/condenast/CondeCareers/jobs,Official Workday board is active but its public jobs endpoint returns HTTP 422 and the site redirects to Workday maintenance (verified 2026-08-05)
+Confluent,True,False,ashby,17,0,2026-08-12 12:00:46,True,empty,0,empty,False,False,0,,,,,
+CoreOS,False,False,playwright,6,0,2026-07-12 03:31:08,True,disabled,1,disabled,False,False,0,,,,,
+Dendreon Pharmaceuticals LLC,True,False,icims,1,0,2026-08-04 16:08:52,True,error,0,error,False,False,0,,,,404 Client Error: Not Found for url: https://careers-dendreon.icims.com/jobs/search?ss=1&hl=en&in_iframe=1&pr=0,
+Dollar General,True,False,jobsapi,100,0,2026-09-16 10:02:51,True,error,0,error,False,False,0,,,,404 Client Error: Not Found for url: https://careers.dollargeneral.com/api/jobs?limit=100&offset=0,
+Doppler,True,False,ashby,1,0,2026-07-23 19:00:17,True,empty,0,empty,False,False,0,,,,,
+Dragonfly,False,False,ashby,0,0,,True,disabled,0,disabled,False,False,0,,,,,Configured Ashby board returned 404 and no replacement board was found (verified 2026-07-21)
+End Point Dev,True,False,html,0,0,2026-07-04 03:00:15,True,empty,0,empty,False,False,0,,,,,Official careers page explicitly reported no open positions on 2026-07-21
+"Eventbrite, Inc.",True,False,html,10,0,2026-09-04 15:11:00,True,empty,0,empty,False,False,0,,,,,
+Evolutionary Scale,True,False,html,0,0,,True,empty,0,empty,False,False,0,,,,,No current authoritative openings feed; the former Greenhouse board is retired (verified 2026-08-26)
+Exact Sciences,False,False,workday,151,0,2026-07-22 16:00:19,True,disabled,0,disabled,False,False,0,,,,,
+Facile.it,True,False,html,0,0,,True,empty,0,empty,False,False,0,,,,,"Official careers pages listed departments and a spontaneous application only, with no individual openings, on 2026-07-29"
+Foster Farms,True,False,smartrecruiters,10,0,2026-07-29 01:15:26,True,empty,0,empty,False,False,0,,,,,
+FreshDirect,False,False,icims,0,0,,True,disabled,0,disabled,False,False,0,,,,404 Client Error: Not Found for url: https://careers-freshdirect.icims.com/jobs/search?ss=1&hl=en&in_iframe=1&pr=0,Left iCIMS (careers-freshdirect.icims.com 404); freshdirect.com blocks bots; no public feed found (2026-07-18)
+Further,True,False,greenhouse,2,0,2026-06-21 03:00:35,True,empty,0,empty,False,False,0,,,,,
+Georgia Tech,False,False,html,0,0,,True,disabled,0,disabled,False,False,0,,,,,Configured careers URL redirects away from job listings and no reliable public feed was found (verified 2026-07-21)
+Getaround,True,False,html,24,0,2026-07-14 19:00:26,True,empty,0,empty,False,False,0,,,,,
+Giant Spoon,True,False,html,0,0,2026-06-05 01:35:30,True,empty,0,empty,False,False,0,,,,,The former Greenhouse board is gone; the official site currently invites general applications by email and lists no individual openings (first verified 2026-07-21; reverified 2026-07-29)
+Glassdoor,False,False,greenhouse,0,0,,True,disabled,0,disabled,False,False,0,,,,404 board not found: glassdoor,Legacy Glassdoor Greenhouse board is retired; Glassdoor is now part of Indeed and no standalone authoritative employer feed was found (verified 2026-08-05)
+GOODLES,False,True,,0,0,,True,disabled,0,disabled,False,False,0,,,,,
+Google DeepMind,True,False,greenhouse,9,0,2026-06-21 03:00:35,True,error,0,error,False,False,0,,,,404 board not found: deepmind,
+Gower Street Analytics,False,False,html,0,0,,True,disabled,0,disabled,False,False,0,,,,,Official jobs page exposed no job listings or authoritative feed (verified 2026-07-21)
+Gruntwork,True,False,ashby,1,0,2026-07-12 00:30:35,True,empty,0,empty,False,False,0,,,,,
+Harmonic Design,True,False,lever,1,0,2026-09-09 18:01:03,True,empty,0,empty,False,False,0,,,,,
+HCA Healthcare,False,False,playwright,27,0,2026-08-28 01:50:51,True,disabled,0,disabled,False,False,0,,,,,Cloudflare challenge blocks even headless browsers (checked 2026-07-18)
+HealthMark Group,True,False,lever,1,0,2026-07-29 01:15:26,True,error,0,error,False,False,0,,,,404 Client Error: Not Found for url: https://api.lever.co/v0/postings/healthmark-group?mode=json,
+Hero Digital,False,False,html,0,0,,True,disabled,0,disabled,False,False,0,,,,,Careers URL now redirects to Huge and the former employer source is retired (verified 2026-07-21)
+Highspot,True,False,lever,9,0,2026-08-05 14:00:49,True,empty,0,empty,False,False,0,,,,,
+Hotjar,True,False,html,69,0,2026-10-14 10:04:10,True,empty,0,empty,False,False,0,,,,,
+HudsonGray,False,False,html,0,0,,True,disabled,0,disabled,False,False,0,,,,,Jobs page exposed no job links or verifiable public feed (verified 2026-07-21)
+Huntington Bank,True,False,html,11,0,2026-06-16 03:00:15,True,error,0,error,False,False,0,,,,"HTTPSConnectionPool(host='careers.huntington.com', port=443): Max retries exceeded with url: /careers (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self signed certificate in certificate chain (_ssl.c:997)')))",
+Informatica,False,False,html,53,0,2026-06-21 03:00:35,True,disabled,0,disabled,False,False,0,,,,,Careers URL redirects to Salesforce after the acquisition; the standalone source is retired (verified 2026-07-21)
+Infosys,False,False,brassring,5,0,2026-06-29 10:00:14,True,disabled,0,disabled,False,False,0,,,,,Configured BrassRing source returned zero records and no reliable replacement endpoint was verified (verified 2026-07-21)
+instabase,True,False,greenhouse,3,0,2026-09-09 15:08:42,True,error,0,error,False,False,0,,,,404 board not found: instabase,
+Integral.,True,False,html,1,0,2026-06-16 03:00:15,True,empty,0,empty,False,False,0,,,,,
+Interactive Brokers,True,False,playwright,25,0,2026-09-30 10:07:50,True,empty,0,empty,False,False,0,,,,,
+Jamasoftware,True,False,greenhouse,1,0,2026-10-12 14:04:27,True,empty,0,empty,False,False,0,,,,,
+Klarity,True,False,ashby,14,0,2026-09-23 14:07:22,True,empty,0,empty,False,False,0,,,,,
+LiveRamp,True,False,workday,39,0,2026-09-30 12:07:53,True,error,0,error,False,False,0,,,,HTTP 403,
+Lower,True,False,workday,1,0,2026-08-27 16:06:34,True,empty,0,empty,False,False,0,,,,,
+Mavenlink,True,False,html,37,0,2026-09-02 08:02:42,True,empty,0,empty,False,False,0,,,,,
+Memora Health,False,False,ashby,0,0,,True,disabled,0,disabled,False,False,0,,,,,Former Ashby board has no openings and no current authoritative replacement feed was found (verified 2026-08-05)
+Meta,False,True,playwright,1,0,2026-07-12 03:31:08,True,disabled,1,disabled,False,False,0,,,,,Visible in the catalog at the owner's request. Recheck could not retrieve an authoritative job list; no jobs or hiring counts are invented (2026-10-24).
+Michigan Farm Bureau,True,False,icims,1,0,2026-07-29 01:15:26,True,error,0,error,False,False,0,,,,no jobs found,
+Milk Makeup,False,False,lever,0,0,,True,disabled,0,disabled,False,False,0,,,,404 Client Error: Not Found for url: https://api.lever.co/v0/postings/milkmakeup?mode=json,Lever board removed; milkmakeup.com serves 503 to non-browsers; no public board found (2026-07-18)
+MIT,False,False,html,0,0,,True,disabled,2,disabled,False,False,0,,,,,Official candidate portal did not yield reliable structured job records (verified 2026-07-21)
+MKG,True,False,paylocity,6,0,2026-07-08 23:23:58,True,empty,0,empty,False,False,0,,,,,
+MTA,False,False,playwright,0,0,,True,disabled,0,disabled,False,False,0,,,,,WAF blocks browser fetches; public reader reports 357 jobs but exposes no job links (verified 2026-07-18)
+Newfront,False,False,ashby,22,0,2026-06-05 01:35:30,True,disabled,0,disabled,False,False,0,,,,,Ashby board was empty and Newfront was acquired by WTW; the standalone source is retired (verified 2026-07-21)
+NewStore,True,False,html,30,0,2026-06-16 03:00:15,True,error,0,error,False,False,0,,,,429 Client Error: Too Many Requests for url: https://www.newstore.com/careers/,
+Northslope Technologies,True,False,ashby,5,0,2026-07-13 17:50:42,True,empty,0,empty,False,False,0,,,,,
+Northwestern University,False,False,html,1,0,2026-06-21 03:00:35,True,disabled,0,disabled,False,False,0,,,,404 Client Error: Not Found for url: https://careers.northwestern.edu/cw/en-us/listing/,Jobs moved into PeopleSoft candidate gateway (careers.northwestern.edu/psc/...); no scrapeable public listing (2026-07-18)
+Nurx,False,False,greenhouse,4,0,2026-06-21 03:00:35,True,disabled,0,disabled,False,False,0,,,,404 board not found: thirtymadison,Thirty Madison greenhouse board (thirtymadison) removed; no public board found (2026-07-18)
+Observe,True,False,html,1,0,2026-09-28 14:08:31,True,empty,0,empty,False,False,0,,,,,
+Old Mission Capital,True,False,greenhouse,41,0,2026-10-13 12:03:30,True,error,0,error,False,False,0,,,,404 board not found: oldmissioncapital,
+One80 Intermediaries,True,False,workday,2,0,2026-08-24 16:17:32,True,empty,0,empty,False,False,0,,,,,
+OpenSea,True,False,ashby,2,0,2026-08-12 16:04:59,True,empty,0,empty,False,False,0,,,,,
+Oxylabs,True,False,lever,62,0,2026-10-13 10:03:32,True,error,0,error,False,False,0,,,,404 Client Error: Not Found for url: https://api.lever.co/v0/postings/oxylabs?mode=json,
+Pager,True,False,greenhouse,1,0,2026-09-11 12:00:43,True,empty,0,empty,False,False,0,,,,,
+Parker Hannifin,False,False,playwright,0,0,,True,disabled,43,disabled,False,False,0,,,,,"parkercareers.ttcportals.com WAF blocks plain, headless, and reader fetches (2026-07-18)"
+Particle Health,True,False,html,0,0,,True,empty,0,empty,False,False,0,,,,,Official careers page had no individual openings and its legacy Greenhouse embed returned board-not-found on 2026-07-29
+Pismo,True,False,smartrecruiters,1,0,2026-06-24 13:00:29,True,empty,0,empty,False,False,0,,,,,
+Pomelo Care,True,False,greenhouse,74,0,2026-10-01 20:08:08,True,error,0,error,False,False,0,,,,404 board not found: pomelocare,
+Precision Neuroscience,True,False,kula,11,0,2026-09-22 12:06:59,True,error,0,error,False,False,0,,,,no jobs found,Former Pinpoint source was retired (verified 2026-08-05); recovered through the official Kula board and verified 2026-09-05
+Pulley,True,False,greenhouse,0,0,,True,empty,0,empty,False,False,0,,,,,Official Greenhouse board was reachable and empty on 2026-07-21
+Purdue University,False,False,successfactors,0,0,,True,disabled,0,disabled,False,False,0,,,,,Configured SuccessFactors source returned zero records and no reliable replacement was verified (verified 2026-07-21)
+PursueCare,True,False,html,0,0,,True,empty,0,empty,False,False,0,,,,,Official careers page has no current job listings; the former Greenhouse board is retired (verified 2026-08-26)
+"Railroad19, Inc",True,False,lever,2,0,2026-08-20 12:01:56,True,empty,0,empty,False,False,0,,,,,
+Ralph Lauren,False,False,avature,0,0,,True,disabled,0,disabled,False,False,0,,,,"HTTPSConnectionPool(host='careers.ralphlauren.com', port=443): Max retries exceeded with url: /en_US/CareersCorporate/SearchJobs (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self signed certificate in certificate chain (_ssl.c:997)')))",Left Workday for Avature; careers.ralphlauren.com WAF blocks plain and headless fetches (2026-07-18)
+Range Energy,True,False,lever,3,0,2026-08-10 18:00:45,True,empty,0,empty,False,False,0,,,,,
+Realync,True,False,html,3,0,2026-06-16 03:00:15,True,empty,0,empty,False,False,0,,,,,
+Redfin,True,False,html,1,0,2026-06-16 03:00:15,True,error,0,error,False,False,0,,,,403 Client Error: Forbidden for url: https://careers.rocket.com/teams/real-estate/,
+Revolut,True,False,html,126,0,2026-10-12 10:04:16,True,empty,0,empty,False,False,0,,,,,Official careers page is bot-protected; public-reader scan tracks its server-rendered featured openings without expiring previously discovered roles (verified 2026-08-24)
+RightEye,True,False,smartrecruiters,1,0,2026-07-29 01:15:26,True,empty,0,empty,False,False,0,,,,,
+Rutter,True,False,ashby,1,0,2026-07-01 03:00:16,True,empty,0,empty,False,False,0,,,,,
+Safe Superintelligence,True,False,ashby,0,0,,True,empty,0,empty,False,False,0,,,,,Official Ashby board verified with no current openings on 2026-08-24
+Sana,True,False,ashby,11,0,2026-07-29 03:02:20,True,empty,0,empty,False,False,0,,,,,
+Sandisk,True,False,smartrecruiters,2,0,2026-09-23 14:07:22,True,empty,0,empty,False,False,0,,,,,
+SAP,True,False,successfactors,6,0,2026-10-01 12:07:28,True,error,0,error,False,False,0,,,,403 Client Error: Forbidden for url: https://jobs.sap.com/search/?createNewAlert=false&q=&locationsearch=&optionsFacetsDD_country=US,
+Sempra,False,False,adp,0,0,,True,disabled,0,disabled,False,False,0,,,,,Configured ADP source returned zero records and could not be verified as authoritative (verified 2026-07-21)
+Shortcut,True,False,bamboohr,0,0,2026-09-14 14:03:55,True,empty,0,empty,False,False,0,,,,,
+Spice AI,True,False,lever,1,0,2026-07-29 01:15:26,True,empty,0,empty,False,False,0,,,,,
+Stackgenie,True,False,html,3,0,2026-07-01 03:00:16,True,empty,0,empty,False,False,0,,,,,
+Storm,True,False,html,8,0,2026-06-16 03:00:15,True,error,0,error,False,False,0,,,,"HTTPSConnectionPool(host='www.stormx.io', port=443): Max retries exceeded with url: /about (Caused by SSLError(SSLEOFError(8, 'EOF occurred in violation of protocol (_ssl.c:997)')))",
+Stytch,True,False,ashby,5,0,2026-07-29 03:02:20,True,empty,0,empty,False,False,0,,,,,
+Subject,False,True,,0,0,,True,disabled,0,disabled,False,False,0,,,,,
+SugarAI,True,False,lever,6,0,2026-10-07 15:17:04,True,empty,0,empty,False,False,0,,,,,
+Sword Health,True,False,lever,3,0,2026-09-03 10:03:13,True,empty,0,empty,False,False,0,,,,,
+Synctera,True,False,ashby,3,0,2026-07-29 03:02:20,True,empty,0,empty,False,False,0,,,,,
+Tandem,True,False,html,26,0,2026-09-06 03:03:01,True,empty,0,empty,False,False,0,,,,,
+Tesla,False,True,playwright,0,0,,True,disabled,0,disabled,False,False,0,,,,,Visible in the catalog at the owner's request. Recheck could not retrieve an authoritative job list; no jobs or hiring counts are invented (2026-10-24).
+Texas Roadhouse,True,False,html,2,0,2026-06-16 03:00:15,True,empty,0,empty,False,False,0,,,,,
+The Bradford Group,True,False,icims,3,0,2026-08-05 14:00:49,True,error,0,error,False,False,0,,,,no jobs found,
+ThoughtSpot,True,False,workday,0,0,,True,empty,0,empty,False,False,0,,,,,
+Tomorrow Health,True,False,greenhouse,0,0,,True,error,0,error,False,False,0,,,,404 board not found: tomorrowhealth,Official Greenhouse board explicitly reported no current openings on 2026-07-29
+Trove,True,False,ashby,5,0,2026-07-29 03:02:20,True,empty,0,empty,False,False,0,,,,,
+Truepill,True,False,greenhouse,2,0,2026-07-29 03:22:39,True,error,0,error,False,False,0,,,,404 board not found: fuzehealth,
+UC Berkeley,False,False,html,0,0,,True,disabled,0,disabled,False,False,0,,,,404 Client Error: Not Found for url: https://jobs.berkeley.edu/jobs/,jobs.berkeley.edu listing removed; jobs now in UC PeopleSoft gateway; no scrapeable public listing (2026-07-18)
+Untappd,True,False,html,11,0,2026-06-16 03:00:15,True,empty,0,empty,False,False,0,,,,,
+Updater,True,False,html,5,0,2026-06-16 03:00:15,True,empty,0,empty,False,False,0,,,,,
+Upstatement,False,False,html,0,0,,True,disabled,0,disabled,False,False,0,,,,,Official jobs page exposed no job listings or authoritative feed (verified 2026-07-21)
+Valassis Digital,True,False,html,87,0,2026-10-15 12:04:23,True,empty,0,empty,False,False,0,,,,,
+Varsity Tutors,True,False,html,14,0,2026-06-16 03:00:15,True,empty,0,empty,False,False,0,,,,,
+Verve Industrial Protection,True,False,html,50,0,2026-10-14 17:04:22,True,empty,0,empty,False,False,0,,,,,
+Vimeo,False,False,html,0,0,,True,disabled,0,disabled,False,False,0,,,,,Official careers page remains active but exposes no current job-listing links or authoritative feed to the scanner (verified 2026-08-05)
+WaitWhat,True,False,lever,1,0,2026-07-29 01:15:26,True,empty,0,empty,False,False,0,,,,,
+Webflow,True,False,greenhouse,20,0,2026-10-09 10:06:42,True,empty,0,empty,False,False,0,,,,,
+WebFX,True,False,lever,36,0,2026-09-10 12:00:57,True,empty,0,empty,False,False,0,,,,,
+Zenefits (UI Team),True,False,html,45,0,2026-10-13 17:01:25,True,empty,0,empty,False,False,0,,,,,

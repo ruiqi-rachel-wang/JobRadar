@@ -90,6 +90,7 @@ from .ats.barnes_noble import fetch_barnes_noble
 from .ats.jobsyn import fetch_jobsyn
 from .ats.yum import fetch_yum
 from .ats.xml_feed import fetch_xml_feed
+from .ats.public_careers import fetch_amazon, fetch_apple, fetch_google, fetch_deshaw, fetch_ibm, fetch_goldman
 from .ats.comeet import fetch_comeet
 from .ats.mckinsey import fetch_mckinsey
 from .ats.mobileye import fetch_mobileye
@@ -140,6 +141,12 @@ FETCHERS = {
     "playwright":      fetch_playwright,
     "html":            fetch_html,
     "xml_feed":        fetch_xml_feed,
+    "amazon":          fetch_amazon,
+    "apple":           fetch_apple,
+    "google":          fetch_google,
+    "deshaw":          fetch_deshaw,
+    "ibm":             fetch_ibm,
+    "goldman":         fetch_goldman,
     "comeet":          fetch_comeet,
     "mckinsey":        fetch_mckinsey,
     "mobileye":        fetch_mobileye,
@@ -153,7 +160,7 @@ FETCHERS = {
 
 # Modes served by JSON APIs (not browser automation).
 _API_MODES = set(FETCHERS) - {"html", "playwright"}
-_EARLY_STOP_MODES = {"workday", "jobsapi", "playwright"}
+_EARLY_STOP_MODES = {"workday", "jobsapi", "playwright", "amazon", "apple"}
 
 _NON_JOB_TITLES = {
     "apply", "apply now",
@@ -205,7 +212,7 @@ def fetch_jobs(company, seen, scan_type="fresh", deadline=None):
         scrape["_deadline_monotonic"] = float(deadline)
     mode   = scrape.get("mode", "html")
     list_url = scrape.get("list_url") or scrape.get("url") or ""
-    if list_url and not robots_allowed(list_url):
+    if list_url and scrape.get("respect_robots") is not False and not robots_allowed(list_url):
         return [], "blocked by robots.txt"
 
     if mode == "multi":

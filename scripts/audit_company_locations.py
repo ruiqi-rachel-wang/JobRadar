@@ -45,7 +45,7 @@ def probe(company, budget):
     cfg.update(fetch_experience_details=False, fetch_descriptions=False,
                allow_browser_fallback=False, stop_on_seen=False,
                _deadline_monotonic=time.monotonic() + budget - 5)
-    if cfg.get('list_url') and not robots_allowed(cfg['list_url']):
+    if cfg.get('list_url') and cfg.get('respect_robots') is not False and not robots_allowed(cfg['list_url']):
         jobs, error = [], 'blocked by configured robots policy'
     else:
         jobs, error = FETCHERS[cfg['mode']](cfg, {}, company['name'])

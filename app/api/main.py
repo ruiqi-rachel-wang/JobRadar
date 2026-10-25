@@ -241,7 +241,10 @@ def _crawler_locks():
                 "SELECT REPLACE(key, 'crawler_403_until:', '') AS company, value "
                 "FROM app_state WHERE key LIKE 'crawler_403_until:%'"
             ).fetchall()
-        return {row["company"]: row["value"] for row in rows}
+        now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        return {row["company"]: row["value"] for row in rows
+                if re.fullmatch(r"\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}", row["value"] or "")
+                and row["value"] > now}
     except Exception:
         return {}
 
@@ -257,7 +260,8 @@ def _company_is_public(company, locks=None):
                 and not company.get("policy")
             )
         )
-        and name not in locks
+        # Temporary fetch backoff must not hide the company or its cached
+        # jobs. The scanner separately enforces the access-block cooldown.
     )
 
 def _admin_companies():

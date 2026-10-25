@@ -15,7 +15,7 @@ def _fetch_playwright_with_source(scrape, seen, company, source):
     if scrape.get("list_url"):
         reader_jobs, reader_err = _fetch_reader_markdown(scrape, seen, company, source)
         if not jobs and reader_jobs:
-            return reader_jobs, None
+            return reader_jobs, reader_err
         if not jobs and err is None:
             err = reader_err
 
@@ -132,6 +132,10 @@ def _fetch_reader_markdown(scrape, seen, company, source):
         step = int(pagination.get("step", 1))
         page_urls = [make_paged_url(list_url, {"param": param, "start": start, "step": step}, i)
                      for i in range(max_pages)]
+    elif pg_type == "path_page":
+        segment = pagination.get("segment") or "page"
+        page_urls = [list_url] + [list_url.rstrip('/') + f'/{segment}/{page}/'
+                                 for page in range(2, max_pages + 1)]
     else:
         page_urls = [list_url]
 
@@ -191,7 +195,12 @@ def _fetch_reader_markdown(scrape, seen, company, source):
                 first_err = str(e)
 
     empty_streak = 0
-    for page_url in page_urls:
+    last_path_page = None
+    office_names = set()
+    for page_index, page_url in enumerate(page_urls, start=1):
+        if scan_deadline_exceeded(scrape):
+            first_err = "company scan deadline reached (partial reader results)"
+            break
         try:
             r = prefetched.get(page_url)
             if r is None:
@@ -202,16 +211,27 @@ def _fetch_reader_markdown(scrape, seen, company, source):
                 first_err = str(e)
             break
 
+        if pg_type == "path_page":
+            linked_pages = re.findall(r'/'+ re.escape(pagination.get('segment') or 'page') + r'/(\d+)(?:/|\))', r.text)
+            if linked_pages:
+                last_path_page = max(last_path_page or 1, *(int(value) for value in linked_pages))
+
         before = len(jobs)
         page_job_urls = []
         page_matched_rows = 0
         total_match = re.search(
-            r"\bShowing\s+\d[\d,]*(?:\s*-\s*\d[\d,]*)?\s+of\s+([\d,]+)\s+results?\b",
+            r"\b(?:Showing|Viewing)\s+\d[\d,]*(?:\s*-\s*\d[\d,]*)?\s+of\s+([\d,]+)(?:\s+results?\b)?",
             r.text,
             re.I,
         )
         if total_match:
             expected_total = int(total_match.group(1).replace(",", ""))
+        if scrape.get("reader_office_locations"):
+            office_block = re.search(r'Office Locations(.*?)Clear Selection', r.text, re.S)
+            if office_block:
+                office_names.update(norm(value) for value in re.findall(
+                    r'^- \[[xX ]\]\s+([^\n]+)', office_block.group(1), re.M)
+                    if norm(value) not in {"Europe", "Americas", "Asia-Pacific"})
         lines = r.text.splitlines()
         for idx, line in enumerate(lines):
             for title, url in re.findall(r"\[([^\]]{4,180})\]\((https?://[^)\s]+)\)", line):
@@ -230,6 +250,18 @@ def _fetch_reader_markdown(scrape, seen, company, source):
                     if title_match:
                         title = norm(title_match.group(1))
                 nearby = " ".join(lines[idx:idx + 8])
+                card_locations = None
+                if scrape.get("reader_office_locations"):
+                    names = '|'.join(re.escape(value) for value in sorted(office_names, key=len, reverse=True))
+                    card = re.fullmatch(r'(.+?)\s+((?:' + names + r')(?:,\s*(?:' + names + r'))*)\s+Apply Now', title) if names else None
+                    if not card:
+                        first_err = first_err or "unrecognized public career card (partial results)"
+                        continue
+                    title = card.group(1)
+                    card_locations = [value.strip() for value in card.group(2).split(',')]
+                    # Some renderers place every career card on one line;
+                    # nearby text would borrow another role's geography.
+                    nearby = ""
                 loc = ""
                 if line.lstrip().startswith("|"):
                     cells = [norm(cell.strip(" *")) for cell in line.strip().strip("|").split("|")]
@@ -255,7 +287,7 @@ def _fetch_reader_markdown(scrape, seen, company, source):
                 page_job_urls.append(url)
                 page_matched_rows += 1
                 existing_job = jobs.get(url) or {}
-                raw_locations = list(existing_job.get("locations_raw") or [])
+                raw_locations = list(card_locations if card_locations is not None else existing_job.get("locations_raw") or [])
                 if loc and loc.lower() not in {
                     value.lower() for value in raw_locations
                 }:
@@ -291,15 +323,18 @@ def _fetch_reader_markdown(scrape, seen, company, source):
                 break
         if len(page_urls) > 1:
             time.sleep(0.35)
+        if last_path_page is not None and page_index >= last_path_page:
+            break
     total_tolerance = max(0, int(scrape.get("reported_total_tolerance") or 0))
+    observed_rows = len(jobs) if scrape.get("reader_office_locations") else matched_job_rows
     incomplete = (
         not stopped_on_seen
         and expected_total is not None
-        and matched_job_rows + total_tolerance < expected_total
+        and observed_rows + total_tolerance < expected_total
     )
     if (
         incomplete
-        and scrape.get("reader_parallel_pages")
+        and (scrape.get("reader_parallel_pages") or pg_type == "path_page")
         and not scrape.get("_retrying_incomplete_reader")
     ):
         # Public reader caches can briefly mix snapshots when many pages are
@@ -325,7 +360,7 @@ def _fetch_reader_markdown(scrape, seen, company, source):
             first_err = f"{first_err}; {retry_err}" if first_err else retry_err
     if incomplete:
         partial_err = (
-            f"partial listing: fetched {matched_job_rows} "
+            f"partial listing: fetched {observed_rows} "
             f"of {expected_total} result rows"
         )
         first_err = f"{first_err}; {partial_err}" if first_err else partial_err
@@ -688,7 +723,7 @@ def fetch_playwright(scrape, seen, company):
     if not jobs and scrape.get("list_url"):
         reader_jobs, reader_err = _fetch_reader_markdown(scrape, seen, company, "playwright")
         if reader_jobs:
-            jobs, err = reader_jobs, None
+            jobs, err = reader_jobs, reader_err
         if err is None:
             err = reader_err
     if jobs and scrape.get("fetch_titles_from_details"):

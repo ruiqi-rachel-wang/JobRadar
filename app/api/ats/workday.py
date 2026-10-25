@@ -50,6 +50,22 @@ def _workday_location_parts(raw):
         return parts
     return []
 
+def _workday_requisition_id(posting):
+    """Workday bullet columns can begin with a date or location, not an ID."""
+    def identifier(value):
+        value = str(value or '').strip()
+        return (value if re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9._-]*', value)
+                and re.search(r'\d', value)
+                and not re.fullmatch(r'\d{4}-\d{2}-\d{2}|\d+(?:Locations?|Days?|Hours?)', value, re.I)
+                else None)
+    for value in posting.get('bulletFields') or []:
+        candidate = identifier(value)
+        if candidate:
+            return candidate
+    tail = (posting.get('externalPath') or '').rsplit('/', 1)[-1]
+    return identifier(tail.rsplit('_', 1)[-1]) if '_' in tail else None
+
+
 def _workday_location(posting):
     parts = []
     for key in ("locations", "location", "jobLocations"):
@@ -567,7 +583,7 @@ def fetch_workday(scrape, seen, company):
             posted_raw = j.get("postedOn") or j.get("postedDate")
             posted = _parse_posted(posted_raw)
             bullets = j.get("bulletFields") or []
-            requisition_id = str(bullets[0]) if bullets else None
+            requisition_id = _workday_requisition_id(j)
             ats_id = requisition_id or path.rsplit("/", 1)[-1] or None
             if title:
                 jid = make_id(company, jurl, title, "workday", ats_id)

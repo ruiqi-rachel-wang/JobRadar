@@ -1,0 +1,529 @@
+{
+  "unique_refreshed_companies": 57,
+  "unique_historical_ids_checked": 28305,
+  "historical_ids_missing": 0,
+  "first_seen_changed": 0,
+  "final_open_counts": {
+    "A+E Networks": 18,
+    "ABC Financial Services": 39,
+    "AIA": 1015,
+    "Adventisthealthcare": 451,
+    "Air Products": 388,
+    "Alignment Health": 61,
+    "Amazon": 10027,
+    "Amplify Health": 14,
+    "Apple": 4471,
+    "Arkansas Children's": 229,
+    "Bitso": 5,
+    "Cabinetworks Group": 71,
+    "Carbon Robotics": 3,
+    "Citadel": 63,
+    "Citadel Securities": 80,
+    "Cooley": 82,
+    "Corewell Health": 2052,
+    "Corpay": 112,
+    "Creative Artists Agency": 107,
+    "D. E. Shaw": 105,
+    "Dartmouth College": 100,
+    "Expensify": 0,
+    "Goldman Sachs": 692,
+    "Google": 3473,
+    "Greystar": 1462,
+    "H.I.G. Capital": 8,
+    "Harvard University": 326,
+    "HonorHealth": 547,
+    "IBM": 2077,
+    "Imerys": 33,
+    "Intel": 788,
+    "Iterable": 11,
+    "Lockheed Martin": 6494,
+    "Microsoft": 2463,
+    "Moderna": 277,
+    "Motorola Solutions": 870,
+    "Nubank": 97,
+    "OhioHealth": 1038,
+    "Overlake Medical Center": 192,
+    "Owensboro Health": 192,
+    "Plains": 66,
+    "ProPharma Group": 66,
+    "Raymond James": 298,
+    "SIG": 286,
+    "Salinas Valley Health": 90,
+    "Scout AI": 25,
+    "Sharp HealthCare": 362,
+    "Standard BioTools": 1,
+    "Stellantis": 26,
+    "Thomson Reuters": 479,
+    "UNC Chapel Hill": 474,
+    "UofL Health": 486,
+    "Veradigm": 125,
+    "Walsh Group": 441,
+    "Waystar": 40,
+    "XR Trading": 2,
+    "Xylem Inc.": 459
+  },
+  "remaining_workday_identity_flags": [
+    {
+      "company": "Stellantis",
+      "affected_open_rows": 18
+    }
+  ],
+  "application_files_checked": 76,
+  "hash_mismatches": [],
+  "public_http_status": 200,
+  "repair_alerts_sent": 0,
+  "reviewed_valid_fallback_identifiers": {
+    "Stellantis": 18
+  },
+  "unresolved_colliding_display_identifiers": 0,
+  "tests_passed": 234,
+  "live_ui": {
+    "public_http_status": 200,
+    "checks": [
+      {
+        "company": "Amazon",
+        "id": "a4c0360eba896bdea001",
+        "title": "Sr. Production Manager",
+        "url": "https://www.amazon.jobs/en/jobs/10588116/sr-production-manager",
+        "location": "Wilmington, MA, US \u00b7 N.reading, MA, US",
+        "status": "verified"
+      },
+      {
+        "company": "Apple",
+        "id": "5a87c8def27c78a25344",
+        "title": "Commissioning Engineer, Data Center Engineering",
+        "url": "https://jobs.apple.com/en-us/details/200690596-2228/commissioning-engineer-data-center-engineering",
+        "location": "Prineville, US",
+        "status": "verified"
+      },
+      {
+        "company": "Bitso",
+        "id": "2f402e3e109a367b7672",
+        "title": "Onboarding Operations Analyst",
+        "url": "https://bitso.bamboohr.com/careers/1010",
+        "location": "Mexico City, Cuauht\u00e9moc",
+        "status": "verified"
+      },
+      {
+        "company": "Carbon Robotics",
+        "id": "d5bc74560673ded397b9",
+        "title": "Sales Development Representative",
+        "url": "https://jobs.ashbyhq.com/carbon-robotics/c43d40de-ccde-4e4e-a48a-72e6f3e0e08a",
+        "location": "Amsterdam, Netherlands",
+        "status": "verified"
+      },
+      {
+        "company": "Citadel",
+        "id": "2e913da1d7d9716f5727",
+        "title": "Equities Engineering | Product Frontend Engineer | New York",
+        "url": "https://www.citadel.com/careers/details/equities-engineering-product-frontend-engineer-new-york/",
+        "location": "NY, US",
+        "status": "verified"
+      },
+      {
+        "company": "Citadel Securities",
+        "id": "134c8b8491f334f26fda",
+        "title": "Equities Engineering | Product Frontend Engineer | New York",
+        "url": "https://www.citadelsecurities.com/careers/details/equities-engineering-product-frontend-engineer-new-york/",
+        "location": "NY, US",
+        "status": "verified"
+      },
+      {
+        "company": "D. E. Shaw",
+        "id": "0d7feefd860ee14b5d51",
+        "title": "Sales and Relationship Management Associate (New York)",
+        "url": "https://www.deshaw.com/careers/sales-and-relationship-management-associate-new-york-6039",
+        "location": "NY, US",
+        "status": "verified"
+      },
+      {
+        "company": "Dartmouth College",
+        "id": "0c53c400722f09ea2ba9",
+        "title": "Painter II",
+        "url": "https://searchjobs.dartmouth.edu/postings/86966",
+        "location": "Country not listed",
+        "status": "verified"
+      },
+      {
+        "company": "Goldman Sachs",
+        "id": "004816240e2bdf3adc8b",
+        "title": "Executive Office, Senior Analyst, Marketing, Hong Kong",
+        "url": "https://higher.gs.com/roles/176363",
+        "location": "Hong Kong",
+        "status": "verified"
+      },
+      {
+        "company": "Google",
+        "id": "003a952211e1fd8b9e63",
+        "title": "Software Engineer III, AI/ML, Core",
+        "url": "https://www.google.com/about/careers/applications/jobs/results/118249122862899910-software-engineer-iii-aiml-core",
+        "location": "Kirkland, WA, US",
+        "status": "verified"
+      },
+      {
+        "company": "Harvard University",
+        "id": "01b17de92532545e4efb",
+        "title": "Data Scientist",
+        "url": "https://jobs.smartrecruiters.com/HarvardUniversity/3743990016281561",
+        "location": "Cambridge, MA, US",
+        "status": "verified"
+      },
+      {
+        "company": "IBM",
+        "id": "a3bb266d1f64df41baf1",
+        "title": "Industry Consultant-Chemicals & Petroleum Ind Products",
+        "url": "https://careers.ibm.com/careers/JobDetail?jobId=134322",
+        "location": "Bengaluru, India",
+        "status": "verified"
+      },
+      {
+        "company": "Iterable",
+        "id": "3bce13140aee83fe89ff",
+        "title": "Staff Data Engineer",
+        "url": "https://jobs.ashbyhq.com/iterable/2370c003-dfcb-49d3-be32-c142092529e8",
+        "location": "Lisbon, Portugal",
+        "status": "verified"
+      },
+      {
+        "company": "Lockheed Martin",
+        "id": "002dfe6cafa7393c6fdd",
+        "title": "Manufacturing Engineer - E2",
+        "url": "https://lockheedmartin.eightfold.ai/careers/job/996476202146",
+        "location": "Orlando, FL, US",
+        "status": "verified"
+      },
+      {
+        "company": "Microsoft",
+        "id": "000f2ea5b5daeed483f4",
+        "title": "Sub-Regional Planning Leader",
+        "url": "https://apply.careers.microsoft.com/careers/job/1970393556957408",
+        "location": "United States, VA, Reston \u00b7 United States, VA, Boydton \u00b7 United States, NC, Durham",
+        "status": "verified"
+      },
+      {
+        "company": "Nubank",
+        "id": "03328043839fb81ed7dc",
+        "title": "Senior Product Marketing Manager",
+        "url": "https://jobs.ashbyhq.com/nubank/aba54654-42b4-4eda-a2e7-8180e0767e2f",
+        "location": "Miami, FL, US",
+        "status": "verified"
+      },
+      {
+        "company": "SIG",
+        "id": "0224c6bef560b90ddc14",
+        "title": "PMO Lead - EMEA",
+        "url": "https://careers.sig.com/jobs/11228",
+        "location": "Dublin, Ireland",
+        "status": "verified"
+      },
+      {
+        "company": "Scout AI",
+        "id": "124e3fc79d87ac3398b4",
+        "title": "Vehicle Integration Technician",
+        "url": "https://jobs.ashbyhq.com/scout-ai/db863a57-7710-4584-9cd6-e2aa97f5fd93",
+        "location": "Sunnyvale, CA, US",
+        "status": "verified"
+      },
+      {
+        "company": "UNC Chapel Hill",
+        "id": "00a57474878c308e316a",
+        "title": "Open Rank",
+        "url": "https://unc.peopleadmin.com/postings/326421",
+        "location": "Country not listed",
+        "status": "verified"
+      },
+      {
+        "company": "Walsh Group",
+        "id": "022b6919c32d2948d0ab",
+        "title": "Pipefitter",
+        "url": "https://walshgroup.wd12.myworkdayjobs.com/walshgroup/job/GA_Kingston_224198/Pipefitter_JR16268",
+        "location": "GA_Kingston_224198",
+        "status": "verified"
+      },
+      {
+        "company": "XR Trading",
+        "id": "15b2246948d694781af1",
+        "title": "EXPERIENCED TRADER",
+        "url": "https://recruiting.paylocity.com/Recruiting/Jobs/Details/1804258",
+        "location": "Remote",
+        "status": "verified"
+      },
+      {
+        "company": "Moderna",
+        "id": "03abd300948064d09428",
+        "title": "Associate Director, SAP Internal Warehouse and Serialization",
+        "url": "https://modernatx.wd1.myworkdayjobs.com/M_tx/job/Norwood-Massachusetts/Associate-Director--SAP-Internal-Warehouse-and-Serialization_R19662",
+        "location": "Norwood Massachusetts, Country not listed",
+        "status": "verified"
+      },
+      {
+        "company": "OhioHealth",
+        "id": "0053dc25f0543411e928",
+        "title": "Staff RN - Observation Unit (Marion)",
+        "url": "https://ohiohealth.wd5.myworkdayjobs.com/ohiohealthjobs/job/MARION-GENERAL-HOSPITAL/Staff-RN---Observation-Unit--Marion-_JR159854",
+        "location": "MARION GENERAL HOSPITAL",
+        "status": "verified"
+      },
+      {
+        "company": "Corewell Health",
+        "id": "736d5baba88d02621e5d",
+        "title": "Security Officer",
+        "url": "https://spectrumhealth.wd5.myworkdayjobs.com/corewellhealthcareers/job/Farmington-Hills-MI/Security-Officer_R227803-1",
+        "location": "US",
+        "status": "verified"
+      },
+      {
+        "company": "AIA",
+        "id": "019dfe12bcbaf6ba1acf",
+        "title": "Regulatory Compliance & Risk Culture, Principal / Consultant",
+        "url": "https://aia.wd3.myworkdayjobs.com/External/job/Singapore-SG-AIA-Singapore/Regulatory-Compliance---Risk-Culture--Principal---Consultant_JR-69235",
+        "location": "SG-AIA Singapore, Singapore",
+        "status": "verified"
+      },
+      {
+        "company": "Sharp HealthCare",
+        "id": "0089cebb2d5e5d34db2b",
+        "title": "LVN - Hospice Homes - Nights - Full Time",
+        "url": "https://sharp.wd1.myworkdayjobs.com/external/job/Bonita-Home---3850-Valley-Vista-Road/LVN---Hospice-Homes---Nights---Full-Time_JR208559-1",
+        "location": "Bonita Home - 3850 Valley Vista Road, US \u00b7 San Diego, CA, US \u00b7 La Mesa, CA, US",
+        "status": "verified"
+      },
+      {
+        "company": "Bank of America",
+        "id": "2fca6eee1b6986baa1d5",
+        "title": "Client Quantitative Analyst I",
+        "url": "https://careers.bankofamerica.com/en-us/job-detail/26034513/client-quantitative-analyst-i-multiple-locations",
+        "location": "Jacksonville, FL, US \u00b7 Charlotte, NC, US \u00b7 Fort Worth, TX, US \u00b7 Plano, TX, US",
+        "status": "verified"
+      },
+      {
+        "company": "Capgemini",
+        "id": "a9bfde83360002929982",
+        "title": "SAP IBP Solution Architect- Application Business Architect",
+        "url": "https://careers.capgemini.com/job/Atlanta-SAP-IBP-Solution-Architect-Application-Business-Architect-GA-30301/1450949233/",
+        "location": "Atlanta, GA, US",
+        "status": "verified"
+      },
+      {
+        "company": "Loom",
+        "id": "13cf15c706d6d16d661e",
+        "title": "Principal Data Scientist, Loom",
+        "url": "https://www.atlassian.com/company/careers/details/26575",
+        "location": "Remote",
+        "status": "verified"
+      },
+      {
+        "company": "Deel",
+        "id": "32b0e2a340d401534049",
+        "title": "Payroll Expert I Brazil",
+        "url": "https://jobs.deel.com/deel/job-details/7d722578-060c-4421-b0b8-f5af70f9cec0/application",
+        "location": "Brazil",
+        "status": "verified"
+      }
+    ],
+    "catalog_checks": [
+      {
+        "name": "Expensify",
+        "scan_enabled": true,
+        "policy": null
+      },
+      {
+        "name": "Meta",
+        "scan_enabled": false,
+        "policy": {
+          "careers_url": "https://www.metacareers.com/jobsearch/",
+          "message": "Automatic job collection is currently unavailable; open the employer careers page to view current roles."
+        }
+      },
+      {
+        "name": "Tesla",
+        "scan_enabled": false,
+        "policy": {
+          "careers_url": "https://www.tesla.com/careers/search/",
+          "message": "Automatic job collection is currently unavailable; open the employer careers page to view current roles."
+        }
+      }
+    ],
+    "page_errors": []
+  },
+  "production_refreshes": [
+    {
+      "scan_run_id": 1059,
+      "status": "partial_success",
+      "source_records_found": 27431,
+      "new_records_added": 26589,
+      "verification": {
+        "historical_job_ids_checked": 6861,
+        "historical_ids_missing": 0,
+        "first_seen_changed": 0,
+        "source_posted_dates_updated": 149,
+        "after_open_counts": {
+          "Amazon": 10027,
+          "Apple": 1504,
+          "Bitso": 5,
+          "Carbon Robotics": 3,
+          "Citadel": 63,
+          "Citadel Securities": 80,
+          "D. E. Shaw": 105,
+          "Dartmouth College": 0,
+          "Expensify": 0,
+          "Goldman Sachs": 0,
+          "Google": 3473,
+          "Harvard University": 326,
+          "IBM": 2077,
+          "Iterable": 11,
+          "Lockheed Martin": 6494,
+          "Microsoft": 2463,
+          "Nubank": 97,
+          "SIG": 286,
+          "Scout AI": 25,
+          "UNC Chapel Hill": 0,
+          "Walsh Group": 25,
+          "XR Trading": 2
+        },
+        "alerts_sent_by_repair": 0
+      }
+    },
+    {
+      "scan_run_id": 1060,
+      "status": "partial_success",
+      "source_records_found": 18698,
+      "new_records_added": 12156,
+      "verification": {
+        "historical_job_ids_checked": 21760,
+        "historical_ids_missing": 0,
+        "first_seen_changed": 0,
+        "source_posted_dates_updated": 61,
+        "after_open_counts": {
+          "A+E Networks": 18,
+          "ABC Financial Services": 39,
+          "AIA": 1015,
+          "Adventisthealthcare": 451,
+          "Air Products": 388,
+          "Alignment Health": 61,
+          "Amplify Health": 14,
+          "Apple": 4471,
+          "Arkansas Children's": 229,
+          "Cabinetworks Group": 71,
+          "Cooley": 82,
+          "Corewell Health": 2052,
+          "Corpay": 112,
+          "Creative Artists Agency": 107,
+          "Dartmouth College": 100,
+          "Goldman Sachs": 692,
+          "Greystar": 1462,
+          "H.I.G. Capital": 8,
+          "HonorHealth": 547,
+          "Imerys": 33,
+          "Intel": 788,
+          "Moderna": 277,
+          "Motorola Solutions": 870,
+          "OhioHealth": 1038,
+          "Overlake Medical Center": 192,
+          "Owensboro Health": 192,
+          "Plains": 66,
+          "ProPharma Group": 66,
+          "Raymond James": 298,
+          "Salinas Valley Health": 90,
+          "Sharp HealthCare": 362,
+          "Standard BioTools": 1,
+          "Stellantis": 26,
+          "Thomson Reuters": 479,
+          "UNC Chapel Hill": 474,
+          "UofL Health": 486,
+          "Veradigm": 125,
+          "Walsh Group": 441,
+          "Waystar": 40,
+          "Xylem Inc.": 459
+        },
+        "alerts_sent_by_repair": 0
+      }
+    }
+  ],
+  "application_sha256": {
+    "app/api/__init__.py": "18ada62b80a76a2f97108c5b21d35f05dfdb62a3ce5fd107176ab842efe67b65",
+    "app/api/apis.py": "d4ca8c8b9622c9f0832cc7f8dfbb765e3009177cdb267a98714541eeced64362",
+    "app/api/ats/__init__.py": "069adfc70be88f8ffa9aa47c6f5c139fbd3e281b542c839af1be63edd0a435e3",
+    "app/api/ats/accenture.py": "4454acf3c761328a764e2ba5b49d4d5b79601e671ab6b7e02e3091fe6376a8cb",
+    "app/api/ats/ashby.py": "eaae37c12f42e56d67ea3f73034208254e30897762a3607549fbc313ab10b913",
+    "app/api/ats/avature.py": "2f11e34c5edc8a25c859237d69d1b08f27e6beb556b8753e4fa58e07cf1a2d2b",
+    "app/api/ats/bamboohr.py": "b5dd2f97f0eecd28dade781ef4fd3860b4bf6ef1b6902c72c6e5cba0bc77af28",
+    "app/api/ats/bankofamerica.py": "fbdcb121047fac84170fba2463523d1d6b3e5f5ca2e29a0dcf53c60831ffc4b5",
+    "app/api/ats/barnes_noble.py": "1fb6e1cc3f059f0da90170cfb31b26c5f65226933b09c7d79c069bd4a36d2754",
+    "app/api/ats/base.py": "af60e8cf7ab2fb3887ff7f7596025e148514e444ed691787e3c702a149f56625",
+    "app/api/ats/careerpuck.py": "b5e3fd502e4b59e7c707c17ddd4ea7e26fb7ac339368fd4ff406d77ea2bf72c3",
+    "app/api/ats/careyaya.py": "f63756e85129210b0c5fa057ecef998834d4f94ea36448370b36bdb66521089a",
+    "app/api/ats/comeet.py": "11d947b00a756aff9c83acece5378f85f75e4046e5ffabad6869b22119681298",
+    "app/api/ats/companies/__init__.py": "40ff84c6af2f423b96d6c687f65d765f79a65db85eab07025d437ae391793d9a",
+    "app/api/ats/cornerstone.py": "bdf218ef2764496277718351d2482afb959c8300daf8473fe96d7045cbefd9f6",
+    "app/api/ats/darwinbox.py": "970e98501ebbea3a9c85516a0baae6d454a354dc17977ee09c6ad0ba78c536a7",
+    "app/api/ats/detector.py": "de38bb2a8da6985a401b612eb9d6a3bbb3d50c01734296537c3cfce8457a31ce",
+    "app/api/ats/dover.py": "c648b3a7460787c1db0fa098eee881f15e0a269393a5ff48f217ed8b37b26c85",
+    "app/api/ats/eightfold.py": "a2d9afb5a3d72766129c6dc2d46c5aa990cb2ce3c6d30ae53fee52d833897001",
+    "app/api/ats/equipmentshare.py": "e46003553c8c96aa2814b3711839c309235c5a5352004f53a0f349bfb2ba1684",
+    "app/api/ats/gem.py": "48c8ea9721c621310bf94acb19a3922e9705f40a8e80e338874d0a26e1bc4ae6",
+    "app/api/ats/greenhouse.py": "087bbd9d0d2eb93e8a4031e689801b320b2f55f112aceff6b9455583c7d8141b",
+    "app/api/ats/html.py": "1a00502cec1b18211198f68b56e13995dd2c1442993b53dee47a92f1554c9365",
+    "app/api/ats/icims.py": "30efce2fea633bca3938999db05222f4530af1ab09f75adba071966a816dab7a",
+    "app/api/ats/jazzhr.py": "ff5181d0ca5367224502525075ec0ae6621617a6236e8224ba2cacb116de6631",
+    "app/api/ats/jobsapi.py": "bd12f16ebf40f926b6840f7a9ac83a5557b81269a9218fb416c95f23bddfea6c",
+    "app/api/ats/jobsyn.py": "742c20d13a7c8d8822440f2bbdfb411dcf14be200d789a9deb4f1e1be899c8b4",
+    "app/api/ats/jobvite.py": "6bc4d638c030a8fdf1603753d71584e6b40467aa2e959b63051372cc3d55af49",
+    "app/api/ats/kula.py": "c241472be77569607cafc7de2a3d5fd56c92ed5117ebdd321154c1e4eaa08bdf",
+    "app/api/ats/lever.py": "d0ad30a470f3a2b5c024e1f05b2dfb4a8e22d5a56848516a86e64f11ac951ef3",
+    "app/api/ats/mckinsey.py": "c148c84d08ebb5dc98fdd1e6892ab621761edc7d50503f8d7406aae85b432e19",
+    "app/api/ats/mobileye.py": "ab0003fcbfdeec5d98790f51c2fba65d7bd4f629735616013074f2f2de9f1de5",
+    "app/api/ats/oraclecloud.py": "0f729d22536a6669f681567a3527694d5366f244c4baecb063474b47729a10e6",
+    "app/api/ats/paradox.py": "69149e1ebbfd511c16dc92d3716a92eb4a5d95ca55f8661a522dfa78a1f75ca8",
+    "app/api/ats/paylocity.py": "b56ffd6af1e2478ad29e80c264459c039c9bbb3eb3eee8bb236875837d498b74",
+    "app/api/ats/pinpoint.py": "e75dfe7542435d42c6879ffdf5164ffa0d8eb3c1844270bebb20ddddd6706a19",
+    "app/api/ats/playwright.py": "56f2a7b9d837b0cee3ab99c3eb772c9ccbfc351d1ab49a409cf1fb42c06788a0",
+    "app/api/ats/playwright_scraper.py": "27ac5a9c2b3083ec93d44d4940a5d401e52c3135290e73d0ad2d60703116667a",
+    "app/api/ats/remote_ats.py": "4adde7e31444ade3b86b182b014883e8d95b22262b1cda7cea0f83b6d2bc91e1",
+    "app/api/ats/rippling.py": "b7e99acd48f8e0b5283511090ff4371af2446bb5d9e69f929e5aab7a4eef37a5",
+    "app/api/ats/smartrecruiters.py": "eaf75e42509f31ef0e81bdbe7524b4c97c4dfdfcc29e8a57ab03b52f6bdfa6d1",
+    "app/api/ats/successfactors.py": "288b063eadde8c770b849093fd7f1c696e01a56d4821a1078dfd93c1d949b4c0",
+    "app/api/ats/talentbrew.py": "eaa4460279c843d48e84f6c99606dee6e4733ecd2068780d066893fd1c56d95e",
+    "app/api/ats/tiktok.py": "25f4db4de3c4deec408e31c1750761b7f78a33cbdd94ea6ab0bf761c7023f372",
+    "app/api/ats/workable.py": "40b5712629b3e44583e78d9861e2f998cf952ba22e831a35c23811e8e9abfefe",
+    "app/api/ats/workday.py": "c730b316218f2018540ac98e3ed889e629f25fb4e56a3bee914f4cc83263a59d",
+    "app/api/ats/xml_feed.py": "ea49065a4bde7e75f9c3f22f6f2ddc7295ed8c9655bd3f247c16b64086a2b5d0",
+    "app/api/ats/yum.py": "e46d9c848eca5815512e8dda546337d3dca2bd099f003fe6c494c96855063589",
+    "app/api/common.py": "b88fc49ec7565d044db1a91d42aaf3afe1cbdb0ab574b81fa4e18046f97d2d97",
+    "app/api/database.py": "408e0293d9c804d6095370b7cffce701d02e128e1d5252dd197c6896a4ee6551",
+    "app/api/job_data.py": "a854cc9091a2e43efaf8a4c967276cdc8ce498b91f1617f14a800b2cf2fbdd48",
+    "app/api/main.py": "3d0171d7930142570270fb6dbd7dfee5d9400dc7c2407bdff394d93e2c8283e6",
+    "app/api/search.py": "56b479c3fc6f9365413bba35d75ad0dfc10005c4be9414c93a3c08e15b9ddd3f",
+    "app/api/static/css/base.css": "ae90478b39255ef60437d0f03f7d6235461f378d33b68937841bea4a47658467",
+    "app/api/static/css/drawer.css": "37c4c0788bb21ed1b6f3461aee0eec9e433627ccd55086029fa2cf01214ec654",
+    "app/api/static/css/jobs.css": "1db4fc5f16c417c2310f1bdfb7fa04df2cd675b59db2acc40c09d701479a8ea6",
+    "app/api/static/css/tokens.css": "2d45085dd9bcfd4d941a2386789cde891866acceeb2bf59077385834b8738d2f",
+    "app/api/static/js/job-search-request.js": "561a76f57df81ea240f22fd152439fac0672314770cc2bb6bae6dbd46e680cfa",
+    "app/api/static/js/sidebar-resize.js": "24383247942137b6f497f3d2b560ddc4b94a835adaa46446f2922810b40283c2",
+    "app/api/taxonomy.py": "6c279e56dd46b8c5ba756c1c44b09afd6273cb14aa7470b9caca32b686099203",
+    "app/api/utils.py": "08d99fa8360e4c8d02058c0fea36ba4419c33d00db5eca20c749d6ca7bc1eb66",
+    "app/app.py": "7dd54eedcf9d9cf64cc8a831db5a7cec14d1072f0a17efbbd105449b1b4eff94",
+    "app/companies.json": "d3c006477c38de24822c34c8e466d02dc8c85fff3e61241779d4f12ba0a1355d",
+    "app/job_identity.py": "471c6af456535690873ade569165ea305a99ebb8359b21d186115702e0a1c77d",
+    "app/scan_store.py": "6caba674cd44b6f9e1da4f04e85292a0ba4df4a050f496a981a7d29133487278",
+    "app/scan_worker.py": "1e2f1003e8b50344a2ae34ef15c0b023585161a552cfb320b8384a0b66d0a212",
+    "app/scanner_service.py": "97f46965182a5ec9120fe3881585dcf94442693c789950970bd61a04138468a2",
+    "app/schema.sql": "ca2472d0a04f1760b4305c48d492b9495a4a3d7213f2c282b4a65019e30e654f",
+    "app/templates/admin.html": "df16b00bdfb43790dd49c5809a71daad17e29817cfbb0acb5daaf5c534ac0d72",
+    "app/templates/auth.html": "e054c5fbc70fe934092bd14bb2e74dba61c2e5d07c0ab298be266c3d3c11fe8a",
+    "app/templates/companies.html": "09bdba91a5d52ce4f96b7c1441f1f78fb1f609bc688877cb7626050464539146",
+    "app/templates/index.html": "cf268d0b68d88a8325ce59cd065293f15c437024e5490b845bc9c4373402cc73",
+    "app/templates/profile.html": "ad86d369e75a4c74c3da62dd611259d7cebaf96ace5089529a35a77399ce5706",
+    "app/templates/seo_jobs.html": "b5a34532d287163b74a65f8cf41d72122b42da9f4e128bebf09675d290ba6da3",
+    "app/templates/user.html": "1fd5b6ab48891b5a3f57d0aad718efc2945759634cbd944d36ea6bde0dd0e76e",
+    "app/api/ats/public_careers.py": "7f9ded49ad4e92b07cab8a760e0aed71eeafca50237399aeb3b473382f5a856b"
+  },
+  "owner_requested_robots_exceptions": [
+    "Goldman Sachs",
+    "Dartmouth College",
+    "UNC Chapel Hill"
+  ],
+  "remaining_identity_screen_flags_reviewed": {
+    "Stellantis": "18 nonnumeric IDs are unique complete posting-path identifiers, which are valid when Workday supplies no requisition ID."
+  }
+}

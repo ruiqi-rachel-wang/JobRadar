@@ -1241,16 +1241,12 @@
       "E-commerce & Marketplace"
     ],
     "scrape": {
-      "mode": "jobsapi",
+      "mode": "amazon",
       "api_url": "https://www.amazon.jobs/en/search.json",
-      "job_url_prefix": "https://www.amazon.jobs/en/jobs/",
-      "country_code": "US"
+      "country_code": "USA"
     },
-    "scan_enabled": false,
-    "policy": {
-      "message": "Amazon's Terms of Service restrict third-party job aggregation from amazon.jobs. We respect their policies.",
-      "careers_url": "https://www.amazon.jobs/en/search"
-    }
+    "scan_enabled": true,
+    "note": "Current public employer source rechecked and restored at the owner's request (2026-10-24). Partial listing responses retain previously stored jobs and report incomplete coverage."
   },
   {
     "name": "Ambience Healthcare",
@@ -1714,15 +1710,11 @@
       "Consumer Electronics"
     ],
     "scrape": {
-      "mode": "playwright",
-      "list_url": "https://jobs.apple.com/en-us/search",
-      "include": "jobs.apple.com/en-us/details"
+      "mode": "apple",
+      "list_url": "https://jobs.apple.com/en-us/search?location=united-states-USA"
     },
-    "scan_enabled": false,
-    "policy": {
-      "message": "Apple's Terms of Service restrict automated access to their job listings.",
-      "careers_url": "https://jobs.apple.com/en-us/search"
-    }
+    "scan_enabled": true,
+    "note": "Current public employer source rechecked and restored at the owner's request (2026-10-24). Partial listing responses retain previously stored jobs and report incomplete coverage."
   },
   {
     "name": "Apple Tree Dental",
@@ -3397,8 +3389,8 @@
       "FinTech & Payments"
     ],
     "scrape": {
-      "mode": "greenhouse",
-      "board_token": "bitso"
+      "mode": "bamboohr",
+      "bamboohr_slug": "bitso"
     },
     "interview": {
       "no_whiteboard": true,
@@ -3408,7 +3400,9 @@
     },
     "tags": [
       "Interview Friendly"
-    ]
+    ],
+    "scan_enabled": true,
+    "note": "Current public employer source rechecked and restored at the owner's request (2026-10-24)."
   },
   {
     "name": "Bitwarden",
@@ -4567,9 +4561,11 @@
       "Robotics & Automation"
     ],
     "scrape": {
-      "mode": "greenhouse",
-      "board_token": "carbonrobotics"
-    }
+      "mode": "ashby",
+      "ashby_slug": "carbon-robotics"
+    },
+    "scan_enabled": true,
+    "note": "Current public employer source rechecked and restored at the owner's request (2026-10-24)."
   },
   {
     "name": "Cardinal Health",
@@ -5370,7 +5366,11 @@
         "type": "path_page",
         "segment": "page",
         "start": 1
-      }
+      },
+      "reader_only": true,
+      "reader_paginate": true,
+      "hard_max_pages": 100,
+      "reader_office_locations": true
     },
     "interview": {
       "no_whiteboard": false,
@@ -5378,11 +5378,8 @@
       "rounds": "3-4",
       "source": "Public knowledge"
     },
-    "scan_enabled": false,
-    "policy": {
-      "message": "Citadel's careers page requires browser automation to access and may conflict with their Terms of Service.",
-      "careers_url": "https://www.citadel.com/careers/"
-    }
+    "scan_enabled": true,
+    "note": "Current public employer source rechecked and restored at the owner's request (2026-10-24)."
   },
   {
     "name": "Citadel Securities",
@@ -5401,13 +5398,14 @@
         "type": "path_page",
         "segment": "page",
         "start": 1
-      }
+      },
+      "reader_only": true,
+      "reader_paginate": true,
+      "hard_max_pages": 100,
+      "reader_office_locations": true
     },
-    "scan_enabled": false,
-    "policy": {
-      "message": "Citadel Securities's careers page requires browser automation to access and may conflict with their Terms of Service.",
-      "careers_url": "https://www.citadelsecurities.com/careers/"
-    }
+    "scan_enabled": true,
+    "note": "Current public employer source rechecked and restored at the owner's request (2026-10-24). Partial listing responses retain previously stored jobs and report incomplete coverage."
   },
   {
     "name": "Citi",
@@ -6937,10 +6935,8 @@
       "Investment & Asset Management"
     ],
     "scrape": {
-      "mode": "playwright",
-      "list_url": "https://www.deshaw.com/careers/choose-your-path",
-      "prefix": "https://www.deshaw.com/careers/",
-      "validate_prefix": false
+      "mode": "deshaw",
+      "list_url": "https://www.deshaw.com/careers/choose-your-path"
     },
     "interview": {
       "no_whiteboard": false,
@@ -6948,11 +6944,8 @@
       "rounds": "4-5",
       "source": "Public knowledge"
     },
-    "scan_enabled": false,
-    "policy": {
-      "message": "D. E. Shaw's careers page requires browser automation to access and may conflict with their Terms of Service.",
-      "careers_url": "https://www.deshaw.com/careers"
-    }
+    "scan_enabled": true,
+    "note": "Current public employer source rechecked and restored at the owner's request (2026-10-24)."
   },
   {
     "name": "D3",
@@ -7051,10 +7044,17 @@
         "/postings/search",
         "all_jobs.atom"
       ],
-      "verify_ssl": false
+      "verify_ssl": false,
+      "pagination": {
+        "type": "query_page",
+        "param": "page",
+        "start": 1
+      },
+      "hard_max_pages": 100,
+      "respect_robots": false
     },
-    "scan_enabled": false,
-    "note": "robots.txt on searchjobs.dartmouth.edu (PeopleAdmin) disallows all crawling (checked 2026-07-18)"
+    "scan_enabled": true,
+    "note": "Current public employer source rechecked and restored at the owner's request (2026-10-24). The owner explicitly requested this source despite its robots.txt exclusion; this exception applies only to this company."
   },
   {
     "name": "Data Intellect",
@@ -8961,8 +8961,11 @@
     ],
     "scrape": {
       "mode": "ashby",
-      "ashby_slug": "expensify"
-    }
+      "ashby_slug": "expensify",
+      "allow_empty_full_scan": true
+    },
+    "scan_enabled": true,
+    "note": "Current public employer source rechecked and restored at the owner's request (2026-10-24)."
   },
   {
     "name": "Extend",
@@ -10781,16 +10784,12 @@
       "Quant Trading"
     ],
     "scrape": {
-      "mode": "playwright",
+      "mode": "goldman",
       "list_url": "https://higher.gs.com/results",
-      "include": "higher.gs.com/roles/"
+      "respect_robots": false
     },
-    "scan_enabled": false,
-    "policy": {
-      "message": "Goldman Sachs restricts automated access to their job listings per their usage policy.",
-      "careers_url": "https://higher.gs.com/results"
-    },
-    "note": "robots.txt on higher.gs.com disallows all crawling (checked 2026-07-18)"
+    "scan_enabled": true,
+    "note": "Current public employer source rechecked and restored at the owner's request (2026-10-24). The owner explicitly requested this source despite its robots.txt exclusion; this exception applies only to this company."
   },
   {
     "name": "Goliath Partners",
@@ -10885,17 +10884,12 @@
       "Cloud & Infrastructure"
     ],
     "scrape": {
-      "mode": "xml_feed",
-      "list_url": "https://careers.google.com/jobs/sitemap",
-      "feed_format": "sitemap",
-      "include": "careers.google.com/jobs/results/"
+      "mode": "google",
+      "list_url": "https://www.google.com/about/careers/applications/jobs/results/"
     },
-    "scan_enabled": false,
+    "scan_enabled": true,
     "catalog_visible": true,
-    "policy": {
-      "message": "Admin-only listing sourced from Google's official careers sitemap.",
-      "careers_url": "https://www.google.com/about/careers/applications/jobs/results"
-    }
+    "note": "Current public employer source rechecked and restored at the owner's request (2026-10-24)."
   },
   {
     "name": "Google DeepMind",
@@ -11484,9 +11478,8 @@
       "Research"
     ],
     "scrape": {
-      "mode": "playwright",
-      "list_url": "https://hr.harvard.edu/search-jobs",
-      "include": "hr.harvard.edu"
+      "mode": "smartrecruiters",
+      "smartrecruiters_company": "HarvardUniversity"
     },
     "interview": {
       "no_whiteboard": true,
@@ -11499,8 +11492,8 @@
     "tags": [
       "Interview Friendly"
     ],
-    "note": "hr.harvard.edu WAF-blocked; listings live in BrassRing/PeopleSoft with no scrapeable public URL (2026-07-18)",
-    "scan_enabled": false
+    "note": "Current public employer source rechecked and restored at the owner's request (2026-10-24).",
+    "scan_enabled": true
   },
   {
     "name": "Harvey",
@@ -12336,16 +12329,11 @@
       "Software & SaaS"
     ],
     "scrape": {
-      "mode": "playwright",
-      "list_url": "https://www.ibm.com/us-en/employment/",
-      "prefix": "https://www.ibm.com",
-      "include": "ibm.com/us-en/employment/"
+      "mode": "ibm",
+      "list_url": "https://www.ibm.com/careers/search"
     },
-    "scan_enabled": false,
-    "policy": {
-      "message": "IBM remains an active employer, but its current careers search needs a reliable supported integration.",
-      "careers_url": "https://www.ibm.com/careers/search"
-    }
+    "scan_enabled": true,
+    "note": "Current public employer source rechecked and restored at the owner's request (2026-10-24)."
   },
   {
     "name": "Icon",
@@ -13080,12 +13068,14 @@
       "Software & SaaS"
     ],
     "scrape": {
-      "mode": "greenhouse",
-      "board_token": "iterable"
+      "mode": "ashby",
+      "ashby_slug": "iterable"
     },
     "interview": {
       "source": "Cloud 100"
-    }
+    },
+    "scan_enabled": true,
+    "note": "Current public employer source rechecked and restored at the owner's request (2026-10-24)."
   },
   {
     "name": "Itron",
@@ -14522,12 +14512,12 @@
       "Aerospace & Defense"
     ],
     "scrape": {
-      "mode": "brassring",
-      "list_url": "https://www.lockheedmartinjobs.com/search-jobs",
-      "prefix": "https://www.lockheedmartinjobs.com/job/",
-      "scroll_rounds": 5,
-      "validate_prefix": false
-    }
+      "mode": "eightfold",
+      "list_url": "https://lockheedmartin.eightfold.ai/careers",
+      "eightfold_domain": "lockheedmartin.com"
+    },
+    "scan_enabled": true,
+    "note": "Current public employer source rechecked and restored at the owner's request (2026-10-24)."
   },
   {
     "name": "locusrobotics",
@@ -15625,9 +15615,11 @@
     },
     "scan_enabled": false,
     "policy": {
-      "message": "Meta's Terms of Service restrict automated access to their job listings.",
-      "careers_url": "https://www.metacareers.com/jobs/"
-    }
+      "message": "Automatic job collection is currently unavailable; open the employer careers page to view current roles.",
+      "careers_url": "https://www.metacareers.com/jobsearch/"
+    },
+    "catalog_visible": true,
+    "note": "Visible in the catalog at the owner's request. Recheck could not retrieve an authoritative job list; no jobs or hiring counts are invented (2026-10-24)."
   },
   {
     "name": "Metabase",
@@ -15766,15 +15758,13 @@
       "Cloud & Infrastructure"
     ],
     "scrape": {
-      "mode": "playwright",
-      "list_url": "https://jobs.careers.microsoft.com/us/en/search-results",
-      "include": "jobs.careers.microsoft.com"
+      "mode": "eightfold",
+      "list_url": "https://apply.careers.microsoft.com/careers",
+      "eightfold_domain": "microsoft.com",
+      "pcsx_only": true
     },
-    "scan_enabled": false,
-    "policy": {
-      "message": "Microsoft's Terms of Service restrict automated access to their job listings.",
-      "careers_url": "https://jobs.careers.microsoft.com/us/en/search-results"
-    }
+    "scan_enabled": true,
+    "note": "Current public employer source rechecked and restored at the owner's request (2026-10-24)."
   },
   {
     "name": "Midi Health",
@@ -17346,14 +17336,14 @@
       "FinTech & Payments"
     ],
     "scrape": {
-      "mode": "greenhouse",
-      "board_token": "nubank"
+      "mode": "ashby",
+      "ashby_slug": "nubank"
     },
     "interview": {
       "source": "Fintech target list"
     },
-    "scan_enabled": false,
-    "note": "Legacy Greenhouse board was empty while current official job pages block collection with HTTP 403 (verified 2026-07-21)"
+    "scan_enabled": true,
+    "note": "Current public employer source rechecked and restored at the owner's request (2026-10-24)."
   },
   {
     "name": "Nuclear Promise X",
@@ -21857,9 +21847,11 @@
       "AI & Machine Learning"
     ],
     "scrape": {
-      "mode": "greenhouse",
-      "board_token": "scoutai"
-    }
+      "mode": "ashby",
+      "ashby_slug": "scout-ai"
+    },
+    "scan_enabled": true,
+    "note": "Current public employer source rechecked and restored at the owner's request (2026-10-24)."
   },
   {
     "name": "Scribe",
@@ -22329,23 +22321,13 @@
       "Investment & Asset Management"
     ],
     "scrape": {
-      "mode": "playwright",
-      "list_url": "https://careers.sig.com/jobs",
-      "prefix": "https://careers.sig.com/jobs/",
-      "include": "careers.sig.com/jobs/",
-      "validate_prefix": false,
-      "require_id": false,
-      "pagination": {
-        "type": "query_page",
-        "param": "page",
-        "start": 1
-      }
+      "mode": "jobsapi",
+      "api_url": "https://careers.sig.com/api/jobs",
+      "job_url_prefix": "https://careers.sig.com/jobs/",
+      "page_param": "page"
     },
-    "scan_enabled": false,
-    "policy": {
-      "message": "SIG's careers page requires browser automation to access and may conflict with their Terms of Service.",
-      "careers_url": "https://www.sig.com/careers/"
-    }
+    "scan_enabled": true,
+    "note": "Current public employer source rechecked and restored at the owner's request (2026-10-24)."
   },
   {
     "name": "Sigma Computing",
@@ -24450,7 +24432,11 @@
     },
     "scan_enabled": false,
     "catalog_visible": true,
-    "note": "Official careers search blocks automated collection with HTTP 403 (verified 2026-07-21)"
+    "note": "Visible in the catalog at the owner's request. Recheck could not retrieve an authoritative job list; no jobs or hiring counts are invented (2026-10-24).",
+    "policy": {
+      "message": "Automatic job collection is currently unavailable; open the employer careers page to view current roles.",
+      "careers_url": "https://www.tesla.com/careers/search/"
+    }
   },
   {
     "name": "Tessera Therapeutics",
@@ -25884,10 +25870,17 @@
         "/postings/search",
         "all_jobs.atom"
       ],
-      "verify_ssl": false
+      "verify_ssl": false,
+      "pagination": {
+        "type": "query_page",
+        "param": "page",
+        "start": 1
+      },
+      "hard_max_pages": 100,
+      "respect_robots": false
     },
-    "scan_enabled": false,
-    "note": "robots.txt on unc.peopleadmin.com disallows all crawling (checked 2026-07-18)"
+    "scan_enabled": true,
+    "note": "Current public employer source rechecked and restored at the owner's request (2026-10-24). The owner explicitly requested this source despite its robots.txt exclusion; this exception applies only to this company."
   },
   {
     "name": "Uncountable",
@@ -27777,16 +27770,11 @@
       "Investment & Asset Management"
     ],
     "scrape": {
-      "mode": "playwright",
-      "list_url": "https://recruiting.paylocity.com/recruiting/jobs/All/5c109104-7c4d-415c-9ee4-54e3af55f9e7/XR-Trading-LLC",
-      "prefix": "https://recruiting.paylocity.com/recruiting/jobs/"
+      "mode": "paylocity",
+      "list_url": "https://recruiting.paylocity.com/recruiting/jobs/All/5c109104-7c4d-415c-9ee4-54e3af55f9e7/XR-Trading-LLC"
     },
-    "scan_enabled": false,
-    "policy": {
-      "message": "XR Trading's careers page requires browser automation to access and may conflict with their Terms of Service.",
-      "careers_url": "https://www.xrtrading.com/careers"
-    },
-    "note": "Configured official Paylocity board currently contains no open roles (verified 2026-08-05)"
+    "scan_enabled": true,
+    "note": "Current public employer source rechecked and restored at the owner's request (2026-10-24)."
   },
   {
     "name": "XTX Markets",
