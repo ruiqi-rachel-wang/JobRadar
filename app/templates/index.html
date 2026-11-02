@@ -115,7 +115,7 @@
       <div class="filter-divider"></div>
       <div class="filter-group">
         <div class="filter-label">Location</div>
-        <input class="filter-input" id="f-location" type="text" placeholder="e.g. New York">
+        <input class="filter-input" id="f-location" type="text" placeholder="e.g. New York" title="Includes jobs with missing location or country information">
       </div>
       <div class="filter-divider"></div>
       <div class="filter-group">
@@ -410,19 +410,17 @@ async function applyFilters(companyNames = null, page = 1) {
   }
 }
 
-// Fast in-DOM filter for location/category. Keyword expansion stays on the API.
+// Fast in-DOM category filter. Search fields are matched by the API.
 function filterDOM() {
   if (!resultsVisible()) return;
-  const loc = (document.getElementById('f-location').value || '').toLowerCase().trim();
-  // Date and keyword filters go to the API; the DOM pass handles location/category only.
   let vis = 0;
   document.querySelectorAll('.job-row').forEach(row => {
     const rowCats  = JSON.parse(row.dataset.cats || '[]');
     const company = companyByName.get(row.dataset.co);
     const rowValues = activeSidebarKind === 'tag' ? ((company || {}).tags || []) : rowCats;
     const matchCat = activeSidebarCat === 'All' || rowValues.includes(activeSidebarCat);
-    const matchLoc = !loc || new RegExp('(?:^|[^a-z])' + loc.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '(?:[^a-z]|$)').test(row.dataset.loc.toLowerCase());
-    const show = matchCat && matchLoc;
+    // Keep unknown geography and aliases accepted by the server visible.
+    const show = matchCat;
     row.classList.toggle('filtered-out', !show);
     if (show) vis++;
   });

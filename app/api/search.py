@@ -30,6 +30,62 @@ JOB_DATE_ORDER_SQL = (
     "COALESCE(NULLIF(posted,''), substr(first_seen,1,10)) DESC, first_seen DESC"
 )
 
+
+def location_where(query, *, postgres=False):
+    """Match listed locations while retaining jobs with unknown geography.
+
+    A NULL country summary can also mean multiple *known* countries. Inspect
+    the individual locations before treating that summary as missing data.
+    Keep this in SQL so filtering happens before pagination and counting.
+    """
+    query = (query or "").strip().lower()
+    if not query:
+        return [], []
+
+    aliases = [query]
+    if query in ("us", "united states", "usa", "u.s.", "u.s.a.", "america"):
+        aliases = ["us", "united states", "united states of america", "usa", "u.s.", "u.s.a."]
+    elif query in ("uk", "u.k.", "united kingdom", "england", "scotland", "wales"):
+        aliases = ["uk", "u.k.", "united kingdom", "england", "scotland", "wales"]
+    # Office separators must also be word boundaries (e.g. "US; London, UK").
+    haystack = "(' ' || REPLACE(REPLACE(REPLACE(LOWER(COALESCE(location, '')), ', ', ' '), ';', ' '), '|', ' ') || ' ')"
+    matches = [f"{haystack} LIKE ? ESCAPE '\\'" for _ in aliases]
+    params = [
+        "% " + alias.replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_") + " %"
+        for alias in aliases
+    ]
+
+    if postgres:
+        entries = (
+            "jsonb_array_elements(CASE WHEN jsonb_typeof(locations) = 'array' "
+            "THEN locations ELSE '[]'::jsonb END) AS place(value)"
+        )
+        iso = "place.value ->> 'country_iso'"
+        country = "place.value ->> 'country'"
+    else:
+        entries = (
+            "json_each(CASE WHEN json_valid(locations) THEN "
+            "CASE WHEN json_type(locations) = 'array' THEN locations ELSE '[]' END "
+            "ELSE '[]' END) AS place"
+        )
+        value = "CASE WHEN place.type = 'object' THEN place.value ELSE '{}' END"
+        iso = f"json_extract({value}, '$.country_iso')"
+        country = f"json_extract({value}, '$.country')"
+    missing_country = (
+        f"COALESCE(NULLIF(TRIM({iso}), ''), NULLIF(TRIM({country}), '')) IS NULL"
+    )
+    unknown = (
+        "LOWER(TRIM(COALESCE(location, ''))) IN "
+        "('', '-', '—', 'n/a', 'not listed', 'not specified', 'not stated', "
+        "'unknown', 'multiple locations', 'various locations', 'remote', "
+        "'hybrid', 'onsite', 'on-site', 'anywhere', 'worldwide', 'global') "
+        f"OR EXISTS (SELECT 1 FROM {entries} WHERE {missing_country}) "
+        "OR (NULLIF(TRIM(country_iso), '') IS NULL "
+        f"AND NOT EXISTS (SELECT 1 FROM {entries}))"
+    )
+    return ["(" + " OR ".join(matches + [unknown]) + ")"], params
+
+
 _KEYWORD_ALIASES = {
     "admin": {"administrative", "administrator"},
     "administrative": {"admin", "administrator"},

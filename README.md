@@ -67,6 +67,8 @@ jobs, and preserves direct links to the original company posting.
 
 1. Select companies, industries, or company tags.
 2. Search by role, location, experience, and date window.
+   Location searches also include jobs with missing location or country information,
+   just as experience searches retain jobs with unstated requirements.
 3. Open a result to review its description, experience, skills, and source URL.
 4. Save the search or add a job to the application tracker.
 5. Pro users can enable a daily email after the final scheduled fresh scan.

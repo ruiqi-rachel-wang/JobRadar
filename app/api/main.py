@@ -20,7 +20,7 @@ try:
 except ModuleNotFoundError:
     stripe = None
 
-from .database import connect_auth_db, connect_db, init_auth_db, placeholders
+from .database import IS_POSTGRES, connect_auth_db, connect_db, init_auth_db, placeholders
 try:
     from scanner_service import run_scan
     from scan_store import (
@@ -49,6 +49,7 @@ from .utils import (
 )
 from .search import (
     JOB_DATE_ORDER_SQL, display_location, display_title, keyword_groups, keyword_where,
+    location_where,
 )
 from .taxonomy import migrate_saved_filter, normalize_categories
 
@@ -435,15 +436,9 @@ def _saved_search_alert_jobs(search_row, cutoff, window_end):
         clauses.extend(keyword_clauses)
         params.extend(keyword_params)
     if location:
-        if location in ("united states", "usa", "u.s.", "u.s.a.", "america"):
-            clauses.append("(LOWER(location) = ? OR LOWER(location) LIKE ?)")
-            params.extend(["us", "%, us%"])
-        elif location in ("uk", "u.k.", "united kingdom", "england", "scotland", "wales"):
-            clauses.append("(LOWER(location) = ? OR LOWER(location) LIKE ? OR LOWER(location) LIKE ?)")
-            params.extend(["uk", "%, uk%", "%united kingdom%"])
-        else:
-            clauses.append("(' ' || REPLACE(LOWER(location), ', ', ' ') || ' ') LIKE ?")
-            params.append(f"% {location} %")
+        location_clauses, location_params = location_where(location, postgres=IS_POSTGRES)
+        clauses.extend(location_clauses)
+        params.extend(location_params)
     if since and since != "any":
         clauses.append("COALESCE(NULLIF(posted,''), substr(first_seen,1,10)) >= ?")
         params.append(since)
@@ -2238,15 +2233,9 @@ def api_jobs():
         params.extend(keyword_params)
 
     if location:
-        if location in ("united states", "usa", "u.s.", "u.s.a.", "america"):
-            clauses.append("(LOWER(location) = ? OR LOWER(location) LIKE ?)")
-            params.extend(["us", "%, us%"])
-        elif location in ("uk", "u.k.", "united kingdom", "england", "scotland", "wales"):
-            clauses.append("(LOWER(location) = ? OR LOWER(location) LIKE ? OR LOWER(location) LIKE ?)")
-            params.extend(["uk", "%, uk%", "%united kingdom%"])
-        else:
-            clauses.append("(' ' || REPLACE(LOWER(location), ', ', ' ') || ' ') LIKE ?")
-            params.append(f"% {location} %")
+        location_clauses, location_params = location_where(location, postgres=IS_POSTGRES)
+        clauses.extend(location_clauses)
+        params.extend(location_params)
     if since:
         clauses.append("COALESCE(NULLIF(posted,''), substr(first_seen,1,10)) >= ?")
         params.append(since)

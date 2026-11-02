@@ -109,7 +109,7 @@
       <div class="filter-divider"></div>
       <div class="filter-group">
         <div class="filter-label">Location</div>
-        <input class="filter-input" id="f-location" type="text" placeholder="e.g. New York">
+        <input class="filter-input" id="f-location" type="text" placeholder="e.g. New York" title="Includes jobs with missing location or country information">
       </div>
       <div class="filter-divider"></div>
       <div class="filter-group">
@@ -408,17 +408,15 @@ async function applyFilters(companyNames, page) {
 
 function filterDOM() {
   if (!resultsVisible()) return;
-  const loc = (document.getElementById('f-location').value || '').toLowerCase().trim();
   let vis = 0;
   document.querySelectorAll('.job-row').forEach(row => {
     const rowCats  = JSON.parse(row.dataset.cats || '[]');
     const company = companyByName.get(row.dataset.co);
     const rowValues = activeSidebarKind === 'tag' ? ((company||{}).tags||[]) : rowCats;
     const matchCat = activeSidebarCat==='All' || rowValues.includes(activeSidebarCat);
-    const matchLoc = !loc || row.dataset.loc.includes(loc);
-    // Keyword expansion is intentionally server-side so valid related roles
-    // are not removed again by a narrower browser-only substring check.
-    const show = matchCat && matchLoc;
+    // Search fields are matched by the API, including unknown locations and
+    // countries. A browser substring check would hide those results again.
+    const show = matchCat;
     row.classList.toggle('filtered-out', !show);
     if (show) vis++;
   });
