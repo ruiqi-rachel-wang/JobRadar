@@ -1,0 +1,936 @@
+{
+  "distinct_jobs_repaired": 9971,
+  "companies_repaired": 256,
+  "per_company_repairs": {
+    "Levi Strauss": 114,
+    "Concentrix": 1322,
+    "Cummins": 865,
+    "Gainsight": 10,
+    "GSK": 83,
+    "Zscaler": 142,
+    "Applied Materials": 828,
+    "Cencora": 105,
+    "Allstate": 43,
+    "KLA": 58,
+    "CVS Health": 71,
+    "Encore Global": 11,
+    "Fidelity": 2,
+    "Arch Capital Group Ltd": 51,
+    "TJX": 31,
+    "Comfort Systems USA": 11,
+    "Ryder System": 74,
+    "Merck": 289,
+    "Plaid": 131,
+    "AkzoNobel": 179,
+    "Procter & Gamble": 27,
+    "Baker Hughes": 22,
+    "Syneos Health": 541,
+    "Autodesk": 5,
+    "n8n": 31,
+    "Fresenius Medical Care": 78,
+    "Dow Inc.": 3,
+    "Amentum": 2,
+    "DXC Technology": 883,
+    "Aircall": 84,
+    "Copart": 3,
+    "Air Liquide": 3,
+    "Ford": 2,
+    "Adidas": 26,
+    "DaVita": 3,
+    "The Coca-Cola Company": 19,
+    "Gap Inc.": 2,
+    "Advocate Health": 15,
+    "Enbridge": 21,
+    "Zipline": 7,
+    "United Rentals": 85,
+    "RELX": 55,
+    "Workday": 22,
+    "Abbott": 10,
+    "Frost Bank": 2,
+    "Johnson Controls": 49,
+    "Lockheed Martin": 234,
+    "Equifax": 82,
+    "S&P Global": 34,
+    "FactSet": 33,
+    "McKesson": 186,
+    "Symbotic": 85,
+    "Barclays": 9,
+    "Wiley": 58,
+    "CACI": 8,
+    "Proofpoint": 2,
+    "Equinix": 2,
+    "Cigna": 9,
+    "Ecolab": 494,
+    "Iron Mountain": 145,
+    "Remitly": 12,
+    "Flatiron Health": 7,
+    "Bristol Myers Squibb": 19,
+    "Dollar Tree": 1,
+    "Pfizer": 20,
+    "Aptiv": 204,
+    "Sanofi": 1,
+    "Arctic Wolf": 57,
+    "Tekion": 58,
+    "PCI Pharma Services": 28,
+    "RBC": 7,
+    "Pika": 5,
+    "Jabil": 6,
+    "Sysco": 13,
+    "Synchrony Financial": 4,
+    "UNC Chapel Hill": 2,
+    "Genuine Parts Company": 127,
+    "Emerson": 4,
+    "BD": 30,
+    "Chubb": 27,
+    "Amcor": 12,
+    "Clover Health": 18,
+    "Danaher": 2,
+    "MTM Health": 2,
+    "Boson AI": 6,
+    "Yum Brands": 6,
+    "Legora": 58,
+    "Gen Digital": 51,
+    "JINGDONG": 69,
+    "Lucid Motors": 2,
+    "Royal Caribbean": 2,
+    "Broadcom": 48,
+    "Cerebras": 37,
+    "Basis": 41,
+    "Chainalysis": 14,
+    "Cognizant": 51,
+    "Chai Discovery": 21,
+    "Signal AI": 3,
+    "Google": 2,
+    "Abridge": 19,
+    "Deel": 4,
+    "Campbell Soup Company": 2,
+    "Siemens": 6,
+    "Under Armour": 1,
+    "Marigold": 2,
+    "Granola": 7,
+    "Sandvik": 1,
+    "THE\u2022TEAM": 42,
+    "Moderna": 1,
+    "KBR": 40,
+    "Henry Schein": 2,
+    "Zocdoc": 16,
+    "Ping Identity": 4,
+    "ABB": 9,
+    "Marsh McLennan": 1,
+    "Lambda": 38,
+    "SAIC": 1,
+    "Live Nation": 3,
+    "Tradeweb": 24,
+    "Invenergy": 1,
+    "Cisco": 3,
+    "Infinitus Systems": 5,
+    "General Dynamics Information Technology": 8,
+    "Carnegie Mellon University": 6,
+    "Ally": 2,
+    "Marmon": 4,
+    "Cloudera": 5,
+    "Fivetran": 1,
+    "Semgrep": 8,
+    "Leidos": 6,
+    "Citi": 1,
+    "Heidelberg Materials": 84,
+    "Edwards Lifesciences": 6,
+    "Honeywell": 1,
+    "Savvy Wealth": 21,
+    "NCR Voyix": 25,
+    "Nelnet": 4,
+    "R1": 2,
+    "Natera": 1,
+    "Human API": 9,
+    "Vertiv": 4,
+    "Texas Instruments": 1,
+    "Flagstar Bank, N.A": 1,
+    "Capital One": 3,
+    "NOV": 2,
+    "Prologis": 1,
+    "Lowe's": 2,
+    "Intelogix": 11,
+    "Accelentertainment": 2,
+    "Devoted": 5,
+    "CSA Group": 2,
+    "Sentry Insurance": 1,
+    "PTC Inc.": 14,
+    "3M": 6,
+    "Humana": 1,
+    "Alation": 11,
+    "Gilead Sciences": 3,
+    "BioCryst Pharmaceuticals": 4,
+    "Carrier": 2,
+    "Nabla": 4,
+    "DuckDuckGo": 3,
+    "Greystar": 12,
+    "Hightouch": 1,
+    "Alteryx": 1,
+    "Roche": 1,
+    "Rocket Lab": 8,
+    "Veralto": 10,
+    "Kalshi": 30,
+    "Whirlpool": 36,
+    "Estia Health": 4,
+    "Corpay": 9,
+    "Nike": 3,
+    "Estee Lauder": 7,
+    "Anthropic": 8,
+    "Astreya": 3,
+    "Visa": 5,
+    "PROS, Inc": 8,
+    "Deutsche Bank": 3,
+    "Global Payments": 1,
+    "Zoom": 6,
+    "Expensify": 1,
+    "Shell": 1,
+    "Grammarly": 1,
+    "Scribe": 1,
+    "RWS TrainAI": 1,
+    "Nitro": 19,
+    "Zeiss Group": 2,
+    "Marqeta": 4,
+    "Fox Corporation (Class A)": 13,
+    "DevRev": 6,
+    "eHealth": 2,
+    "Chevron": 1,
+    "NXP Semiconductors": 7,
+    "Geneva Trading": 7,
+    "Analog Devices": 2,
+    "Siemens Healthineers": 4,
+    "Brown & Brown Insurance": 1,
+    "HPE": 1,
+    "Corebridge Financial": 1,
+    "Sonic Healthcare USA": 2,
+    "Socotec": 1,
+    "Sanford Health": 1,
+    "Boeing": 1,
+    "AIG": 6,
+    "Press Ganey": 1,
+    "Stripe": 1,
+    "Replit": 1,
+    "Comcast": 1,
+    "Aircall.ai": 71,
+    "Taktile": 41,
+    "Navan": 2,
+    "Booz Allen Hamilton": 2,
+    "Nokia": 2,
+    "PlanetScale": 1,
+    "Regions Bank": 1,
+    "Thumbtack": 1,
+    "McKinsey": 8,
+    "UnitedHealth Group": 1,
+    "Datadog": 3,
+    "Bloom Energy": 2,
+    "AlphaSense": 1,
+    "Northern Trust": 3,
+    "iHerb": 5,
+    "JPMorgan Chase": 2,
+    "CrowdStrike": 1,
+    "Magellan Health": 1,
+    "GenScript": 1,
+    "Candid Health": 1,
+    "IQVIA": 8,
+    "Savvy": 17,
+    "Eisai": 1,
+    "CarMax": 2,
+    "Amazon": 15,
+    "Orb": 3,
+    "Palo Alto Networks": 3,
+    "LGT Capital Partners": 1,
+    "Parsons": 1,
+    "DeepFin Research": 3,
+    "Stanley Consultants": 1,
+    "Amgen": 1,
+    "Clarisights": 2,
+    "DBS Bank": 1,
+    "Federato": 1,
+    "D3": 1,
+    "Chronosphere": 2,
+    "Wispr Flow": 1,
+    "PermitFlow": 1,
+    "Unit": 1,
+    "Chargezoom": 1,
+    "Lyra Health": 1,
+    "Obsidian Security": 1,
+    "Cedar": 1,
+    "Dartmouth College": 103,
+    "General Motors": 9,
+    "Render": 5,
+    "Goodyear": 1
+  },
+  "reviewed_jobs": 9975,
+  "jobs_rechecked": 9975,
+  "geography_mismatches": [],
+  "runtime_files_verified": 7,
+  "non_location_fields_verified_during_each_write": true,
+  "initial_application": {
+    "not_found": 0,
+    "update": 9951,
+    "applied": 9951,
+    "already_correct": 4,
+    "location_changed_since_snapshot": 5
+  },
+  "delta_application": {
+    "not_found": 0,
+    "update": 20,
+    "applied": 20
+  },
+  "tests_passed": 274,
+  "source_postings_checked_dartmouth": 111,
+  "source_locations_recovered_dartmouth": 103,
+  "open_jobs_checked_final_pass": 631239,
+  "remaining_repair_proposals": 0,
+  "live_api": {
+    "checks": {
+      "aircall_spain_job_excluded_from_ny": true,
+      "aircall_spain_job_found_in_spain": true,
+      "cummins_foreign_jobs_excluded_from_ny": true,
+      "cummins_uk_job_found_by_iso3": true,
+      "cummins_czech_job_found_by_iso3": true,
+      "dartmouth_nh_jobs_excluded_from_ny": true,
+      "dartmouth_nh_jobs_found_in_nh": true,
+      "beta_multi_office_ny_job_retained": true,
+      "chubb_multi_office_ny_jobs_retained": true,
+      "truly_unknown_remote_retained": true,
+      "screen_has_no_fully_known_foreign_only_locations": true
+    },
+    "counts": {
+      "screen": 100,
+      "aircall_ny": 2,
+      "aircall_spain": 11,
+      "cummins_ny": 1,
+      "cummins_gbr": 150,
+      "cummins_cze": 6,
+      "dartmouth_ny": 0,
+      "dartmouth_nh": 10,
+      "beta_ny": 11,
+      "chubb_ny": 3,
+      "unknown_ny": 6
+    },
+    "examples": {
+      "screen": [
+        {
+          "id": "d7f5af230be1b3328362",
+          "title": "Build Engineer, Advanced Concepts",
+          "company": "BETA Technologies",
+          "location": "Plattsburgh, NY, US; Raleigh, NC, US; South Burlington, VT, US",
+          "country_iso": "US"
+        },
+        {
+          "id": "d2d024db8cea6fee37fa",
+          "title": "2027 Chubb Associate, Construction Risk Engineer",
+          "company": "Chubb",
+          "location": "New York, NY, US; Whitehouse Station, NJ, US",
+          "country_iso": "US"
+        },
+        {
+          "id": "01527b17cef6c8919438",
+          "title": "Senior FinOps Engineer, Global Data & Analytics",
+          "company": "Chubb",
+          "location": "Philadelphia, PA, US; Jersey City, NJ, US; New York, NY, US",
+          "country_iso": "US"
+        },
+        {
+          "id": "a275a064241c84e50f72",
+          "title": "Fullstack Developer",
+          "company": "Capgemini",
+          "location": "New York, NY, US",
+          "country_iso": "US"
+        }
+      ],
+      "aircall_ny": [
+        {
+          "id": "6df75212f92027610f93",
+          "title": "Senior Forward Deployed Engineer \u2013 Key Accounts (AI Solutions)",
+          "company": "Aircall",
+          "location": "New York Office, NY, US",
+          "country_iso": "US"
+        },
+        {
+          "id": "a235749a485da9a7f796",
+          "title": "Data Scientist, Visualization",
+          "company": "Aircall",
+          "location": "New York Office, NY, US",
+          "country_iso": "US"
+        }
+      ],
+      "aircall_spain": [
+        {
+          "id": "f30d0a76d7b23b3eb9b6",
+          "title": "Senior Software Engineer",
+          "company": "Aircall",
+          "location": "Madrid Office, Spain",
+          "country_iso": "ES"
+        },
+        {
+          "id": "81d9e5ddaf4f9e127e08",
+          "title": "Senior Software Engineer",
+          "company": "Aircall",
+          "location": "Madrid Office, Spain",
+          "country_iso": "ES"
+        },
+        {
+          "id": "2edada599633f9d68243",
+          "title": "FullStack Software Engineer",
+          "company": "Aircall",
+          "location": "Madrid Office, Spain",
+          "country_iso": "ES"
+        },
+        {
+          "id": "172da78c97a44d44a785",
+          "title": "Software Engineer, Integrations",
+          "company": "Aircall",
+          "location": "Madrid Office, Spain",
+          "country_iso": "ES"
+        }
+      ],
+      "cummins_ny": [
+        {
+          "id": "47b5fd56f0bf74735105",
+          "title": "JTC Engine Test Lab Emissions Technician- 2nd Shift",
+          "company": "Cummins",
+          "location": "Jamestown, NY, US",
+          "country_iso": "US"
+        }
+      ],
+      "cummins_gbr": [
+        {
+          "id": "1dde1f5e4c589def38ef",
+          "title": "Prototype & Manufacturing Development Technician",
+          "company": "Cummins",
+          "location": "Milton Keynes, UK",
+          "country_iso": "GB"
+        },
+        {
+          "id": "1dd3555282734647d253",
+          "title": "Warehouse Operator",
+          "company": "Cummins",
+          "location": "Daventry, UK",
+          "country_iso": "GB"
+        },
+        {
+          "id": "9bca70074172bfa46c72",
+          "title": "Warehouse Operator",
+          "company": "Cummins",
+          "location": "Daventry, UK",
+          "country_iso": "GB"
+        },
+        {
+          "id": "7970698abdf191493ada",
+          "title": "Placement Student - B Platform Controls",
+          "company": "Cummins",
+          "location": "Darlington, UK",
+          "country_iso": "GB"
+        }
+      ],
+      "cummins_cze": [
+        {
+          "id": "d5fcdc6d12be03403ede",
+          "title": "Health, Safety and Environment Engineer",
+          "company": "Cummins",
+          "location": "Trutnov, Czech Republic",
+          "country_iso": "CZ"
+        },
+        {
+          "id": "8f2e43cf747bfd5e8811",
+          "title": "In\u017een\u00fdr pro zdrav\u00ed, bezpe\u010dnost a \u017eivotn\u00ed prost\u0159ed\u00ed",
+          "company": "Cummins",
+          "location": "Trutnov, Czech Republic",
+          "country_iso": "CZ"
+        },
+        {
+          "id": "605068b8c3912a846413",
+          "title": "Sef formatie",
+          "company": "Cummins",
+          "location": "Dolj, ROM, Country not listed",
+          "country_iso": null
+        },
+        {
+          "id": "3229ddc50b39b3f0c911",
+          "title": "Team Leader - Level IV - SHOP",
+          "company": "Cummins",
+          "location": "Dolj, ROM, Country not listed",
+          "country_iso": null
+        }
+      ],
+      "dartmouth_ny": [],
+      "dartmouth_nh": [
+        {
+          "id": "ef061474e352a42c16c4",
+          "title": "Network Engineer II",
+          "company": "Dartmouth College",
+          "location": "Hanover, NH, US",
+          "country_iso": "US"
+        },
+        {
+          "id": "5a89950f325b4670440b",
+          "title": "Infrastructure Engineer II",
+          "company": "Dartmouth College",
+          "location": "Hanover, NH, US",
+          "country_iso": "US"
+        },
+        {
+          "id": "00af5b2d61c960cdce4b",
+          "title": "Senior Vice President for Development and Alumni Relations",
+          "company": "Dartmouth College",
+          "location": "Hanover, NH, US",
+          "country_iso": "US"
+        },
+        {
+          "id": "ebe49ce739a810180499",
+          "title": "Associate Director of Development, DHMC",
+          "company": "Dartmouth College",
+          "location": "NH, Lebanon",
+          "country_iso": "LB"
+        }
+      ],
+      "beta_ny": [
+        {
+          "id": "d7f5af230be1b3328362",
+          "title": "Build Engineer, Advanced Concepts",
+          "company": "BETA Technologies",
+          "location": "Plattsburgh, NY, US; Raleigh, NC, US; South Burlington, VT, US",
+          "country_iso": "US"
+        },
+        {
+          "id": "b5445c92bc8bad364a2a",
+          "title": "Stability and Controls Engineer, Flight Sciences",
+          "company": "BETA Technologies",
+          "location": "Plattsburgh, NY, US; Raleigh, NC, US; South Burlington, VT, US",
+          "country_iso": "US"
+        },
+        {
+          "id": "145d3cb785ecd2c22f26",
+          "title": "AI / ML Engineer, Advanced Concepts",
+          "company": "BETA Technologies",
+          "location": "Plattsburgh, NY, US; Raleigh, NC, US; South Burlington, VT, US",
+          "country_iso": "US"
+        },
+        {
+          "id": "9230b96cc58b347b97bd",
+          "title": "Composites Design Engineer, Advanced Concepts",
+          "company": "BETA Technologies",
+          "location": "Plattsburgh, NY, US; Raleigh, NC, US; South Burlington, VT, US",
+          "country_iso": "US"
+        }
+      ],
+      "chubb_ny": [
+        {
+          "id": "d2d024db8cea6fee37fa",
+          "title": "2027 Chubb Associate, Construction Risk Engineer",
+          "company": "Chubb",
+          "location": "New York, NY, US; Whitehouse Station, NJ, US",
+          "country_iso": "US"
+        },
+        {
+          "id": "01527b17cef6c8919438",
+          "title": "Senior FinOps Engineer, Global Data & Analytics",
+          "company": "Chubb",
+          "location": "Philadelphia, PA, US; Jersey City, NJ, US; New York, NY, US",
+          "country_iso": "US"
+        },
+        {
+          "id": "4f989eb6490ba19b6fc4",
+          "title": "Senior Risk Engineer, Equipment Breakdown",
+          "company": "Chubb",
+          "location": "Boston, MA, US; Cleveland, OH, US; Columbus, OH, US; Cincinnati, OH, US; Dallas, TX, US; Denver, CO, US; Columbia, MD, US; Philadelphia, PA, US; Pittsburgh, PA, US; Mechanicsburg, PA, US; Glen Allen, VA, US; Washington, DC, US; Chicago, IL, US; Des Moines, IA, US; Grand Rapids, MI, US; Indianapolis, IN, US; Kansas City, MO, US; Louisville, KY, US; Milwaukee, WI, US; Minneapolis, MN, US; Saint Louis, MO, US; Schaumburg, IL, US; Uniondale, NY, US; Warren, NJ, US; New York, NY, US; White Plains, NY, US; New Haven, CT, US; Rochester, NY, US; Portland, OR, US; San Francisco, CA, US; Walnut Creek, CA, US; Seattle, WA, US; Los Angeles, CA, US; Irvine, CA, US; Phoenix, AZ, US; Atlanta, GA, US; Alpharetta, GA, US; Birmingham, AL, US; Charlotte, NC, US; Nashville, TN, US; Tampa, FL, US; Houston, TX, US; Tulsa, OK, US; Austin, TX, US; Salt Lake City, UT, US",
+          "country_iso": "US"
+        }
+      ],
+      "unknown_ny": [
+        {
+          "id": "461238be08a116798c82",
+          "title": "Regional Workplace Operations Manager",
+          "company": "Airbnb",
+          "location": "New York, NY, US",
+          "country_iso": "US"
+        },
+        {
+          "id": "2e45a50d3a316d10b312",
+          "title": "Product Manager, LATAM (Miami or San Francisco)",
+          "company": "Airbnb",
+          "location": "Miami, San Francisco, Country not listed",
+          "country_iso": null
+        },
+        {
+          "id": "7af2044285a97f257b2d",
+          "title": "Senior Systems Engineer, Tech Foundations",
+          "company": "Airbnb",
+          "location": "Remote, Country not listed",
+          "country_iso": null
+        },
+        {
+          "id": "502ebf6f8424f3ff464d",
+          "title": "Product Manager, Services",
+          "company": "Airbnb",
+          "location": "New York, NY, US",
+          "country_iso": "US"
+        }
+      ]
+    }
+  },
+  "live_browser": {
+    "checks": {
+      "aircall_spain_found": true,
+      "aircall_spain_drawer_matches": true,
+      "cummins_uk_found": true,
+      "cummins_uk_drawer_matches": true,
+      "dartmouth_nh_found": true,
+      "dartmouth_nh_drawer_matches": true,
+      "aircall_foreign_excluded": true,
+      "cummins_foreign_excluded": true,
+      "dartmouth_nh_excluded_from_ny": true,
+      "beta_ny_retained": true,
+      "unknown_remote_retained": true,
+      "no_javascript_errors": true
+    },
+    "examples": {
+      "aircall_ny": [
+        {
+          "id": "6df75212f92027610f93",
+          "title": "Senior Forward Deployed Engineer \u2013 Key Accounts (AI Solutions)",
+          "location": "New York Office, NY, US",
+          "locations": [
+            {
+              "city": "New York Office",
+              "country": "US",
+              "country_iso": "US",
+              "display": "New York Office, NY, US",
+              "raw": "New York Office",
+              "region": "NY",
+              "remote_mode": null
+            }
+          ],
+          "country_iso": "US"
+        },
+        {
+          "id": "a235749a485da9a7f796",
+          "title": "Data Scientist, Visualization",
+          "location": "New York Office, NY, US",
+          "locations": [
+            {
+              "city": "New York Office",
+              "country": "US",
+              "country_iso": "US",
+              "display": "New York Office, NY, US",
+              "raw": "New York Office",
+              "region": "NY",
+              "remote_mode": null
+            }
+          ],
+          "country_iso": "US"
+        }
+      ],
+      "aircall_spain": [
+        {
+          "id": "f30d0a76d7b23b3eb9b6",
+          "title": "Senior Software Engineer",
+          "location": "Madrid Office, Spain",
+          "locations": [
+            {
+              "city": "Madrid Office",
+              "country": "Spain",
+              "country_iso": "ES",
+              "display": "Madrid Office, Spain",
+              "raw": "Madrid Office",
+              "region": null,
+              "remote_mode": null
+            }
+          ],
+          "country_iso": "ES"
+        },
+        {
+          "id": "81d9e5ddaf4f9e127e08",
+          "title": "Senior Software Engineer",
+          "location": "Madrid Office, Spain",
+          "locations": [
+            {
+              "city": "Madrid Office",
+              "country": "Spain",
+              "country_iso": "ES",
+              "display": "Madrid Office, Spain",
+              "raw": "Madrid Office",
+              "region": null,
+              "remote_mode": null
+            }
+          ],
+          "country_iso": "ES"
+        },
+        {
+          "id": "2edada599633f9d68243",
+          "title": "FullStack Software Engineer",
+          "location": "Madrid Office, Spain",
+          "locations": [
+            {
+              "city": "Madrid Office",
+              "country": "Spain",
+              "country_iso": "ES",
+              "display": "Madrid Office, Spain",
+              "raw": "Madrid Office",
+              "region": null,
+              "remote_mode": null
+            }
+          ],
+          "country_iso": "ES"
+        }
+      ],
+      "aircall_spain_drawer": "Madrid Office, Spain",
+      "cummins_ny": [
+        {
+          "id": "47b5fd56f0bf74735105",
+          "title": "JTC Engine Test Lab Emissions Technician- 2nd Shift",
+          "location": "Jamestown, NY, US",
+          "locations": [
+            {
+              "city": "Jamestown",
+              "country": "US",
+              "country_iso": "US",
+              "display": "Jamestown, NY, US",
+              "raw": "Jamestown, NY",
+              "region": "NY",
+              "remote_mode": null
+            }
+          ],
+          "country_iso": "US"
+        }
+      ],
+      "cummins_uk": [
+        {
+          "id": "1dde1f5e4c589def38ef",
+          "title": "Prototype & Manufacturing Development Technician",
+          "location": "Milton Keynes, UK",
+          "locations": [
+            {
+              "city": "Milton Keynes",
+              "country": "UK",
+              "country_iso": "GB",
+              "display": "Milton Keynes, UK",
+              "raw": "Milton Keynes, GBR",
+              "region": null,
+              "remote_mode": null
+            }
+          ],
+          "country_iso": "GB"
+        }
+      ],
+      "cummins_uk_drawer": "Milton Keynes, UK",
+      "dartmouth_ny": [],
+      "dartmouth_nh": [
+        {
+          "id": "ef061474e352a42c16c4",
+          "title": "Network Engineer II",
+          "location": "Hanover, NH, US",
+          "locations": [
+            {
+              "city": "Hanover",
+              "country": "US",
+              "country_iso": "US",
+              "display": "Hanover, NH, US",
+              "raw": "Hanover, NH",
+              "region": "NH",
+              "remote_mode": null
+            }
+          ],
+          "country_iso": "US"
+        },
+        {
+          "id": "5a89950f325b4670440b",
+          "title": "Infrastructure Engineer II",
+          "location": "Hanover, NH, US",
+          "locations": [
+            {
+              "city": "Hanover",
+              "country": "US",
+              "country_iso": "US",
+              "display": "Hanover, NH, US",
+              "raw": "Hanover, NH",
+              "region": "NH",
+              "remote_mode": null
+            }
+          ],
+          "country_iso": "US"
+        },
+        {
+          "id": "00af5b2d61c960cdce4b",
+          "title": "Senior Vice President for Development and Alumni Relations",
+          "location": "Hanover, NH, US",
+          "locations": [
+            {
+              "city": "Hanover",
+              "country": "US",
+              "country_iso": "US",
+              "display": "Hanover, NH, US",
+              "raw": "Hanover, NH",
+              "region": "NH",
+              "remote_mode": null
+            }
+          ],
+          "country_iso": "US"
+        }
+      ],
+      "dartmouth_nh_drawer": "Hanover, NH, US",
+      "beta_ny": [
+        {
+          "id": "d7f5af230be1b3328362",
+          "title": "Build Engineer, Advanced Concepts",
+          "location": "Plattsburgh, NY, US; Raleigh, NC, US; South Burlington, VT, US",
+          "locations": [
+            {
+              "city": "Plattsburgh",
+              "country": "US",
+              "country_iso": "US",
+              "display": "Plattsburgh, NY, US",
+              "raw": "Plattsburgh, New York, United States",
+              "region": "NY",
+              "remote_mode": null
+            },
+            {
+              "city": "Raleigh",
+              "country": "US",
+              "country_iso": "US",
+              "display": "Raleigh, NC, US",
+              "raw": "Raleigh, North Carolina, United States",
+              "region": "NC",
+              "remote_mode": null
+            },
+            {
+              "city": "South Burlington",
+              "country": "US",
+              "country_iso": "US",
+              "display": "South Burlington, VT, US",
+              "raw": "South Burlington, Vermont, United States",
+              "region": "VT",
+              "remote_mode": null
+            }
+          ],
+          "country_iso": "US"
+        },
+        {
+          "id": "b5445c92bc8bad364a2a",
+          "title": "Stability and Controls Engineer, Flight Sciences",
+          "location": "Plattsburgh, NY, US; Raleigh, NC, US; South Burlington, VT, US",
+          "locations": [
+            {
+              "city": "Plattsburgh",
+              "country": "US",
+              "country_iso": "US",
+              "display": "Plattsburgh, NY, US",
+              "raw": "Plattsburgh, New York, United States",
+              "region": "NY",
+              "remote_mode": null
+            },
+            {
+              "city": "Raleigh",
+              "country": "US",
+              "country_iso": "US",
+              "display": "Raleigh, NC, US",
+              "raw": "Raleigh, North Carolina, United States",
+              "region": "NC",
+              "remote_mode": null
+            },
+            {
+              "city": "South Burlington",
+              "country": "US",
+              "country_iso": "US",
+              "display": "South Burlington, VT, US",
+              "raw": "South Burlington, Vermont, United States",
+              "region": "VT",
+              "remote_mode": null
+            }
+          ],
+          "country_iso": "US"
+        },
+        {
+          "id": "145d3cb785ecd2c22f26",
+          "title": "AI / ML Engineer, Advanced Concepts",
+          "location": "Plattsburgh, NY, US; Raleigh, NC, US; South Burlington, VT, US",
+          "locations": [
+            {
+              "city": "Plattsburgh",
+              "country": "US",
+              "country_iso": "US",
+              "display": "Plattsburgh, NY, US",
+              "raw": "Plattsburgh, New York, United States",
+              "region": "NY",
+              "remote_mode": null
+            },
+            {
+              "city": "Raleigh",
+              "country": "US",
+              "country_iso": "US",
+              "display": "Raleigh, NC, US",
+              "raw": "Raleigh, North Carolina, United States",
+              "region": "NC",
+              "remote_mode": null
+            },
+            {
+              "city": "South Burlington",
+              "country": "US",
+              "country_iso": "US",
+              "display": "South Burlington, VT, US",
+              "raw": "South Burlington, Vermont, United States",
+              "region": "VT",
+              "remote_mode": null
+            }
+          ],
+          "country_iso": "US"
+        }
+      ],
+      "unknown_ny": [
+        {
+          "id": "461238be08a116798c82",
+          "title": "Regional Workplace Operations Manager",
+          "location": "New York, NY, US",
+          "locations": [
+            {
+              "city": "New York",
+              "country": "US",
+              "country_iso": "US",
+              "display": "New York, NY, US",
+              "raw": "New York, United States",
+              "region": "NY",
+              "remote_mode": null
+            }
+          ],
+          "country_iso": "US"
+        },
+        {
+          "id": "2e45a50d3a316d10b312",
+          "title": "Product Manager, LATAM (Miami or San Francisco)",
+          "location": "Miami, San Francisco, Country not listed",
+          "locations": [
+            {
+              "city": "Miami",
+              "country": null,
+              "country_iso": null,
+              "display": "Miami, San Francisco",
+              "raw": "Miami, San Francisco",
+              "region": "San Francisco",
+              "remote_mode": null
+            }
+          ],
+          "country_iso": null
+        },
+        {
+          "id": "7af2044285a97f257b2d",
+          "title": "Senior Systems Engineer, Tech Foundations",
+          "location": "Remote, Country not listed",
+          "locations": [
+            {
+              "city": null,
+              "country": null,
+              "country_iso": null,
+              "display": "Remote",
+              "raw": "Remote",
+              "region": null,
+              "remote_mode": "remote"
+            }
+          ],
+          "country_iso": null
+        }
+      ]
+    },
+    "page_errors": []
+  }
+}

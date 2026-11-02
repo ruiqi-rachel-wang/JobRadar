@@ -30,6 +30,28 @@ def place(city, region, country='US'):
 
 
 class SecondaryLocationsTests(unittest.TestCase):
+    @patch('app.api.ats.base.requests.get')
+    def test_peopleadmin_detail_uses_position_location_instead_of_contact_address(self, get):
+        for locality in ['Hanover, NH 03755', 'Hanover, NH']:
+            with self.subTest(locality=locality):
+                get.return_value = Response(text='<table><tr><th>Location of Position</th>'
+                    '<td><div>' + locality + '<br>4 Currier Place<br></div></td></tr>'
+                    '<tr><th>Department</th><td>Development, Advancement</td></tr></table>'
+                    '<footer>Contact: New York, NY</footer>')
+                detail = fetch_detail_description('https://searchjobs.dartmouth.edu/postings/42')
+                self.assertEqual(['Hanover, NH'], detail['locations_raw'])
+                self.assertEqual('Hanover, NH, US', detail['location'])
+                self.assertIn('4 Currier Place', detail['location_raw'])
+                self.assertNotIn('New York', detail['location'])
+                self.assertEqual('US', normalize_locations(detail['locations_raw'])['country_iso'])
+
+    @patch('app.api.ats.base.requests.get')
+    def test_peopleadmin_detail_keeps_multiple_city_state_lines(self, get):
+        get.return_value = Response(text='<table><tr><th>Job Locations</th>'
+            '<td>Hanover, NH<br>New York, NY<br>Lebanon NH 03766</td></tr></table>')
+        detail = fetch_detail_description('https://example.com/postings/42')
+        self.assertEqual(['Hanover, NH', 'New York, NY', 'Lebanon, NH'], detail['locations_raw'])
+
     @patch('app.api.ats.lever.requests.get')
     def test_lever_keeps_all_locations_and_primary_without_duplicates(self, get):
         get.return_value = Response([{'text': 'Engineer', 'id': 'abc',

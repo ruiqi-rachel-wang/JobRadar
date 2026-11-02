@@ -1,6 +1,7 @@
 import json
 import unittest
 from unittest.mock import patch
+import pycountry
 
 from app.api.apis import _enrich
 from app.api.ats.workday import _fetch_workday_detail, _workday_detail_location
@@ -34,6 +35,62 @@ class ExplicitLocationCountryTests(unittest.TestCase):
         for country in set(_COUNTRY_ALIASES.values()) - {'Worldwide'}:
             with self.subTest(country=country):
                 self.assertIsNotNone(normalize_locations(country)['country_iso'])
+
+    def test_every_iso_three_letter_country_code_has_the_expected_iso_country(self):
+        for country in pycountry.countries:
+            with self.subTest(code=country.alpha_3):
+                self.assertEqual(country.alpha_2, normalize_locations(country.alpha_3)['country_iso'])
+
+    def test_country_codes_in_full_location_fields_keep_the_city(self):
+        for raw, city, iso in [('Milton Keynes, GBR', 'Milton Keynes', 'GB'),
+                               ('Trutnov, CZE', 'Trutnov', 'CZ'), ('Pune, IND', 'Pune', 'IN'),
+                               ('Sydney, AUS', 'Sydney', 'AU'), ('Tokyo, JPN', 'Tokyo', 'JP')]:
+            with self.subTest(raw=raw):
+                result = normalize_locations(raw)
+                self.assertEqual(iso, result['country_iso'])
+                self.assertEqual(city, result['locations'][0]['city'])
+                self.assertNotIn('Country not listed', display_location(result['location'], 'Engineer'))
+
+    def test_city_office_country_is_shared_by_storage_and_display(self):
+        for raw, iso in [('Madrid Office', 'ES'), ('Paris Office', 'FR'), ('London HQ', 'GB'),
+                          ('New York Office', 'US'), ('San Francisco Hub', 'US')]:
+            with self.subTest(raw=raw):
+                result = normalize_locations(raw)
+                self.assertEqual(iso, result['country_iso'])
+                self.assertEqual(result['location'], display_location(raw, 'Engineer'))
+        self.assertIsNone(normalize_locations('Unlisted Office')['country_iso'])
+        self.assertIsNone(normalize_locations('Atlanta, New York City')['country_iso'])
+        self.assertIsNone(normalize_locations('Paris, Unlisted Region')['country_iso'])
+
+    def test_country_names_with_commas_remain_whole_in_structured_country(self):
+        result = normalize_locations('VGB')
+        self.assertEqual('VG', result['country_iso'])
+        self.assertEqual(result['location'], result['locations'][0]['country'])
+        self.assertIsNone(result['locations'][0]['city'])
+
+    def test_iso_country_prefix_keeps_local_region_in_the_explicit_country(self):
+        for raw, iso in [('IND - TN - CHENNAI', 'IN'), ('IND - HR - NOIDA', 'IN'),
+                         ('CAN, ON, Mississauga', 'CA'), ('IND - Karnataka - Bangalore - EDC', 'IN'),
+                         ('Ind-hyderabad, India', 'IN'), ('TUR-ISTANBUL-HYBRID, Türkiye', 'TR'),
+                         ('SAU - Al-Qassim Province - Riyadh', 'SA'),
+                         ('AUS – New South Wales – Sydney', 'AU'),
+                         ('CHN-HKG-New Territories-Kwai Tsing District', 'CN'),
+                         ('SEN Ngor Dakar - Pointe des Almadies TF N°284/NGA', 'SN'),
+                         ('GEO Tbilisi - Vake Plaza 7th & 8th Flrs, 72a Ilia Chavchavadze Avenue', 'GE'),
+                         ('SWE Work-at-Home', 'SE')]:
+            with self.subTest(raw=raw):
+                result = normalize_locations(raw)
+                self.assertEqual(iso, result['country_iso'])
+                self.assertEqual(result['location'], normalize_locations(result['location'])['location'])
+                self.assertNotIn('India, US', result['location'])
+                self.assertNotIn('India, Croatia', result['location'])
+
+    def test_new_iso_support_does_not_turn_unqualified_abbreviations_into_countries(self):
+        self.assertIsNone(normalize_locations('Union, SM')['country_iso'])
+        self.assertIsNone(normalize_locations('AUS ES')['country_iso'])
+        result = normalize_locations('Atlanta Office, Jersey City Office, New York City')
+        self.assertIn('New York City', result['location'])
+        self.assertNotEqual('JE', result['country_iso'])
 
     def test_kraken_multiple_listed_countries_do_not_become_unknown(self):
         result = normalize_locations(['Romania', 'Brazil', 'Peru', 'Cyprus', 'Paraguay'])
@@ -153,6 +210,14 @@ class ExplicitLocationCountryTests(unittest.TestCase):
                'source': 'test', 'country_iso': None, 'remote_mode': None,
                'location': 'Unlisted City', 'location_raw': 'Unlisted City', 'locations': '[]'}
         self.assertIsNone(country_proposal(row, '2026-11-02T00:00:00Z'))
+
+    def test_repair_resolves_office_label_even_when_country_summary_is_stale(self):
+        row = {'id': 'aircall-office', 'company': 'Aircall', 'url': 'https://example.test/job/6',
+               'source': 'greenhouse', 'country_iso': 'US', 'remote_mode': None,
+               'location': 'Madrid Office', 'location_raw': 'Madrid Office',
+               'locations': json.dumps([{'raw': 'Madrid Office', 'country_iso': None}])}
+        proposal = country_proposal(row, '2026-11-02T00:00:00Z')
+        self.assertEqual('ES', normalize_locations(proposal['locations_raw'])['country_iso'])
 
     def test_repair_splits_repeated_primary_list_before_qualifying_its_country(self):
         row = {'id': 'compound', 'company': 'Citi', 'url': 'https://example.test/job/4',

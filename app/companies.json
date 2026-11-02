@@ -7040,6 +7040,7 @@
       "mode": "html",
       "list_url": "https://searchjobs.dartmouth.edu/postings/search",
       "include": "searchjobs.dartmouth.edu/postings/",
+      "fetch_location_details": true,
       "url_exclude": [
         "/postings/search",
         "all_jobs.atom"

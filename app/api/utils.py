@@ -7,6 +7,7 @@ from functools import lru_cache
 from urllib.parse import parse_qs, unquote, urlencode, urlparse, urlunparse
 
 from bs4 import BeautifulSoup
+import pycountry
 
 try:
     from job_identity import make_job_id
@@ -542,7 +543,7 @@ _COUNTRY_CODES = {
     'NL':'Netherlands','NO':'Norway','NZ':'New Zealand','PH':'Philippines','PL':'Poland',
     'PT':'Portugal','SE':'Sweden','SG':'Singapore','TH':'Thailand','TW':'Taiwan',
     'UK':'UK','US':'US','VN':'Vietnam','ZA':'South Africa',
-    'AM':'Armenia','AZ':'Azerbaijan','GE':'Georgia','RO':'Romania','BG':'Bulgaria',
+    'AM':'Armenia','AZ':'Azerbaijan','GE':'Georgia (country)','RO':'Romania','BG':'Bulgaria',
     'HR':'Croatia','RS':'Serbia','SK':'Slovakia','SI':'Slovenia','LT':'Lithuania',
     'LV':'Latvia','EE':'Estonia','UA':'Ukraine','LU':'Luxembourg','IS':'Iceland',
     'GR':'Greece','HU':'Hungary','TR':'Türkiye','PK':'Pakistan','BD':'Bangladesh',
@@ -558,6 +559,28 @@ _COUNTRY_CODES = {
     'UZ':'Uzbekistan','PY':'Paraguay',
     'CD':'DR Congo','CI':"Côte d'Ivoire",'GN':'Guinea','IQ':'Iraq','TN':'Tunisia',
 }
+
+# Use the complete ISO database for names and three-letter employer codes.
+# Keep the existing short display names and two-letter state/province rules.
+_COUNTRY_ALPHA3 = {}
+_COUNTRY_DISPLAY_ISO = {}
+_COUNTRY_DISPLAY_BY_ISO = {}
+# Keep the existing metadata cleanup vocabulary. Newly supported country
+# names such as Jersey must not consume "Jersey City Office" as metadata.
+_COUNTRY_METADATA_SUFFIXES = [
+    (re.compile(rf'^(.+?),\s*{re.escape(name)}\b\s+(.+)$', re.I), _COUNTRY_ALIASES[name])
+    for name in sorted(_COUNTRY_ALIASES, key=len, reverse=True)
+]
+for _iso_country in pycountry.countries:
+    _display_country = _COUNTRY_CODES.get(_iso_country.alpha_2) or getattr(
+        _iso_country, 'common_name', _iso_country.name
+    )
+    _COUNTRY_ALPHA3[_iso_country.alpha_3] = _display_country
+    _COUNTRY_DISPLAY_ISO[_display_country.lower()] = _iso_country.alpha_2
+    _COUNTRY_DISPLAY_BY_ISO[_iso_country.alpha_2] = _display_country
+    _COUNTRY_ALIASES.setdefault(_display_country.lower(), _display_country)
+    for _country_name in {_iso_country.name, getattr(_iso_country, 'common_name', _iso_country.name)}:
+        _COUNTRY_ALIASES.setdefault(_country_name.lower(), _display_country)
 
 _CITY_DEFAULTS = {
     'atlanta': ('Atlanta','GA','US'), 'austin': ('Austin','TX','US'), 'boston': ('Boston','MA','US'),
@@ -595,7 +618,7 @@ _CITY_DEFAULTS = {
     'seoul': ('Seoul','','South Korea'), 'shanghai': ('Shanghai','','China'),
     'taipei': ('Taipei','','Taiwan'), 'tokyo': ('Tokyo','','Japan'),
     'zurich': ('Zurich','','Switzerland'),
-    'tbilisi': ('Tbilisi','','Georgia'),
+    'tbilisi': ('Tbilisi','','Georgia (country)'),
     'bucharest': ('Bucharest','','Romania'), 'budapest': ('Budapest','','Hungary'),
     'milan': ('Milan','','Italy'), 'tel aviv': ('Tel Aviv','','Israel'),
     'redondo beach': ('Redondo Beach','CA','US'), 'mountain view': ('Mountain View','CA','US'),
@@ -640,7 +663,20 @@ def _title_case_city(s):
 
 def _country_code(raw):
     raw = (raw or "").strip()
-    return _COUNTRY_ALIASES.get(raw.lower()) or _COUNTRY_CODES.get(raw.upper())
+    return (_COUNTRY_ALIASES.get(raw.lower()) or _COUNTRY_CODES.get(raw.upper())
+            or _COUNTRY_ALPHA3.get(raw.upper()))
+
+
+@lru_cache(maxsize=8192)
+def city_location_defaults(location):
+    """Use the same known-city context for storage and displayed countries."""
+    city = norm(location).lower().replace('greater ', '').removesuffix(' area').strip()
+    for city_name in sorted(_CITY_DEFAULTS, key=len, reverse=True):
+        suffix = city[len(city_name):].strip(' ,') if city.startswith(city_name) else None
+        if suffix == '' or (suffix and re.fullmatch(
+                r'(?:office|hq|hub|campus|headquarters|center|centre)(?:\s+\d+)?', suffix)):
+            return _CITY_DEFAULTS[city_name]
+    return None
 
 
 def _location_separator_is_multi(raw):
@@ -657,6 +693,7 @@ def normalize_location(loc):
     if not loc:
         return ''
     loc = ' '.join(loc.split())
+    loc = re.sub(r'\s+[–—]\s+', ' - ', loc)
     loc = re.sub(r'(?:(?<=,)|^)\s*UNAVAILABLE\s*(?:,|$)', '', loc, flags=re.I).strip(' ,')
     if not loc:
         return ''
@@ -689,7 +726,7 @@ def normalize_location(loc):
     loc = loc.replace('United States - Remote', 'Remote, US')
     loc = re.sub(r'\s*[•|│]\s*', ', ', loc)
     # A building number such as "1/124" is one address component.
-    loc = re.sub(r'(?<!\d)\s*/\s*|\s*/\s*(?!\d)', ', ', loc)
+    loc = re.sub(r'(?<!\d)\s*/\s*(?!\d)', ', ', loc)
     loc = re.sub(r'\s*,\s*', ', ', loc).strip(' ,-')
     # Repair malformed Workday labels such as "Philadelphia (, PA, US; 90)".
     loc = re.sub(r'\s*\(\s*,', ',', loc)
@@ -779,9 +816,27 @@ def normalize_location(loc):
             return f"{state}, US"
         return f"{_title_case_city(city)}, {state}, US"
 
+    # Workday labels use ISO3-country / local-region / city, e.g.
+    # "IND - TN - CHENNAI". Establish the explicit country before a regional
+    # code such as TN or HR can be mistaken for Tennessee or Croatia.
+    trailing_country = _country_code(loc.rsplit(',', 1)[-1].strip()) if ',' in loc else None
+    coded_address = re.match(r'^([A-Za-z]{3})(?:\s*[-,]\s*|\s+)(.{4,})$', loc)
+    if (coded_address and coded_address.group(1).upper() in _COUNTRY_ALPHA3
+            and (not trailing_country or trailing_country == _COUNTRY_ALPHA3[coded_address.group(1).upper()])):
+        country = _COUNTRY_ALPHA3[coded_address.group(1).upper()]
+        pieces = [p.strip() for p in re.split(r'\s*[-,]\s*', coded_address.group(2)) if p.strip()]
+        places = [p for p in pieces if _country_code(p) != country and p.lower() not in {
+            'remote', 'hybrid', 'onsite', 'on-site',
+        }]
+        if not places:
+            return f'Remote, {country}' if any(p.lower() == 'remote' for p in pieces) else country
+        if len(places) == 2:
+            return normalize_location(', '.join([places[1], places[0], country]))
+        return normalize_location(', '.join([' - '.join(places), country]))
+
     # "Italy-Milan" / "Germany - Berlin"
     m_country_city = re.match(r'^([A-Za-z .]+?)\s*-\s*(.+)$', loc)
-    if m_country_city:
+    if m_country_city and not trailing_country:
         state_code = m_country_city.group(1).upper()
         city_text = m_country_city.group(2).strip()
         city_key = re.sub(r'\s+', ' ', city_text.replace("-", " ").lower()).strip()
@@ -804,7 +859,7 @@ def normalize_location(loc):
 
     # "Massachusetts - Boston" / "California - Pleasanton"
     m_state_city = re.match(r'^([A-Za-z ]+?)\s*-\s*(.+)$', loc)
-    if m_state_city:
+    if m_state_city and not trailing_country:
         state = _US_STATE_NAMES.get(m_state_city.group(1).strip().lower())
         if state:
             return normalize_location(f"{m_state_city.group(2)}, {state}, US")
@@ -831,15 +886,14 @@ def normalize_location(loc):
             return f"{_title_case_city(city)}, {country}"
 
     # "Pune City,India Software & Product Development" -> "Pune City, India"
-    for country_name in sorted(_COUNTRY_ALIASES, key=len, reverse=True):
-        country = _COUNTRY_ALIASES[country_name]
-        m_country_tail = re.match(rf'^(.+?),\s*{re.escape(country_name)}\b\s+(.+)$', lower, re.I)
+    for country_pattern, country in _COUNTRY_METADATA_SUFFIXES:
+        m_country_tail = country_pattern.match(lower)
         if m_country_tail:
             before = loc[:m_country_tail.end(1)].strip(' ,')
             return normalize_location(f"{before}, {country}")
 
     m_code_city = re.match(r'^([A-Z]{2})\s*-\s*(.+)$', loc)
-    if m_code_city:
+    if m_code_city and not trailing_country:
         code = m_code_city.group(1)
         city = m_code_city.group(2).strip()
         # US state codes take priority over country codes (IL=Illinois, not Israel)
@@ -1020,6 +1074,14 @@ def normalize_location(loc):
     if country:
         return country
 
+    # The display has always recognized labels such as "Madrid Office".
+    # Store that same country (and US/Canadian region) so searches do not
+    # mistake a known office for a missing-country job.
+    defaults = city_location_defaults(loc)
+    if defaults:
+        _, region, country = defaults
+        return ', '.join(part for part in (loc, region, country) if part)
+
     return loc
 
 
@@ -1034,6 +1096,10 @@ _COUNTRY_ISO_BY_DISPLAY.update({
     "türkiye": "TR",
     "puerto rico": "PR",
 })
+_COUNTRY_ISO_BY_DISPLAY.update(_COUNTRY_DISPLAY_ISO)
+_COMMA_COUNTRY_NAMES = sorted(
+    (name for name in _COUNTRY_ISO_BY_DISPLAY if ',' in name), key=len, reverse=True
+)
 
 
 def normalize_remote_mode(value, location_text=""):
@@ -1057,8 +1123,15 @@ def _country_iso_from_normalized(location):
         return "US"
     if location == "UK" or location.endswith(", UK"):
         return "GB"
-    tail = location.rsplit(",", 1)[-1].strip().lower()
-    return _COUNTRY_ISO_BY_DISPLAY.get(tail)
+    lower = location.lower()
+    whole = _COUNTRY_ISO_BY_DISPLAY.get(lower)
+    tail = _COUNTRY_ISO_BY_DISPLAY.get(location.rsplit(",", 1)[-1].strip().lower())
+    if whole or tail:
+        return whole or tail
+    for country in _COMMA_COUNTRY_NAMES:
+        if lower.endswith(', ' + country):
+            return _COUNTRY_ISO_BY_DISPLAY[country]
+    return None
 
 
 def _structured_location(raw, normalized, remote_mode):
@@ -1067,12 +1140,20 @@ def _structured_location(raw, normalized, remote_mode):
     if normalized and not normalized.startswith("Remote"):
         parts = [part.strip() for part in normalized.split(",") if part.strip()]
         if country_iso and parts:
-            country = parts[-1]
-            if parts[0] == 'Multiple Locations' or re.fullmatch(r'[\d/ -]+', parts[0]):
+            country = _COUNTRY_DISPLAY_BY_ISO.get(country_iso, parts[-1])
+            if normalized.lower() == country.lower():
+                parts = []
+            elif normalized.lower().endswith(', ' + country.lower()):
+                parts = [part.strip() for part in normalized[:-(len(country) + 2)].split(',') if part.strip()]
+            else:
+                parts = parts[:-1]
+            if not parts:
                 pass
-            elif len(parts) >= 3:
+            elif parts[0] == 'Multiple Locations' or re.fullmatch(r'[\d/ -]+', parts[0]):
+                pass
+            elif len(parts) >= 2:
                 city, region = parts[0], parts[1]
-            elif len(parts) == 2:
+            elif len(parts) == 1:
                 first = parts[0]
                 if (
                     (country_iso == "US" and first in _US_STATES)

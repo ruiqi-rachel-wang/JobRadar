@@ -138,6 +138,37 @@ def fetch_detail_description(url, *, verify=True):
     soup = BeautifulSoup(html, "lxml")
     result = {}
 
+    # PeopleAdmin and similar boards publish the work location in a labelled
+    # table, separately from the description and the institution's address.
+    # Read only explicit job-location fields; ignore footer/contact addresses.
+    labelled_locations = []
+    source_labels = []
+    for row in soup.select('tr'):
+        heading, value = row.find('th'), row.find('td')
+        if not heading or not value:
+            continue
+        label = norm(heading.get_text(' ', strip=True)).lower().rstrip(':')
+        if label not in {'location of position', 'job location', 'job locations', 'work location'}:
+            continue
+        raw = value.get_text('\n', strip=True).strip()
+        if not raw:
+            continue
+        # A city/state line may be followed by a ZIP and street address. Those
+        # are source evidence, but must not become part of the state name.
+        places = []
+        for line in raw.splitlines():
+            match = re.match(r'^([^,;]+?)(?:,\s*|\s+)(' + '|'.join(_US_STATES) + r')\b(?:\s+\d{5}(?:-\d{4})?)?\s*,?$', line)
+            if match:
+                places.append(match.group(1) + ', ' + match.group(2))
+        for place in places or [norm(raw)]:
+            if place not in labelled_locations:
+                labelled_locations.append(place)
+        source_labels.append(raw)
+    if labelled_locations:
+        result.update(locations_raw=labelled_locations,
+                      location_raw='; '.join(source_labels),
+                      location=normalize_location('; '.join(labelled_locations)))
+
     # Most modern ATS detail pages publish an authoritative JobPosting object.
     for node in soup.find_all("script", type="application/ld+json"):
         try:

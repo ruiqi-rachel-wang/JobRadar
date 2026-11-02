@@ -16,6 +16,19 @@ class _Response:
 
 
 class HtmlPathPaginationTests(unittest.TestCase):
+    @patch('app.api.ats.html.fetch_detail_description')
+    @patch('app.api.ats.html.requests.get')
+    def test_explicit_location_details_are_not_limited_by_experience_budget(self, get, detail):
+        get.return_value = _Response('<a href="/postings/42">Network Engineer</a>'
+                                     '<a href="/postings/43">Infrastructure Engineer</a>')
+        detail.return_value = {'locations_raw': ['Hanover, NH'], 'location': 'Hanover, NH, US'}
+        jobs, error = fetch_html({'list_url': 'https://example.com/postings/search',
+            'include': 'example.com/postings/', 'fetch_location_details': True,
+            'fetch_experience_details': False, 'max_experience_details': 1}, {}, 'Employer')
+        self.assertIsNone(error)
+        self.assertEqual(2, detail.call_count)
+        self.assertTrue(all(job['locations_raw'] == ['Hanover, NH'] for job in jobs))
+
     @patch("app.api.ats.html.requests.get")
     def test_card_attributes_preserve_location_without_adjacent_card_text(self, get):
         get.return_value = _Response(

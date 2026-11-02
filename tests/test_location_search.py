@@ -77,6 +77,34 @@ class LocationSearchTests(unittest.TestCase):
         self.assertEqual({"microsoft india", "citi"}, self.matches("India"))
         self.assertEqual({"microsoft europe"}, self.matches("UK"))
 
+    def test_ny_keeps_new_york_offices_and_unknowns_but_excludes_screenshot_foreign_jobs(self):
+        self.add("beta", ["Plattsburgh, NY, US", "Raleigh, NC, US", "South Burlington, VT, US"])
+        self.add("chubb", ["Philadelphia, PA, US", "Jersey City, NJ, US", "New York, NY, US"])
+        self.add("ny office", "New York Office")
+        self.add("aircall", "Madrid Office")
+        self.add("cummins uk", "Milton Keynes, GBR")
+        self.add("cummins cz", "Trutnov, CZE")
+        self.add("cummins india", "Pune, IND")
+        self.add("unknown", None)
+        self.add("unspecified country", "Unlisted City, Unlisted Region")
+        self.assertEqual({"beta", "chubb", "ny office", "unknown", "unspecified country"}, self.matches("NY"))
+
+    def test_iso_country_search_aliases_match_the_canonical_country(self):
+        self.add("uk", "Milton Keynes, GBR")
+        self.add("cz", "Trutnov, CZE")
+        self.add("unknown", None)
+        for query, name in [("GBR", "uk"), ("GB", "uk"), ("United Kingdom", "uk"),
+                            ("CZE", "cz"), ("Czechia", "cz")]:
+            with self.subTest(query=query):
+                self.assertEqual({name, "unknown"}, self.matches(query))
+
+    def test_country_georgia_and_us_state_georgia_are_disambiguated(self):
+        self.add('atlanta', 'Atlanta, GA, US')
+        self.add('tbilisi', 'GEO Tbilisi - Vake Plaza')
+        self.assertEqual({'atlanta'}, self.matches('Georgia'))
+        self.assertEqual({'tbilisi'}, self.matches('GEO'))
+        self.assertEqual({'tbilisi'}, self.matches('GE'))
+
     def test_country_tokens_match_before_secondary_office_separator(self):
         self.add("multiple", ["New York, NY, US", "London, UK"])
         self.add("australia", "Sydney, Australia")

@@ -595,10 +595,10 @@ def fetch_html(scrape, seen, company):
             jobs = [job for job in jobs if any(
                 needle in (job.get("title") or "").lower() for needle in needles
             )]
-    if jobs and scrape.get("fetch_experience_details"):
+    if jobs and (scrape.get("fetch_experience_details") or scrape.get("fetch_location_details")):
         limit_details = int(scrape.get("max_experience_details") or scrape.get("max_desc_details") or 0)
-        targets = [j for j in jobs if not j.get("description")]
-        if limit_details > 0:
+        targets = [j for j in jobs if scrape.get("fetch_location_details") or not j.get("description")]
+        if limit_details > 0 and not scrape.get("fetch_location_details"):
             targets = targets[:limit_details]
         verify = bool(scrape.get("verify_ssl", True))
         with concurrent.futures.ThreadPoolExecutor(max_workers=min(8, max(1, len(targets)))) as executor:

@@ -1,0 +1,15 @@
+# NY location search correction — 2026-11-02
+
+Searching for `engineer`, `NY`, and experience `2` admitted Aircall’s Madrid/Paris jobs and Cummins’ UK/Czech jobs because their stored country fields were empty. The display inferred countries from office names, while search treated those same records as unknown. Dartmouth’s detail pages also published Hanover, NH, but its generic HTML importer missed the labelled work-location table.
+
+The shared normalizer now recognizes all 249 ISO three-letter country codes and country-coded regional addresses, retains the explicit country when regional codes overlap US states, and stores the same geography shown for named city offices such as Madrid Office. Existing state/province abbreviations remain contextual. Georgia’s country label is distinguished from the US state. Country-code queries such as `GBR` and `CZE` match their canonical names; full US state names match state abbreviations.
+
+The HTML detail reader now reads explicitly labelled position-location rows, separates city/state from ZIP/street address, preserves full source text, and ignores footer contact addresses. Dartmouth explicitly fetches location details in fresh and full scans without an experience-detail budget truncating its location coverage.
+
+The final full pass checked **631,239 open jobs** and found **zero remaining country-repair proposals** under these supported parsing rules. Guarded repairs updated **9,971 distinct jobs across 256 companies**. All **9,975 reviewed records** (including four already corrected) were rechecked against the source labels with zero geography differences. Each write verified identity and all non-location fields; private row backups remain on the production server. Posting dates, first-seen dates, job IDs, and saved-job relationships were preserved.
+
+The bulk pass reparses saved employer labels; it is not a fresh fetch of every employer website. Separately, all 111 stored open Dartmouth posting URLs were checked against their current official detail pages, recovering 103 locations. Eight did not yield an unambiguous supported city/country field and were left without an inferred geography. See [Dartmouth source evidence](dartmouth_source_review.json).
+
+All **274 tests** pass, including coverage for all 249 ISO3 codes, the screenshot’s NY cases, local-region/country conflicts, city-office consistency, and labelled work-location tables. Live API and browser checks confirm the reported foreign/NH jobs are excluded from NY, the same jobs appear for their correct locations, NY multi-office jobs remain included, and genuinely unspecified locations remain eligible as requested. Job drawers agree with the listed locations; the browser reported no JavaScript errors. See [verification and per-company repair counts](verification.json).
+
+Runtime files were deployed with SHA-256 guards and backups, the pinned country-data dependency was installed, and the web service was restarted and verified active. Final verification matched all seven deployed files to the reviewed source.

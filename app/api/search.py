@@ -10,6 +10,8 @@ from .utils import (
     _COUNTRY_CODES,
     _US_STATE_NAMES,
     _US_STATES,
+    _country_code,
+    city_location_defaults,
     norm,
     normalize_location,
 )
@@ -41,6 +43,10 @@ def location_where(query, *, postgres=False):
     query = (query or "").strip().lower()
     if not query:
         return [], []
+    if query in _US_STATE_NAMES:
+        query = _US_STATE_NAMES[query].lower()
+    elif len(query) > 2 or query.upper() not in _US_STATES:
+        query = (_country_code(query) or query).lower()
 
     aliases = [query]
     if query in ("us", "united states", "usa", "u.s.", "u.s.a.", "america"):
@@ -579,10 +585,9 @@ def _country_from_location(location):
         if country:
             return country
 
-    city = lower.replace("greater ", "").removesuffix(" area").strip()
-    for city_name, (_, _, country) in _CITY_DEFAULTS.items():
-        if city == city_name or city.startswith(f"{city_name} ") or city.startswith(f"{city_name},"):
-            return country
+    defaults = city_location_defaults(location)
+    if defaults:
+        return defaults[2]
     return ""
 
 def _display_location_from_dash_list(raw_location):

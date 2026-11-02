@@ -57,8 +57,9 @@ def country_proposal(row, checked_at):
 
     new = normalize_locations(raw, remote_mode=row.get('remote_mode'))
     old_known = {loc['country_iso'] for loc in old_locations if loc.get('country_iso')}
-    if row.get('country_iso'):
-        old_known.add(row['country_iso'])
+    # The summary can be stale after an importer failed to resolve a new
+    # label. Preserve countries established by individual offices; a newly
+    # parsed explicit label must be able to correct an inconsistent summary.
     new_known = {loc['country_iso'] for loc in new['locations'] if loc.get('country_iso')}
     new_unknown = sum(not loc.get('country_iso') for loc in new['locations'])
     newly_qualified_offices = sum(bool(loc.get('country_iso')) for loc in new['locations']) > sum(
