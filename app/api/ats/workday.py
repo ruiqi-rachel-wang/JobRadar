@@ -170,7 +170,8 @@ def _workday_detail_location(info):
         part_country = country if index < primary_count else ""
         country_prefix = bool(part_country and re.match(
             rf'^(?:US|USA|United States(?: of America)?|{re.escape(part_country)})\s*[-,]', raw, re.I))
-        if part_country and not country_prefix and "," not in raw and raw.lower() not in ("remote", "multiple locations") and not has_country_suffix:
+        if (part_country and not country_prefix and raw.lower() not in ("remote", "multiple locations")
+                and not has_country_suffix and not _workday_location_has_country(raw)):
             raw = f"{raw}, {part_country}"
         elif part_country and raw.lower() == "remote":
             raw = f"Remote, {part_country}"
@@ -239,7 +240,7 @@ def _fetch_workday_detail(base_url, tenant, board, path):
             key: info.get(key)
             for key in (
                 "timeType", "remoteType", "jobFamilyGroup",
-                "additionalLocations", "country",
+                "additionalLocations", "country", "location", "jobRequisitionLocation",
             )
             if isinstance(info, dict) and info.get(key)
         } or None,

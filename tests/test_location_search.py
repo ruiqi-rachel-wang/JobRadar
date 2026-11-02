@@ -67,6 +67,16 @@ class LocationSearchTests(unittest.TestCase):
         self.add("uk", "Remote, UK")
         self.assertEqual({"unrestricted", "us"}, self.matches("USA"))
 
+    def test_explicit_country_first_and_missing_iso_mappings_do_not_match_us(self):
+        self.add("microsoft india", ["India, Karnataka, Bangalore", "India, Telangana, Hyderabad"])
+        self.add("microsoft europe", ["Germany, Multiple Locations, Multiple Locations", "United Kingdom, Multiple Locations, Multiple Locations"])
+        self.add("kraken", ["Romania", "Brazil", "Peru", "Cyprus", "Paraguay"])
+        self.add("citi", "Pune Maharashtra India")
+        self.add("us", "United States, Washington, Redmond")
+        self.assertEqual({"us"}, self.matches("US"))
+        self.assertEqual({"microsoft india", "citi"}, self.matches("India"))
+        self.assertEqual({"microsoft europe"}, self.matches("UK"))
+
     def test_country_tokens_match_before_secondary_office_separator(self):
         self.add("multiple", ["New York, NY, US", "London, UK"])
         self.add("australia", "Sydney, Australia")
