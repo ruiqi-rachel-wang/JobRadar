@@ -8,6 +8,7 @@ from .database import IS_POSTGRES, add_column_if_missing, connect_db, initialize
 from .search import keyword_groups, keyword_matches
 from .taxonomy import normalize_categories, normalize_tags
 from .utils import extract_experience, extract_keywords, location_matches, make_id, normalize_location, _parse_posted
+from .geography import init_place_index, sync_job_places
 
 
 def _text_or_json(value):
@@ -59,6 +60,7 @@ def init_db():
             add_column_if_missing(conn, "scan_runs", "scheduled_for TEXT DEFAULT ''")
             add_column_if_missing(conn, "scan_runs", "send_alerts_after INTEGER DEFAULT 0")
             _backfill_has_description_once(conn)
+            init_place_index(conn)
             return
         conn.execute("""
             CREATE TABLE IF NOT EXISTS jobs (
@@ -238,6 +240,7 @@ def init_db():
             add_column_if_missing(conn, "user_saved_searches", column_sql)
         conn.execute("CREATE INDEX IF NOT EXISTS idx_apply_user ON user_apply_list(user_id)")
         conn.execute("CREATE INDEX IF NOT EXISTS idx_searches_user ON user_saved_searches(user_id)")
+        init_place_index(conn)
 
 def upsert_jobs(job_list):
     if not job_list:
@@ -330,6 +333,16 @@ def upsert_jobs(job_list):
                 for j in job_list
             ],
         )
+        # Index the persisted geography in the same transaction as each scan.
+        # Reading the rows honors the existing missing-field merge behavior.
+        ids = list(dict.fromkeys(j['id'] for j in job_list))
+        for start in range(0, len(ids), 300):
+            batch = ids[start:start + 300]
+            cursor = conn.execute(
+                'SELECT id,location,location_raw,locations,country_iso,remote_mode FROM jobs WHERE id IN ('
+                + placeholders(len(batch)) + ')', batch)
+            names = [description[0] for description in cursor.description]
+            sync_job_places(conn, [dict(row) if isinstance(row, dict) else dict(zip(names, row)) for row in cursor.fetchall()])
         # Do not maintain the legacy jobs_fts table. No application query
         # reads it (search is served from jobs/the seen cache), while
         # incrementally updating its unindexed job_id column made large scans

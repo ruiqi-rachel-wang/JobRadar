@@ -266,6 +266,7 @@ def fetch_icims(scrape, seen, company):
                             "location_raw": raw_location or None,
                             "locations_raw": [raw_location] if raw_location else [],
                             "source": "icims",
+                            "remote_mode": "remote" if re.search(r'\bremote\b',str(data.get('location_name') or ''),re.I) else None,
                             "posted_at": data.get("posted_date"),
                             "posted_raw": data.get("posted_date"),
                             "employment_type": data.get("employment_type"),

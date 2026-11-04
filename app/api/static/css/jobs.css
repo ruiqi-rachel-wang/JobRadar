@@ -493,3 +493,23 @@
 }
 .page-btn:disabled { color: var(--ink-5); cursor: not-allowed; background: var(--surface-2); }
 .page-info { font-size: 12px; color: var(--ink-3); }
+
+/* Geographic place picker */
+.location-filter { position: relative; }
+#f-location { width: 220px; }
+.location-status { font-size: 10px; color: var(--ink-3); max-width: 245px; }
+.location-options {
+  position: absolute; top: 59px; left: 0; width: 350px; max-width: calc(100vw - 38px);
+  max-height: 340px; overflow-y: auto; z-index: 60; background: var(--surface);
+  border: 1px solid var(--line); border-radius: var(--r); box-shadow: 0 8px 24px rgba(0,0,0,.14);
+}
+.location-options[hidden] { display: none; }
+.location-option {
+  display: flex; flex-direction: column; gap: 3px; width: 100%; text-align: left;
+  padding: 10px 12px; border: 0; border-bottom: 1px solid var(--line-2);
+  background: var(--surface); color: var(--ink); cursor: pointer; font: inherit; font-size: 13px;
+}
+.location-option small { font-size: 10px; color: var(--ink-3); }
+.location-option:hover, .location-option[aria-selected="true"] { background: var(--mint-050); }
+.location-credit { display: block; padding: 7px 12px; color: var(--ink-3); font-size: 10px; }
+#f-location[aria-invalid="true"] { border-color: #ae6538; }

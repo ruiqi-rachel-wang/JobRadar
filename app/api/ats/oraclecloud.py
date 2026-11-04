@@ -1,5 +1,6 @@
 from .base import *
 from ..utils import extract_experience
+import pycountry
 
 # ── Oracle Cloud ──────────────────────────────────────────────────────────────
 
@@ -100,6 +101,29 @@ def _oraclecloud_cached_detail_is_sufficient(existing, refresh_experience=False)
         and not refresh_experience
         and source in {"text"}
     )
+
+def _oraclecloud_locations(job):
+    """Keep the primary country and every advertised secondary office."""
+    if not isinstance(job, dict):
+        return []
+    primary = norm(job.get("PrimaryLocation") or "")
+    country = norm(job.get("PrimaryLocationCountry") or "")
+    known = pycountry.countries.get(alpha_2=country.upper()) if len(country) == 2 else None
+    country = known.name if known else country
+    locations = [", ".join(p for p in (primary, country) if p)] if primary or country else []
+    for secondary in job.get("secondaryLocations") or []:
+        if isinstance(secondary, dict) and secondary.get("Name"):
+            locations.append(norm(secondary["Name"]))
+    for office in (job.get("workLocation") or []) + (job.get("otherWorkLocations") or []):
+        if not isinstance(office, dict) or not office.get("TownOrCity"):
+            continue
+        locations.append(norm(", ".join(str(value) for value in (
+            office.get("TownOrCity"), office.get("Region2") or office.get("Region1"),
+            (pycountry.countries.get(alpha_2=str(office.get("Country") or "").upper()).name
+             if pycountry.countries.get(alpha_2=str(office.get("Country") or "").upper()) else office.get("Country")),
+        ) if value)))
+    return list(dict.fromkeys(locations))
+
 
 def fetch_oraclecloud(scrape, seen, company):
     """Oracle Cloud Candidate Experience public API."""
@@ -228,21 +252,8 @@ def fetch_oraclecloud(scrape, seen, company):
                 jurl = f"{job_url_prefix}/{jid}" if jid else ""
             else:
                 jurl = f"https://{host}/hcmUI/CandidateExperience/en/sites/{site}/job/{jid}" if jid else ""
-            loc_raw = norm(j.get("PrimaryLocation") or j.get("PrimaryLocationCountry") or "")
-            locations = [loc_raw] if loc_raw else []
-            for secondary in j.get("secondaryLocations") or []:
-                if isinstance(secondary, dict) and secondary.get("Name"):
-                    locations.append(norm(secondary["Name"]))
-            # Some Oracle tenants expose physical offices without secondary
-            # geography labels. Keep the address city, not the building name.
-            for office in j.get("otherWorkLocations") or []:
-                if not isinstance(office, dict) or not office.get("TownOrCity"):
-                    continue
-                locations.append(norm(", ".join(str(value) for value in (
-                    office.get("TownOrCity"), office.get("Region2") or office.get("Region1"),
-                    office.get("Country"),
-                ) if value)))
-            locations = list(dict.fromkeys(locations))
+            locations = _oraclecloud_locations(j)
+            loc_raw = locations[0] if locations else ""
             posted_raw = j.get("PostedDate")
             if title and jurl:
                 desc = descriptions.get(jid) or _oraclecloud_list_text(j)

@@ -1,0 +1,15 @@
+{
+  "reviewed_job_records": 11976,
+  "jobs_with_explicit_location_fields": 5343,
+  "final_statuses": {
+    "no_explicit_location_fields": 5091,
+    "location_fields_found": 5343,
+    "blocked": 86,
+    "request_failed": 78,
+    "not_found": 182,
+    "source_disabled": 216,
+    "host_blocked": 980
+  },
+  "repair_proposals": 5135,
+  "companies_with_proposals": 203
+}

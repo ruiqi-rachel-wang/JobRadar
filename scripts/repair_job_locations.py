@@ -61,7 +61,7 @@ def planned_change(row, proposal):
 
 
 def repair(proposals, apply=False, backup_dir=None):
-    from app.api.database import connect_db
+    from app.api.database import IS_POSTGRES, connect_db
     by_id = {}
     for proposal in proposals:
         if proposal['id'] in by_id:
@@ -93,6 +93,10 @@ def repair(proposals, apply=False, backup_dir=None):
             for row, _ in changes:
                 zipped.write((json.dumps(row, default=str) + '\n').encode())
         with connect_db(rows=True) as conn:
+            from app.api.geography import init_place_index, sync_job_places
+            init_place_index(conn)
+            if not IS_POSTGRES and not getattr(getattr(conn, "raw", conn), "in_transaction", False):
+                conn.execute("BEGIN IMMEDIATE")
             for row, change in changes:
                 # Compare the current row again inside the write transaction;
                 # a scheduled scan may have updated it during the dry run.
@@ -107,6 +111,7 @@ def repair(proposals, apply=False, backup_dir=None):
                 mutable = {'location', 'location_raw', 'locations', 'country_iso', 'remote_mode', 'raw_data'}
                 if any(after[key] != value for key, value in row.items() if key not in mutable):
                     raise RuntimeError('repair changed a non-location field: ' + row['id'])
+                sync_job_places(conn, [after])
                 counts['applied'] += 1
     return {'apply': apply, 'proposals': len(by_id), 'counts': dict(counts),
             'companies': dict(companies), 'backup': str(backup) if backup else None}

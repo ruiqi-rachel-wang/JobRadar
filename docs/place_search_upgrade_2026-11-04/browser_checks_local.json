@@ -1,0 +1,21 @@
+{
+  "checks": {
+    "state_search_has_real_ny": true,
+    "state_includes_buffalo": true,
+    "screenshots_wrong_results_excluded": true,
+    "city_excludes_buffalo": true,
+    "picker_distinguishes_city_and_state": true,
+    "keyboard_selection_works": true,
+    "invalid_location_is_not_a_broad_search": true,
+    "no_javascript_errors": true
+  },
+  "errors": [],
+  "state_count": 25,
+  "city_count": 20,
+  "choices": [
+    "New York, United StatesState / region",
+    "New York City, NY, United StatesCity",
+    "New York Mills, NY, United StatesCity",
+    "New York Mills, MN, United StatesCity"
+  ]
+}

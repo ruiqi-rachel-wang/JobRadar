@@ -1,0 +1,17 @@
+{
+  "checks": {
+    "ny_has_results": true,
+    "ny_all_have_real_state": true,
+    "matching_office_first": true,
+    "nyc_all_have_real_city": true,
+    "city_state_distinguished": true,
+    "keyboard_selection": true,
+    "invalid_place_rejected": true,
+    "no_javascript_errors": true
+  },
+  "errors": [],
+  "counts": {
+    "ny": 100,
+    "nyc": 100
+  }
+}

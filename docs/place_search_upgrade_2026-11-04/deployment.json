@@ -1,0 +1,140 @@
+{
+  "checked_at_utc": "2026-11-04T22:00:17.119158+00:00",
+  "service": "active",
+  "runtime_files_verified": 22,
+  "previous_release": "160321a2a0974638430927e9d476afd5889f2e8c",
+  "python_tests_passed": 295,
+  "source_review": {
+    "reviewed_job_records": 11976,
+    "jobs_with_explicit_location_fields": 5343,
+    "final_statuses": {
+      "no_explicit_location_fields": 5091,
+      "location_fields_found": 5343,
+      "blocked": 86,
+      "request_failed": 78,
+      "not_found": 182,
+      "source_disabled": 216,
+      "host_blocked": 980
+    },
+    "repair_proposals": 5135,
+    "companies_with_proposals": 203
+  },
+  "location_repairs_applied": 4929,
+  "initial_repair_status_counts": {
+    "not_found": 0,
+    "update": 4240,
+    "identity_or_status_changed": 332,
+    "already_correct": 22,
+    "location_changed_since_snapshot": 541,
+    "applied": 4240
+  },
+  "followup_repairs": {
+    "exact_reviewed_office_paragraphs": 336,
+    "additional_delimited_office_lists": 159,
+    "changed_official_documents_rechecked": 194
+  },
+  "non_job_rows_closed": 313,
+  "corrected_feed_imports": {
+    "jobs_upserted": 256,
+    "by_company": {
+      "GitHub": 95,
+      "Kinsta": 2,
+      "Klaviyo": 154,
+      "Lob": 5
+    },
+    "existing_identities_preserved": 0,
+    "alerts_sent": false
+  },
+  "initial_index_snapshot": {
+    "jobs_checked": 631715,
+    "jobs_with_city": 533852,
+    "jobs_with_region": 558852,
+    "jobs_with_country": 604383,
+    "jobs_with_remote_scope": 32057,
+    "geographic_memberships": 1988488,
+    "jobs_without_geographic_place": 27332
+  },
+  "changed_jobs_memberships_refreshed": 33996,
+  "all_NY_memberships_audit": {
+    "counts": {
+      "open_NY_jobs_checked": 34116
+    },
+    "failures": [],
+    "all_pass": true,
+    "elapsed_seconds": 16.13
+  },
+  "public_API_checks": {
+    "checks": {
+      "resolve_NY": true,
+      "resolve_NYC": true,
+      "resolve_Buffalo, NY": true,
+      "resolve_CA": true,
+      "resolve_Canada": true,
+      "resolve_US": true,
+      "resolve_Cambridge, MA": true,
+      "resolve_Remote": true,
+      "nonempty_region:US.NY": true,
+      "membership_region:US.NY": true,
+      "matched_office_first_region:US.NY": true,
+      "nonempty_city:5128581": true,
+      "membership_city:5128581": true,
+      "matched_office_first_city:5128581": true,
+      "NYC_excludes_Buffalo": true,
+      "nonempty_country:CA": true,
+      "membership_country:CA": true,
+      "matched_office_first_country:CA": true,
+      "nonempty_region:US.CA": true,
+      "membership_region:US.CA": true,
+      "matched_office_first_region:US.CA": true,
+      "reported_NY_engineer_query_has_results": true,
+      "reported_NY_query_requires_real_NY": true,
+      "reported_query_no_unknown_offices_first": true,
+      "no_duplicate_jobs_in_query": true,
+      "unknown_place_is_empty": true
+    },
+    "details": {
+      "region:US.NY": {
+        "checked": 100,
+        "has_more": true
+      },
+      "city:5128581": {
+        "checked": 100,
+        "has_more": true
+      },
+      "country:CA": {
+        "checked": 100,
+        "has_more": true
+      },
+      "region:US.CA": {
+        "checked": 100,
+        "has_more": true
+      },
+      "reported_query": {
+        "returned": 3119,
+        "has_more": false
+      }
+    },
+    "all_pass": true,
+    "checked_at": "2026-11-04T21:57:51.444772+00:00"
+  },
+  "browser_checks": {
+    "checks": {
+      "ny_has_results": true,
+      "ny_all_have_real_state": true,
+      "matching_office_first": true,
+      "nyc_all_have_real_city": true,
+      "city_state_distinguished": true,
+      "keyboard_selection": true,
+      "invalid_place_rejected": true,
+      "no_javascript_errors": true
+    },
+    "errors": [],
+    "counts": {
+      "ny": 100,
+      "nyc": 100
+    }
+  },
+  "existing_job_identity_and_dates_preserved_by_location_repairs": true,
+  "private_full_row_backups_retained_on_production": true,
+  "catalog_sha256": "538912399967598809ceecbc92798d036f151491bff9994f30e94869d04b682a"
+}

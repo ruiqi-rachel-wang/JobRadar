@@ -439,7 +439,11 @@ def fetch_html(scrape, seen, company):
             }
             t_lower = title.lower().strip()
             if t_lower in _NAV:
-                continue
+                if scrape.get('title_from_slug_on_generic') and is_job_detail_url(abs_url):
+                    title = norm(re.sub(r'[-_]+',' ',urlparse(abs_url).path.rstrip('/').rsplit('/',1)[-1])).title()
+                    t_lower = title.lower()
+                else:
+                    continue
             # Also skip very generic single-word / logo / icon titles
             import re as _re2
             if _re2.match(r'^(?:engineering|about|contact|careers?|benefits?|diversity|'

@@ -21,6 +21,7 @@ except ModuleNotFoundError:
     stripe = None
 
 from .database import IS_POSTGRES, connect_auth_db, connect_db, init_auth_db, placeholders
+from .geography import catalog, location_filter_value, location_view
 try:
     from scanner_service import run_scan
     from scan_store import (
@@ -414,7 +415,7 @@ def _saved_search_url(search_row):
 
 def _saved_search_alert_jobs(search_row, cutoff, window_end):
     kw = (search_row["kw"] or "").strip().lower()
-    location = (search_row["loc"] or "").strip().lower()
+    location = (search_row["loc"] or "").strip()
     since = (search_row["since"] or "").strip()
     category, tag = migrate_saved_filter(search_row["category"], search_row["tag"])
     exp_years_raw = (search_row["exp_yrs"] or "").strip()
@@ -473,7 +474,7 @@ def _saved_search_alert_jobs(search_row, cutoff, window_end):
         params.extend(hidden_company_names)
 
     sql = (
-        "SELECT id, title, url, company, location, first_seen, posted, exp_label "
+        "SELECT id, title, url, company, location, location_raw, locations, country_iso, remote_mode, first_seen, posted, exp_label "
         f"FROM jobs WHERE {' AND '.join(clauses)} "
         f"ORDER BY {JOB_DATE_ORDER_SQL}"
     )
@@ -483,7 +484,7 @@ def _saved_search_alert_jobs(search_row, cutoff, window_end):
         {
             "title": display_title(row["title"] or "", row["url"] or ""),
             "company": row["company"] or "",
-            "location": display_location(row["location"] or "", row["title"] or "", row["url"] or ""),
+            "location": location_view(dict(row))['location'],
             "url": row["url"] or "",
             "posted": row["posted"][:10] if row["posted"] else None,
             "first_seen": (row["first_seen"] or "")[:10],
@@ -1003,7 +1004,7 @@ def _job_query(where_sql="", params=(), limit=60):
     where = f"WHERE is_open = TRUE {where_sql}"
     sql = (
         "SELECT id, title, url, company, location, posted, first_seen, exp_label, "
-        "skills, keywords, description FROM jobs "
+        "skills, keywords, description, location_raw, locations, country_iso, remote_mode FROM jobs "
         f"{where} "
         f"ORDER BY {JOB_DATE_ORDER_SQL} "
         "LIMIT ?"
@@ -1022,7 +1023,7 @@ def _job_query(where_sql="", params=(), limit=60):
             "title": display_title(row["title"] or "", row["url"] or ""),
             "url": row["url"] or "",
             "company": row["company"] or "",
-            "location": display_location(row["location"] or "", row["title"] or "", row["url"] or ""),
+            "location": location_view(dict(row))["location"],
             "posted": row["posted"][:10] if row["posted"] else None,
             "first_seen": (row["first_seen"] or "")[:10],
             "exp_label": row["exp_label"],
@@ -2092,6 +2093,14 @@ def update_feedback(fid):
         conn.execute("UPDATE feedback SET status=? WHERE id=?", (status, fid))
     return jsonify({"ok": True})
 
+@app.route('/api/locations')
+def api_locations():
+    query = (request.args.get('q') or '').strip()[:160]
+    return jsonify({'locations':catalog().suggestions(query),
+                    'resolved':location_filter_value(query),
+                    'attribution':{'name':'GeoNames','url':'https://www.geonames.org/'}})
+
+
 @app.route("/api/jobs/<job_id>")
 def api_job_detail(job_id):
     company_configs = _admin_companies() if _is_admin() else _public_companies()
@@ -2121,6 +2130,7 @@ def api_job_detail(job_id):
         else (row["categories"] or [])
     )
     locations = json.loads(row["locations"] or "[]") if isinstance(row["locations"], str) else (row["locations"] or [])
+    geography = location_view(dict(row))
     return jsonify({
         "id":              row["id"],
         "title":           row["title"] or "",
@@ -2128,10 +2138,10 @@ def api_job_detail(job_id):
         "ats_id":          row["ats_id"],
         "requisition_id":  row["requisition_id"],
         "apply_url":       row["apply_url"],
-        "location":        display_location(row["location"] or "", row["title"] or "", row["url"] or ""),
+        "location":        geography['location'],
         "location_raw":    row["location_raw"],
-        "locations":       locations,
-        "country_iso":     row["country_iso"],
+        "locations":       geography['locations'],
+        "country_iso":     geography['country_iso'],
         "remote_mode":     row["remote_mode"],
         "source":          row["source"] or "",
         "posted":          row["posted"][:10] if row["posted"] else None,
@@ -2161,7 +2171,8 @@ def api_jobs():
         return str(value or "").strip()
 
     keyword  = search_value("keyword").lower()
-    location = search_value("location").lower()
+    location = search_value("location")
+    selected_location = location_filter_value(location)
     since    = search_value("since")
     exp_years_raw = search_value("experience") or search_value("years")
     exp_years = None
@@ -2303,7 +2314,8 @@ def api_jobs():
             fs     = (r["first_seen"] or "")[:10]
             posted = r["posted"][:10] if r["posted"] else None
             title  = display_title(r["title"], r["url"])
-            loc    = display_location(r["location"] or "", r["title"], r["url"])
+            geography = location_view(dict(r), selected_location['id'] if selected_location else None)
+            loc = geography['location']
             jobs.append({
                 "id":         r["id"],
                 "title":      title,
@@ -2312,8 +2324,8 @@ def api_jobs():
                 "ats_id":     r["ats_id"],
                 "location":   loc,
                 "location_raw": r["location_raw"],
-                "locations":  json.loads(r["locations"] or "[]") if isinstance(r["locations"], str) else (r["locations"] or []),
-                "country_iso": r["country_iso"],
+                "locations":  geography['locations'],
+                "country_iso": geography['country_iso'],
                 "remote_mode": r["remote_mode"],
                 "source":     r["source"] or "",
                 "categories": cats,

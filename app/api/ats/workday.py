@@ -4,6 +4,8 @@ from ..utils import (
     _COUNTRY_ALIASES,
     _COUNTRY_CODES,
     _US_STATES,
+    _country_code,
+    normalize_locations,
 )
 
 # ── Workday ───────────────────────────────────────────────────────────────────
@@ -146,6 +148,7 @@ def _workday_detail_location(info):
         country = country_obj.get("descriptor") or ""
     elif isinstance(country_obj, str):
         country = country_obj
+    country = _country_code(country) or country
 
     parts = _workday_location_parts(info.get("location"))
     # Workday often exposes both a public city ("Irving, TX") and an
@@ -164,14 +167,17 @@ def _workday_detail_location(info):
     seen_locs = set()
     for index, part in enumerate(parts):
         raw = norm(str(part))
-        has_country_suffix = re.search(r'\b(?:US|USA|United States(?: of America)?|[A-Z]{2})(?:\s+\d{2,6})?$', raw, re.I)
         # The requisition country belongs to its primary location. An
         # additional office can be in another country (e.g. Getafe/Hamburg).
         part_country = country if index < primary_count else ""
         country_prefix = bool(part_country and re.match(
             rf'^(?:US|USA|United States(?: of America)?|{re.escape(part_country)})\s*[-,]', raw, re.I))
+        matching_country = (_workday_location_has_country(raw)
+            and normalize_locations(raw)['country_iso'] == normalize_locations(part_country)['country_iso']) if part_country else False
+        tail = raw.rsplit(',',1)[-1].strip() if ',' in raw else ''
+        explicit_tail = bool(_country_code(tail) and tail not in _US_STATES)
         if (part_country and not country_prefix and raw.lower() not in ("remote", "multiple locations")
-                and not has_country_suffix and not _workday_location_has_country(raw)):
+                and not explicit_tail and not matching_country):
             raw = f"{raw}, {part_country}"
         elif part_country and raw.lower() == "remote":
             raw = f"Remote, {part_country}"
@@ -313,7 +319,7 @@ def fetch_workday(scrape, seen, company):
     fetch_new_exp_only = bool(scrape.get("fetch_new_experience_only", False))
     refresh_experience = bool(scrape.get("refresh_experience", False))
     refresh_location = bool(scrape.get("refresh_location", False))
-    fetch_location_details = bool(scrape.get("fetch_location_details", refresh_location))
+    fetch_location_details = bool(scrape.get("fetch_location_details", True))
     detail_limit    = int(
         scrape.get("max_experience_details")
         or scrape.get("max_posted_details")
@@ -611,8 +617,6 @@ def fetch_workday(scrape, seen, company):
                     (
                         (loc in ("", "Multiple Locations")
                          and existing_location not in ("", "Multiple Locations"))
-                        or (not _workday_location_has_country(loc)
-                            and _workday_location_has_country(existing_location))
                     )
                 ):
                     loc = existing_location
@@ -715,7 +719,8 @@ def fetch_workday(scrape, seen, company):
                         seen.get(make_id(company, job["url"], job["title"], "workday", job.get("ats_id")))
                         or seen.get(make_id(company, job["url"], job["title"]))
                     ) if isinstance(seen, dict) else None
-                    if isinstance(previous, dict) and previous.get("location") not in (None, "", "Multiple Locations"):
+                    if (isinstance(previous, dict) and job.get('location') in ('', 'Multiple Locations')
+                            and previous.get("location") not in (None, "", "Multiple Locations")):
                         cached = [
                             value.get("display") or value.get("raw")
                             for value in previous.get("locations") or []

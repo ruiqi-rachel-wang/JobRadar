@@ -109,6 +109,15 @@ def _jobposting_locations(posting):
             continue
         if raw and norm(raw) not in locations:
             locations.append(norm(raw))
+    if not locations and str(posting.get('jobLocationType') or '').upper() == 'TELECOMMUTE':
+        eligibility = posting.get('applicantLocationRequirements') or []
+        if isinstance(eligibility, dict):
+            eligibility = [eligibility]
+        for area in eligibility:
+            if isinstance(area, dict) and area.get('name'):
+                label = 'Remote, ' + str(area['name'])
+                if label not in locations:
+                    locations.append(label)
     return locations
 
 
@@ -135,6 +144,12 @@ def fetch_detail_description(url, *, verify=True):
     except Exception:
         return {}
 
+    return parse_detail_description(html)
+
+
+def parse_detail_description(html):
+    """Parse an official job document without issuing a second HTTP request."""
+
     soup = BeautifulSoup(html, "lxml")
     result = {}
 
@@ -148,7 +163,7 @@ def fetch_detail_description(url, *, verify=True):
         if not heading or not value:
             continue
         label = norm(heading.get_text(' ', strip=True)).lower().rstrip(':')
-        if label not in {'location of position', 'job location', 'job locations', 'work location'}:
+        if label not in {'location of position', 'position location', 'job location', 'job locations', 'work location'}:
             continue
         raw = value.get_text('\n', strip=True).strip()
         if not raw:
@@ -168,6 +183,45 @@ def fetch_detail_description(url, *, verify=True):
         result.update(locations_raw=labelled_locations,
                       location_raw='; '.join(source_labels),
                       location=normalize_location('; '.join(labelled_locations)))
+
+    if not labelled_locations:
+        for heading in soup.select('dt'):
+            if norm(heading.get_text(' ', strip=True)).lower().rstrip(':') not in {
+                    'location', 'locations', 'job location', 'job locations', 'work location'}:
+                continue
+            value = heading.find_next_sibling('dd')
+            if value and norm(value.get_text(' ', strip=True)):
+                labelled_locations.append(norm(value.get_text(' ', strip=True)))
+        if labelled_locations:
+            result.update(locations_raw=labelled_locations,
+                          location_raw='; '.join(labelled_locations),
+                          location=normalize_location('; '.join(labelled_locations)))
+
+    # Avature publishes every advertised office in explicit location lists.
+    # These containers are separate from employer contact/footer addresses.
+    avature_locations = []
+    for node in soup.select('.article__header--locations p.paragraph, .tf_locations .list__item'):
+        place = norm(node.get_text(' ', strip=True))
+        if place and place not in avature_locations:
+            avature_locations.append(place)
+    if avature_locations:
+        result.update(locations_raw=avature_locations,
+                      location_raw='; '.join(avature_locations),
+                      location=normalize_location('; '.join(avature_locations)))
+
+    # Ashby's official job document embeds a JSON jobPosting object, including
+    # locationName even when its JSON-LD PostalAddress has no fields.
+    app_data = re.search(r'window\.__appData\s*=\s*', html)
+    if app_data:
+        try:
+            data, _ = json.JSONDecoder().raw_decode(html[app_data.end():].lstrip())
+            posting = data.get('posting') or data.get('jobPosting') or {}
+            label = posting.get('locationName')
+            if label and not result.get('locations_raw'):
+                result.update(locations_raw=[label],location_raw=label,
+                              location=normalize_location(label))
+        except (ValueError, TypeError, AttributeError):
+            pass
 
     # Most modern ATS detail pages publish an authoritative JobPosting object.
     for node in soup.find_all("script", type="application/ld+json"):

@@ -32,7 +32,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,500&family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/tokens.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
-<link rel="stylesheet" href="{{ url_for('static', filename='css/jobs.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/jobs.css', v='places-20261104') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/drawer.css') }}">
 </head>
 <body>
@@ -107,9 +107,11 @@
         <input class="filter-input" id="f-keyword" type="text" placeholder="e.g. software engineer">
       </div>
       <div class="filter-divider"></div>
-      <div class="filter-group">
+      <div class="filter-group location-filter">
         <div class="filter-label">Location</div>
-        <input class="filter-input" id="f-location" type="text" placeholder="e.g. New York" title="Includes jobs with missing location or country information">
+        <input class="filter-input" id="f-location" type="text" placeholder="City, state, or country" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="location-options" aria-describedby="location-status">
+        <div class="location-options" id="location-options" role="listbox" aria-label="Locations" hidden></div>
+        <span class="location-status" id="location-status" role="status">City, state, or country</span>
       </div>
       <div class="filter-divider"></div>
       <div class="filter-group">
@@ -184,6 +186,7 @@
 </div>
 
 <script src="{{ url_for('static', filename='js/job-search-request.js') }}"></script>
+<script src="{{ url_for('static', filename='js/location-picker.js', v='places-20261104') }}"></script>
 <script>
 const COMPANIES    = {{ companies|tojson }};
 const IS_PUBLIC    = {{ is_public|tojson }};
@@ -363,7 +366,8 @@ async function applyFilters(companyNames, page) {
   const names = companyNames || selectedCompanyNames();
   if (!names.length) { showEmptyMessage('Select at least one company, then click Show Jobs.'); return; }
   const kw  = (document.getElementById('f-keyword').value  || '').trim();
-  const loc = (document.getElementById('f-location').value || '').trim();
+  const loc = await jobdropLocationPicker.value();
+  if (loc === null) return;
   const exp = (document.getElementById('f-exp').value      || '').trim();
   const dt  = (document.getElementById('f-begin').value    || '').trim();
   const params = new URLSearchParams();
@@ -1081,7 +1085,8 @@ async function toggleSearchAlert(id) {
 
 async function saveSearch() {
   const kw  = document.getElementById('f-keyword').value.trim();
-  const loc = document.getElementById('f-location').value.trim();
+  const loc = await jobdropLocationPicker.value();
+  if (loc === null) return;
   const exp = document.getElementById('f-exp').value.trim();
   const dt  = document.getElementById('f-begin').value.trim();
   if (!kw && !loc && !exp && !dt && activeSidebarCat === 'All') {

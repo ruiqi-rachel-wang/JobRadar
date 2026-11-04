@@ -708,6 +708,9 @@ def normalize_location(loc):
     remote_state = re.fullmatch(r'Remote,\s*([A-Z]{2}),\s*US', loc, re.I)
     if remote_state and remote_state.group(1).upper() in _US_STATES:
         return f"Remote, {remote_state.group(1).upper()}, US"
+    bare_remote_state = re.fullmatch(r'Remote\s*[-,]?\s*([A-Z]{2})',loc)
+    if bare_remote_state and bare_remote_state.group(1) in _US_STATES:
+        return f'Remote, {bare_remote_state.group(1)}, US'
     # A slash often separates complete alternatives, not address components.
     # Preserve each alternative before the normal city/state/country parser can
     # mistake a trailing state code such as CA for the country Canada.
@@ -918,6 +921,8 @@ def normalize_location(loc):
     m_remote = re.match(r'remote\s*(?:-|,|\(|/|\s)?\s*([^)]+)?\)?$', loc, re.I)
     if m_remote:
         qualifier = (m_remote.group(1) or '').strip()
+        if qualifier in _US_STATES:
+            return f'Remote, {qualifier}, US'
         country = _country_code(qualifier)
         if country:
             return f"Remote, {country}"

@@ -10548,9 +10548,9 @@
       "Software & SaaS"
     ],
     "scrape": {
-      "mode": "html",
-      "list_url": "https://github.com/about/careers",
-      "include": "github.com"
+      "mode": "icims",
+      "icims_slug": "https://www.github.careers",
+      "limit": 100
     },
     "interview": {
       "no_whiteboard": true,
@@ -13732,7 +13732,10 @@
     "scrape": {
       "mode": "html",
       "list_url": "https://kinsta.com/careers/",
-      "include": "kinsta.com"
+      "include": "kinsta.com/careers/",
+      "require_job_path": true,
+      "title_from_slug_on_generic": true,
+      "fetch_location_details": true
     },
     "interview": {
       "no_whiteboard": true,
@@ -13804,9 +13807,9 @@
       "Software & SaaS"
     ],
     "scrape": {
-      "mode": "html",
-      "list_url": "https://www.klaviyo.com/careers",
-      "include": "www.klaviyo.com"
+      "mode": "greenhouse",
+      "board_token": "klaviyo",
+      "use_hosted_job_urls": true
     },
     "interview": {
       "source": "Cloud 100"
@@ -14493,9 +14496,9 @@
       "Software & SaaS"
     ],
     "scrape": {
-      "mode": "html",
-      "list_url": "https://lob.com/careers",
-      "include": "lob.com"
+      "mode": "greenhouse",
+      "board_token": "lob",
+      "use_hosted_job_urls": true
     },
     "interview": {
       "no_whiteboard": true,
@@ -21483,7 +21486,8 @@
     "scrape": {
       "mode": "html",
       "list_url": "https://sakari.io/careers",
-      "include": "sakari.io"
+      "include": "sakari.io/careers/",
+      "require_job_path": true
     },
     "interview": {
       "no_whiteboard": true,
@@ -24510,12 +24514,10 @@
       "Software & SaaS"
     ],
     "scrape": {
-      "mode": "playwright",
+      "mode": "oraclecloud",
       "list_url": "https://careers.ti.com/en/sites/CX/jobs",
-      "include": "careers.ti.com/en/sites/CX/job/",
-      "require_id": true,
-      "scroll_rounds": 15,
-      "validate_prefix": false
+      "api_host": "edbz.fa.us2.oraclecloud.com",
+      "job_url_prefix": "https://careers.ti.com/en/sites/CX/job"
     }
   },
   {

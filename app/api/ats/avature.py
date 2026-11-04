@@ -166,7 +166,7 @@ def fetch_avature(scrape, seen, company):
     # Fetch detail pages for jobs missing posted date, description, or a
     # concrete location. Cached descriptions must not freeze a bad location.
     max_desc = int(scrape.get("max_desc_details", 500))
-    detail_workers = int(scrape.get("detail_workers", 6))
+    detail_workers = int(scrape.get("detail_workers", 3))
     targets = []
     for job in jobs.values():
         jid = make_id(
@@ -180,9 +180,16 @@ def fetch_avature(scrape, seen, company):
         if not job.get("posted") and isinstance(existing, dict):
             job["posted"] = _parse_posted(existing.get("posted") or "")
         existing_has_desc = isinstance(existing, dict) and existing.get("has_description")
+        cached = (existing.get('locations') or []) if isinstance(existing,dict) else []
+        cached_values = [p.get('raw') or p.get('display') for p in cached if isinstance(p,dict) and (p.get('raw') or p.get('display'))]
+        cached_location = existing.get('location') if isinstance(existing,dict) else ''
+        primary_matches = (cached and normalize_location(cached[0].get('display') or cached[0].get('raw') or '') == job.get('location'))
+        if (not scrape.get('refresh_location') and cached_values and not _bad_avature_location(cached_location)
+                and (_bad_avature_location(job.get('location')) or (len(cached)>1 and primary_matches))):
+            job.update(location=cached_location,location_raw='; '.join(cached_values),locations_raw=cached_values)
         needs_posted = fetch_details and not job.get("posted") and len(targets) < detail_limit
         needs_desc = not existing_has_desc and len(targets) < max_desc
-        needs_location = _bad_avature_location(job.get("location")) and len(targets) < max_desc
+        needs_location = _bad_avature_location(job.get("location")) or bool(scrape.get('refresh_location'))
         if needs_posted or needs_desc or needs_location:
             targets.append(job)
 
@@ -240,6 +247,8 @@ def fetch_avature(scrape, seen, company):
 
     def _fetch_avature_detail(job):
         try:
+            if scan_deadline_exceeded(scrape):
+                return job, "", None, "", "", "", None, []
             rr = requests.get(job["url"], headers=HEADERS, timeout=20)
             rr.raise_for_status()
             soup = BeautifulSoup(rr.text, "lxml")
@@ -257,6 +266,11 @@ def fetch_avature(scrape, seen, company):
                 or extract_posted_from_html(rr.text)
             )
             loc, loc_raw = _location_from_detail_text(full_text)
+            structured = parse_detail_description(rr.text)
+            raw_places = structured.get('locations_raw') or []
+            if raw_places:
+                loc_raw = '; '.join(raw_places)
+                loc = normalize_location(loc_raw)
             work_mode = None
             work_mode_match = re.search(
                 r"\bWork mode\s+(.+?)(?=\s+Employment type\b|$)",
@@ -273,13 +287,13 @@ def fetch_avature(scrape, seen, company):
                     if len(text) > 100:
                         desc = str(el)
                         break
-            return job, posted, posted_raw, desc, loc, loc_raw, work_mode
+            return job, posted, posted_raw, desc, loc, loc_raw, work_mode, raw_places
         except Exception:
-            return job, "", None, "", "", "", None
+            return job, "", None, "", "", "", None, []
 
     if targets:
         with concurrent.futures.ThreadPoolExecutor(max_workers=max(1, detail_workers)) as ex:
-            for job, posted, posted_raw, desc, loc, loc_raw, work_mode in ex.map(
+            for job, posted, posted_raw, desc, loc, loc_raw, work_mode, raw_places in ex.map(
                 _fetch_avature_detail, targets
             ):
                 if posted and not job.get("posted"):
@@ -287,10 +301,10 @@ def fetch_avature(scrape, seen, company):
                 if posted_raw:
                     job["posted_raw"] = posted_raw
                     job["posted_at"] = posted_raw
-                if loc and _bad_avature_location(job.get("location")):
+                if loc and (raw_places or _bad_avature_location(job.get("location"))):
                     job["location"] = loc
                     job["location_raw"] = loc_raw or job.get("location_raw")
-                    job["locations_raw"] = [loc_raw] if loc_raw else []
+                    job["locations_raw"] = raw_places or ([loc_raw] if loc_raw else [])
                 if work_mode:
                     job["remote_mode"] = work_mode
                 if desc:
