@@ -1,0 +1,100 @@
+{
+  "checked_on": "2026-11-05",
+  "timezone": "America/New_York",
+  "baseline_commit": "50dc34831fa77d222bd006aabb87470dc7e74e58",
+  "review": {
+    "reviewed_companies": 665,
+    "added_companies": 383,
+    "import_jobs": 2841,
+    "catalog_companies": 2605,
+    "decisions": {
+      "added": 383,
+      "no_recent_activity": 116,
+      "not_added": 163,
+      "duplicate": 1,
+      "held_link_verification": 1,
+      "no_open_roles": 1
+    },
+    "source_modes": {
+      "ashby": 109,
+      "ycombinator": 248,
+      "html": 2,
+      "greenhouse": 18,
+      "lever": 4,
+      "careerpuck": 1,
+      "bamboohr": 1
+    }
+  },
+  "tests": {
+    "command": "python -m unittest discover -s tests -q",
+    "passed": 308,
+    "result": "OK"
+  },
+  "individual_job_links": {
+    "accepted": 2841,
+    "verified": 2841
+  },
+  "database_round_trip": {
+    "companies": 383,
+    "jobs_roundtripped": 2841,
+    "ny_memberships": 521,
+    "ny_index_matches_source_geography": true,
+    "relative_activity_not_fabricated_as_post_dates": true,
+    "first_seen_preserved": true
+  },
+  "deployment": {
+    "runtime_files": 7,
+    "baseline_hashes_checked": true,
+    "candidate_hashes_verified": true,
+    "rollback_files_saved": true,
+    "service_active": true,
+    "files": {
+      "app/api/apis.py": "9cce6950cb50df0fb21fff9cbb56ac7810f849e22446bc22afb3939350765a90",
+      "app/api/ats/bamboohr.py": "1f66926aba4cc0f3b3cdae9bd6fd5247a1db9cea3d30daa76c56b569770bf805",
+      "app/api/ats/html.py": "e0338f0f23e65cd43eb4747675d710403800e396353eb66d592881801ce39ae9",
+      "app/api/ats/ycombinator.py": "39b5e2e8d95ff4d6322e6898452e106ce14e0144e872ad6c11b9d1882a7b2515",
+      "app/companies.json": "269cf42634d6a22d0d015b5d2eb94259480e017697f4f8bcb739b0cbe6c05ad3",
+      "scripts/audit_import_quality.py": "a454c5d15fdfc51f37d489e98023d120811cf462dbed91bab6b01a7d09f00ff8",
+      "app/templates/user.html": "9d0540df609b65b88e7c6ed774da331eb9ab1966cbf12d4d0fa9321cdbe86202"
+    }
+  },
+  "live_import": {
+    "companies": 383,
+    "jobs": 2841,
+    "local_import_time": "2026-11-05 21:09:21",
+    "all_company_counts_verified": true,
+    "ny_index_consistent": true,
+    "ny_jobs": 521
+  },
+  "live_api": {
+    "all_added_companies_public": true,
+    "all_added_company_api_counts_verified": true,
+    "companies": 383,
+    "jobs": 2841,
+    "public_catalog_companies": 2569,
+    "oncorps_ny_only_matches_explicit_ny_role": true,
+    "asi_ny_excludes_other_locations": true,
+    "native_yc_runtime_feed_verified": true
+  },
+  "live_browser": {
+    "all_added_companies_visible": true,
+    "visible_catalog_companies": 2569,
+    "company_selection_search_http": 200,
+    "javascript_errors": [],
+    "response_keys": [
+      "has_more",
+      "jobs",
+      "limit",
+      "page",
+      "total",
+      "total_exact",
+      "total_lower_bound"
+    ],
+    "company_results_are_scoped": true,
+    "company_result_count": 45
+  },
+  "search_order_regressions": {
+    "late_response_cannot_overwrite_latest_selection": true,
+    "late_location_resolution_cannot_issue_obsolete_search": true
+  }
+}

@@ -45,6 +45,7 @@ def _source_identity(source):
     keys = {
         "ashby": "ashby_slug",
         "bamboohr": "bamboohr_slug",
+        "careerpuck": "board_slug",
         "greenhouse": "board_token",
         "jobvite": "jobvite_company",
         "lever": "lever_slug",
@@ -52,6 +53,7 @@ def _source_identity(source):
         "rippling": "rippling_slug",
         "smartrecruiters": "smartrecruiters_company",
         "workable": "workable_slug",
+        "ycombinator": "yc_slug",
     }
     key = keys.get(mode)
     if key and source.get(key):
@@ -65,6 +67,8 @@ def _source_identity(source):
 def _source_family(source):
     """Return the ATS tenant, ignoring a Workday career-site path."""
     identity = _source_identity(source)
+    if source.get("mode") == "ycombinator" and source.get("yc_slug"):
+        return identity
     for candidate in ("list_url", "icims_slug", "url", "feed_url", "sitemap_url"):
         value = source.get(candidate)
         if not value:

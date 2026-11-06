@@ -347,7 +347,15 @@ def fetch_html(scrape, seen, company):
         found.update(extract_embedded_gem_jobs(soup, page_url))
         stop  = False
 
-        for a in soup.find_all("a", href=True):
+        card_selector = scrape.get("job_card_selector")
+        cards = soup.select(card_selector) if card_selector else [soup]
+        job_links = [
+            (a, card)
+            for card in cards
+            for a in ([card] if card.name == "a" and card.get("href")
+                      else card.select(scrape.get("job_link_selector") or "a[href]"))
+        ]
+        for a, card in job_links:
             href = (a.get("href") or "").strip()
             if not href or href.startswith(("#","javascript:","mailto:")):
                 continue
@@ -420,6 +428,13 @@ def fetch_html(scrape, seen, company):
                 title = re.sub(title_suffix_regex, "", title, flags=re.I).strip()
             if scrape.get("title_attribute") and a.get(scrape["title_attribute"]):
                 title = norm(a.get(scrape["title_attribute"]))
+            if scrape.get("job_title_selector"):
+                title_node = card.select_one(scrape["job_title_selector"])
+                if not title_node:
+                    continue
+                title = norm(title_node.get_text(" ", strip=True))
+                if not title:
+                    continue
             _NAV = {
                 "view all jobs","view all","all jobs","apply","apply now","view job","search jobs",
                 "saved jobs","learn more","see all openings","see all jobs","open positions",
@@ -506,6 +521,15 @@ def fetch_html(scrape, seen, company):
             attribute_location = norm(a.get(scrape.get("location_attribute") or "") or "")
             if attribute_location:
                 loc_candidate = normalize_location(attribute_location)
+            if scrape.get("job_location_selector"):
+                location_node = card.select_one(scrape["job_location_selector"])
+                scoped_location = norm(location_node.get_text(" ", strip=True)) if location_node else ""
+                if scrape.get("job_location_prefix_regex"):
+                    scoped_location = re.sub(scrape["job_location_prefix_regex"], "", scoped_location).strip()
+                # The selected card field is authoritative; never borrow a
+                # neighboring opening's city when this field is missing.
+                attribute_location = scoped_location
+                loc_candidate = normalize_location(scoped_location)
             ats_id = None
             if ats_id_regex:
                 ats_match = re.search(ats_id_regex, abs_url, re.I)

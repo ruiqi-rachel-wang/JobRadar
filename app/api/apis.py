@@ -60,6 +60,7 @@ from .ats.oraclecloud     import fetch_oraclecloud, fetch_oracle
 from .ats.avature         import fetch_avature
 from .ats.successfactors  import fetch_successfactors
 from .ats.workable        import fetch_workable
+from .ats.ycombinator     import fetch_ycombinator
 from .ats.jazzhr          import fetch_jazzhr
 from .ats.jobvite         import fetch_jobvite
 from .ats.rippling        import fetch_rippling
@@ -117,6 +118,7 @@ FETCHERS = {
     "avature":         fetch_avature,
     "successfactors":  fetch_successfactors,
     "workable":        fetch_workable,
+    "ycombinator":     fetch_ycombinator,
     "jazzhr":          fetch_jazzhr,
     "jobvite":         fetch_jobvite,
     "rippling":        fetch_rippling,
@@ -188,6 +190,10 @@ def _remove_non_jobs(jobs):
             (job.get("title") or "").strip().lower() not in _NON_JOB_TITLES
             and not _OPENINGS_SUMMARY_RE.search((job.get("title") or "").strip())
             and not _NON_JOB_POSTING_RE.search((job.get("title") or "").strip())
+            and not _re.fullmatch(
+                r"general (?:submissions|applications|interest)|talent (?:community|network|pool)",
+                str(job.get("department") or "").strip(), _re.I,
+            )
             and (job.get("title") or "").strip().lower() != "[email protected]"
             and "/cdn-cgi/l/email-protection" not in (job.get("url") or "").lower()
         )

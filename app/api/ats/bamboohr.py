@@ -30,11 +30,15 @@ def fetch_bamboohr(scrape, seen, company):
         title = norm(j.get("jobOpeningName") or j.get("title") or "")
         jid   = j.get("id") or ""
         loc_data = j.get("location") or {}
+        ats_location = j.get("atsLocation") or {}
+        if not isinstance(ats_location, dict):
+            ats_location = {}
         if isinstance(loc_data, dict):
             raw_location = norm(", ".join(
                 x for x in [
-                    loc_data.get("city"), loc_data.get("state"),
-                    loc_data.get("country"),
+                    loc_data.get("city") or ats_location.get("city"),
+                    loc_data.get("state") or ats_location.get("state") or ats_location.get("province"),
+                    loc_data.get("country") or ats_location.get("country"),
                 ] if x
             ))
         else:
@@ -57,7 +61,7 @@ def fetch_bamboohr(scrape, seen, company):
                     key: j.get(key)
                     for key in (
                         "location", "departmentLabel",
-                        "department", "employmentStatusLabel",
+                        "atsLocation", "department", "employmentStatusLabel",
                     )
                     if j.get(key) is not None
                 },

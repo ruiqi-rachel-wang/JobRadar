@@ -7,6 +7,10 @@ that date is missing, and use discovery time to order jobs within the same date.
 
 Live app: [jobdrop.site](https://jobdrop.site/)
 
+The November 5, 2026 expansion adds 383 verified employers and 2,841 job
+listings, bringing the catalog to 2,605 companies. See the
+[company review and validation](docs/company_expansion_2026-11-05/README.md).
+
 ## OpenAI Build Week 2026
 
 JobDrop is an existing project that was meaningfully extended during the Build
@@ -67,8 +71,8 @@ jobs, and preserves direct links to the original company posting.
 
 1. Select companies, industries, or company tags.
 2. Search by role, location, experience, and date window.
-   Location searches also include jobs with missing location or country information,
-   just as experience searches retain jobs with unstated requirements.
+   Location search resolves cities, states, and countries to real places.
+   Results require matching location evidence; missing locations do not match every place.
 3. Open a result to review its description, experience, skills, and source URL.
 4. Save the search or add a job to the application tracker.
 5. Pro users can enable a daily email after the final scheduled fresh scan.

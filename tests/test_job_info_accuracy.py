@@ -129,6 +129,7 @@ class NonJobPostingTests(unittest.TestCase):
             {"title": "Join Our Talent Network!", "url": "https://example/jobs/2"},
             {"title": "General Talent", "url": "https://example/jobs/3"},
             {"title": "Future Opportunities", "url": "https://example/jobs/4"},
+            {"title": "Join the RNAi revolution!", "department": "General Submissions", "url": "https://example/jobs/5"},
         ]
 
         _remove_non_jobs(jobs)

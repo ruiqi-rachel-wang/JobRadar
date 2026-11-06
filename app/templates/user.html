@@ -209,6 +209,7 @@ let currentTotalExact = true;
 let activeTab    = 'jobs';
 let activeApplyStage = 'all';
 let _savedSearches = [];
+let jobSearchGeneration = 0;
 
 // ── localStorage helpers ──────────────────────────────────────────────────────
 function _lsGet(key, fallback) {
@@ -362,11 +363,13 @@ function showEmptyMessage(msg) {
 }
 
 async function applyFilters(companyNames, page) {
+  const generation = ++jobSearchGeneration;
   page = page || 1;
   const names = companyNames || selectedCompanyNames();
   if (!names.length) { showEmptyMessage('Select at least one company, then click Show Jobs.'); return; }
   const kw  = (document.getElementById('f-keyword').value  || '').trim();
   const loc = await jobdropLocationPicker.value();
+  if (generation !== jobSearchGeneration) return;
   if (loc === null) return;
   const exp = (document.getElementById('f-exp').value      || '').trim();
   const dt  = (document.getElementById('f-begin').value    || '').trim();
@@ -390,11 +393,13 @@ async function applyFilters(companyNames, page) {
       nm.style.display = 'block';
     }
     const resp = await fetchJobSearch(params);
+    if (generation !== jobSearchGeneration) return;
     if (!resp.ok) {
       showEmptyMessage('Could not load jobs. Try again in a moment.');
       return;
     }
     const payload = await resp.json();
+    if (generation !== jobSearchGeneration) return;
     const jobs = Array.isArray(payload) ? payload : (payload.jobs || []);
     if (!Array.isArray(jobs)) return;
     allResults   = jobs;
@@ -405,6 +410,7 @@ async function applyFilters(companyNames, page) {
     currentTotalExact = payload.total_exact !== false;
     renderResults(jobs);
   } catch(e) {
+    if (generation !== jobSearchGeneration) return;
     console.error('Failed to load jobs:', e);
     showEmptyMessage('Could not load jobs. Try again in a moment.');
   }

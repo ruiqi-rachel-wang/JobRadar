@@ -11,6 +11,33 @@
     }
   },
   {
+    "name": "&Truth",
+    "categories": [
+      "Cybersecurity",
+      "Developer Tools"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "andtruth"
+    },
+    "website": "https://andtruth.com/"
+  },
+  {
+    "name": "10x",
+    "categories": [
+      "AI & Machine Learning",
+      "Healthcare & Biotech"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "10x",
+      "yc_company_id": 30250,
+      "list_url": "https://www.ycombinator.com/companies/10x/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.10xdental.com/"
+  },
+  {
     "name": "10x Genomics",
     "categories": [
       "Healthcare & Biotech"
@@ -23,6 +50,20 @@
     }
   },
   {
+    "name": "10x Science",
+    "categories": [
+      "AI & Machine Learning"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "10x-science",
+      "yc_company_id": 31098,
+      "list_url": "https://www.ycombinator.com/companies/10x-science/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://10xscience.com/"
+  },
+  {
     "name": "160over90",
     "categories": [
       "Ad Tech & MarTech",
@@ -32,6 +73,18 @@
       "list_url": "https://wmeimg.wd1.myworkdayjobs.com/160over90US",
       "mode": "workday"
     }
+  },
+  {
+    "name": "1mind",
+    "categories": [
+      "AI & Machine Learning",
+      "Software & SaaS"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "1mind"
+    },
+    "website": "https://www.1mind.com/"
   },
   {
     "name": "1Password",
@@ -99,6 +152,18 @@
     ]
   },
   {
+    "name": "7AI",
+    "categories": [
+      "AI & Machine Learning",
+      "Cybersecurity"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "sevenai"
+    },
+    "website": "https://7ai.com/"
+  },
+  {
     "name": "8th Light",
     "categories": [
       "Consulting",
@@ -117,6 +182,18 @@
     "tags": [
       "Interview Friendly"
     ]
+  },
+  {
+    "name": "9 Mothers",
+    "categories": [
+      "Aerospace & Defense",
+      "Industrials & Manufacturing"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "9-mothers"
+    },
+    "website": "https://9mothers.com/"
   },
   {
     "name": "A+E Networks",
@@ -371,6 +448,35 @@
     }
   },
   {
+    "name": "Adam",
+    "categories": [
+      "AI & Machine Learning"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "adam",
+      "yc_company_id": 30234,
+      "list_url": "https://www.ycombinator.com/companies/adam/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://adam.new/"
+  },
+  {
+    "name": "Adaptional",
+    "categories": [
+      "AI & Machine Learning",
+      "Insurance"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "adaptional",
+      "yc_company_id": 30596,
+      "list_url": "https://www.ycombinator.com/companies/adaptional/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.adaptional.com/"
+  },
+  {
     "name": "Addepar",
     "categories": [
       "FinTech & Payments",
@@ -381,6 +487,35 @@
       "mode": "greenhouse",
       "board_token": "addepar1"
     }
+  },
+  {
+    "name": "Adentris",
+    "categories": [
+      "AI & Machine Learning",
+      "Healthcare & Biotech"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "adentris",
+      "yc_company_id": 30529,
+      "list_url": "https://www.ycombinator.com/companies/adentris/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.adentris.com/"
+  },
+  {
+    "name": "Adialante",
+    "categories": [
+      "Healthcare & Biotech"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "adialante",
+      "yc_company_id": 31434,
+      "list_url": "https://www.ycombinator.com/companies/adialante/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://adialante.com/"
   },
   {
     "name": "Adidas",
@@ -533,6 +668,20 @@
     }
   },
   {
+    "name": "Aemon",
+    "categories": [
+      "AI & Machine Learning"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "aemon",
+      "yc_company_id": 31138,
+      "list_url": "https://www.ycombinator.com/companies/aemon/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://aemon.ai/"
+  },
+  {
     "name": "Aerospace Corporation",
     "categories": [
       "Aerospace & Defense"
@@ -606,6 +755,17 @@
     ]
   },
   {
+    "name": "AfterQuery",
+    "categories": [
+      "AI & Machine Learning"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "AfterQuery"
+    },
+    "website": "https://www.afterquery.com/"
+  },
+  {
     "name": "AGC Biologics",
     "categories": [
       "Healthcare & Biotech"
@@ -634,6 +794,32 @@
     "tags": [
       "Interview Friendly"
     ]
+  },
+  {
+    "name": "AgentMail",
+    "categories": [
+      "AI & Machine Learning",
+      "Developer Tools"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "AgentMail"
+    },
+    "website": "https://www.agentmail.to/"
+  },
+  {
+    "name": "AgentPhone",
+    "categories": [
+      "AI & Machine Learning"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "agentphone",
+      "yc_company_id": 31524,
+      "list_url": "https://www.ycombinator.com/companies/agentphone/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://agentphone.ai/"
   },
   {
     "name": "Agilent",
@@ -741,6 +927,27 @@
       "mode": "workday",
       "list_url": "https://airproducts.wd5.myworkdayjobs.com/ap0001"
     }
+  },
+  {
+    "name": "Air Space Intelligence",
+    "categories": [
+      "Aerospace & Defense",
+      "AI & Machine Learning"
+    ],
+    "scrape": {
+      "mode": "html",
+      "list_url": "https://www.asi.com/careers/open-roles",
+      "include": "/careers/open-roles/",
+      "job_card_selector": "a.rl-row",
+      "job_title_selector": ".rl-row-title",
+      "job_location_selector": ".rl-row-place",
+      "job_location_prefix_regex": "^[^/]+/\\s*",
+      "fetch_experience_details": true,
+      "fetch_location_details": true,
+      "require_job_path": false,
+      "verify_reported_total": true
+    },
+    "website": "https://www.asi.com/"
   },
   {
     "name": "AirAsia",
@@ -890,6 +1097,21 @@
     }
   },
   {
+    "name": "Aktoria Robotics",
+    "categories": [
+      "Industrials & Manufacturing",
+      "Robotics & Automation"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "aktoria-robotics",
+      "yc_company_id": 32621,
+      "list_url": "https://www.ycombinator.com/companies/aktoria-robotics/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://aktoria.com/"
+  },
+  {
     "name": "Akuna Capital",
     "categories": [
       "Finance & Banking",
@@ -957,6 +1179,21 @@
     }
   },
   {
+    "name": "Alder",
+    "categories": [
+      "AI & Machine Learning",
+      "FinTech & Payments"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "alder",
+      "yc_company_id": 30889,
+      "list_url": "https://www.ycombinator.com/companies/alder/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://meetalder.com/"
+  },
+  {
     "name": "Aledade",
     "categories": [
       "Healthcare & Biotech"
@@ -1011,6 +1248,20 @@
     }
   },
   {
+    "name": "Alkali",
+    "categories": [
+      "AI & Machine Learning"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "alkali",
+      "yc_company_id": 30498,
+      "list_url": "https://www.ycombinator.com/companies/alkali/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.alkali.engineering/"
+  },
+  {
     "name": "Allbirds",
     "categories": [
       "Consumer Goods & Retail",
@@ -1037,6 +1288,21 @@
       "mode": "workday",
       "list_url": "https://allegion.wd5.myworkdayjobs.com/careers"
     }
+  },
+  {
+    "name": "Allia Health",
+    "categories": [
+      "AI & Machine Learning",
+      "Healthcare & Biotech"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "allia-health",
+      "yc_company_id": 33441,
+      "list_url": "https://www.ycombinator.com/companies/allia-health/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://allia.health/"
   },
   {
     "name": "Alliant Energy",
@@ -1112,6 +1378,22 @@
       "mode": "ashby",
       "ashby_slug": "tryalma"
     }
+  },
+  {
+    "name": "Almond",
+    "categories": [
+      "AI & Machine Learning",
+      "Industrials & Manufacturing",
+      "Robotics & Automation"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "almond-2",
+      "yc_company_id": 30430,
+      "list_url": "https://www.ycombinator.com/companies/almond-2/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.almond.bot/"
   },
   {
     "name": "Alnylam Pharmaceuticals",
@@ -1225,6 +1507,20 @@
     ]
   },
   {
+    "name": "Altur",
+    "categories": [
+      "AI & Machine Learning"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "altur",
+      "yc_company_id": 30738,
+      "list_url": "https://www.ycombinator.com/companies/altur/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.altur.io/en"
+  },
+  {
     "name": "AMAROK Security",
     "categories": [
       "Software & SaaS"
@@ -1261,6 +1557,31 @@
     "tags": [
       "LinkedIn Top Startups 2025"
     ]
+  },
+  {
+    "name": "Amboras",
+    "categories": [
+      "AI & Machine Learning"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "amboras",
+      "yc_company_id": 31497,
+      "list_url": "https://www.ycombinator.com/companies/amboras/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.amboras.com/"
+  },
+  {
+    "name": "Ambral",
+    "categories": [
+      "AI & Machine Learning"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "Ambral"
+    },
+    "website": "https://www.ambral.com/"
   },
   {
     "name": "Amcor",
@@ -1415,6 +1736,25 @@
     }
   },
   {
+    "name": "Anagram Therapeutics",
+    "categories": [
+      "Healthcare & Biotech",
+      "Pharmaceuticals"
+    ],
+    "scrape": {
+      "mode": "html",
+      "list_url": "https://anagramtx.com/careers/opportunities/",
+      "include": "https://anagramtx.com/",
+      "job_card_selector": ".box-job",
+      "job_title_selector": "h2",
+      "job_location_selector": "p",
+      "job_location_prefix_regex": "^Location:\\s*",
+      "title_from_slug_on_generic": true,
+      "fetch_experience_details": true
+    },
+    "website": "https://anagramtx.com/"
+  },
+  {
     "name": "Anaheim Ducks Hockey",
     "categories": [
       "Sports"
@@ -1550,6 +1890,30 @@
     }
   },
   {
+    "name": "AnswerThis",
+    "categories": [
+      "Software & SaaS"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "answerthis"
+    },
+    "website": "https://answerthis.io/"
+  },
+  {
+    "name": "Antares Therapeutics",
+    "categories": [
+      "Healthcare & Biotech",
+      "Pharmaceuticals"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "antaresrx",
+      "use_hosted_job_urls": true
+    },
+    "website": "https://antaresrx.com/"
+  },
+  {
     "name": "Anterior",
     "categories": [
       "AI & Machine Learning",
@@ -1589,6 +1953,33 @@
       "list_url": "https://anticapital.applytojob.com/",
       "include": "anticapital.applytojob.com/apply/"
     }
+  },
+  {
+    "name": "Antigen",
+    "categories": [
+      "AI & Machine Learning",
+      "Cybersecurity"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "antigen",
+      "yc_company_id": 30999,
+      "list_url": "https://www.ycombinator.com/companies/antigen/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://antigen.sh/"
+  },
+  {
+    "name": "Antithesis",
+    "categories": [
+      "Developer Tools",
+      "Software & SaaS"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "antithesis"
+    },
+    "website": "https://antithesis.com/"
   },
   {
     "name": "Antora Energy",
@@ -1836,6 +2227,21 @@
     }
   },
   {
+    "name": "AquaShield",
+    "categories": [
+      "AI & Machine Learning",
+      "Real Estate & Construction"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "aquashield",
+      "yc_company_id": 31487,
+      "list_url": "https://www.ycombinator.com/companies/aquashield/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://aquashieldai.com/"
+  },
+  {
     "name": "Aquatic Capital Management",
     "categories": [
       "Finance & Banking",
@@ -1859,6 +2265,20 @@
       "max_desc_details": 50,
       "allow_browser_fallback": false
     }
+  },
+  {
+    "name": "Aravolta",
+    "categories": [
+      "Cloud & Infrastructure"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "aravolta",
+      "yc_company_id": 30403,
+      "list_url": "https://www.ycombinator.com/companies/aravolta/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.aravolta.com/"
   },
   {
     "name": "ARB Interactive",
@@ -1939,6 +2359,19 @@
     },
     "scan_enabled": false,
     "note": "Careers page is crawlable, but its jobs API is disallowed by robots.txt and no allowed replacement feed was found (verified 2026-08-05)"
+  },
+  {
+    "name": "Archera",
+    "categories": [
+      "Cloud & Infrastructure",
+      "Insurance"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "archera",
+      "use_hosted_job_urls": true
+    },
+    "website": "https://www.archera.ai/"
   },
   {
     "name": "Arctic Wolf",
@@ -2033,6 +2466,22 @@
     }
   },
   {
+    "name": "Armature",
+    "categories": [
+      "Ad Tech & MarTech",
+      "AI & Machine Learning",
+      "Developer Tools"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "armature",
+      "yc_company_id": 31463,
+      "list_url": "https://www.ycombinator.com/companies/armature/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://armature.tech/"
+  },
+  {
     "name": "Armis",
     "categories": [
       "Cybersecurity"
@@ -2125,6 +2574,20 @@
     "note": "Official Lever board is active again; openings verified 2026-08-05"
   },
   {
+    "name": "Artifact",
+    "categories": [
+      "AI & Machine Learning"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "artifact-2",
+      "yc_company_id": 30354,
+      "list_url": "https://www.ycombinator.com/companies/artifact-2/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.artifact.engineer/"
+  },
+  {
     "name": "Artisan",
     "categories": [
       "AI & Machine Learning",
@@ -2158,17 +2621,6 @@
     ]
   },
   {
-    "name": "Authentic Insurance",
-    "categories": [
-      "Insurance"
-    ],
-    "scrape": {
-      "mode": "greenhouse",
-      "board_token": "authenticinsurance",
-      "list_url": "https://job-boards.greenhouse.io/authenticinsurance"
-    }
-  },
-  {
     "name": "Arvor Insurance, Inc",
     "categories": [
       "Insurance"
@@ -2189,6 +2641,36 @@
     }
   },
   {
+    "name": "Asendia AI",
+    "categories": [
+      "AI & Machine Learning",
+      "HR Tech"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "asendia-ai",
+      "yc_company_id": 31528,
+      "list_url": "https://www.ycombinator.com/companies/asendia-ai/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://asendia.ai/"
+  },
+  {
+    "name": "Aseon Labs",
+    "categories": [
+      "Industrials & Manufacturing",
+      "Robotics & Automation"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "aseon-labs",
+      "yc_company_id": 31465,
+      "list_url": "https://www.ycombinator.com/companies/aseon-labs/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://aseon.com/"
+  },
+  {
     "name": "Ashby",
     "categories": [
       "Developer Tools",
@@ -2201,6 +2683,20 @@
     }
   },
   {
+    "name": "Aside",
+    "categories": [
+      "AI & Machine Learning"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "aside",
+      "yc_company_id": 30943,
+      "list_url": "https://www.ycombinator.com/companies/aside/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://aside.com/"
+  },
+  {
     "name": "ASML",
     "categories": [
       "Semiconductors & Hardware",
@@ -2210,6 +2706,21 @@
       "mode": "workday",
       "list_url": "https://asml.wd3.myworkdayjobs.com/asmlext1"
     }
+  },
+  {
+    "name": "Aspect",
+    "categories": [
+      "Cloud & Infrastructure",
+      "Media & Entertainment"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "aspect-inc",
+      "yc_company_id": 30857,
+      "list_url": "https://www.ycombinator.com/companies/aspect-inc/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://aspect.inc/"
   },
   {
     "name": "Aspora",
@@ -2264,6 +2775,18 @@
     }
   },
   {
+    "name": "Assort Health",
+    "categories": [
+      "AI & Machine Learning",
+      "Healthcare & Biotech"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "assorthealth"
+    },
+    "website": "https://www.assorthealth.com/"
+  },
+  {
     "name": "Assurant",
     "categories": [
       "Finance & Banking",
@@ -2295,6 +2818,21 @@
       "mode": "greenhouse",
       "board_token": "asteralabs"
     }
+  },
+  {
+    "name": "Astraea",
+    "categories": [
+      "AI & Machine Learning",
+      "Healthcare & Biotech"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "astraea",
+      "yc_company_id": 31534,
+      "list_url": "https://www.ycombinator.com/companies/astraea/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.tryastraea.com/"
   },
   {
     "name": "Astranis",
@@ -2339,6 +2877,18 @@
     }
   },
   {
+    "name": "Asymptote Labs",
+    "categories": [
+      "AI & Machine Learning",
+      "Developer Tools"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "asymptotelabs"
+    },
+    "website": "https://asymptotelabs.ai/"
+  },
+  {
     "name": "AT&T",
     "categories": [
       "Telecom"
@@ -2357,6 +2907,17 @@
       "mode": "workday",
       "list_url": "https://athenahealth.wd1.myworkdayjobs.com/external"
     }
+  },
+  {
+    "name": "AthenaHQ",
+    "categories": [
+      "AI & Machine Learning"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "athena-hq"
+    },
+    "website": "https://athenahq.ai/"
   },
   {
     "name": "Atlassian",
@@ -2383,6 +2944,20 @@
       "mode": "workday",
       "list_url": "https://atmosenergy.wd108.myworkdayjobs.com/External_Career_Site"
     }
+  },
+  {
+    "name": "Atrisa",
+    "categories": [
+      "AI & Machine Learning"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "atrisa",
+      "yc_company_id": 31373,
+      "list_url": "https://www.ycombinator.com/companies/atrisa/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://atrisa.ai/"
   },
   {
     "name": "Attentive",
@@ -2417,6 +2992,21 @@
       "list_url": "https://www.audiblecareers.com/search-jobs",
       "include": "audiblecareers.com/job/"
     }
+  },
+  {
+    "name": "Audun",
+    "categories": [
+      "AI & Machine Learning",
+      "FinTech & Payments"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "audun",
+      "yc_company_id": 32222,
+      "list_url": "https://www.ycombinator.com/companies/audun/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://audun.co/"
   },
   {
     "name": "Aura Frames",
@@ -2458,6 +3048,17 @@
     "scrape": {
       "mode": "lever",
       "lever_slug": "aurora-dev"
+    }
+  },
+  {
+    "name": "Authentic Insurance",
+    "categories": [
+      "Insurance"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "authenticinsurance",
+      "list_url": "https://job-boards.greenhouse.io/authenticinsurance"
     }
   },
   {
@@ -2513,6 +3114,20 @@
     ]
   },
   {
+    "name": "Autostep",
+    "categories": [
+      "Software & SaaS"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "autostep",
+      "yc_company_id": 30408,
+      "list_url": "https://www.ycombinator.com/companies/autostep/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.autostep.ai/"
+  },
+  {
     "name": "AutoZone",
     "categories": [
       "Consumer Goods & Retail"
@@ -2526,6 +3141,20 @@
       "complete_over_10000": true,
       "fetch_experience_details": false
     }
+  },
+  {
+    "name": "Autumn",
+    "categories": [
+      "Software & SaaS"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "autumn-ai",
+      "yc_company_id": 30715,
+      "list_url": "https://www.ycombinator.com/companies/autumn-ai/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.autumn.ai/"
   },
   {
     "name": "Ava Labs",
@@ -2562,6 +3191,19 @@
     }
   },
   {
+    "name": "Avallon AI",
+    "categories": [
+      "AI & Machine Learning",
+      "FinTech & Payments",
+      "Insurance"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "avallon"
+    },
+    "website": "https://www.avallon.ai/"
+  },
+  {
     "name": "AVANCO GmbH",
     "categories": [
       "Industrials & Manufacturing",
@@ -2571,6 +3213,31 @@
       "mode": "smartrecruiters",
       "smartrecruiters_company": "AVANCOGmbH"
     }
+  },
+  {
+    "name": "Avante",
+    "categories": [
+      "AI & Machine Learning",
+      "HR Tech"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "avante",
+      "use_hosted_job_urls": true
+    },
+    "website": "https://www.avante.ai/"
+  },
+  {
+    "name": "Avent",
+    "categories": [
+      "AI & Machine Learning",
+      "Industrials & Manufacturing"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "avent-industrial-inc"
+    },
+    "website": "https://www.aventindustrial.com/"
   },
   {
     "name": "Aviator",
@@ -2758,6 +3425,21 @@
     }
   },
   {
+    "name": "Balance",
+    "categories": [
+      "AI & Machine Learning",
+      "FinTech & Payments"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "getbalance",
+      "yc_company_id": 31236,
+      "list_url": "https://www.ycombinator.com/companies/getbalance/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://getbalance.ai/"
+  },
+  {
     "name": "Balyasny Asset Management",
     "categories": [
       "Finance & Banking",
@@ -2817,6 +3499,24 @@
     "scrape": {
       "mode": "workday",
       "list_url": "https://barclays.wd3.myworkdayjobs.com/external_career_site_barclays"
+    }
+  },
+  {
+    "name": "Barnes & Noble",
+    "categories": [
+      "Consumer Goods & Retail",
+      "Software & SaaS"
+    ],
+    "scrape": {
+      "mode": "barnes_noble",
+      "list_url": "https://careers.barnesandnoble.com/careers",
+      "api_base": "https://careers.barnesandnoble.com/careers-api/v1/jobs",
+      "detail_base": "https://careers.barnesandnoble.com/job",
+      "sections": [
+        "corporate",
+        "retail",
+        "distribution"
+      ]
     }
   },
   {
@@ -2880,24 +3580,6 @@
     "note": "Official 37signals jobs RSS feed was reachable and empty on 2026-07-21"
   },
   {
-    "name": "Barnes & Noble",
-    "categories": [
-      "Consumer Goods & Retail",
-      "Software & SaaS"
-    ],
-    "scrape": {
-      "mode": "barnes_noble",
-      "list_url": "https://careers.barnesandnoble.com/careers",
-      "api_base": "https://careers.barnesandnoble.com/careers-api/v1/jobs",
-      "detail_base": "https://careers.barnesandnoble.com/job",
-      "sections": [
-        "corporate",
-        "retail",
-        "distribution"
-      ]
-    }
-  },
-  {
     "name": "Baseten",
     "categories": [
       "AI & Machine Learning",
@@ -2930,6 +3612,21 @@
       "mode": "ashby",
       "ashby_slug": "batoncorporation"
     }
+  },
+  {
+    "name": "Bayworks",
+    "categories": [
+      "AI & Machine Learning",
+      "Industrials & Manufacturing"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "bayworks",
+      "yc_company_id": 34596,
+      "list_url": "https://www.ycombinator.com/companies/bayworks/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://bayworks.app/"
   },
   {
     "name": "BD",
@@ -2996,6 +3693,31 @@
       "mode": "bamboohr",
       "bamboohr_slug": "beehiiv"
     }
+  },
+  {
+    "name": "Beeline Medicines",
+    "categories": [
+      "Healthcare & Biotech",
+      "Pharmaceuticals"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "beelinemedicines",
+      "use_hosted_job_urls": true
+    },
+    "website": "https://beelinemedicines.com/"
+  },
+  {
+    "name": "Belisar",
+    "categories": [
+      "Aerospace & Defense",
+      "Software & SaaS"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "belisar"
+    },
+    "website": "https://belisar.com/"
   },
   {
     "name": "Belvedere Trading",
@@ -3070,6 +3792,20 @@
       "list_url": "https://fa-essf-saasfaprod1.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/jobs",
       "site": "CX_1"
     }
+  },
+  {
+    "name": "Besimple AI",
+    "categories": [
+      "AI & Machine Learning"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "besimple-ai",
+      "yc_company_id": 30500,
+      "list_url": "https://www.ycombinator.com/companies/besimple-ai/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://besimple.ai/"
   },
   {
     "name": "Best Buy",
@@ -3171,6 +3907,22 @@
     }
   },
   {
+    "name": "Beyond Reach Labs",
+    "categories": [
+      "Energy",
+      "Industrials & Manufacturing",
+      "Space"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "beyond-reach-labs",
+      "yc_company_id": 31142,
+      "list_url": "https://www.ycombinator.com/companies/beyond-reach-labs/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.beyondreachlabs.com/"
+  },
+  {
     "name": "Beyondsoft Consulting",
     "categories": [
       "Consulting",
@@ -3242,6 +3994,21 @@
       "mode": "workday",
       "list_url": "https://bigcommerce.wd12.myworkdayjobs.com/commerce"
     }
+  },
+  {
+    "name": "Bild AI",
+    "categories": [
+      "AI & Machine Learning",
+      "Real Estate & Construction"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "bild-ai",
+      "yc_company_id": 30177,
+      "list_url": "https://www.ycombinator.com/companies/bild-ai/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://d8.bild.ai/division-8"
   },
   {
     "name": "BILL Holdings",
@@ -3361,6 +4128,21 @@
       "mode": "lever",
       "lever_slug": "biointellisense"
     }
+  },
+  {
+    "name": "BioStack Platforms",
+    "categories": [
+      "AI & Machine Learning",
+      "Healthcare & Biotech"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "biostack-platforms",
+      "yc_company_id": 31477,
+      "list_url": "https://www.ycombinator.com/companies/biostack-platforms/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.getbiostack.com/"
   },
   {
     "name": "Bitpanda",
@@ -3506,6 +4288,18 @@
     }
   },
   {
+    "name": "Bleu Robotics",
+    "categories": [
+      "AI & Machine Learning",
+      "Robotics & Automation"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "bleu-robotics"
+    },
+    "website": "https://bleu-robotics.com/"
+  },
+  {
     "name": "Block",
     "categories": [
       "FinTech & Payments"
@@ -3587,6 +4381,36 @@
     }
   },
   {
+    "name": "Bloomy",
+    "categories": [
+      "AI & Machine Learning",
+      "EdTech"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "bloomy",
+      "yc_company_id": 32551,
+      "list_url": "https://www.ycombinator.com/companies/bloomy/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.bloomylearning.com/"
+  },
+  {
+    "name": "Blue",
+    "categories": [
+      "AI & Machine Learning",
+      "Developer Tools"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "blue",
+      "yc_company_id": 30813,
+      "list_url": "https://www.ycombinator.com/companies/blue/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://heyblue.com/"
+  },
+  {
     "name": "Blue Origin",
     "categories": [
       "Aerospace & Defense",
@@ -3653,6 +4477,18 @@
     }
   },
   {
+    "name": "Bolna AI",
+    "categories": [
+      "AI & Machine Learning",
+      "Cloud & Infrastructure"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "bolna"
+    },
+    "website": "https://www.bolna.ai/"
+  },
+  {
     "name": "Bonusly",
     "categories": [
       "HR Tech",
@@ -3686,6 +4522,20 @@
     }
   },
   {
+    "name": "Booko",
+    "categories": [
+      "Software & SaaS"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "booko",
+      "yc_company_id": 31242,
+      "list_url": "https://www.ycombinator.com/companies/booko/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://booko.com/"
+  },
+  {
     "name": "Boomi",
     "categories": [
       "Cloud & Infrastructure",
@@ -3717,6 +4567,17 @@
     "tags": [
       "Interview Friendly"
     ]
+  },
+  {
+    "name": "BootLoop",
+    "categories": [
+      "Software & SaaS"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "bootloop"
+    },
+    "website": "https://bootloop.ai/"
   },
   {
     "name": "Booz Allen Hamilton",
@@ -3970,6 +4831,36 @@
     }
   },
   {
+    "name": "Brickanta",
+    "categories": [
+      "AI & Machine Learning",
+      "Real Estate & Construction"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "brickanta",
+      "yc_company_id": 30835,
+      "list_url": "https://www.ycombinator.com/companies/brickanta/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.brickanta.com/"
+  },
+  {
+    "name": "Brickwise",
+    "categories": [
+      "AI & Machine Learning",
+      "Real Estate & Construction"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "brickwise",
+      "yc_company_id": 30847,
+      "list_url": "https://www.ycombinator.com/companies/brickwise/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.brickwiseai.com/"
+  },
+  {
     "name": "Bridgewater",
     "categories": [
       "Finance & Banking",
@@ -3979,6 +4870,19 @@
       "mode": "greenhouse",
       "board_token": "bridgewater89"
     }
+  },
+  {
+    "name": "BrightAI",
+    "categories": [
+      "AI & Machine Learning",
+      "Industrials & Manufacturing"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "brightai",
+      "use_hosted_job_urls": true
+    },
+    "website": "https://www.bright.ai/"
   },
   {
     "name": "Brightline",
@@ -4075,6 +4979,35 @@
       "mode": "workday",
       "list_url": "https://brownhealth.wd12.myworkdayjobs.com/External_Careers"
     }
+  },
+  {
+    "name": "Browser Use",
+    "categories": [
+      "AI & Machine Learning"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "browser-use",
+      "yc_company_id": 30341,
+      "list_url": "https://www.ycombinator.com/companies/browser-use/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://browser-use.com/"
+  },
+  {
+    "name": "Brumby",
+    "categories": [
+      "Industrials & Manufacturing",
+      "Robotics & Automation"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "brumby",
+      "yc_company_id": 31285,
+      "list_url": "https://www.ycombinator.com/companies/brumby/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://brumby.com/"
   },
   {
     "name": "Brunswick",
@@ -4568,6 +5501,32 @@
     "note": "Current public employer source rechecked and restored at the owner's request (2026-10-24)."
   },
   {
+    "name": "Cardboard",
+    "categories": [
+      "AI & Machine Learning",
+      "Media & Entertainment"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "cardboard"
+    },
+    "website": "https://www.cardboard.ai/"
+  },
+  {
+    "name": "Cardinal",
+    "categories": [
+      "Software & SaaS"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "trycardinal-ai",
+      "yc_company_id": 31311,
+      "list_url": "https://www.ycombinator.com/companies/trycardinal-ai/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.trycardinal.com/"
+  },
+  {
     "name": "Cardinal Health",
     "categories": [
       "Healthcare & Biotech"
@@ -4711,6 +5670,22 @@
     }
   },
   {
+    "name": "Casco",
+    "categories": [
+      "AI & Machine Learning",
+      "Cloud & Infrastructure",
+      "Cybersecurity"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "casco",
+      "yc_company_id": 30477,
+      "list_url": "https://www.ycombinator.com/companies/casco/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://casco.com/"
+  },
+  {
     "name": "Catalina Island Company",
     "categories": [
       "Travel & Hospitality"
@@ -4719,6 +5694,32 @@
       "mode": "workday",
       "list_url": "https://visitcatalinaisland.wd12.myworkdayjobs.com/ico"
     }
+  },
+  {
+    "name": "CatchBack Cards",
+    "categories": [
+      "Software & SaaS"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "catchback-cards",
+      "yc_company_id": 31040,
+      "list_url": "https://www.ycombinator.com/companies/catchback-cards/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://catchbackcards.com/"
+  },
+  {
+    "name": "Catena Labs",
+    "categories": [
+      "AI & Machine Learning",
+      "FinTech & Payments"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "catena"
+    },
+    "website": "https://catena.com/"
   },
   {
     "name": "Caterpillar Inc.",
@@ -4771,6 +5772,33 @@
       "mode": "ashby",
       "ashby_slug": "cedar"
     }
+  },
+  {
+    "name": "Celea Therapeutics",
+    "categories": [
+      "Healthcare & Biotech",
+      "Pharmaceuticals"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "celeatherapeutics",
+      "use_hosted_job_urls": true
+    },
+    "website": "https://www.celeatx.com/"
+  },
+  {
+    "name": "CellType",
+    "categories": [
+      "Healthcare & Biotech"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "celltype",
+      "yc_company_id": 31113,
+      "list_url": "https://www.ycombinator.com/companies/celltype/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.celltype.com/"
   },
   {
     "name": "Celonis",
@@ -4922,6 +5950,20 @@
     }
   },
   {
+    "name": "Channel3",
+    "categories": [
+      "AI & Machine Learning"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "channel3",
+      "yc_company_id": 30695,
+      "list_url": "https://www.ycombinator.com/companies/channel3/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://trychannel3.com/"
+  },
+  {
     "name": "Chapters Health System",
     "categories": [
       "Healthcare & Biotech"
@@ -4941,6 +5983,20 @@
       "mode": "ashby",
       "ashby_slug": "character"
     }
+  },
+  {
+    "name": "CharacterQuilt",
+    "categories": [
+      "Ad Tech & MarTech"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "characterquilt",
+      "yc_company_id": 31513,
+      "list_url": "https://www.ycombinator.com/companies/characterquilt/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.characterquilt.com/"
   },
   {
     "name": "Chargezoom",
@@ -5026,6 +6082,20 @@
       "mode": "workday",
       "list_url": "https://chas.wd1.myworkdayjobs.com/CHASHealth"
     }
+  },
+  {
+    "name": "Chasi",
+    "categories": [
+      "AI & Machine Learning"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "chasi",
+      "yc_company_id": 31233,
+      "list_url": "https://www.ycombinator.com/companies/chasi/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://chasi.ai/"
   },
   {
     "name": "Checkout.com",
@@ -5281,6 +6351,21 @@
     }
   },
   {
+    "name": "Cifrato",
+    "categories": [
+      "AI & Machine Learning",
+      "FinTech & Payments"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "cifrato",
+      "yc_company_id": 30243,
+      "list_url": "https://www.ycombinator.com/companies/cifrato/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://cifrato.ai/en"
+  },
+  {
     "name": "Cigna",
     "categories": [
       "Healthcare & Biotech"
@@ -5438,6 +6523,19 @@
     ]
   },
   {
+    "name": "City Therapeutics",
+    "categories": [
+      "Healthcare & Biotech",
+      "Pharmaceuticals"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "citytherapeutics",
+      "use_hosted_job_urls": true
+    },
+    "website": "https://www.citytx.com/"
+  },
+  {
     "name": "Cityblock Health",
     "categories": [
       "Healthcare & Biotech"
@@ -5488,6 +6586,18 @@
     ]
   },
   {
+    "name": "Claim Health",
+    "categories": [
+      "AI & Machine Learning",
+      "Healthcare & Biotech"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "claim-health"
+    },
+    "website": "https://www.claimhealth.com/"
+  },
+  {
     "name": "Claire's",
     "categories": [
       "Consumer Goods & Retail"
@@ -5496,6 +6606,21 @@
       "mode": "workday",
       "list_url": "https://claires.wd12.myworkdayjobs.com/claires"
     }
+  },
+  {
+    "name": "Clara",
+    "categories": [
+      "AI & Machine Learning",
+      "Healthcare & Biotech"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "clara-2",
+      "yc_company_id": 31063,
+      "list_url": "https://www.ycombinator.com/companies/clara-2/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://askclara.com/"
   },
   {
     "name": "Clara Lending",
@@ -5657,6 +6782,22 @@
     }
   },
   {
+    "name": "Clicks Health",
+    "categories": [
+      "AI & Machine Learning",
+      "Healthcare & Biotech",
+      "Insurance"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "clicks-health",
+      "yc_company_id": 31002,
+      "list_url": "https://www.ycombinator.com/companies/clicks-health/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://clickshealth.com/"
+  },
+  {
     "name": "ClickUp",
     "categories": [
       "Software & SaaS"
@@ -5711,6 +6852,18 @@
     }
   },
   {
+    "name": "Cloaked",
+    "categories": [
+      "Consumer Tech",
+      "Cybersecurity"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "cloaked"
+    },
+    "website": "https://www.cloaked.com/"
+  },
+  {
     "name": "Close",
     "categories": [
       "Software & SaaS"
@@ -5728,6 +6881,21 @@
     "tags": [
       "Interview Friendly"
     ]
+  },
+  {
+    "name": "Closure",
+    "categories": [
+      "AI & Machine Learning",
+      "Legal Tech"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "closure",
+      "yc_company_id": 30209,
+      "list_url": "https://www.ycombinator.com/companies/closure/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.closure-intel.com:443/"
   },
   {
     "name": "Cloud Imperium Games",
@@ -5843,6 +7011,20 @@
     }
   },
   {
+    "name": "COACH",
+    "categories": [
+      "AI & Machine Learning"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "ai-coach",
+      "yc_company_id": 32220,
+      "list_url": "https://www.ycombinator.com/companies/ai-coach/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.getcoach.com/"
+  },
+  {
     "name": "Coactive AI",
     "categories": [
       "AI & Machine Learning"
@@ -5890,6 +7072,30 @@
       "mode": "ashby",
       "ashby_slug": "CodaMetrix"
     }
+  },
+  {
+    "name": "Code Metal",
+    "categories": [
+      "AI & Machine Learning",
+      "Developer Tools"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "code-metal"
+    },
+    "website": "https://www.codemetal.ai/"
+  },
+  {
+    "name": "Coder",
+    "categories": [
+      "Cloud & Infrastructure",
+      "Developer Tools"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "Coder"
+    },
+    "website": "https://coder.com/"
   },
   {
     "name": "Coffee 'n Clothes",
@@ -6116,6 +7322,21 @@
     }
   },
   {
+    "name": "Comena",
+    "categories": [
+      "AI & Machine Learning",
+      "Industrials & Manufacturing"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "comena",
+      "yc_company_id": 30698,
+      "list_url": "https://www.ycombinator.com/companies/comena/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://comena.ai/"
+  },
+  {
     "name": "Comfort Systems USA",
     "categories": [
       "Industrials & Manufacturing"
@@ -6218,6 +7439,17 @@
     }
   },
   {
+    "name": "Complir",
+    "categories": [
+      "Software & SaaS"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "complir"
+    },
+    "website": "https://www.complir.io/"
+  },
+  {
     "name": "Component Repair Technologies",
     "categories": [
       "Aerospace & Defense",
@@ -6261,6 +7493,21 @@
       "list_url": "https://condenast.wd5.myworkdayjobs.com/CondeCareers"
     },
     "note": "Official Workday board is active but its public jobs endpoint returns HTTP 422 and the site redirects to Workday maintenance (verified 2026-08-05)"
+  },
+  {
+    "name": "Confident AI",
+    "categories": [
+      "AI & Machine Learning",
+      "Developer Tools"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "confident-ai",
+      "yc_company_id": 30283,
+      "list_url": "https://www.ycombinator.com/companies/confident-ai/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.confident-ai.com/"
   },
   {
     "name": "Confluent",
@@ -6363,6 +7610,21 @@
     }
   },
   {
+    "name": "CONUS",
+    "categories": [
+      "AI & Machine Learning",
+      "Healthcare & Biotech"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "conus",
+      "yc_company_id": 31584,
+      "list_url": "https://www.ycombinator.com/companies/conus/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://conus-med.com/"
+  },
+  {
     "name": "Cooley",
     "categories": [
       "Legal Tech"
@@ -6392,6 +7654,20 @@
       "mode": "icims",
       "icims_slug": "https://careers-chsi.icims.com"
     }
+  },
+  {
+    "name": "Copperlane",
+    "categories": [
+      "FinTech & Payments"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "copperlane",
+      "yc_company_id": 31260,
+      "list_url": "https://www.ycombinator.com/companies/copperlane/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.copperlane.ai/"
   },
   {
     "name": "Core & Main",
@@ -6527,6 +7803,20 @@
     }
   },
   {
+    "name": "Corvera",
+    "categories": [
+      "AI & Machine Learning"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "corvera",
+      "yc_company_id": 31051,
+      "list_url": "https://www.ycombinator.com/companies/corvera/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://corvera.ai/"
+  },
+  {
     "name": "Cossack Labs",
     "categories": [
       "Cybersecurity",
@@ -6573,6 +7863,20 @@
     }
   },
   {
+    "name": "Cotool",
+    "categories": [
+      "Cybersecurity"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "cotool",
+      "yc_company_id": 30535,
+      "list_url": "https://www.ycombinator.com/companies/cotool/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.cotool.ai/"
+  },
+  {
     "name": "Coupa Software, Inc.",
     "categories": [
       "FinTech & Payments",
@@ -6593,6 +7897,36 @@
       "mode": "greenhouse",
       "board_token": "coursera"
     }
+  },
+  {
+    "name": "CoVar",
+    "categories": [
+      "Aerospace & Defense",
+      "AI & Machine Learning",
+      "Consulting"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "covar",
+      "use_hosted_job_urls": true
+    },
+    "website": "https://covar.com/"
+  },
+  {
+    "name": "Covera",
+    "categories": [
+      "AI & Machine Learning",
+      "FinTech & Payments",
+      "Insurance"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "covera",
+      "yc_company_id": 36084,
+      "list_url": "https://www.ycombinator.com/companies/covera/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.covera-agents.com/?utm_source=ycombinator&utm_medium=company_profile&utm_campaign=yc_f26"
   },
   {
     "name": "Cox",
@@ -6624,6 +7958,17 @@
       "mode": "workday",
       "list_url": "https://caa.wd1.myworkdayjobs.com/Careers"
     }
+  },
+  {
+    "name": "Credit Genie",
+    "categories": [
+      "FinTech & Payments"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "creditgenie"
+    },
+    "website": "https://www.creditgenie.com/"
   },
   {
     "name": "Crescent Biopharma",
@@ -6785,6 +8130,20 @@
       "list_url": "https://fa-eowa-saasfaprod1.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CSXCareers/jobs",
       "site": "CSXCareers"
     }
+  },
+  {
+    "name": "Cua",
+    "categories": [
+      "Cloud & Infrastructure"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "cua",
+      "yc_company_id": 30420,
+      "list_url": "https://www.ycombinator.com/companies/cua/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://cua.ai/"
   },
   {
     "name": "Culture Amp",
@@ -6993,6 +8352,20 @@
     }
   },
   {
+    "name": "Dalus",
+    "categories": [
+      "AI & Machine Learning"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "dalus",
+      "yc_company_id": 30328,
+      "list_url": "https://www.ycombinator.com/companies/dalus/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://dalus.io/"
+  },
+  {
     "name": "Danaher",
     "categories": [
       "Healthcare & Biotech"
@@ -7056,6 +8429,23 @@
     },
     "scan_enabled": true,
     "note": "Current public employer source rechecked and restored at the owner's request (2026-10-24). The owner explicitly requested this source despite its robots.txt exclusion; this exception applies only to this company."
+  },
+  {
+    "name": "Darwin",
+    "categories": [
+      "AI & Machine Learning",
+      "Cloud & Infrastructure",
+      "Industrials & Manufacturing",
+      "Robotics & Automation"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "darwin",
+      "yc_company_id": 30928,
+      "list_url": "https://www.ycombinator.com/companies/darwin/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://darwinrobotics.ai/"
   },
   {
     "name": "Data Intellect",
@@ -7293,6 +8683,19 @@
     }
   },
   {
+    "name": "Dedalus Labs",
+    "categories": [
+      "AI & Machine Learning",
+      "Cloud & Infrastructure",
+      "Developer Tools"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "dedalus-labs"
+    },
+    "website": "https://www.dedaluslabs.ai/"
+  },
+  {
     "name": "Deel",
     "categories": [
       "FinTech & Payments",
@@ -7306,6 +8709,23 @@
       "embedded_next_jobs": true,
       "verify_reported_total": true
     }
+  },
+  {
+    "name": "DeepAware AI (Robotics Center of Silicon Valley)",
+    "categories": [
+      "AI & Machine Learning",
+      "Industrials & Manufacturing",
+      "Logistics & Supply Chain",
+      "Robotics & Automation"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "deepaware-ai-robotics-center-of-silicon-valley",
+      "yc_company_id": 30662,
+      "list_url": "https://www.ycombinator.com/companies/deepaware-ai-robotics-center-of-silicon-valley/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.roboticscenter.ai/"
   },
   {
     "name": "DeepFin Research",
@@ -7353,6 +8773,21 @@
       "board_token": "deeplocal",
       "mode": "greenhouse"
     }
+  },
+  {
+    "name": "DeepReach Inc.",
+    "categories": [
+      "AI & Machine Learning",
+      "Robotics & Automation"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "deepreach-inc",
+      "yc_company_id": 32206,
+      "list_url": "https://www.ycombinator.com/companies/deepreach-inc/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.deepreach.ai/join"
   },
   {
     "name": "Deer Valley Resort",
@@ -7451,6 +8886,21 @@
       "mode": "icims",
       "icims_slug": "https://careers-dendreon.icims.com"
     }
+  },
+  {
+    "name": "Denta",
+    "categories": [
+      "Healthcare & Biotech",
+      "Insurance"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "denta",
+      "yc_company_id": 32782,
+      "list_url": "https://www.ycombinator.com/companies/denta/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.denta.com/"
   },
   {
     "name": "Denver Health",
@@ -7652,6 +9102,17 @@
     }
   },
   {
+    "name": "DiligenceSquared",
+    "categories": [
+      "AI & Machine Learning"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "DiligenceSquared"
+    },
+    "website": "https://www.diligencesquared.com/"
+  },
+  {
     "name": "Diligent Robotics",
     "categories": [
       "Healthcare & Biotech",
@@ -7691,6 +9152,22 @@
     }
   },
   {
+    "name": "Discovered Materials",
+    "categories": [
+      "AI & Machine Learning",
+      "Industrials & Manufacturing",
+      "Semiconductors & Hardware"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "discovered-materials",
+      "yc_company_id": 31362,
+      "list_url": "https://www.ycombinator.com/companies/discovered-materials/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://discoveredmaterials.com/"
+  },
+  {
     "name": "Disney",
     "categories": [
       "Consumer Tech",
@@ -7702,6 +9179,33 @@
       "fetch_experience_details": true,
       "refresh_experience": true
     }
+  },
+  {
+    "name": "Dispatch",
+    "categories": [
+      "Industrials & Manufacturing",
+      "Space"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "dispatch",
+      "yc_company_id": 31294,
+      "list_url": "https://www.ycombinator.com/companies/dispatch/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://dispatch.space/"
+  },
+  {
+    "name": "Distru",
+    "categories": [
+      "Logistics & Supply Chain",
+      "Software & SaaS"
+    ],
+    "scrape": {
+      "mode": "lever",
+      "lever_slug": "distru"
+    },
+    "website": "https://www.distru.com/"
   },
   {
     "name": "Docker",
@@ -7725,6 +9229,22 @@
       "mode": "greenhouse",
       "board_token": "docugami"
     }
+  },
+  {
+    "name": "Docura Health",
+    "categories": [
+      "AI & Machine Learning",
+      "Healthcare & Biotech",
+      "Legal Tech"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "docura-health",
+      "yc_company_id": 31090,
+      "list_url": "https://www.ycombinator.com/companies/docura-health/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://docurahealth.com/"
   },
   {
     "name": "Dollar General",
@@ -7810,6 +9330,18 @@
     }
   },
   {
+    "name": "Doxel",
+    "categories": [
+      "AI & Machine Learning",
+      "Real Estate & Construction"
+    ],
+    "scrape": {
+      "mode": "lever",
+      "lever_slug": "doxel"
+    },
+    "website": "https://doxel.ai/"
+  },
+  {
     "name": "Doximity",
     "categories": [
       "Healthcare & Biotech",
@@ -7879,6 +9411,18 @@
     "tags": [
       "Interview Friendly"
     ]
+  },
+  {
+    "name": "Dream",
+    "categories": [
+      "AI & Machine Learning",
+      "Real Estate & Construction"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "dreamhq"
+    },
+    "website": "https://www.dreamhq.com/"
   },
   {
     "name": "Drivetrain",
@@ -8177,6 +9721,37 @@
     }
   },
   {
+    "name": "Edexia",
+    "categories": [
+      "AI & Machine Learning",
+      "EdTech"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "edexia",
+      "yc_company_id": 30165,
+      "list_url": "https://www.ycombinator.com/companies/edexia/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://edexia.com/"
+  },
+  {
+    "name": "Edgerun",
+    "categories": [
+      "Aerospace & Defense",
+      "Industrials & Manufacturing",
+      "Robotics & Automation"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "edgerun",
+      "yc_company_id": 31582,
+      "list_url": "https://www.ycombinator.com/companies/edgerun/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.edgerun.com/"
+  },
+  {
     "name": "Edia",
     "categories": [
       "AI & Machine Learning",
@@ -8202,6 +9777,22 @@
     }
   },
   {
+    "name": "Edviro",
+    "categories": [
+      "AI & Machine Learning",
+      "Cloud & Infrastructure",
+      "Energy"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "edviro",
+      "yc_company_id": 33805,
+      "list_url": "https://www.ycombinator.com/companies/edviro/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://edviroenergy.com/"
+  },
+  {
     "name": "Edwards Lifesciences",
     "categories": [
       "Healthcare & Biotech",
@@ -8211,6 +9802,20 @@
       "mode": "workday",
       "list_url": "https://edwards.wd5.myworkdayjobs.com/EdwardsCareers"
     }
+  },
+  {
+    "name": "EffiGov",
+    "categories": [
+      "AI & Machine Learning"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "effigov",
+      "yc_company_id": 30636,
+      "list_url": "https://www.ycombinator.com/companies/effigov/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.effigov.com/"
   },
   {
     "name": "Egis Group",
@@ -8383,6 +9988,18 @@
     ]
   },
   {
+    "name": "Eloquent AI",
+    "categories": [
+      "AI & Machine Learning",
+      "FinTech & Payments"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "eloquentai"
+    },
+    "website": "https://eloquentai.co/"
+  },
+  {
     "name": "Elroy Air",
     "categories": [
       "Aerospace & Defense"
@@ -8391,6 +10008,20 @@
       "mode": "lever",
       "lever_slug": "elroyair"
     }
+  },
+  {
+    "name": "Elyra",
+    "categories": [
+      "AI & Machine Learning"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "elyra",
+      "yc_company_id": 31388,
+      "list_url": "https://www.ycombinator.com/companies/elyra/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.elyrasystems.com/"
   },
   {
     "name": "EMCOR",
@@ -8717,6 +10348,20 @@
     "note": "Uses EquipmentShare's first-party public jobs API; prospect/future-interest records are excluded (verified 2026-07-29)"
   },
   {
+    "name": "Ergo",
+    "categories": [
+      "AI & Machine Learning"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "ergo",
+      "yc_company_id": 30339,
+      "list_url": "https://www.ycombinator.com/companies/ergo/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://joinergo.com/"
+  },
+  {
     "name": "Essentia Health",
     "categories": [
       "Healthcare & Biotech"
@@ -8942,6 +10587,18 @@
     }
   },
   {
+    "name": "Exowatt",
+    "categories": [
+      "Climate Tech",
+      "Energy"
+    ],
+    "scrape": {
+      "mode": "lever",
+      "lever_slug": "exowatt"
+    },
+    "website": "https://www.exowatt.com/"
+  },
+  {
     "name": "Expedia",
     "categories": [
       "Software & SaaS",
@@ -9013,6 +10670,17 @@
       "validate_prefix": false,
       "stop_on_seen": true
     }
+  },
+  {
+    "name": "F2",
+    "categories": [
+      "AI & Machine Learning"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "f2-ai"
+    },
+    "website": "https://f2.ai/"
   },
   {
     "name": "Facile.it",
@@ -9260,6 +10928,19 @@
     }
   },
   {
+    "name": "Fernstone",
+    "categories": [
+      "AI & Machine Learning",
+      "FinTech & Payments",
+      "Insurance"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "fernstone"
+    },
+    "website": "https://fernstone.com/"
+  },
+  {
     "name": "FHLBank Topeka",
     "categories": [
       "Finance & Banking"
@@ -9356,6 +11037,30 @@
     }
   },
   {
+    "name": "Finout",
+    "categories": [
+      "Cloud & Infrastructure",
+      "Software & SaaS"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "finout"
+    },
+    "website": "https://www.finout.io/"
+  },
+  {
+    "name": "Finto",
+    "categories": [
+      "AI & Machine Learning",
+      "FinTech & Payments"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "finto"
+    },
+    "website": "https://www.gofinto.com/"
+  },
+  {
     "name": "Fireblocks",
     "categories": [
       "FinTech & Payments"
@@ -9380,6 +11085,18 @@
     "tags": [
       "LinkedIn Top Startups 2025"
     ]
+  },
+  {
+    "name": "Firstwork",
+    "categories": [
+      "AI & Machine Learning",
+      "HR Tech"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "firstwork"
+    },
+    "website": "https://www.firstwork.com/"
   },
   {
     "name": "Fiserv",
@@ -9461,6 +11178,17 @@
     }
   },
   {
+    "name": "Flai",
+    "categories": [
+      "Industrials & Manufacturing"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "flai"
+    },
+    "website": "https://www.useflai.com/"
+  },
+  {
     "name": "Flatiron Health",
     "categories": [
       "Healthcare & Biotech"
@@ -9490,6 +11218,20 @@
       "mode": "greenhouse",
       "board_token": "flexport"
     }
+  },
+  {
+    "name": "Flick",
+    "categories": [
+      "AI & Machine Learning"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "flick",
+      "yc_company_id": 30884,
+      "list_url": "https://www.ycombinator.com/companies/flick/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://flick.art/"
   },
   {
     "name": "Flock Safety",
@@ -9541,6 +11283,20 @@
     "tags": [
       "Interview Friendly"
     ]
+  },
+  {
+    "name": "flowscope",
+    "categories": [
+      "AI & Machine Learning"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "flowscope",
+      "yc_company_id": 31538,
+      "list_url": "https://www.ycombinator.com/companies/flowscope/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.flowscope.com/"
   },
   {
     "name": "Fluence Energy",
@@ -9691,6 +11447,20 @@
     ]
   },
   {
+    "name": "Fort",
+    "categories": [
+      "Software & SaaS"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "fort",
+      "yc_company_id": 31239,
+      "list_url": "https://www.ycombinator.com/companies/fort/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://fort.cx/"
+  },
+  {
     "name": "Forter",
     "categories": [
       "Cybersecurity",
@@ -9714,6 +11484,18 @@
     }
   },
   {
+    "name": "Forus",
+    "categories": [
+      "AI & Machine Learning",
+      "Healthcare & Biotech"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "forus"
+    },
+    "website": "https://forus.com/"
+  },
+  {
     "name": "Foster Farms",
     "categories": [
       "Food & Beverage"
@@ -9722,6 +11504,20 @@
       "mode": "smartrecruiters",
       "smartrecruiters_company": "FosterFarms"
     }
+  },
+  {
+    "name": "Foundation Industries",
+    "categories": [
+      "Industrials & Manufacturing"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "foundation-industries",
+      "yc_company_id": 30560,
+      "list_url": "https://www.ycombinator.com/companies/foundation-industries/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.foundation-industries.com/"
   },
   {
     "name": "FourKites",
@@ -9755,6 +11551,30 @@
       "mode": "ashby",
       "ashby_slug": "foxglove"
     }
+  },
+  {
+    "name": "Fractile",
+    "categories": [
+      "AI & Machine Learning",
+      "Semiconductors & Hardware"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "fractile"
+    },
+    "website": "https://fractile.com/"
+  },
+  {
+    "name": "Fragment",
+    "categories": [
+      "AI & Machine Learning",
+      "Logistics & Supply Chain"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "fragmentai"
+    },
+    "website": "https://fragment.ai/"
   },
   {
     "name": "Frappe",
@@ -9874,6 +11694,21 @@
       "mode": "smartrecruiters",
       "smartrecruiters_company": "Freshworks"
     }
+  },
+  {
+    "name": "Freya",
+    "categories": [
+      "AI & Machine Learning",
+      "FinTech & Payments"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "freya",
+      "yc_company_id": 30802,
+      "list_url": "https://www.ycombinator.com/companies/freya/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.freyavoice.ai/"
   },
   {
     "name": "Front",
@@ -10006,6 +11841,21 @@
     }
   },
   {
+    "name": "Gale",
+    "categories": [
+      "AI & Machine Learning",
+      "Legal Tech"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "gale",
+      "yc_company_id": 30258,
+      "list_url": "https://www.ycombinator.com/companies/gale/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://galevisa.com/"
+  },
+  {
     "name": "Gallagher",
     "categories": [
       "Insurance"
@@ -10037,6 +11887,18 @@
       "mode": "workday",
       "list_url": "https://gapinc.wd1.myworkdayjobs.com/GAPINC"
     }
+  },
+  {
+    "name": "Garage",
+    "categories": [
+      "E-commerce & Marketplace",
+      "Transportation & Mobility"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "garage"
+    },
+    "website": "https://www.shopgarage.com"
   },
   {
     "name": "Garmin",
@@ -10242,6 +12104,32 @@
       "mode": "greenhouse",
       "board_token": "generalassembly"
     }
+  },
+  {
+    "name": "General Astronautics",
+    "categories": [
+      "Aerospace & Defense",
+      "Industrials & Manufacturing",
+      "Robotics & Automation",
+      "Space"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "generalastronautics"
+    },
+    "website": "https://generalastro.com/"
+  },
+  {
+    "name": "General Compute",
+    "categories": [
+      "Cloud & Infrastructure",
+      "Semiconductors & Hardware"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "generalcompute"
+    },
+    "website": "https://www.generalcompute.com/"
   },
   {
     "name": "General Dynamics",
@@ -10483,6 +12371,21 @@
     }
   },
   {
+    "name": "GhostEye",
+    "categories": [
+      "AI & Machine Learning",
+      "Cybersecurity"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "ghosteye",
+      "yc_company_id": 30696,
+      "list_url": "https://www.ycombinator.com/companies/ghosteye/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://ghosteye.ai/"
+  },
+  {
     "name": "Giant Spoon",
     "categories": [
       "Ad Tech & MarTech",
@@ -10618,6 +12521,20 @@
     }
   },
   {
+    "name": "Glen",
+    "categories": [
+      "AI & Machine Learning"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "glen",
+      "yc_company_id": 32226,
+      "list_url": "https://www.ycombinator.com/companies/glen/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.tryglen.com/"
+  },
+  {
     "name": "Global Payments",
     "categories": [
       "Finance & Banking"
@@ -10727,6 +12644,21 @@
     }
   },
   {
+    "name": "Godela",
+    "categories": [
+      "Aerospace & Defense",
+      "AI & Machine Learning"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "godela",
+      "yc_company_id": 30559,
+      "list_url": "https://www.ycombinator.com/companies/godela/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://godela.ai/"
+  },
+  {
     "name": "GoFundMe",
     "categories": [
       "E-commerce & Marketplace",
@@ -10777,6 +12709,20 @@
       "mode": "workday",
       "list_url": "https://gohealthuc.wd12.myworkdayjobs.com/external"
     }
+  },
+  {
+    "name": "Gojiberry AI",
+    "categories": [
+      "AI & Machine Learning"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "gojiberry-ai",
+      "yc_company_id": 31426,
+      "list_url": "https://www.ycombinator.com/companies/gojiberry-ai/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://gojiberry.ai/"
   },
   {
     "name": "Goldman Sachs",
@@ -11116,6 +13062,22 @@
     }
   },
   {
+    "name": "GroundControl",
+    "categories": [
+      "Aerospace & Defense",
+      "AI & Machine Learning",
+      "Industrials & Manufacturing"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "groundcontrol",
+      "yc_company_id": 30417,
+      "list_url": "https://www.ycombinator.com/companies/groundcontrol/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://gndctl.com/"
+  },
+  {
     "name": "Grow Therapy",
     "categories": [
       "Healthcare & Biotech",
@@ -11366,6 +13328,17 @@
     }
   },
   {
+    "name": "Halluminate",
+    "categories": [
+      "Software & SaaS"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "halluminate"
+    },
+    "website": "https://www.halluminate.ai/"
+  },
+  {
     "name": "Hancock Whitney",
     "categories": [
       "Finance & Banking"
@@ -11384,6 +13357,34 @@
       "mode": "ashby",
       "ashby_slug": "handshake"
     }
+  },
+  {
+    "name": "Harbera",
+    "categories": [
+      "AI & Machine Learning",
+      "Healthcare & Biotech"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "harbera",
+      "yc_company_id": 30265,
+      "list_url": "https://www.ycombinator.com/companies/harbera/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://harbera.com/"
+  },
+  {
+    "name": "Hark",
+    "categories": [
+      "AI & Machine Learning",
+      "Consumer Tech"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "hark",
+      "use_hosted_job_urls": true
+    },
+    "website": "https://hark.com/"
   },
   {
     "name": "HARMAN International",
@@ -11408,6 +13409,18 @@
     }
   },
   {
+    "name": "Harmonic Security",
+    "categories": [
+      "AI & Machine Learning",
+      "Cybersecurity"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "harmonic-security-inc"
+    },
+    "website": "https://www.harmonic.security/"
+  },
+  {
     "name": "Harmony",
     "categories": [
       "Crypto",
@@ -11428,6 +13441,19 @@
       "mode": "greenhouse",
       "board_token": "harnessinc"
     }
+  },
+  {
+    "name": "Harper",
+    "categories": [
+      "AI & Machine Learning",
+      "FinTech & Payments",
+      "Insurance"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "harperinsure"
+    },
+    "website": "https://www.harperinsure.com/"
   },
   {
     "name": "Harpeth Valley Utilities District",
@@ -11547,6 +13573,18 @@
     ]
   },
   {
+    "name": "HavocAI",
+    "categories": [
+      "Aerospace & Defense",
+      "Autonomous Vehicles"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "havocai"
+    },
+    "website": "https://www.havocai.com/"
+  },
+  {
     "name": "Hawaiian Host Group",
     "categories": [
       "Consumer Goods & Retail",
@@ -11634,6 +13672,33 @@
     }
   },
   {
+    "name": "HealthKey",
+    "categories": [
+      "AI & Machine Learning",
+      "Healthcare & Biotech"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "healthkey",
+      "yc_company_id": 30249,
+      "list_url": "https://www.ycombinator.com/companies/healthkey/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://gethealthkey.com/"
+  },
+  {
+    "name": "Healthleap",
+    "categories": [
+      "AI & Machine Learning",
+      "Healthcare & Biotech"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "healthleap"
+    },
+    "website": "https://healthleap.ai/"
+  },
+  {
     "name": "HealthMark Group",
     "categories": [
       "Healthcare & Biotech"
@@ -11666,6 +13731,19 @@
     }
   },
   {
+    "name": "Hedge",
+    "categories": [
+      "AI & Machine Learning",
+      "FinTech & Payments",
+      "Insurance"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "hedge"
+    },
+    "website": "https://www.hedgespecialty.com/"
+  },
+  {
     "name": "Heidelberg Materials",
     "categories": [
       "Industrials & Manufacturing"
@@ -11685,6 +13763,21 @@
       "mode": "ashby",
       "ashby_slug": "helion"
     }
+  },
+  {
+    "name": "Helios Intelligence",
+    "categories": [
+      "AI & Machine Learning",
+      "Healthcare & Biotech"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "helios-intelligence",
+      "yc_company_id": 35322,
+      "list_url": "https://www.ycombinator.com/companies/helios-intelligence/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.heliosinc.ai/"
   },
   {
     "name": "HelloFresh",
@@ -11717,6 +13810,20 @@
       "mode": "workday",
       "list_url": "https://henryschein.wd1.myworkdayjobs.com/external_careers"
     }
+  },
+  {
+    "name": "HERA",
+    "categories": [
+      "Industrials & Manufacturing"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "manufacturingintelligence",
+      "yc_company_id": 32123,
+      "list_url": "https://www.ycombinator.com/companies/manufacturingintelligence/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.heraengineering.com/"
   },
   {
     "name": "Hermeus",
@@ -11754,6 +13861,18 @@
     ],
     "scan_enabled": false,
     "note": "Careers URL now redirects to Huge and the former employer source is retired (verified 2026-07-21)"
+  },
+  {
+    "name": "Heron Data",
+    "categories": [
+      "AI & Machine Learning",
+      "FinTech & Payments"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "herondata"
+    },
+    "website": "https://www.herondata.io/"
   },
   {
     "name": "Heron Power",
@@ -11834,6 +13953,18 @@
       "mode": "greenhouse",
       "board_token": "heygen"
     }
+  },
+  {
+    "name": "Higgsfield AI",
+    "categories": [
+      "AI & Machine Learning",
+      "Media & Entertainment"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "higgsfieldai"
+    },
+    "website": "https://higgsfield.ai/"
   },
   {
     "name": "Higharc",
@@ -12199,6 +14330,37 @@
     }
   },
   {
+    "name": "Hub",
+    "categories": [
+      "AI & Machine Learning",
+      "Cloud & Infrastructure",
+      "Robotics & Automation"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "hub",
+      "yc_company_id": 31375,
+      "list_url": "https://www.ycombinator.com/companies/hub/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://hub.xyz/"
+  },
+  {
+    "name": "Hubble",
+    "categories": [
+      "AI & Machine Learning",
+      "Healthcare & Biotech"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "hubble-ai",
+      "yc_company_id": 33062,
+      "list_url": "https://www.ycombinator.com/companies/hubble-ai/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://hubble.ai/"
+  },
+  {
     "name": "HubSpot",
     "categories": [
       "Software & SaaS"
@@ -12301,6 +14463,19 @@
     }
   },
   {
+    "name": "Humble Robotics",
+    "categories": [
+      "Autonomous Vehicles",
+      "Robotics & Automation",
+      "Transportation & Mobility"
+    ],
+    "scrape": {
+      "mode": "lever",
+      "lever_slug": "humble-robotics"
+    },
+    "website": "https://humblerobotics.ai/"
+  },
+  {
     "name": "Huntington Bank",
     "categories": [
       "Finance & Banking"
@@ -12310,6 +14485,57 @@
       "list_url": "https://careers.huntington.com/careers",
       "include": "careers.huntington.com"
     }
+  },
+  {
+    "name": "Huscarl",
+    "categories": [
+      "AI & Machine Learning",
+      "FinTech & Payments",
+      "Insurance"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "huscarl",
+      "yc_company_id": 31564,
+      "list_url": "https://www.ycombinator.com/companies/huscarl/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.huscarl.io/"
+  },
+  {
+    "name": "Hyperbolic",
+    "categories": [
+      "AI & Machine Learning",
+      "Cloud & Infrastructure"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "hyperbolic"
+    },
+    "website": "https://www.hyperbolic.ai/"
+  },
+  {
+    "name": "Hypercubic",
+    "categories": [
+      "AI & Machine Learning"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "hypercubic"
+    },
+    "website": "https://www.hypercubic.ai/"
+  },
+  {
+    "name": "Hyphenate",
+    "categories": [
+      "AI & Machine Learning",
+      "FinTech & Payments"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "hyphenate"
+    },
+    "website": "https://hyphenate.ai/"
   },
   {
     "name": "Hyundai",
@@ -12335,6 +14561,19 @@
     },
     "scan_enabled": true,
     "note": "Current public employer source rechecked and restored at the owner's request (2026-10-24)."
+  },
+  {
+    "name": "Icarus",
+    "categories": [
+      "Aerospace & Defense",
+      "Industrials & Manufacturing"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "icarus",
+      "use_hosted_job_urls": true
+    },
+    "website": "https://www.icarus.one/"
   },
   {
     "name": "Icon",
@@ -12378,6 +14617,17 @@
     ]
   },
   {
+    "name": "idler",
+    "categories": [
+      "Software & SaaS"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "idler"
+    },
+    "website": "https://idler.ai/"
+  },
+  {
     "name": "IEX",
     "categories": [
       "Finance & Banking",
@@ -12390,6 +14640,21 @@
     "interview": {
       "source": "Finance / exchange target"
     }
+  },
+  {
+    "name": "Ignition Benefits",
+    "categories": [
+      "AI & Machine Learning",
+      "Insurance"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "ignition-benefits",
+      "yc_company_id": 36015,
+      "list_url": "https://www.ycombinator.com/companies/ignition-benefits/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.ignitionbenefits.com/"
   },
   {
     "name": "iHeartMedia",
@@ -12498,6 +14763,21 @@
     }
   },
   {
+    "name": "IMPACT Drones",
+    "categories": [
+      "Aerospace & Defense",
+      "Robotics & Automation"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "impact-drones",
+      "yc_company_id": 32188,
+      "list_url": "https://www.ycombinator.com/companies/impact-drones/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.impact-drones.com/"
+  },
+  {
     "name": "Imperative Logistics Group",
     "categories": [
       "Logistics & Supply Chain"
@@ -12558,6 +14838,21 @@
     }
   },
   {
+    "name": "Infera",
+    "categories": [
+      "AI & Machine Learning",
+      "Healthcare & Biotech"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "infera",
+      "yc_company_id": 31441,
+      "list_url": "https://www.ycombinator.com/companies/infera/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.infera.bio/"
+  },
+  {
     "name": "Infinitus Systems",
     "categories": [
       "AI & Machine Learning",
@@ -12577,6 +14872,22 @@
       "mode": "ashby",
       "ashby_slug": "infisical"
     }
+  },
+  {
+    "name": "Inflection Space Systems",
+    "categories": [
+      "Aerospace & Defense",
+      "Industrials & Manufacturing",
+      "Space"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "inflection-space-systems",
+      "yc_company_id": 35025,
+      "list_url": "https://www.ycombinator.com/companies/inflection-space-systems/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://inflection-space.com/"
   },
   {
     "name": "InfluxData",
@@ -12641,6 +14952,22 @@
       "mode": "greenhouse",
       "board_token": "inizio"
     }
+  },
+  {
+    "name": "InLoop Robotics",
+    "categories": [
+      "Industrials & Manufacturing",
+      "Logistics & Supply Chain",
+      "Robotics & Automation"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "inloop-robotics",
+      "yc_company_id": 31369,
+      "list_url": "https://www.ycombinator.com/companies/inloop-robotics/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.inloop-robotics.com/"
   },
   {
     "name": "Inmar",
@@ -12736,6 +15063,19 @@
     }
   },
   {
+    "name": "InstaLILY",
+    "categories": [
+      "AI & Machine Learning",
+      "Software & SaaS"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "instalilyai",
+      "use_hosted_job_urls": true
+    },
+    "website": "https://www.instalily.ai/"
+  },
+  {
     "name": "Instead",
     "categories": [
       "FinTech & Payments",
@@ -12827,6 +15167,21 @@
     }
   },
   {
+    "name": "Intelligence Factory",
+    "categories": [
+      "Industrials & Manufacturing",
+      "Robotics & Automation"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "intelligence-factory",
+      "yc_company_id": 31560,
+      "list_url": "https://www.ycombinator.com/companies/intelligence-factory/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.intelligence-factory.com/"
+  },
+  {
     "name": "IntelligenceBank",
     "categories": [
       "Data & Analytics",
@@ -12904,6 +15259,32 @@
       "mode": "workday",
       "list_url": "https://interdigital.wd5.myworkdayjobs.com/interdigital_career"
     }
+  },
+  {
+    "name": "Interfaze",
+    "categories": [
+      "AI & Machine Learning"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "interfaze",
+      "yc_company_id": 31386,
+      "list_url": "https://www.ycombinator.com/companies/interfaze/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://interfaze.ai/"
+  },
+  {
+    "name": "Interfere",
+    "categories": [
+      "AI & Machine Learning",
+      "Developer Tools"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "interfere"
+    },
+    "website": "https://interfere.com/"
   },
   {
     "name": "Intrinsic",
@@ -13052,6 +15433,21 @@
     }
   },
   {
+    "name": "IronLedger.ai",
+    "categories": [
+      "AI & Machine Learning",
+      "Real Estate & Construction"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "ironledger-ai",
+      "yc_company_id": 30685,
+      "list_url": "https://www.ycombinator.com/companies/ironledger-ai/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.ironledger.ai/"
+  },
+  {
     "name": "iSpot.tv",
     "categories": [
       "Ad Tech & MarTech",
@@ -13181,6 +15577,34 @@
       "rounds": "3-4",
       "source": "Public knowledge"
     }
+  },
+  {
+    "name": "Janeen",
+    "categories": [
+      "Healthcare & Biotech"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "janeen",
+      "yc_company_id": 31085,
+      "list_url": "https://www.ycombinator.com/companies/janeen/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.janeen.care/"
+  },
+  {
+    "name": "Jarmin",
+    "categories": [
+      "AI & Machine Learning"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "jarmin",
+      "yc_company_id": 30972,
+      "list_url": "https://www.ycombinator.com/companies/jarmin/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.jarmin.ai/"
   },
   {
     "name": "Jasper",
@@ -13421,6 +15845,21 @@
     }
   },
   {
+    "name": "Juno",
+    "categories": [
+      "AI & Machine Learning",
+      "Healthcare & Biotech"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "juno-chat",
+      "yc_company_id": 31383,
+      "list_url": "https://www.ycombinator.com/companies/juno-chat/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://junocompanion.com/"
+  },
+  {
     "name": "Jupiter Intelligence, Inc.",
     "categories": [
       "AI & Machine Learning",
@@ -13464,6 +15903,18 @@
     ]
   },
   {
+    "name": "Kailera Therapeutics",
+    "categories": [
+      "AI & Machine Learning"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "kailera",
+      "use_hosted_job_urls": true
+    },
+    "website": "https://www.kailera.com/"
+  },
+  {
     "name": "Kainos",
     "categories": [
       "Consulting",
@@ -13484,6 +15935,34 @@
       "mode": "talentbrew",
       "list_url": "https://www.kaiserpermanentejobs.org/search-jobs"
     }
+  },
+  {
+    "name": "Kaizen",
+    "categories": [
+      "Software & SaaS"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "kaizen",
+      "yc_company_id": 30471,
+      "list_url": "https://www.ycombinator.com/companies/kaizen/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.kaizenautomation.com/"
+  },
+  {
+    "name": "Kalpa Labs",
+    "categories": [
+      "Software & SaaS"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "kalpa-labs",
+      "yc_company_id": 30959,
+      "list_url": "https://www.ycombinator.com/companies/kalpa-labs/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://kalpalabs.ai/"
   },
   {
     "name": "Kalshi",
@@ -13528,6 +16007,20 @@
     }
   },
   {
+    "name": "Karumi",
+    "categories": [
+      "Software & SaaS"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "karumi",
+      "yc_company_id": 30966,
+      "list_url": "https://www.ycombinator.com/companies/karumi/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://karumi.ai/"
+  },
+  {
     "name": "Karyopharm Therapeutics Inc.",
     "categories": [
       "Healthcare & Biotech",
@@ -13568,6 +16061,21 @@
       "mode": "lever",
       "lever_slug": "kcasbio"
     }
+  },
+  {
+    "name": "KelAI",
+    "categories": [
+      "AI & Machine Learning",
+      "FinTech & Payments"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "kelai",
+      "yc_company_id": 31393,
+      "list_url": "https://www.ycombinator.com/companies/kelai/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://kelaitech.com/"
   },
   {
     "name": "Kellanova",
@@ -13724,6 +16232,21 @@
     ]
   },
   {
+    "name": "Kinro",
+    "categories": [
+      "FinTech & Payments",
+      "Insurance"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "kinro",
+      "yc_company_id": 31382,
+      "list_url": "https://www.ycombinator.com/companies/kinro/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://kinro.com"
+  },
+  {
     "name": "Kinsta",
     "categories": [
       "Cloud & Infrastructure",
@@ -13783,6 +16306,34 @@
     }
   },
   {
+    "name": "Klaimee",
+    "categories": [
+      "AI & Machine Learning",
+      "FinTech & Payments",
+      "Insurance"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "klaimee",
+      "yc_company_id": 31539,
+      "list_url": "https://www.ycombinator.com/companies/klaimee/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.klaimee.ai/"
+  },
+  {
+    "name": "Klarify",
+    "categories": [
+      "AI & Machine Learning",
+      "Healthcare & Biotech"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "klarify"
+    },
+    "website": "https://www.klarify.ca/"
+  },
+  {
     "name": "Klarity",
     "categories": [
       "Software & SaaS"
@@ -13799,6 +16350,20 @@
     "tags": [
       "Interview Friendly"
     ]
+  },
+  {
+    "name": "Klavis AI",
+    "categories": [
+      "AI & Machine Learning"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "klavis-ai",
+      "yc_company_id": 30506,
+      "list_url": "https://www.ycombinator.com/companies/klavis-ai/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.klavis.ai/"
   },
   {
     "name": "Klaviyo",
@@ -13846,6 +16411,17 @@
     "tags": [
       "Interview Friendly"
     ]
+  },
+  {
+    "name": "Knownwell",
+    "categories": [
+      "Healthcare & Biotech"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "knownwell"
+    },
+    "website": "https://www.knownwell.co/"
   },
   {
     "name": "KoBold Metals",
@@ -13931,6 +16507,21 @@
     }
   },
   {
+    "name": "Koyal",
+    "categories": [
+      "AI & Machine Learning",
+      "Media & Entertainment"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "koyal",
+      "yc_company_id": 30870,
+      "list_url": "https://www.ycombinator.com/companies/koyal/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://koyal.ai/"
+  },
+  {
     "name": "Kraken",
     "categories": [
       "Crypto",
@@ -13960,6 +16551,35 @@
       "mode": "oraclecloud",
       "list_url": "https://eluq.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_2001/jobs"
     }
+  },
+  {
+    "name": "KugelAudio",
+    "categories": [
+      "AI & Machine Learning"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "kugelaudio",
+      "yc_company_id": 31540,
+      "list_url": "https://www.ycombinator.com/companies/kugelaudio/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.kugelaudio.com/en"
+  },
+  {
+    "name": "Kuli",
+    "categories": [
+      "Ad Tech & MarTech",
+      "AI & Machine Learning"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "kuli",
+      "yc_company_id": 31473,
+      "list_url": "https://www.ycombinator.com/companies/kuli/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://kuli.one/"
   },
   {
     "name": "KUNGFU.AI",
@@ -14004,6 +16624,20 @@
     "interview": {
       "source": "Defense / aerospace"
     }
+  },
+  {
+    "name": "Lab0",
+    "categories": [
+      "AI & Machine Learning"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "lab0",
+      "yc_company_id": 31424,
+      "list_url": "https://www.ycombinator.com/companies/lab0/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://lab0.ai/"
   },
   {
     "name": "Lab49",
@@ -14054,6 +16688,21 @@
     }
   },
   {
+    "name": "Lamb Labs",
+    "categories": [
+      "AI & Machine Learning",
+      "Semiconductors & Hardware"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "lamb-labs",
+      "yc_company_id": 33054,
+      "list_url": "https://www.ycombinator.com/companies/lamb-labs/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://lamb-labs.com/"
+  },
+  {
     "name": "Lambda",
     "categories": [
       "AI & Machine Learning"
@@ -14062,6 +16711,33 @@
       "ashby_slug": "lambda",
       "mode": "ashby"
     }
+  },
+  {
+    "name": "Lance",
+    "categories": [
+      "AI & Machine Learning",
+      "Travel & Hospitality"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "lance"
+    },
+    "website": "https://www.lance.live/"
+  },
+  {
+    "name": "Lanesurf",
+    "categories": [
+      "AI & Machine Learning",
+      "Logistics & Supply Chain"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "lanesurf",
+      "yc_company_id": 30615,
+      "list_url": "https://www.ycombinator.com/companies/lanesurf/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.lanesurf.com/"
   },
   {
     "name": "LangChain",
@@ -14073,6 +16749,18 @@
       "mode": "ashby",
       "ashby_slug": "langchain"
     }
+  },
+  {
+    "name": "Lapel",
+    "categories": [
+      "AI & Machine Learning",
+      "Cloud & Infrastructure"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "Lapel"
+    },
+    "website": "https://lapel.com/"
   },
   {
     "name": "Last Energy",
@@ -14096,6 +16784,20 @@
       "mode": "lever",
       "lever_slug": "latch"
     }
+  },
+  {
+    "name": "LATO",
+    "categories": [
+      "AI & Machine Learning"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "lato",
+      "yc_company_id": 32682,
+      "list_url": "https://www.ycombinator.com/companies/lato/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.latolabs.io/"
   },
   {
     "name": "Lattice",
@@ -14138,6 +16840,20 @@
     ]
   },
   {
+    "name": "Laurence",
+    "categories": [
+      "Software & SaaS"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "laurence",
+      "yc_company_id": 31173,
+      "list_url": "https://www.ycombinator.com/companies/laurence/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.laurence.com/"
+  },
+  {
     "name": "Layer Health",
     "categories": [
       "AI & Machine Learning",
@@ -14147,6 +16863,33 @@
       "mode": "greenhouse",
       "board_token": "layerhealth"
     }
+  },
+  {
+    "name": "Layers",
+    "categories": [
+      "AI & Machine Learning",
+      "Healthcare & Biotech"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "layers",
+      "yc_company_id": 30983,
+      "list_url": "https://www.ycombinator.com/companies/layers/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.layers.bio/"
+  },
+  {
+    "name": "Lazarus AI",
+    "categories": [
+      "AI & Machine Learning"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "lazarusenterprises",
+      "use_hosted_job_urls": true
+    },
+    "website": "https://www.lazarusai.com/"
   },
   {
     "name": "LB Capital",
@@ -14170,6 +16913,20 @@
     }
   },
   {
+    "name": "Leaping AI",
+    "categories": [
+      "AI & Machine Learning"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "leaping-ai",
+      "yc_company_id": 30181,
+      "list_url": "https://www.ycombinator.com/companies/leaping-ai/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://leapingai.com/"
+  },
+  {
     "name": "Lear Corporation",
     "categories": [
       "Automotive",
@@ -14181,6 +16938,32 @@
       "prefix": "https://jobs.lear.com/job/",
       "validate_prefix": false
     }
+  },
+  {
+    "name": "Ledgebrook",
+    "categories": [
+      "Insurance"
+    ],
+    "scrape": {
+      "mode": "careerpuck",
+      "board_slug": "ledgebrook"
+    },
+    "website": "https://www.ledgebrook.com/"
+  },
+  {
+    "name": "LegalOS",
+    "categories": [
+      "AI & Machine Learning",
+      "Legal Tech"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "legalos",
+      "yc_company_id": 31101,
+      "list_url": "https://www.ycombinator.com/companies/legalos/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.legalos.ai/"
   },
   {
     "name": "Legora",
@@ -14204,6 +16987,37 @@
       "mode": "workday",
       "list_url": "https://leidos.wd5.myworkdayjobs.com/external"
     }
+  },
+  {
+    "name": "Lemma",
+    "categories": [
+      "AI & Machine Learning",
+      "Cloud & Infrastructure",
+      "Developer Tools"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "uselemma",
+      "yc_company_id": 30969,
+      "list_url": "https://www.ycombinator.com/companies/uselemma/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.uselemma.ai/"
+  },
+  {
+    "name": "LemonLime",
+    "categories": [
+      "Ad Tech & MarTech",
+      "AI & Machine Learning"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "lemonlime",
+      "yc_company_id": 32171,
+      "list_url": "https://www.ycombinator.com/companies/lemonlime/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://lemonlime.com/"
   },
   {
     "name": "Lendmark Financial",
@@ -14335,6 +17149,20 @@
     }
   },
   {
+    "name": "LightSprint",
+    "categories": [
+      "Software & SaaS"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "lightsprint",
+      "yc_company_id": 31360,
+      "list_url": "https://www.ycombinator.com/companies/lightsprint/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://lightsprint.ai/"
+  },
+  {
     "name": "Lila Sciences",
     "categories": [
       "AI & Machine Learning",
@@ -14356,6 +17184,20 @@
       "mode": "workday",
       "list_url": "https://lilly.wd115.myworkdayjobs.com/LLY"
     }
+  },
+  {
+    "name": "Limrun",
+    "categories": [
+      "Cloud & Infrastructure"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "limrun",
+      "yc_company_id": 31377,
+      "list_url": "https://www.ycombinator.com/companies/limrun/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://limrun.com/"
   },
   {
     "name": "Lindy",
@@ -14535,6 +17377,20 @@
     }
   },
   {
+    "name": "Logical",
+    "categories": [
+      "AI & Machine Learning"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "logical",
+      "yc_company_id": 30907,
+      "list_url": "https://www.ycombinator.com/companies/logical/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://logical.io/"
+  },
+  {
     "name": "Loom",
     "categories": [
       "Consumer Tech",
@@ -14632,6 +17488,22 @@
     ]
   },
   {
+    "name": "Luca IQ",
+    "categories": [
+      "AI & Machine Learning",
+      "Cloud & Infrastructure",
+      "Developer Tools"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "luca-iq",
+      "yc_company_id": 32848,
+      "list_url": "https://www.ycombinator.com/companies/luca-iq/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://lucaiq.com/"
+  },
+  {
     "name": "Lucid Motors",
     "categories": [
       "Automotive"
@@ -14640,6 +17512,18 @@
       "board_token": "lucidmotors",
       "mode": "greenhouse"
     }
+  },
+  {
+    "name": "Lucis",
+    "categories": [
+      "AI & Machine Learning",
+      "Healthcare & Biotech"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "lucis"
+    },
+    "website": "https://www.lucis.life/"
   },
   {
     "name": "Lululemon",
@@ -14655,6 +17539,22 @@
     }
   },
   {
+    "name": "Lumari",
+    "categories": [
+      "AI & Machine Learning",
+      "Industrials & Manufacturing",
+      "Logistics & Supply Chain"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "lumari",
+      "yc_company_id": 30540,
+      "list_url": "https://www.ycombinator.com/companies/lumari/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://lumari.ai/"
+  },
+  {
     "name": "Lumentum",
     "categories": [
       "Semiconductors & Hardware",
@@ -14664,6 +17564,22 @@
       "mode": "workday",
       "list_url": "https://lumentum.wd5.myworkdayjobs.com/lite"
     }
+  },
+  {
+    "name": "Luminal",
+    "categories": [
+      "AI & Machine Learning",
+      "Cloud & Infrastructure",
+      "Developer Tools"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "luminal",
+      "yc_company_id": 30804,
+      "list_url": "https://www.ycombinator.com/companies/luminal/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.luminal.com/"
   },
   {
     "name": "Luminance",
@@ -14777,6 +17693,18 @@
     }
   },
   {
+    "name": "Mach9",
+    "categories": [
+      "AI & Machine Learning",
+      "Real Estate & Construction"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "mach9"
+    },
+    "website": "https://mach9.ai/"
+  },
+  {
     "name": "Macy's",
     "categories": [
       "Consumer Goods & Retail"
@@ -14785,6 +17713,20 @@
       "mode": "oraclecloud",
       "list_url": "https://ebwh.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1001/jobs"
     }
+  },
+  {
+    "name": "MadeThis",
+    "categories": [
+      "AI & Machine Learning"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "madethis",
+      "yc_company_id": 30975,
+      "list_url": "https://www.ycombinator.com/companies/madethis/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.madethis.com/"
   },
   {
     "name": "MadHive",
@@ -14960,6 +17902,20 @@
     }
   },
   {
+    "name": "Manicule",
+    "categories": [
+      "Software & SaaS"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "manicule",
+      "yc_company_id": 31531,
+      "list_url": "https://www.ycombinator.com/companies/manicule/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://manicule.com/"
+  },
+  {
     "name": "ManTech",
     "categories": [
       "Aerospace & Defense",
@@ -14971,6 +17927,22 @@
       "list_url": "https://careers.mantech.com/en_US/careers/SearchJobs"
     },
     "note": "Moved to ManTech's official Avature careers site; active openings verified 2026-08-05"
+  },
+  {
+    "name": "Manufact",
+    "categories": [
+      "AI & Machine Learning",
+      "Cloud & Infrastructure",
+      "Developer Tools"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "manufact",
+      "yc_company_id": 30710,
+      "list_url": "https://www.ycombinator.com/companies/manufact/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://manufact.com/"
   },
   {
     "name": "Mapbox",
@@ -15032,6 +18004,32 @@
     "tags": [
       "Interview Friendly"
     ]
+  },
+  {
+    "name": "Marble",
+    "categories": [
+      "AI & Machine Learning"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "joinmarble",
+      "yc_company_id": 32223,
+      "list_url": "https://www.ycombinator.com/companies/joinmarble/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://joinmarble.ai/"
+  },
+  {
+    "name": "Mariana Minerals",
+    "categories": [
+      "Materials & Chemicals",
+      "Mining"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "marianaminerals"
+    },
+    "website": "https://marianaminerals.com/"
   },
   {
     "name": "Marigold",
@@ -15281,6 +18279,18 @@
     ]
   },
   {
+    "name": "Matterworks",
+    "categories": [
+      "AI & Machine Learning",
+      "Healthcare & Biotech"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "matterworks"
+    },
+    "website": "https://www.matterworks.ai/"
+  },
+  {
     "name": "Maurices",
     "categories": [
       "Consumer Goods & Retail",
@@ -15344,6 +18354,18 @@
     }
   },
   {
+    "name": "Maxima",
+    "categories": [
+      "AI & Machine Learning",
+      "FinTech & Payments"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "Maxima"
+    },
+    "website": "https://www.maxima.ai/"
+  },
+  {
     "name": "Maxor National Pharmacy Services, LLC",
     "categories": [
       "Healthcare & Biotech",
@@ -15364,6 +18386,22 @@
       "mode": "greenhouse",
       "board_token": "maymobility"
     }
+  },
+  {
+    "name": "Mbodi AI",
+    "categories": [
+      "AI & Machine Learning",
+      "Industrials & Manufacturing",
+      "Robotics & Automation"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "mbodi-ai",
+      "yc_company_id": 30445,
+      "list_url": "https://www.ycombinator.com/companies/mbodi-ai/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.mbodi.ai/"
   },
   {
     "name": "McDonald's Corporation",
@@ -15449,6 +18487,19 @@
       "mode": "greenhouse",
       "board_token": "medium"
     }
+  },
+  {
+    "name": "MedScout",
+    "categories": [
+      "Data & Analytics",
+      "Healthcare & Biotech",
+      "Medical Devices"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "medscout"
+    },
+    "website": "https://www.medscout.io/"
   },
   {
     "name": "Medtronic",
@@ -15562,6 +18613,18 @@
     ]
   },
   {
+    "name": "Mercura",
+    "categories": [
+      "AI & Machine Learning",
+      "Industrials & Manufacturing"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "mercura"
+    },
+    "website": "https://mercura.ai/"
+  },
+  {
     "name": "Mercury",
     "categories": [
       "FinTech & Payments"
@@ -15605,6 +18668,20 @@
       "mode": "ashby",
       "ashby_slug": "meshy"
     }
+  },
+  {
+    "name": "Mesmer",
+    "categories": [
+      "AI & Machine Learning"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "mesmer",
+      "yc_company_id": 30523,
+      "list_url": "https://www.ycombinator.com/companies/mesmer/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://mesmer.co/"
   },
   {
     "name": "Meta",
@@ -15771,6 +18848,18 @@
     "note": "Current public employer source rechecked and restored at the owner's request (2026-10-24)."
   },
   {
+    "name": "Middesk",
+    "categories": [
+      "FinTech & Payments",
+      "Software & SaaS"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "middesk"
+    },
+    "website": "https://www.middesk.com/"
+  },
+  {
     "name": "Midi Health",
     "categories": [
       "Healthcare & Biotech"
@@ -15807,6 +18896,18 @@
       "list_url": "https://career.mlp.com/careers",
       "eightfold_domain": "mlp.com"
     }
+  },
+  {
+    "name": "Mintive",
+    "categories": [
+      "AI & Machine Learning",
+      "Cybersecurity"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "mintive"
+    },
+    "website": "https://www.mintive.com/"
   },
   {
     "name": "Mintlify",
@@ -15855,6 +18956,20 @@
       "mode": "greenhouse",
       "board_token": "misfitsmarket"
     }
+  },
+  {
+    "name": "Miso Labs",
+    "categories": [
+      "Software & SaaS"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "miso-labs",
+      "yc_company_id": 30723,
+      "list_url": "https://www.ycombinator.com/companies/miso-labs/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.misolabs.ai/"
   },
   {
     "name": "Mistral AI",
@@ -15928,6 +19043,21 @@
     }
   },
   {
+    "name": "Miyagi Labs",
+    "categories": [
+      "AI & Machine Learning",
+      "EdTech"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "miyagi-labs",
+      "yc_company_id": 30299,
+      "list_url": "https://www.ycombinator.com/companies/miyagi-labs/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://miyagilabs.ai/"
+  },
+  {
     "name": "MKG",
     "categories": [
       "Ad Tech & MarTech",
@@ -15949,6 +19079,34 @@
       "mode": "mobileye",
       "list_url": "https://careers.mobileye.com/jobs"
     }
+  },
+  {
+    "name": "MochaCare",
+    "categories": [
+      "Software & SaaS"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "mochacare",
+      "yc_company_id": 31269,
+      "list_url": "https://www.ycombinator.com/companies/mochacare/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.mochacare.com/"
+  },
+  {
+    "name": "Mochi",
+    "categories": [
+      "AI & Machine Learning"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "mochi",
+      "yc_company_id": 32205,
+      "list_url": "https://www.ycombinator.com/companies/mochi/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.mochi.tv/"
   },
   {
     "name": "Modal",
@@ -16015,6 +19173,20 @@
       "mode": "workday",
       "list_url": "https://modernatx.wd1.myworkdayjobs.com/M_tx"
     }
+  },
+  {
+    "name": "Molagri",
+    "categories": [
+      "Industrials & Manufacturing"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "molagri",
+      "yc_company_id": 32521,
+      "list_url": "https://www.ycombinator.com/companies/molagri/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://molagri.com/"
   },
   {
     "name": "Molina Healthcare",
@@ -16202,6 +19374,37 @@
     }
   },
   {
+    "name": "Moritz",
+    "categories": [
+      "AI & Machine Learning",
+      "Legal Tech"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "moritz",
+      "yc_company_id": 31146,
+      "list_url": "https://www.ycombinator.com/companies/moritz/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.moritzlegal.com/"
+  },
+  {
+    "name": "MorphoAI",
+    "categories": [
+      "AI & Machine Learning",
+      "Industrials & Manufacturing",
+      "Robotics & Automation"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "morphoai",
+      "yc_company_id": 30512,
+      "list_url": "https://www.ycombinator.com/companies/morphoai/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://morpho.ai/"
+  },
+  {
     "name": "Mosaic Company (The)",
     "categories": [
       "Materials & Chemicals"
@@ -16220,6 +19423,21 @@
       "mode": "workday",
       "list_url": "https://verawholehealth.wd1.myworkdayjobs.com/external"
     }
+  },
+  {
+    "name": "Moss",
+    "categories": [
+      "AI & Machine Learning",
+      "Developer Tools"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "moss",
+      "yc_company_id": 31008,
+      "list_url": "https://www.ycombinator.com/companies/moss/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.moss.dev/"
   },
   {
     "name": "MotherDuck",
@@ -16346,6 +19564,21 @@
     }
   },
   {
+    "name": "Multiplier",
+    "categories": [
+      "AI & Machine Learning",
+      "FinTech & Payments"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "multiplier",
+      "yc_company_id": 31343,
+      "list_url": "https://www.ycombinator.com/companies/multiplier/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.multiplier.ai/"
+  },
+  {
     "name": "Munters",
     "categories": [
       "Industrials & Manufacturing"
@@ -16453,6 +19686,18 @@
     }
   },
   {
+    "name": "Namespace",
+    "categories": [
+      "Cloud & Infrastructure",
+      "Developer Tools"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "namespace"
+    },
+    "website": "https://namespace.so/"
+  },
+  {
     "name": "Nango",
     "categories": [
       "Developer Tools",
@@ -16538,6 +19783,20 @@
     }
   },
   {
+    "name": "Nautilus",
+    "categories": [
+      "AI & Machine Learning"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "nautilus",
+      "yc_company_id": 30733,
+      "list_url": "https://www.ycombinator.com/companies/nautilus/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.nautilus.co/"
+  },
+  {
     "name": "Navan",
     "categories": [
       "Software & SaaS",
@@ -16547,6 +19806,21 @@
       "mode": "greenhouse",
       "board_token": "tripactions"
     }
+  },
+  {
+    "name": "Naïve",
+    "categories": [
+      "AI & Machine Learning",
+      "Cloud & Infrastructure"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "naive",
+      "yc_company_id": 30522,
+      "list_url": "https://www.ycombinator.com/companies/naive/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://usenaive.ai/"
   },
   {
     "name": "NBCUniversal",
@@ -16580,6 +19854,18 @@
       "mode": "smartrecruiters",
       "smartrecruiters_company": "Nearmap"
     }
+  },
+  {
+    "name": "Nebulock",
+    "categories": [
+      "AI & Machine Learning",
+      "Cybersecurity"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "nebulock"
+    },
+    "website": "https://nebulock.io/"
   },
   {
     "name": "NEC Software Solutions",
@@ -16650,6 +19936,20 @@
     "tags": [
       "Interview Friendly"
     ]
+  },
+  {
+    "name": "Nessie",
+    "categories": [
+      "Software & SaaS"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "nessie",
+      "yc_company_id": 30880,
+      "list_url": "https://www.ycombinator.com/companies/nessie/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://nessielabs.com/"
   },
   {
     "name": "NetApp",
@@ -17039,6 +20339,20 @@
     ]
   },
   {
+    "name": "Nitrode",
+    "categories": [
+      "AI & Machine Learning"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "nitrode",
+      "yc_company_id": 30286,
+      "list_url": "https://www.ycombinator.com/companies/nitrode/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.nitrode.com/"
+  },
+  {
     "name": "Nokia",
     "categories": [
       "Software & SaaS",
@@ -17117,6 +20431,21 @@
     }
   },
   {
+    "name": "Nori",
+    "categories": [
+      "Industrials & Manufacturing",
+      "Robotics & Automation"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "noril1",
+      "yc_company_id": 32553,
+      "list_url": "https://www.ycombinator.com/companies/noril1/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.norirobotics.com/"
+  },
+  {
     "name": "Norm AI",
     "categories": [
       "AI & Machine Learning",
@@ -17126,6 +20455,29 @@
       "ashby_slug": "norm-ai",
       "mode": "ashby"
     }
+  },
+  {
+    "name": "North Cloud",
+    "categories": [
+      "Cloud & Infrastructure",
+      "Software & SaaS"
+    ],
+    "scrape": {
+      "mode": "rippling",
+      "rippling_slug": "north-cloud",
+      "list_url": "https://ats.rippling.com/north-cloud/jobs"
+    }
+  },
+  {
+    "name": "North Vector Dynamics",
+    "categories": [
+      "Aerospace & Defense"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "northvectordynamics"
+    },
+    "website": "https://www.northvectordynamics.com/"
   },
   {
     "name": "Northeastern University",
@@ -17180,18 +20532,6 @@
     "scrape": {
       "mode": "ashby",
       "ashby_slug": "northslope-technologies"
-    }
-  },
-  {
-    "name": "North Cloud",
-    "categories": [
-      "Cloud & Infrastructure",
-      "Software & SaaS"
-    ],
-    "scrape": {
-      "mode": "rippling",
-      "rippling_slug": "north-cloud",
-      "list_url": "https://ats.rippling.com/north-cloud/jobs"
     }
   },
   {
@@ -17289,6 +20629,21 @@
     ]
   },
   {
+    "name": "Novaflow",
+    "categories": [
+      "AI & Machine Learning",
+      "Healthcare & Biotech"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "novaflow",
+      "yc_company_id": 30709,
+      "list_url": "https://www.ycombinator.com/companies/novaflow/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.novaflow.ai/"
+  },
+  {
     "name": "Noven Pharmaceuticals, Inc.",
     "categories": [
       "Healthcare & Biotech",
@@ -17298,6 +20653,17 @@
       "mode": "icims",
       "icims_slug": "https://careers-noven.icims.com"
     }
+  },
+  {
+    "name": "Nox Metals",
+    "categories": [
+      "Industrials & Manufacturing"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "nox-metals"
+    },
+    "website": "https://noxmetals.co/"
   },
   {
     "name": "NRG Energy",
@@ -17359,6 +20725,20 @@
       "mode": "ashby",
       "ashby_slug": "NPX"
     }
+  },
+  {
+    "name": "Nucleo",
+    "categories": [
+      "Healthcare & Biotech"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "nucleo",
+      "yc_company_id": 30933,
+      "list_url": "https://www.ycombinator.com/companies/nucleo/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://nucleoresearch.com/"
   },
   {
     "name": "Numeral",
@@ -17646,17 +21026,6 @@
     }
   },
   {
-    "name": "Office Hours",
-    "categories": [
-      "Software & SaaS"
-    ],
-    "scrape": {
-      "mode": "ashby",
-      "ashby_slug": "office-hours",
-      "list_url": "https://jobs.ashbyhq.com/office-hours"
-    }
-  },
-  {
     "name": "OfferUp",
     "categories": [
       "Consumer Tech",
@@ -17665,6 +21034,17 @@
     "scrape": {
       "mode": "greenhouse",
       "board_token": "offerup"
+    }
+  },
+  {
+    "name": "Office Hours",
+    "categories": [
+      "Software & SaaS"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "office-hours",
+      "list_url": "https://jobs.ashbyhq.com/office-hours"
     }
   },
   {
@@ -17781,6 +21161,18 @@
     ]
   },
   {
+    "name": "Omnea",
+    "categories": [
+      "AI & Machine Learning",
+      "Software & SaaS"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "omnea"
+    },
+    "website": "https://www.omnea.co/"
+  },
+  {
     "name": "Omni",
     "categories": [
       "Data & Analytics"
@@ -17800,6 +21192,33 @@
       "mode": "lever",
       "lever_slug": "onceuponafarm"
     }
+  },
+  {
+    "name": "OnCorps",
+    "categories": [
+      "AI & Machine Learning",
+      "Finance & Banking"
+    ],
+    "scrape": {
+      "mode": "bamboohr",
+      "bamboohr_slug": "oncorps"
+    },
+    "website": "https://oncorps.ai/"
+  },
+  {
+    "name": "OnDeck AI",
+    "categories": [
+      "AI & Machine Learning",
+      "Media & Entertainment"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "ondeck-ai",
+      "yc_company_id": 30652,
+      "list_url": "https://www.ycombinator.com/companies/ondeck-ai/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.ondeckai.com/"
   },
   {
     "name": "One80 Intermediaries",
@@ -17862,6 +21281,34 @@
     "tags": [
       "Interview Friendly"
     ]
+  },
+  {
+    "name": "Ooak Data",
+    "categories": [
+      "AI & Machine Learning"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "ooak-data",
+      "yc_company_id": 32554,
+      "list_url": "https://www.ycombinator.com/companies/ooak-data/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://ooakdata.com/"
+  },
+  {
+    "name": "Opalite Health",
+    "categories": [
+      "Healthcare & Biotech"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "opalite-health",
+      "yc_company_id": 31163,
+      "list_url": "https://www.ycombinator.com/companies/opalite-health/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://opalitehealth.com:443/"
   },
   {
     "name": "OpenAI",
@@ -17978,6 +21425,20 @@
     }
   },
   {
+    "name": "Orange Slice",
+    "categories": [
+      "Software & SaaS"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "orange-slice",
+      "yc_company_id": 30642,
+      "list_url": "https://www.ycombinator.com/companies/orange-slice/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.orangeslice.ai/"
+  },
+  {
     "name": "OraSure Technologies Inc.",
     "categories": [
       "Healthcare & Biotech",
@@ -17997,6 +21458,36 @@
       "mode": "ashby",
       "ashby_slug": "orb"
     }
+  },
+  {
+    "name": "Orbital Operations",
+    "categories": [
+      "Aerospace & Defense",
+      "Industrials & Manufacturing",
+      "Space"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "orbitaloperations",
+      "use_hosted_job_urls": true
+    },
+    "website": "https://www.orbitalops.tech/"
+  },
+  {
+    "name": "Orca Aerospace",
+    "categories": [
+      "AI & Machine Learning",
+      "Industrials & Manufacturing",
+      "Space"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "orca-aerospace",
+      "yc_company_id": 35525,
+      "list_url": "https://www.ycombinator.com/companies/orca-aerospace/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://orcaaerospace.com/"
   },
   {
     "name": "Orca Bio",
@@ -18028,6 +21519,35 @@
       "board_token": "orchestra",
       "mode": "greenhouse"
     }
+  },
+  {
+    "name": "Origin",
+    "categories": [
+      "AI & Machine Learning",
+      "Healthcare & Biotech"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "origin-bio",
+      "yc_company_id": 31064,
+      "list_url": "https://www.ycombinator.com/companies/origin-bio/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://origin.bio/"
+  },
+  {
+    "name": "Orthogonal",
+    "categories": [
+      "FinTech & Payments"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "orthogonal",
+      "yc_company_id": 31154,
+      "list_url": "https://www.ycombinator.com/companies/orthogonal/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.orthogonal.com/"
   },
   {
     "name": "Oscar Health",
@@ -18167,6 +21687,20 @@
       "mode": "workday",
       "list_url": "https://oxford.wd5.myworkdayjobs.com/oxford"
     }
+  },
+  {
+    "name": "Oxus",
+    "categories": [
+      "AI & Machine Learning"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "oxus",
+      "yc_company_id": 30927,
+      "list_url": "https://www.ycombinator.com/companies/oxus/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.oxus-ai.com/"
   },
   {
     "name": "Oxylabs",
@@ -18313,6 +21847,21 @@
     }
   },
   {
+    "name": "Pango",
+    "categories": [
+      "AI & Machine Learning",
+      "Logistics & Supply Chain"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "pango",
+      "yc_company_id": 31989,
+      "list_url": "https://www.ycombinator.com/companies/pango/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://pango.ai/"
+  },
+  {
     "name": "Papa",
     "categories": [
       "Healthcare & Biotech"
@@ -18321,6 +21870,34 @@
       "mode": "greenhouse",
       "board_token": "papa"
     }
+  },
+  {
+    "name": "Parabilis Medicines",
+    "categories": [
+      "Healthcare & Biotech",
+      "Pharmaceuticals"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "parabilismed",
+      "use_embedded_job_urls": true
+    },
+    "website": "https://parabilismed.com/"
+  },
+  {
+    "name": "Paradev (formerly Superset)",
+    "categories": [
+      "AI & Machine Learning",
+      "Developer Tools"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "paradev",
+      "yc_company_id": 31222,
+      "list_url": "https://www.ycombinator.com/companies/paradev/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://paradev.com/"
   },
   {
     "name": "Paradigm",
@@ -18374,6 +21951,20 @@
     }
   },
   {
+    "name": "Parametric",
+    "categories": [
+      "Industrials & Manufacturing"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "parametric",
+      "yc_company_id": 30604,
+      "list_url": "https://www.ycombinator.com/companies/parametric/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.parametric.company/"
+  },
+  {
     "name": "Paramount",
     "categories": [
       "Media & Entertainment"
@@ -18417,6 +22008,22 @@
       "mode": "smartrecruiters",
       "smartrecruiters_company": "parmanenergy"
     }
+  },
+  {
+    "name": "Parsewise",
+    "categories": [
+      "AI & Machine Learning",
+      "FinTech & Payments",
+      "Insurance"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "parsewise",
+      "yc_company_id": 30453,
+      "list_url": "https://www.ycombinator.com/companies/parsewise/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.parsewise.ai/"
   },
   {
     "name": "Parsley Health",
@@ -18552,6 +22159,20 @@
     "interview": {
       "source": "Cloud 100"
     }
+  },
+  {
+    "name": "Pax Historia",
+    "categories": [
+      "AI & Machine Learning"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "pax-historia",
+      "yc_company_id": 31175,
+      "list_url": "https://www.ycombinator.com/companies/pax-historia/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.paxhistoria.co/"
   },
   {
     "name": "PayPal",
@@ -18704,6 +22325,21 @@
     ]
   },
   {
+    "name": "Pennant",
+    "categories": [
+      "AI & Machine Learning",
+      "FinTech & Payments"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "pennant",
+      "yc_company_id": 33048,
+      "list_url": "https://www.ycombinator.com/companies/pennant/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.getpennant.ai/"
+  },
+  {
     "name": "Pentair",
     "categories": [
       "Industrials & Manufacturing"
@@ -18733,6 +22369,22 @@
       "mode": "greenhouse",
       "board_token": "peregrinetechnologies"
     }
+  },
+  {
+    "name": "PerfectBit, Inc.",
+    "categories": [
+      "AI & Machine Learning",
+      "Industrials & Manufacturing",
+      "Robotics & Automation"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "perfectbit-inc",
+      "yc_company_id": 31333,
+      "list_url": "https://www.ycombinator.com/companies/perfectbit-inc/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://perfectbit.ai/"
   },
   {
     "name": "Periodic Labs",
@@ -18851,6 +22503,20 @@
     }
   },
   {
+    "name": "PgDog",
+    "categories": [
+      "Software & SaaS"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "pgdog",
+      "yc_company_id": 30448,
+      "list_url": "https://www.ycombinator.com/companies/pgdog/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://pgdog.dev/"
+  },
+  {
     "name": "Phantom",
     "categories": [
       "FinTech & Payments"
@@ -18882,6 +22548,18 @@
     "tags": [
       "Interview Friendly"
     ]
+  },
+  {
+    "name": "Phinity Labs",
+    "categories": [
+      "AI & Machine Learning",
+      "Semiconductors & Hardware"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "Phinitylabs"
+    },
+    "website": "https://www.phinity.ai/"
   },
   {
     "name": "Photoroom",
@@ -19184,6 +22862,21 @@
     ]
   },
   {
+    "name": "Plena Health",
+    "categories": [
+      "AI & Machine Learning",
+      "Healthcare & Biotech"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "plena-health",
+      "yc_company_id": 31493,
+      "list_url": "https://www.ycombinator.com/companies/plena-health/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.plena.health/"
+  },
+  {
     "name": "Pleo",
     "categories": [
       "Software & SaaS"
@@ -19203,6 +22896,42 @@
     ]
   },
   {
+    "name": "Plexe",
+    "categories": [
+      "AI & Machine Learning"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "plexe",
+      "yc_company_id": 30400,
+      "list_url": "https://www.ycombinator.com/companies/plexe/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://plexe.ai/"
+  },
+  {
+    "name": "Pliant",
+    "categories": [
+      "FinTech & Payments"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "pliant"
+    },
+    "website": "https://www.getpliant.com/en-us?set-country=us"
+  },
+  {
+    "name": "Ploy",
+    "categories": [
+      "Software & SaaS"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "ployai"
+    },
+    "website": "https://ploy.ai/"
+  },
+  {
     "name": "PlusAI",
     "categories": [
       "AI & Machine Learning"
@@ -19211,6 +22940,20 @@
       "mode": "lever",
       "lever_slug": "plus-2"
     }
+  },
+  {
+    "name": "Pluto",
+    "categories": [
+      "AI & Machine Learning"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "talentpluto",
+      "yc_company_id": 32526,
+      "list_url": "https://www.ycombinator.com/companies/talentpluto/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://talentpluto.com/"
   },
   {
     "name": "PNC",
@@ -19223,6 +22966,17 @@
     }
   },
   {
+    "name": "Pocket",
+    "categories": [
+      "Software & SaaS"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "pocket"
+    },
+    "website": "https://heypocket.com/pages/now"
+  },
+  {
     "name": "Podium",
     "categories": [
       "Ad Tech & MarTech",
@@ -19232,6 +22986,18 @@
       "mode": "greenhouse",
       "board_token": "podium81"
     }
+  },
+  {
+    "name": "Podium Automation",
+    "categories": [
+      "Industrials & Manufacturing",
+      "Robotics & Automation"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "podium-automation"
+    },
+    "website": "https://www.podiumautomation.com/"
   },
   {
     "name": "Point72",
@@ -19296,6 +23062,17 @@
       "mode": "ashby",
       "ashby_slug": "polymarket"
     }
+  },
+  {
+    "name": "Polymath",
+    "categories": [
+      "AI & Machine Learning"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "polymath"
+    },
+    "website": "https://polymathlabs.ai/"
   },
   {
     "name": "Pomelo Care",
@@ -19440,6 +23217,21 @@
     }
   },
   {
+    "name": "Prescience, Inc.",
+    "categories": [
+      "Healthcare & Biotech",
+      "Insurance"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "prescience-inc",
+      "yc_company_id": 31086,
+      "list_url": "https://www.ycombinator.com/companies/prescience-inc/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.getprescience.com/"
+  },
+  {
     "name": "Press Ganey",
     "categories": [
       "Data & Analytics",
@@ -19484,6 +23276,22 @@
       "mode": "ashby",
       "ashby_slug": "primer"
     }
+  },
+  {
+    "name": "PRINCEPS",
+    "categories": [
+      "AI & Machine Learning",
+      "FinTech & Payments",
+      "Insurance"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "princeps",
+      "yc_company_id": 33278,
+      "list_url": "https://www.ycombinator.com/companies/princeps/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.princeps.dev/"
   },
   {
     "name": "Princeton University",
@@ -19531,6 +23339,22 @@
       "mode": "workday",
       "list_url": "https://prismahealth.wd5.myworkdayjobs.com/prismahealthcorporate"
     }
+  },
+  {
+    "name": "Proception Inc",
+    "categories": [
+      "AI & Machine Learning",
+      "Industrials & Manufacturing",
+      "Robotics & Automation"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "proception-inc",
+      "yc_company_id": 30320,
+      "list_url": "https://www.ycombinator.com/companies/proception-inc/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.proception.ai/"
   },
   {
     "name": "Procter & Gamble",
@@ -19659,6 +23483,36 @@
       "mode": "workday",
       "list_url": "https://pros.wd5.myworkdayjobs.com/pros_careers"
     }
+  },
+  {
+    "name": "ProvenMetal",
+    "categories": [
+      "AI & Machine Learning",
+      "Industrials & Manufacturing"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "provenmetal",
+      "yc_company_id": 33017,
+      "list_url": "https://www.ycombinator.com/companies/provenmetal/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://provenmetal.com/"
+  },
+  {
+    "name": "Proximitty",
+    "categories": [
+      "AI & Machine Learning",
+      "FinTech & Payments"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "proximitty",
+      "yc_company_id": 31169,
+      "list_url": "https://www.ycombinator.com/companies/proximitty/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.proximitty.ai/"
   },
   {
     "name": "Prudential",
@@ -19844,6 +23698,20 @@
     }
   },
   {
+    "name": "QFEX",
+    "categories": [
+      "FinTech & Payments"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "qfex",
+      "yc_company_id": 30367,
+      "list_url": "https://www.ycombinator.com/companies/qfex/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.qfex.com/"
+  },
+  {
     "name": "Qonto",
     "categories": [
       "Finance & Banking",
@@ -19887,6 +23755,33 @@
       "fetch_experience_details": false
     },
     "note": "Official Eightfold PCSX feed verified from Qualcomm's careers site on 2026-08-05"
+  },
+  {
+    "name": "QualGent",
+    "categories": [
+      "AI & Machine Learning"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "qualgent",
+      "yc_company_id": 30496,
+      "list_url": "https://www.ycombinator.com/companies/qualgent/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.qualgent.ai/"
+  },
+  {
+    "name": "Qualitate",
+    "categories": [
+      "AI & Machine Learning",
+      "Data & Analytics",
+      "Investment & Asset Management"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "qualitate"
+    },
+    "website": "https://www.qualitate.io/"
   },
   {
     "name": "Qualtrics",
@@ -20016,6 +23911,18 @@
     }
   },
   {
+    "name": "Radar Labs",
+    "categories": [
+      "Data & Analytics",
+      "Software & SaaS"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "radar"
+    },
+    "website": "https://radar.com/"
+  },
+  {
     "name": "Radical AI",
     "categories": [
       "AI & Machine Learning"
@@ -20088,6 +23995,20 @@
     "tags": [
       "Interview Friendly"
     ]
+  },
+  {
+    "name": "Rainbrand",
+    "categories": [
+      "Software & SaaS"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "rainbrand",
+      "yc_company_id": 31293,
+      "list_url": "https://www.ycombinator.com/companies/rainbrand/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.rainbrand.com/"
   },
   {
     "name": "Raine Group",
@@ -20209,6 +24130,21 @@
     }
   },
   {
+    "name": "Rational",
+    "categories": [
+      "AI & Machine Learning",
+      "FinTech & Payments"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "rational",
+      "yc_company_id": 32622,
+      "list_url": "https://www.ycombinator.com/companies/rational/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://rational.to/"
+  },
+  {
     "name": "Raymond James",
     "categories": [
       "Finance & Banking",
@@ -20239,6 +24175,18 @@
       "mode": "workday",
       "list_url": "https://rbc.wd3.myworkdayjobs.com/RBCGLOBAL1"
     }
+  },
+  {
+    "name": "Reacher",
+    "categories": [
+      "Ad Tech & MarTech",
+      "AI & Machine Learning"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "reacher"
+    },
+    "website": "https://www.reacherapp.com/"
   },
   {
     "name": "Read AI",
@@ -20303,6 +24251,22 @@
     "tags": [
       "Interview Friendly"
     ]
+  },
+  {
+    "name": "Reason Machines",
+    "categories": [
+      "AI & Machine Learning",
+      "Cloud & Infrastructure",
+      "Developer Tools"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "reason-machines",
+      "yc_company_id": 31458,
+      "list_url": "https://www.ycombinator.com/companies/reason-machines/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://reasonmachines.com/"
   },
   {
     "name": "Recorded Future",
@@ -20549,6 +24513,19 @@
     ]
   },
   {
+    "name": "Relling",
+    "categories": [
+      "AI & Machine Learning",
+      "Industrials & Manufacturing",
+      "Robotics & Automation"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "Relling"
+    },
+    "website": "https://rellingsystems.com/"
+  },
+  {
     "name": "RELX",
     "categories": [
       "Data & Analytics",
@@ -20635,6 +24612,21 @@
       "mode": "greenhouse",
       "board_token": "renttherunway"
     }
+  },
+  {
+    "name": "Replicas",
+    "categories": [
+      "Cloud & Infrastructure",
+      "Developer Tools"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "replicas",
+      "yc_company_id": 31345,
+      "list_url": "https://www.ycombinator.com/companies/replicas/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://replicas.dev/"
   },
   {
     "name": "Replicate",
@@ -20813,6 +24805,20 @@
     }
   },
   {
+    "name": "Rex",
+    "categories": [
+      "AI & Machine Learning"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "rex-inc",
+      "yc_company_id": 32155,
+      "list_url": "https://www.ycombinator.com/companies/rex-inc/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.rex.inc/"
+  },
+  {
     "name": "Reynolds Consumer Products",
     "categories": [
       "Consumer Goods & Retail",
@@ -20976,6 +24982,20 @@
     }
   },
   {
+    "name": "RISA",
+    "categories": [
+      "AI & Machine Learning",
+      "Healthcare & Biotech"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "risalabs",
+      "use_hosted_job_urls": true,
+      "region": "eu"
+    },
+    "website": "https://www.risalabs.ai"
+  },
+  {
     "name": "Rite Aid",
     "categories": [
       "Consumer Goods & Retail",
@@ -21026,6 +25046,20 @@
       "mode": "lever",
       "lever_slug": "ro"
     }
+  },
+  {
+    "name": "Robby",
+    "categories": [
+      "AI & Machine Learning"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "robby",
+      "yc_company_id": 31201,
+      "list_url": "https://www.ycombinator.com/companies/robby/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.tryrobby.com/"
   },
   {
     "name": "Robinhood",
@@ -21205,6 +25239,22 @@
     }
   },
   {
+    "name": "Rovi Health",
+    "categories": [
+      "AI & Machine Learning",
+      "Healthcare & Biotech",
+      "Insurance"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "rovi-health",
+      "yc_company_id": 30977,
+      "list_url": "https://www.ycombinator.com/companies/rovi-health/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.rovi.health/"
+  },
+  {
     "name": "Royal Caribbean",
     "categories": [
       "Transportation & Mobility",
@@ -21255,6 +25305,21 @@
     }
   },
   {
+    "name": "Rudus",
+    "categories": [
+      "AI & Machine Learning",
+      "Real Estate & Construction"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "rudus",
+      "yc_company_id": 31346,
+      "list_url": "https://www.ycombinator.com/companies/rudus/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.rudus.ai/"
+  },
+  {
     "name": "Rula",
     "categories": [
       "Healthcare & Biotech"
@@ -21274,6 +25339,38 @@
       "mode": "ashby",
       "ashby_slug": "runpod"
     }
+  },
+  {
+    "name": "Runtime",
+    "categories": [
+      "AI & Machine Learning",
+      "FinTech & Payments"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "runtime",
+      "yc_company_id": 31518,
+      "list_url": "https://www.ycombinator.com/companies/runtime/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.runtm.com/"
+  },
+  {
+    "name": "Runtime.si",
+    "categories": [
+      "AI & Machine Learning",
+      "Cloud & Infrastructure",
+      "Industrials & Manufacturing",
+      "Robotics & Automation"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "runtimesi",
+      "yc_company_id": 34365,
+      "list_url": "https://www.ycombinator.com/companies/runtimesi/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://runtime.si/"
   },
   {
     "name": "Runway",
@@ -21534,6 +25631,19 @@
     ]
   },
   {
+    "name": "SalesPatriot",
+    "categories": [
+      "AI & Machine Learning",
+      "Industrials & Manufacturing",
+      "Logistics & Supply Chain"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "SalesPatriot"
+    },
+    "website": "https://salespatriot.com/"
+  },
+  {
     "name": "Salinas Valley Health",
     "categories": [
       "Healthcare & Biotech"
@@ -21542,6 +25652,22 @@
       "mode": "workday",
       "list_url": "https://salinasvalleyhealth.wd5.myworkdayjobs.com/salinasvalleyhealth"
     }
+  },
+  {
+    "name": "Salus",
+    "categories": [
+      "AI & Machine Learning",
+      "Cloud & Infrastructure",
+      "Developer Tools"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "salus",
+      "yc_company_id": 31147,
+      "list_url": "https://www.ycombinator.com/companies/salus/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.usesalus.ai/"
   },
   {
     "name": "Salvo Health",
@@ -21761,6 +25887,20 @@
     }
   },
   {
+    "name": "Sava Trust Company",
+    "categories": [
+      "FinTech & Payments"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "sava-trust-company",
+      "yc_company_id": 30964,
+      "list_url": "https://www.ycombinator.com/companies/sava-trust-company/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://savatrustcompany.com/"
+  },
+  {
     "name": "Savvy Wealth",
     "categories": [
       "FinTech & Payments",
@@ -21859,6 +25999,20 @@
     "note": "Current public employer source rechecked and restored at the owner's request (2026-10-24)."
   },
   {
+    "name": "screenpipe",
+    "categories": [
+      "AI & Machine Learning"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "screenpipe",
+      "yc_company_id": 32259,
+      "list_url": "https://www.ycombinator.com/companies/screenpipe/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://screenpipe.com/"
+  },
+  {
     "name": "Scribe",
     "categories": [
       "Software & SaaS"
@@ -21912,6 +26066,22 @@
       "mode": "ashby",
       "ashby_slug": "seconddinner"
     }
+  },
+  {
+    "name": "Seeing Systems",
+    "categories": [
+      "Aerospace & Defense",
+      "AI & Machine Learning",
+      "Industrials & Manufacturing"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "seeing-systems",
+      "yc_company_id": 31180,
+      "list_url": "https://www.ycombinator.com/companies/seeing-systems/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.seeing-systems.com/"
   },
   {
     "name": "Seesaw",
@@ -22043,6 +26213,18 @@
     }
   },
   {
+    "name": "Sereact",
+    "categories": [
+      "AI & Machine Learning",
+      "Robotics & Automation"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "sereact"
+    },
+    "website": "https://sereact.ai/"
+  },
+  {
     "name": "SerpApi",
     "categories": [
       "Developer Tools",
@@ -22064,6 +26246,18 @@
     "tags": [
       "Interview Friendly"
     ]
+  },
+  {
+    "name": "Serval",
+    "categories": [
+      "AI & Machine Learning",
+      "IT Services"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "serval"
+    },
+    "website": "https://www.serval.com/"
   },
   {
     "name": "Serve Robotics",
@@ -22100,6 +26294,35 @@
       "rounds": "4",
       "source": "Public knowledge"
     }
+  },
+  {
+    "name": "Servo7",
+    "categories": [
+      "AI & Machine Learning",
+      "Industrials & Manufacturing",
+      "Logistics & Supply Chain",
+      "Robotics & Automation"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "servo7",
+      "yc_company_id": 31224,
+      "list_url": "https://www.ycombinator.com/companies/servo7/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://servo7.com/"
+  },
+  {
+    "name": "SF Tensor",
+    "categories": [
+      "AI & Machine Learning",
+      "Cloud & Infrastructure"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "sf-tensor"
+    },
+    "website": "https://sf-tensor.com/"
   },
   {
     "name": "Sharp HealthCare",
@@ -22142,6 +26365,17 @@
       "mode": "workday",
       "list_url": "https://shelterinsurance.wd5.myworkdayjobs.com/careers"
     }
+  },
+  {
+    "name": "Shepherd",
+    "categories": [
+      "Insurance"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "shepherd"
+    },
+    "website": "https://www.shepherdinsurance.com/"
   },
   {
     "name": "Sherwin-Williams",
@@ -22249,6 +26483,20 @@
     "tags": [
       "Interview Friendly"
     ]
+  },
+  {
+    "name": "shortkit",
+    "categories": [
+      "Media & Entertainment"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "shortkit",
+      "yc_company_id": 31096,
+      "list_url": "https://www.ycombinator.com/companies/shortkit/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.shortkit.dev/"
   },
   {
     "name": "ShyftLabs",
@@ -22414,6 +26662,29 @@
     }
   },
   {
+    "name": "Sim",
+    "categories": [
+      "AI & Machine Learning"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "sim"
+    },
+    "website": "https://www.sim.ai:443/"
+  },
+  {
+    "name": "Simile",
+    "categories": [
+      "AI & Machine Learning",
+      "Data & Analytics"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "simile"
+    },
+    "website": "https://www.simile.com/"
+  },
+  {
     "name": "Simmons Bank",
     "categories": [
       "Finance & Banking"
@@ -22477,6 +26748,50 @@
     "interview": {
       "source": "Database target list"
     }
+  },
+  {
+    "name": "Sira",
+    "categories": [
+      "AI & Machine Learning"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "sira",
+      "yc_company_id": 30742,
+      "list_url": "https://www.ycombinator.com/companies/sira/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://sira.team/"
+  },
+  {
+    "name": "Sitefire",
+    "categories": [
+      "Ad Tech & MarTech",
+      "AI & Machine Learning"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "sitefire",
+      "yc_company_id": 31203,
+      "list_url": "https://www.ycombinator.com/companies/sitefire/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://sitefire.ai/"
+  },
+  {
+    "name": "Sixtyfour",
+    "categories": [
+      "AI & Machine Learning",
+      "Cloud & Infrastructure"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "sixtyfour",
+      "yc_company_id": 30464,
+      "list_url": "https://www.ycombinator.com/companies/sixtyfour/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.sixtyfour.ai/"
   },
   {
     "name": "Skechers",
@@ -22722,6 +27037,20 @@
     }
   },
   {
+    "name": "Socratix AI",
+    "categories": [
+      "AI & Machine Learning"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "socratix-ai",
+      "yc_company_id": 30726,
+      "list_url": "https://www.ycombinator.com/companies/socratix-ai/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://getsocratix.ai/"
+  },
+  {
     "name": "Socure",
     "categories": [
       "Cybersecurity",
@@ -22774,6 +27103,17 @@
       "mode": "smartrecruiters",
       "smartrecruiters_company": "solidigm"
     }
+  },
+  {
+    "name": "Solidroad",
+    "categories": [
+      "AI & Machine Learning"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "solidroad"
+    },
+    "website": "https://www.solidroad.com/"
   },
   {
     "name": "SOLV Energy",
@@ -22856,6 +27196,47 @@
       "board_token": "sonyinteractiveentertainmentglobal",
       "mode": "greenhouse"
     }
+  },
+  {
+    "name": "Soren",
+    "categories": [
+      "AI & Machine Learning"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "soren",
+      "yc_company_id": 30867,
+      "list_url": "https://www.ycombinator.com/companies/soren/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://soren-ai.com/"
+  },
+  {
+    "name": "Soria",
+    "categories": [
+      "AI & Machine Learning",
+      "FinTech & Payments",
+      "Healthcare & Biotech"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "soria",
+      "yc_company_id": 31464,
+      "list_url": "https://www.ycombinator.com/companies/soria/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.soriaanalytics.com/"
+  },
+  {
+    "name": "Soter Insure",
+    "categories": [
+      "Insurance"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "soterinsure"
+    },
+    "website": "https://www.soter.insure/"
   },
   {
     "name": "Sotera Health",
@@ -23014,6 +27395,21 @@
     }
   },
   {
+    "name": "Speko",
+    "categories": [
+      "AI & Machine Learning",
+      "Developer Tools"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "speko",
+      "yc_company_id": 32169,
+      "list_url": "https://www.ycombinator.com/companies/speko/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://speko.ai/?utm_source=ycombinator&utm_medium=profile"
+  },
+  {
     "name": "Spencer's and Spirit Halloween",
     "categories": [
       "Consumer Goods & Retail"
@@ -23022,6 +27418,19 @@
       "mode": "icims",
       "icims_slug": "https://careers-spencersandspirit.icims.com"
     }
+  },
+  {
+    "name": "Sphinx Defense",
+    "categories": [
+      "Aerospace & Defense",
+      "Space"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "sphinxdefense",
+      "use_hosted_job_urls": true
+    },
+    "website": "https://sphinxdefense.com/"
   },
   {
     "name": "Spice AI",
@@ -23034,6 +27443,20 @@
       "mode": "lever",
       "lever_slug": "spiceai"
     }
+  },
+  {
+    "name": "Spine",
+    "categories": [
+      "Insurance"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "spine",
+      "yc_company_id": 37236,
+      "list_url": "https://www.ycombinator.com/companies/spine/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.joinspine.ai/"
   },
   {
     "name": "Spine Media",
@@ -23059,6 +27482,21 @@
     "interview": {
       "source": "Large active employer"
     }
+  },
+  {
+    "name": "Splash Inc.",
+    "categories": [
+      "Cybersecurity",
+      "Industrials & Manufacturing"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "splash-inc",
+      "yc_company_id": 30194,
+      "list_url": "https://www.ycombinator.com/companies/splash-inc/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://splash9.com/"
   },
   {
     "name": "Splice",
@@ -23091,6 +27529,21 @@
       "mode": "lever",
       "lever_slug": "spotify"
     }
+  },
+  {
+    "name": "Spott",
+    "categories": [
+      "AI & Machine Learning",
+      "HR Tech"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "spott",
+      "yc_company_id": 30322,
+      "list_url": "https://www.ycombinator.com/companies/spott/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://spott.io/"
   },
   {
     "name": "Spreedly",
@@ -23268,6 +27721,20 @@
     }
   },
   {
+    "name": "Standout",
+    "categories": [
+      "HR Tech"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "standout",
+      "yc_company_id": 31402,
+      "list_url": "https://www.ycombinator.com/companies/standout/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://standout.work/"
+  },
+  {
     "name": "Stanford Medicine Children's Health",
     "categories": [
       "Healthcare & Biotech"
@@ -23308,6 +27775,18 @@
       "mode": "lever",
       "lever_slug": "stanleygroup"
     }
+  },
+  {
+    "name": "Starbridge",
+    "categories": [
+      "AI & Machine Learning",
+      "Software & SaaS"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "starbridge"
+    },
+    "website": "https://starbridge.ai/"
   },
   {
     "name": "Starbucks",
@@ -23438,6 +27917,18 @@
     }
   },
   {
+    "name": "Stilta",
+    "categories": [
+      "AI & Machine Learning",
+      "Legal Tech"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "stilta"
+    },
+    "website": "https://stilta.com/"
+  },
+  {
     "name": "Stitch Fix",
     "categories": [
       "E-commerce & Marketplace",
@@ -23447,6 +27938,22 @@
       "mode": "greenhouse",
       "board_token": "stitchfix"
     }
+  },
+  {
+    "name": "Stoa",
+    "categories": [
+      "AI & Machine Learning",
+      "Cloud & Infrastructure",
+      "FinTech & Payments"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "stoa",
+      "yc_company_id": 32225,
+      "list_url": "https://www.ycombinator.com/companies/stoa/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.stoaexchange.com/"
   },
   {
     "name": "StockX",
@@ -23511,6 +28018,18 @@
     }
   },
   {
+    "name": "Stream",
+    "categories": [
+      "Cloud & Infrastructure",
+      "Developer Tools"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "stream"
+    },
+    "website": "https://getstream.io/"
+  },
+  {
     "name": "Stride, Inc",
     "categories": [
       "EdTech",
@@ -23537,6 +28056,21 @@
       "rounds": "4-5",
       "source": "Public knowledge"
     }
+  },
+  {
+    "name": "Structured AI",
+    "categories": [
+      "AI & Machine Learning",
+      "Real Estate & Construction"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "structured-ai",
+      "yc_company_id": 30845,
+      "list_url": "https://www.ycombinator.com/companies/structured-ai/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://getstructured.ai/"
   },
   {
     "name": "STRV",
@@ -23585,6 +28119,18 @@
     }
   },
   {
+    "name": "Stuut",
+    "categories": [
+      "AI & Machine Learning",
+      "FinTech & Payments"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "stuut-ai"
+    },
+    "website": "https://www.stuut.ai/"
+  },
+  {
     "name": "Stytch",
     "categories": [
       "Cybersecurity",
@@ -23594,6 +28140,20 @@
       "mode": "ashby",
       "ashby_slug": "stytch"
     }
+  },
+  {
+    "name": "SubImage",
+    "categories": [
+      "Cybersecurity"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "subimage",
+      "yc_company_id": 30189,
+      "list_url": "https://www.ycombinator.com/companies/subimage/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.subimage.io:443/"
   },
   {
     "name": "Subject",
@@ -23751,6 +28311,21 @@
     }
   },
   {
+    "name": "Sunflower",
+    "categories": [
+      "AI & Machine Learning",
+      "Healthcare & Biotech"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "sunflower",
+      "yc_company_id": 30914,
+      "list_url": "https://www.ycombinator.com/companies/sunflower/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://sunflowerclinic.com/"
+  },
+  {
     "name": "Suno",
     "categories": [
       "AI & Machine Learning"
@@ -23794,6 +28369,22 @@
       "mode": "ashby",
       "ashby_slug": "super.com"
     }
+  },
+  {
+    "name": "Super Powers Mobility (SPM)",
+    "categories": [
+      "Cloud & Infrastructure",
+      "Energy",
+      "Industrials & Manufacturing"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "super-powers-mobility-spm",
+      "yc_company_id": 38094,
+      "list_url": "https://www.ycombinator.com/companies/super-powers-mobility-spm/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://spm.us/"
   },
   {
     "name": "supercell",
@@ -23863,6 +28454,18 @@
     ]
   },
   {
+    "name": "Sweep",
+    "categories": [
+      "Data & Analytics",
+      "Software & SaaS"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "sweep"
+    },
+    "website": "https://www.sweep.io/"
+  },
+  {
     "name": "Swiftly",
     "categories": [
       "Ad Tech & MarTech",
@@ -23906,6 +28509,19 @@
     }
   },
   {
+    "name": "Sygaldry Technologies",
+    "categories": [
+      "AI & Machine Learning",
+      "Cloud & Infrastructure",
+      "Industrials & Manufacturing"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "sygaldry-technologies"
+    },
+    "website": "https://sygaldry.com/"
+  },
+  {
     "name": "Symbotic",
     "categories": [
       "Industrials & Manufacturing",
@@ -23915,6 +28531,20 @@
       "mode": "workday",
       "list_url": "https://symbotic.wd504.myworkdayjobs.com/Symbotic"
     }
+  },
+  {
+    "name": "Synapse Semiconductor",
+    "categories": [
+      "Semiconductors & Hardware"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "synapse-semiconductor",
+      "yc_company_id": 32168,
+      "list_url": "https://www.ycombinator.com/companies/synapse-semiconductor/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.synapsesemi.org/"
   },
   {
     "name": "Synchrony",
@@ -24016,6 +28646,21 @@
     }
   },
   {
+    "name": "Synthetic Society",
+    "categories": [
+      "Ad Tech & MarTech",
+      "Media & Entertainment"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "synthetic-society",
+      "yc_company_id": 30520,
+      "list_url": "https://www.ycombinator.com/companies/synthetic-society/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://syntheticsociety.ai/"
+  },
+  {
     "name": "Sysco",
     "categories": [
       "Food & Beverage",
@@ -24056,6 +28701,20 @@
       "mode": "workday",
       "list_url": "https://troweprice.wd5.myworkdayjobs.com/TRowePrice"
     }
+  },
+  {
+    "name": "Taiga",
+    "categories": [
+      "Healthcare & Biotech"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "taiga",
+      "yc_company_id": 31418,
+      "list_url": "https://www.ycombinator.com/companies/taiga/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://taigabilling.com/"
   },
   {
     "name": "Tailscale",
@@ -24129,6 +28788,18 @@
     ]
   },
   {
+    "name": "Tandem Health",
+    "categories": [
+      "AI & Machine Learning",
+      "Healthcare & Biotech"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "tandem-health"
+    },
+    "website": "https://tandemhealth.ai/"
+  },
+  {
     "name": "Tanium",
     "categories": [
       "Cybersecurity",
@@ -24182,6 +28853,20 @@
       "mode": "workday",
       "list_url": "https://target.wd5.myworkdayjobs.com/targetcareers"
     }
+  },
+  {
+    "name": "Tasklet",
+    "categories": [
+      "Software & SaaS"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "tasklet-2",
+      "yc_company_id": 31470,
+      "list_url": "https://www.ycombinator.com/companies/tasklet-2/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://tasklet.ai/"
   },
   {
     "name": "Taskrabbit",
@@ -24379,6 +29064,21 @@
       "mode": "oraclecloud",
       "site": "CX_1001"
     }
+  },
+  {
+    "name": "Tenor",
+    "categories": [
+      "AI & Machine Learning",
+      "Cloud & Infrastructure"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "tenor",
+      "yc_company_id": 32627,
+      "list_url": "https://www.ycombinator.com/companies/tenor/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://heytenor.com/"
   },
   {
     "name": "Tenstorrent",
@@ -24665,6 +29365,20 @@
     ]
   },
   {
+    "name": "The Prompting Company",
+    "categories": [
+      "AI & Machine Learning"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "the-prompting-company",
+      "yc_company_id": 30607,
+      "list_url": "https://www.ycombinator.com/companies/the-prompting-company/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://promptingcompany.com/"
+  },
+  {
     "name": "The RealReal",
     "categories": [
       "E-commerce & Marketplace",
@@ -24782,6 +29496,20 @@
     "tags": [
       "LinkedIn Top Startups 2025"
     ]
+  },
+  {
+    "name": "Thirdlayer",
+    "categories": [
+      "AI & Machine Learning"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "thirdlayer",
+      "yc_company_id": 30351,
+      "list_url": "https://www.ycombinator.com/companies/thirdlayer/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.thirdlayer.inc/"
   },
   {
     "name": "Thomson Reuters",
@@ -25092,6 +29820,35 @@
     }
   },
   {
+    "name": "Torus",
+    "categories": [
+      "AI & Machine Learning",
+      "Cloud & Infrastructure"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "torus",
+      "yc_company_id": 31858,
+      "list_url": "https://www.ycombinator.com/companies/torus/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.usetorus.com/"
+  },
+  {
+    "name": "Totalis",
+    "categories": [
+      "FinTech & Payments"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "totalis",
+      "yc_company_id": 31344,
+      "list_url": "https://www.ycombinator.com/companies/totalis/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.totalis.trade/"
+  },
+  {
     "name": "Tower Research",
     "categories": [
       "Finance & Banking",
@@ -25148,6 +29905,22 @@
     }
   },
   {
+    "name": "TraceRoot.AI",
+    "categories": [
+      "AI & Machine Learning",
+      "Cloud & Infrastructure",
+      "Developer Tools"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "traceroot-ai",
+      "yc_company_id": 30610,
+      "list_url": "https://www.ycombinator.com/companies/traceroot-ai/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://traceroot.ai/"
+  },
+  {
     "name": "Tractor Supply",
     "categories": [
       "Consumer Goods & Retail"
@@ -25192,6 +29965,33 @@
     ]
   },
   {
+    "name": "TrainLoop",
+    "categories": [
+      "AI & Machine Learning",
+      "Developer Tools"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "trainloop",
+      "yc_company_id": 30350,
+      "list_url": "https://www.ycombinator.com/companies/trainloop/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.trainloop.ai/"
+  },
+  {
+    "name": "Trajectory",
+    "categories": [
+      "AI & Machine Learning",
+      "Research"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "trajectory"
+    },
+    "website": "https://www.trajectory.ai/"
+  },
+  {
     "name": "Trane Technologies",
     "categories": [
       "Industrials & Manufacturing"
@@ -25232,6 +30032,21 @@
     }
   },
   {
+    "name": "Trata",
+    "categories": [
+      "AI & Machine Learning",
+      "FinTech & Payments"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "trata",
+      "yc_company_id": 30274,
+      "list_url": "https://www.ycombinator.com/companies/trata/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.trata.com/"
+  },
+  {
     "name": "Travelers",
     "categories": [
       "Insurance"
@@ -25251,6 +30066,18 @@
       "mode": "workday",
       "list_url": "https://travere.wd1.myworkdayjobs.com/traverecareers"
     }
+  },
+  {
+    "name": "Traversal",
+    "categories": [
+      "AI & Machine Learning",
+      "Developer Tools"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "traversal"
+    },
+    "website": "https://www.traversal.com/"
   },
   {
     "name": "Trexon",
@@ -25450,6 +30277,20 @@
     ]
   },
   {
+    "name": "TryNearby",
+    "categories": [
+      "Ad Tech & MarTech"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "trynearby",
+      "yc_company_id": 32815,
+      "list_url": "https://www.ycombinator.com/companies/trynearby/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://trynearby.com/"
+  },
+  {
     "name": "TSC",
     "categories": [
       "Aerospace & Defense",
@@ -25459,6 +30300,21 @@
       "mode": "workday",
       "list_url": "https://tsc.wd12.myworkdayjobs.com/TSC-Careers"
     }
+  },
+  {
+    "name": "Tsenta",
+    "categories": [
+      "AI & Machine Learning",
+      "HR Tech"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "tsenta",
+      "yc_company_id": 31259,
+      "list_url": "https://www.ycombinator.com/companies/tsenta/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://tsenta.com/"
   },
   {
     "name": "TSMC",
@@ -26279,6 +31135,34 @@
     }
   },
   {
+    "name": "Unlimited Industries",
+    "categories": [
+      "Industrials & Manufacturing",
+      "Software & SaaS"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "unlimitedindustries"
+    },
+    "website": "https://www.unlimitedindustries.com/"
+  },
+  {
+    "name": "Uno Wallet",
+    "categories": [
+      "AI & Machine Learning",
+      "Cloud & Infrastructure",
+      "FinTech & Payments"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "uno-wallet",
+      "yc_company_id": 31526,
+      "list_url": "https://www.ycombinator.com/companies/uno-wallet/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://myunowallet.com/"
+  },
+  {
     "name": "Unstructured",
     "categories": [
       "Software & SaaS"
@@ -26339,6 +31223,32 @@
     "tags": [
       "Interview Friendly"
     ]
+  },
+  {
+    "name": "Uplane",
+    "categories": [
+      "Ad Tech & MarTech",
+      "AI & Machine Learning"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "uplane"
+    },
+    "website": "https://uplane.com/"
+  },
+  {
+    "name": "Uplift AI",
+    "categories": [
+      "AI & Machine Learning"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "uplift-ai",
+      "yc_company_id": 30806,
+      "list_url": "https://www.ycombinator.com/companies/uplift-ai/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://upliftai.org/"
   },
   {
     "name": "UPS",
@@ -26624,6 +31534,21 @@
     }
   },
   {
+    "name": "Vela",
+    "categories": [
+      "AI & Machine Learning",
+      "HR Tech"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "vela",
+      "yc_company_id": 31264,
+      "list_url": "https://www.ycombinator.com/companies/vela/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://tryvela.ai/"
+  },
+  {
     "name": "Velir",
     "categories": [
       "Consulting",
@@ -26645,6 +31570,21 @@
     ]
   },
   {
+    "name": "Ventura",
+    "categories": [
+      "AI & Machine Learning",
+      "Industrials & Manufacturing"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "ventura",
+      "yc_company_id": 31156,
+      "list_url": "https://www.ycombinator.com/companies/ventura/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://ventura.ai/"
+  },
+  {
     "name": "Veolia",
     "categories": [
       "Energy",
@@ -26654,6 +31594,18 @@
       "mode": "smartrecruiters",
       "smartrecruiters_company": "VeoliaEnvironnementSA"
     }
+  },
+  {
+    "name": "Vera Health",
+    "categories": [
+      "AI & Machine Learning",
+      "Healthcare & Biotech"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "verahealth"
+    },
+    "website": "https://www.verahealth.ai/home"
   },
   {
     "name": "Veradigm",
@@ -26733,6 +31685,18 @@
     }
   },
   {
+    "name": "Veritus",
+    "categories": [
+      "AI & Machine Learning",
+      "FinTech & Payments"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "veritus"
+    },
+    "website": "https://veritus.com/"
+  },
+  {
     "name": "Verizon",
     "categories": [
       "Telecom"
@@ -26752,6 +31716,37 @@
       "mode": "greenhouse",
       "board_token": "verkada"
     }
+  },
+  {
+    "name": "Verne Robotics",
+    "categories": [
+      "AI & Machine Learning",
+      "Industrials & Manufacturing",
+      "Robotics & Automation"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "verne-robotics",
+      "yc_company_id": 30624,
+      "list_url": "https://www.ycombinator.com/companies/verne-robotics/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://vernerobotics.com/"
+  },
+  {
+    "name": "Vernius Systems, Inc.",
+    "categories": [
+      "Aerospace & Defense",
+      "Industrials & Manufacturing"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "vernius-systems-inc",
+      "yc_company_id": 33319,
+      "list_url": "https://www.ycombinator.com/companies/vernius-systems-inc/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.vernius.systems/"
   },
   {
     "name": "Vertex Pharmaceuticals",
@@ -26796,6 +31791,22 @@
     "tags": [
       "Interview Friendly"
     ]
+  },
+  {
+    "name": "Vesence",
+    "categories": [
+      "AI & Machine Learning",
+      "FinTech & Payments",
+      "Legal Tech"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "vesence",
+      "yc_company_id": 30503,
+      "list_url": "https://www.ycombinator.com/companies/vesence/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.vesence.com/"
   },
   {
     "name": "Vial",
@@ -26907,6 +31918,21 @@
     }
   },
   {
+    "name": "Visibl Semiconductors",
+    "categories": [
+      "AI & Machine Learning",
+      "Semiconductors & Hardware"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "visibl-semiconductors",
+      "yc_company_id": 31182,
+      "list_url": "https://www.ycombinator.com/companies/visibl-semiconductors/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.visiblsemi.com/"
+  },
+  {
     "name": "Vistra",
     "categories": [
       "Energy",
@@ -26962,6 +31988,35 @@
     }
   },
   {
+    "name": "VoiceOS",
+    "categories": [
+      "Software & SaaS"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "voiceos",
+      "yc_company_id": 30460,
+      "list_url": "https://www.ycombinator.com/companies/voiceos/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.voiceos.com/"
+  },
+  {
+    "name": "Volaren",
+    "categories": [
+      "AI & Machine Learning",
+      "FinTech & Payments"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "volaren",
+      "yc_company_id": 37203,
+      "list_url": "https://www.ycombinator.com/companies/volaren/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.volaren.ai/"
+  },
+  {
     "name": "Voleon",
     "categories": [
       "Finance & Banking",
@@ -26981,6 +32036,21 @@
       "mode": "lever",
       "lever_slug": "voltalabs"
     }
+  },
+  {
+    "name": "Voltair",
+    "categories": [
+      "Aerospace & Defense",
+      "Industrials & Manufacturing"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "voltair",
+      "yc_company_id": 31003,
+      "list_url": "https://www.ycombinator.com/companies/voltair/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.voltairlabs.com/"
   },
   {
     "name": "Vox Media, LLC",
@@ -27003,6 +32073,61 @@
     }
   },
   {
+    "name": "Voyager",
+    "categories": [
+      "Ad Tech & MarTech",
+      "Media & Entertainment"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "voyager",
+      "yc_company_id": 34134,
+      "list_url": "https://www.ycombinator.com/companies/voyager/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://voyager.so/"
+  },
+  {
+    "name": "VOYGR",
+    "categories": [
+      "Software & SaaS"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "voygr",
+      "yc_company_id": 31271,
+      "list_url": "https://www.ycombinator.com/companies/voygr/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://voygr.tech/"
+  },
+  {
+    "name": "Vyra",
+    "categories": [
+      "Media & Entertainment"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "vyra",
+      "yc_company_id": 36411,
+      "list_url": "https://www.ycombinator.com/companies/vyra/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.usevyra.com/"
+  },
+  {
+    "name": "VÆRIDION",
+    "categories": [
+      "Aerospace & Defense",
+      "Climate Tech"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "vaeridion"
+    },
+    "website": "https://vaeridion.com/"
+  },
+  {
     "name": "Waabi",
     "categories": [
       "Autonomous Vehicles"
@@ -27021,6 +32146,23 @@
       "mode": "smartrecruiters",
       "smartrecruiters_company": "wabashvalleypoweralliance"
     }
+  },
+  {
+    "name": "Waddle Labs",
+    "categories": [
+      "AI & Machine Learning",
+      "Developer Tools",
+      "Industrials & Manufacturing",
+      "Robotics & Automation"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "waddle-labs",
+      "yc_company_id": 31047,
+      "list_url": "https://www.ycombinator.com/companies/waddle-labs/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.waddlelabs.ai/"
   },
   {
     "name": "WaitWhat",
@@ -27053,6 +32195,22 @@
     }
   },
   {
+    "name": "Wardstone",
+    "categories": [
+      "Aerospace & Defense",
+      "Industrials & Manufacturing",
+      "Space"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "wardstone",
+      "yc_company_id": 30881,
+      "list_url": "https://www.ycombinator.com/companies/wardstone/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://wardstone.space"
+  },
+  {
     "name": "Warner Bros. Discovery",
     "categories": [
       "Media & Entertainment"
@@ -27071,6 +32229,18 @@
       "mode": "ashby",
       "ashby_slug": "warp"
     }
+  },
+  {
+    "name": "Wasabi Technologies",
+    "categories": [
+      "Cloud & Infrastructure"
+    ],
+    "scrape": {
+      "mode": "greenhouse",
+      "board_token": "wasabi",
+      "use_hosted_job_urls": true
+    },
+    "website": "https://wasabi.com/"
   },
   {
     "name": "Washington University in St. Louis",
@@ -27298,6 +32468,21 @@
     }
   },
   {
+    "name": "Wedge",
+    "categories": [
+      "AI & Machine Learning",
+      "Healthcare & Biotech"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "wedge",
+      "yc_company_id": 30668,
+      "list_url": "https://www.ycombinator.com/companies/wedge/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://wedge.health/"
+  },
+  {
     "name": "Weedmaps",
     "categories": [
       "E-commerce & Marketplace"
@@ -27455,6 +32640,17 @@
     }
   },
   {
+    "name": "Whop",
+    "categories": [
+      "E-commerce & Marketplace"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "whop"
+    },
+    "website": "https://whop.com/"
+  },
+  {
     "name": "Wikimedia Foundation",
     "categories": [
       "Consumer Tech",
@@ -27495,6 +32691,21 @@
       "mode": "workday",
       "list_url": "https://wiley.wd1.myworkdayjobs.com/wiley_careers"
     }
+  },
+  {
+    "name": "Wingman Law",
+    "categories": [
+      "AI & Machine Learning",
+      "Legal Tech"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "wingman-law",
+      "yc_company_id": 31198,
+      "list_url": "https://www.ycombinator.com/companies/wingman-law/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.wingmanlaw.com/"
   },
   {
     "name": "Wise",
@@ -27838,6 +33049,18 @@
     ]
   },
   {
+    "name": "yeet",
+    "categories": [
+      "Cloud & Infrastructure",
+      "Developer Tools"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "yeet"
+    },
+    "website": "https://yeet.cx/"
+  },
+  {
     "name": "Yelp",
     "categories": [
       "Consumer Tech",
@@ -27884,6 +33107,21 @@
     ]
   },
   {
+    "name": "YouShift",
+    "categories": [
+      "AI & Machine Learning",
+      "Healthcare & Biotech"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "youshift",
+      "yc_company_id": 29790,
+      "list_url": "https://www.ycombinator.com/companies/youshift/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://youshift.com/"
+  },
+  {
     "name": "Yum Brands",
     "categories": [
       "Consumer Goods & Retail",
@@ -27909,6 +33147,21 @@
     }
   },
   {
+    "name": "Zalos",
+    "categories": [
+      "AI & Machine Learning",
+      "FinTech & Payments"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "zalos",
+      "yc_company_id": 30945,
+      "list_url": "https://www.ycombinator.com/companies/zalos/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.zalos.ai/"
+  },
+  {
     "name": "Zapier",
     "categories": [
       "Developer Tools",
@@ -27927,6 +33180,21 @@
     "tags": [
       "Interview Friendly"
     ]
+  },
+  {
+    "name": "Zatanna",
+    "categories": [
+      "AI & Machine Learning",
+      "Cloud & Infrastructure"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "zatanna",
+      "yc_company_id": 31131,
+      "list_url": "https://www.ycombinator.com/companies/zatanna/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.zatanna.ai/"
   },
   {
     "name": "Zealand Pharma",
@@ -27948,6 +33216,18 @@
       "mode": "workday",
       "list_url": "https://zebra.wd501.myworkdayjobs.com/Zebra_careers"
     }
+  },
+  {
+    "name": "Zefr",
+    "categories": [
+      "Ad Tech & MarTech",
+      "AI & Machine Learning"
+    ],
+    "scrape": {
+      "mode": "ashby",
+      "ashby_slug": "zefr"
+    },
+    "website": "https://zefr.com/"
   },
   {
     "name": "Zeiss Group",
@@ -28090,6 +33370,21 @@
     }
   },
   {
+    "name": "Zolvo",
+    "categories": [
+      "AI & Machine Learning",
+      "FinTech & Payments"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "zolvo",
+      "yc_company_id": 31385,
+      "list_url": "https://www.ycombinator.com/companies/zolvo/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://zolvo.com/"
+  },
+  {
     "name": "Zone 5 Technologies",
     "categories": [
       "Software & SaaS"
@@ -28209,6 +33504,20 @@
       "mode": "greenhouse",
       "board_token": "zwift"
     }
+  },
+  {
+    "name": "Zymbly",
+    "categories": [
+      "Software & SaaS"
+    ],
+    "scrape": {
+      "mode": "ycombinator",
+      "yc_slug": "zymbly",
+      "yc_company_id": 31278,
+      "list_url": "https://www.ycombinator.com/companies/zymbly/jobs",
+      "allow_empty_full_scan": true
+    },
+    "website": "https://www.zymbly.com/"
   },
   {
     "name": "Zynga",
