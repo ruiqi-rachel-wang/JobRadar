@@ -11,6 +11,9 @@ The November 5, 2026 expansion adds 383 verified employers and 2,841 job
 listings, bringing the catalog to 2,605 companies. See the
 [company review and validation](docs/company_expansion_2026-11-05/README.md).
 
+Use **Attributes → Y Combinator** to browse verified YC employers and their jobs.
+See the [YC membership evidence](docs/ycombinator_tag_2026-11-06/README.md).
+
 ## OpenAI Build Week 2026
 
 JobDrop is an existing project that was meaningfully extended during the Build

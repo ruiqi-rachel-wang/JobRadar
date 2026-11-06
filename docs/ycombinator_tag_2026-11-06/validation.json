@@ -1,0 +1,45 @@
+{
+  "checked_on": "2026-11-06",
+  "timezone": "America/New_York",
+  "baseline_commit": "0e33684a6e072bb4aed7e1a0e595293166e5fe90",
+  "tag": "Y Combinator",
+  "catalog_companies": 2605,
+  "tagged_companies": 444,
+  "public_tagged_companies": 440,
+  "verification": {
+    "primary_profile_checks_reused": 296,
+    "other_employer_identities_verified": 148,
+    "members_with_native_yc_collector": 248
+  },
+  "preserved": {
+    "company_count": true,
+    "industries": true,
+    "job_sources": true,
+    "other_tags": true
+  },
+  "tests": {
+    "command": "python -m unittest tests.test_company_taxonomy tests.test_large_company_search -q",
+    "passed": 12,
+    "result": "OK"
+  },
+  "live_api": {
+    "catalog_companies": 2605,
+    "tagged_companies": 444,
+    "public_tagged_companies": 440,
+    "api_sample_jobs": 500,
+    "all_sample_jobs_match_tag": true,
+    "established_and_native_collectors_verified": true,
+    "same_named_non_yc_employers_excluded": true,
+    "conflicting_company_filter_returns_no_jobs": true,
+    "runtime_hash": "92e360ec84239ca1dc8e2c8e17a78f4956152fd149ccdf08256ffd92137e459b"
+  },
+  "live_browser": {
+    "tag_button_visible": true,
+    "public_tagged_companies": 440,
+    "sidebar_matches_tag": true,
+    "api_http_status": 200,
+    "sample_jobs": 100,
+    "all_displayed_jobs_match_yc_tag": true,
+    "javascript_errors": []
+  }
+}

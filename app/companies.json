@@ -35,7 +35,10 @@
       "list_url": "https://www.ycombinator.com/companies/10x/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.10xdental.com/"
+    "website": "https://www.10xdental.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "10x Genomics",
@@ -61,7 +64,10 @@
       "list_url": "https://www.ycombinator.com/companies/10x-science/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://10xscience.com/"
+    "website": "https://10xscience.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "160over90",
@@ -193,7 +199,10 @@
       "mode": "ashby",
       "ashby_slug": "9-mothers"
     },
-    "website": "https://9mothers.com/"
+    "website": "https://9mothers.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "A+E Networks",
@@ -459,7 +468,10 @@
       "list_url": "https://www.ycombinator.com/companies/adam/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://adam.new/"
+    "website": "https://adam.new/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Adaptional",
@@ -474,7 +486,10 @@
       "list_url": "https://www.ycombinator.com/companies/adaptional/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.adaptional.com/"
+    "website": "https://www.adaptional.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Addepar",
@@ -501,7 +516,10 @@
       "list_url": "https://www.ycombinator.com/companies/adentris/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.adentris.com/"
+    "website": "https://www.adentris.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Adialante",
@@ -515,7 +533,10 @@
       "list_url": "https://www.ycombinator.com/companies/adialante/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://adialante.com/"
+    "website": "https://adialante.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Adidas",
@@ -679,7 +700,10 @@
       "list_url": "https://www.ycombinator.com/companies/aemon/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://aemon.ai/"
+    "website": "https://aemon.ai/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Aerospace Corporation",
@@ -763,7 +787,10 @@
       "mode": "ashby",
       "ashby_slug": "AfterQuery"
     },
-    "website": "https://www.afterquery.com/"
+    "website": "https://www.afterquery.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "AGC Biologics",
@@ -805,7 +832,10 @@
       "mode": "ashby",
       "ashby_slug": "AgentMail"
     },
-    "website": "https://www.agentmail.to/"
+    "website": "https://www.agentmail.to/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "AgentPhone",
@@ -819,7 +849,10 @@
       "list_url": "https://www.ycombinator.com/companies/agentphone/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://agentphone.ai/"
+    "website": "https://agentphone.ai/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Agilent",
@@ -996,7 +1029,10 @@
       "difficulty": "hard",
       "rounds": "5-6",
       "source": "Public knowledge"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Airbus",
@@ -1019,7 +1055,10 @@
     },
     "interview": {
       "source": "Cloud 100"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Aircall",
@@ -1109,7 +1148,10 @@
       "list_url": "https://www.ycombinator.com/companies/aktoria-robotics/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://aktoria.com/"
+    "website": "https://aktoria.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Akuna Capital",
@@ -1191,7 +1233,10 @@
       "list_url": "https://www.ycombinator.com/companies/alder/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://meetalder.com/"
+    "website": "https://meetalder.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Aledade",
@@ -1234,7 +1279,8 @@
       "locations": "Paris, France / San Francisco, CA"
     },
     "tags": [
-      "Interview Friendly"
+      "Interview Friendly",
+      "Y Combinator"
     ]
   },
   {
@@ -1259,7 +1305,10 @@
       "list_url": "https://www.ycombinator.com/companies/alkali/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.alkali.engineering/"
+    "website": "https://www.alkali.engineering/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Allbirds",
@@ -1302,7 +1351,10 @@
       "list_url": "https://www.ycombinator.com/companies/allia-health/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://allia.health/"
+    "website": "https://allia.health/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Alliant Energy",
@@ -1393,7 +1445,10 @@
       "list_url": "https://www.ycombinator.com/companies/almond-2/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.almond.bot/"
+    "website": "https://www.almond.bot/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Alnylam Pharmaceuticals",
@@ -1518,7 +1573,10 @@
       "list_url": "https://www.ycombinator.com/companies/altur/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.altur.io/en"
+    "website": "https://www.altur.io/en",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "AMAROK Security",
@@ -1570,7 +1628,10 @@
       "list_url": "https://www.ycombinator.com/companies/amboras/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.amboras.com/"
+    "website": "https://www.amboras.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Ambral",
@@ -1581,7 +1642,10 @@
       "mode": "ashby",
       "ashby_slug": "Ambral"
     },
-    "website": "https://www.ambral.com/"
+    "website": "https://www.ambral.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Amcor",
@@ -1733,7 +1797,10 @@
     "scrape": {
       "mode": "ashby",
       "ashby_slug": "amplitude"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Anagram Therapeutics",
@@ -1898,7 +1965,10 @@
       "mode": "ashby",
       "ashby_slug": "answerthis"
     },
-    "website": "https://answerthis.io/"
+    "website": "https://answerthis.io/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Antares Therapeutics",
@@ -1967,7 +2037,10 @@
       "list_url": "https://www.ycombinator.com/companies/antigen/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://antigen.sh/"
+    "website": "https://antigen.sh/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Antithesis",
@@ -2068,7 +2141,10 @@
     "scrape": {
       "mode": "greenhouse",
       "board_token": "apolloio"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "AppFolio",
@@ -2239,7 +2315,10 @@
       "list_url": "https://www.ycombinator.com/companies/aquashield/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://aquashieldai.com/"
+    "website": "https://aquashieldai.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Aquatic Capital Management",
@@ -2278,7 +2357,10 @@
       "list_url": "https://www.ycombinator.com/companies/aravolta/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.aravolta.com/"
+    "website": "https://www.aravolta.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "ARB Interactive",
@@ -2479,7 +2561,10 @@
       "list_url": "https://www.ycombinator.com/companies/armature/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://armature.tech/"
+    "website": "https://armature.tech/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Armis",
@@ -2526,7 +2611,10 @@
     "scrape": {
       "mode": "lever",
       "lever_slug": "arraylabs.io"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Arrowstreet Capital",
@@ -2585,7 +2673,10 @@
       "list_url": "https://www.ycombinator.com/companies/artifact-2/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.artifact.engineer/"
+    "website": "https://www.artifact.engineer/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Artisan",
@@ -2598,7 +2689,8 @@
       "ashby_slug": "artisan"
     },
     "tags": [
-      "LinkedIn Top Startups 2025"
+      "LinkedIn Top Startups 2025",
+      "Y Combinator"
     ]
   },
   {
@@ -2653,7 +2745,10 @@
       "list_url": "https://www.ycombinator.com/companies/asendia-ai/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://asendia.ai/"
+    "website": "https://asendia.ai/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Aseon Labs",
@@ -2668,7 +2763,10 @@
       "list_url": "https://www.ycombinator.com/companies/aseon-labs/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://aseon.com/"
+    "website": "https://aseon.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Ashby",
@@ -2680,7 +2778,10 @@
       "mode": "html",
       "list_url": "https://www.ashbyhq.com/careers",
       "include": "www.ashbyhq.com"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Aside",
@@ -2694,7 +2795,10 @@
       "list_url": "https://www.ycombinator.com/companies/aside/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://aside.com/"
+    "website": "https://aside.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "ASML",
@@ -2720,7 +2824,10 @@
       "list_url": "https://www.ycombinator.com/companies/aspect-inc/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://aspect.inc/"
+    "website": "https://aspect.inc/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Aspora",
@@ -2739,7 +2846,8 @@
       "locations": "Bangalore, India"
     },
     "tags": [
-      "Interview Friendly"
+      "Interview Friendly",
+      "Y Combinator"
     ]
   },
   {
@@ -2762,7 +2870,10 @@
     "scrape": {
       "mode": "greenhouse",
       "board_token": "assemblyai"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Associated Bank",
@@ -2832,7 +2943,10 @@
       "list_url": "https://www.ycombinator.com/companies/astraea/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.tryastraea.com/"
+    "website": "https://www.tryastraea.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Astranis",
@@ -2850,7 +2964,8 @@
       "source_url": "https://www.astranis.com/careers"
     },
     "tags": [
-      "Interview Friendly"
+      "Interview Friendly",
+      "Y Combinator"
     ]
   },
   {
@@ -2917,7 +3032,10 @@
       "mode": "ashby",
       "ashby_slug": "athena-hq"
     },
-    "website": "https://athenahq.ai/"
+    "website": "https://athenahq.ai/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Atlassian",
@@ -2957,7 +3075,10 @@
       "list_url": "https://www.ycombinator.com/companies/atrisa/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://atrisa.ai/"
+    "website": "https://atrisa.ai/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Attentive",
@@ -2979,7 +3100,10 @@
     "scrape": {
       "mode": "ashby",
       "ashby_slug": "auctor"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Audible",
@@ -3006,7 +3130,10 @@
       "list_url": "https://www.ycombinator.com/companies/audun/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://audun.co/"
+    "website": "https://audun.co/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Aura Frames",
@@ -3125,7 +3252,10 @@
       "list_url": "https://www.ycombinator.com/companies/autostep/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.autostep.ai/"
+    "website": "https://www.autostep.ai/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "AutoZone",
@@ -3154,7 +3284,10 @@
       "list_url": "https://www.ycombinator.com/companies/autumn-ai/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.autumn.ai/"
+    "website": "https://www.autumn.ai/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Ava Labs",
@@ -3201,7 +3334,10 @@
       "mode": "ashby",
       "ashby_slug": "avallon"
     },
-    "website": "https://www.avallon.ai/"
+    "website": "https://www.avallon.ai/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "AVANCO GmbH",
@@ -3237,7 +3373,10 @@
       "mode": "ashby",
       "ashby_slug": "avent-industrial-inc"
     },
-    "website": "https://www.aventindustrial.com/"
+    "website": "https://www.aventindustrial.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Aviator",
@@ -3259,7 +3398,8 @@
       "source_url": "https://www.aviator.co/careers"
     },
     "tags": [
-      "Interview Friendly"
+      "Interview Friendly",
+      "Y Combinator"
     ],
     "note": "Source replaced and verified with live job records on 2026-07-21"
   },
@@ -3437,7 +3577,10 @@
       "list_url": "https://www.ycombinator.com/companies/getbalance/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://getbalance.ai/"
+    "website": "https://getbalance.ai/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Balyasny Asset Management",
@@ -3626,7 +3769,10 @@
       "list_url": "https://www.ycombinator.com/companies/bayworks/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://bayworks.app/"
+    "website": "https://bayworks.app/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "BD",
@@ -3739,7 +3885,10 @@
     "scrape": {
       "mode": "ashby",
       "ashby_slug": "benchling"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Bendyworks",
@@ -3805,7 +3954,10 @@
       "list_url": "https://www.ycombinator.com/companies/besimple-ai/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://besimple.ai/"
+    "website": "https://besimple.ai/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Best Buy",
@@ -3920,7 +4072,10 @@
       "list_url": "https://www.ycombinator.com/companies/beyond-reach-labs/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.beyondreachlabs.com/"
+    "website": "https://www.beyondreachlabs.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Beyondsoft Consulting",
@@ -4008,7 +4163,10 @@
       "list_url": "https://www.ycombinator.com/companies/bild-ai/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://d8.bild.ai/division-8"
+    "website": "https://d8.bild.ai/division-8",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "BILL Holdings",
@@ -4028,7 +4186,10 @@
     "scrape": {
       "mode": "greenhouse",
       "board_token": "billiontoone"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Bilt Rewards",
@@ -4142,7 +4303,10 @@
       "list_url": "https://www.ycombinator.com/companies/biostack-platforms/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.getbiostack.com/"
+    "website": "https://www.getbiostack.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Bitpanda",
@@ -4393,7 +4557,10 @@
       "list_url": "https://www.ycombinator.com/companies/bloomy/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.bloomylearning.com/"
+    "website": "https://www.bloomylearning.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Blue",
@@ -4408,7 +4575,10 @@
       "list_url": "https://www.ycombinator.com/companies/blue/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://heyblue.com/"
+    "website": "https://heyblue.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Blue Origin",
@@ -4486,7 +4656,10 @@
       "mode": "ashby",
       "ashby_slug": "bolna"
     },
-    "website": "https://www.bolna.ai/"
+    "website": "https://www.bolna.ai/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Bonusly",
@@ -4533,7 +4706,10 @@
       "list_url": "https://www.ycombinator.com/companies/booko/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://booko.com/"
+    "website": "https://booko.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Boomi",
@@ -4577,7 +4753,10 @@
       "mode": "ashby",
       "ashby_slug": "bootloop"
     },
-    "website": "https://bootloop.ai/"
+    "website": "https://bootloop.ai/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Booz Allen Hamilton",
@@ -4828,7 +5007,10 @@
       "difficulty": "medium",
       "rounds": "4",
       "source": "Public knowledge"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Brickanta",
@@ -4843,7 +5025,10 @@
       "list_url": "https://www.ycombinator.com/companies/brickanta/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.brickanta.com/"
+    "website": "https://www.brickanta.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Brickwise",
@@ -4858,7 +5043,10 @@
       "list_url": "https://www.ycombinator.com/companies/brickwise/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.brickwiseai.com/"
+    "website": "https://www.brickwiseai.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Bridgewater",
@@ -4992,7 +5180,10 @@
       "list_url": "https://www.ycombinator.com/companies/browser-use/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://browser-use.com/"
+    "website": "https://browser-use.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Brumby",
@@ -5007,7 +5198,10 @@
       "list_url": "https://www.ycombinator.com/companies/brumby/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://brumby.com/"
+    "website": "https://brumby.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Brunswick",
@@ -5316,7 +5510,10 @@
     "scrape": {
       "mode": "ashby",
       "ashby_slug": "candidhealth"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Canfield Imaging Systems",
@@ -5510,7 +5707,10 @@
       "mode": "ashby",
       "ashby_slug": "cardboard"
     },
-    "website": "https://www.cardboard.ai/"
+    "website": "https://www.cardboard.ai/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Cardinal",
@@ -5524,7 +5724,10 @@
       "list_url": "https://www.ycombinator.com/companies/trycardinal-ai/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.trycardinal.com/"
+    "website": "https://www.trycardinal.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Cardinal Health",
@@ -5683,7 +5886,10 @@
       "list_url": "https://www.ycombinator.com/companies/casco/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://casco.com/"
+    "website": "https://casco.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Catalina Island Company",
@@ -5707,7 +5913,10 @@
       "list_url": "https://www.ycombinator.com/companies/catchback-cards/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://catchbackcards.com/"
+    "website": "https://catchbackcards.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Catena Labs",
@@ -5798,7 +6007,10 @@
       "list_url": "https://www.ycombinator.com/companies/celltype/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.celltype.com/"
+    "website": "https://www.celltype.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Celonis",
@@ -5961,7 +6173,10 @@
       "list_url": "https://www.ycombinator.com/companies/channel3/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://trychannel3.com/"
+    "website": "https://trychannel3.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Chapters Health System",
@@ -5996,7 +6211,10 @@
       "list_url": "https://www.ycombinator.com/companies/characterquilt/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.characterquilt.com/"
+    "website": "https://www.characterquilt.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Chargezoom",
@@ -6095,7 +6313,10 @@
       "list_url": "https://www.ycombinator.com/companies/chasi/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://chasi.ai/"
+    "website": "https://chasi.ai/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Checkout.com",
@@ -6124,7 +6345,8 @@
       "locations": "San Francisco, CA / Denver, CO / Orlando, FL / Remote"
     },
     "tags": [
-      "Interview Friendly"
+      "Interview Friendly",
+      "Y Combinator"
     ]
   },
   {
@@ -6363,7 +6585,10 @@
       "list_url": "https://www.ycombinator.com/companies/cifrato/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://cifrato.ai/en"
+    "website": "https://cifrato.ai/en",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Cigna",
@@ -6595,7 +6820,10 @@
       "mode": "ashby",
       "ashby_slug": "claim-health"
     },
-    "website": "https://www.claimhealth.com/"
+    "website": "https://www.claimhealth.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Claire's",
@@ -6620,7 +6848,10 @@
       "list_url": "https://www.ycombinator.com/companies/clara-2/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://askclara.com/"
+    "website": "https://askclara.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Clara Lending",
@@ -6682,7 +6913,10 @@
     "scrape": {
       "mode": "ashby",
       "ashby_slug": "classdojo"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "ClassPass",
@@ -6769,7 +7003,10 @@
     "scrape": {
       "mode": "greenhouse",
       "board_token": "clever"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "ClickHouse",
@@ -6795,7 +7032,10 @@
       "list_url": "https://www.ycombinator.com/companies/clicks-health/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://clickshealth.com/"
+    "website": "https://clickshealth.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "ClickUp",
@@ -6849,7 +7089,10 @@
     "scrape": {
       "mode": "ashby",
       "ashby_slug": "clipboard"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Cloaked",
@@ -6879,7 +7122,8 @@
       "locations": "Remote"
     },
     "tags": [
-      "Interview Friendly"
+      "Interview Friendly",
+      "Y Combinator"
     ]
   },
   {
@@ -6895,7 +7139,10 @@
       "list_url": "https://www.ycombinator.com/companies/closure/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.closure-intel.com:443/"
+    "website": "https://www.closure-intel.com:443/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Cloud Imperium Games",
@@ -7022,7 +7269,10 @@
       "list_url": "https://www.ycombinator.com/companies/ai-coach/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.getcoach.com/"
+    "website": "https://www.getcoach.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Coactive AI",
@@ -7181,7 +7431,10 @@
     "scrape": {
       "mode": "greenhouse",
       "board_token": "coinbase"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "CoinTracker",
@@ -7192,7 +7445,10 @@
     "scrape": {
       "mode": "ashby",
       "ashby_slug": "cointracker"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Colgate-Palmolive",
@@ -7334,7 +7590,10 @@
       "list_url": "https://www.ycombinator.com/companies/comena/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://comena.ai/"
+    "website": "https://comena.ai/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Comfort Systems USA",
@@ -7447,7 +7706,10 @@
       "mode": "ashby",
       "ashby_slug": "complir"
     },
-    "website": "https://www.complir.io/"
+    "website": "https://www.complir.io/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Component Repair Technologies",
@@ -7507,7 +7769,10 @@
       "list_url": "https://www.ycombinator.com/companies/confident-ai/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.confident-ai.com/"
+    "website": "https://www.confident-ai.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Confluent",
@@ -7622,7 +7887,10 @@
       "list_url": "https://www.ycombinator.com/companies/conus/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://conus-med.com/"
+    "website": "https://conus-med.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Cooley",
@@ -7667,7 +7935,10 @@
       "list_url": "https://www.ycombinator.com/companies/copperlane/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.copperlane.ai/"
+    "website": "https://www.copperlane.ai/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Core & Main",
@@ -7707,7 +7978,10 @@
     "policy": {
       "message": "CoreOS was acquired by Red Hat; current roles are listed under Red Hat.",
       "careers_url": "https://www.redhat.com/en/jobs"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "CoreWeave",
@@ -7746,7 +8020,8 @@
       "source_url": "https://www.corgi.insure/careers"
     },
     "tags": [
-      "Interview Friendly"
+      "Interview Friendly",
+      "Y Combinator"
     ]
   },
   {
@@ -7814,7 +8089,10 @@
       "list_url": "https://www.ycombinator.com/companies/corvera/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://corvera.ai/"
+    "website": "https://corvera.ai/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Cossack Labs",
@@ -7874,7 +8152,10 @@
       "list_url": "https://www.ycombinator.com/companies/cotool/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.cotool.ai/"
+    "website": "https://www.cotool.ai/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Coupa Software, Inc.",
@@ -7926,7 +8207,10 @@
       "list_url": "https://www.ycombinator.com/companies/covera/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.covera-agents.com/?utm_source=ycombinator&utm_medium=company_profile&utm_campaign=yc_f26"
+    "website": "https://www.covera-agents.com/?utm_source=ycombinator&utm_medium=company_profile&utm_campaign=yc_f26",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Cox",
@@ -8143,7 +8427,10 @@
       "list_url": "https://www.ycombinator.com/companies/cua/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://cua.ai/"
+    "website": "https://cua.ai/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Culture Amp",
@@ -8363,7 +8650,10 @@
       "list_url": "https://www.ycombinator.com/companies/dalus/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://dalus.io/"
+    "website": "https://dalus.io/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Danaher",
@@ -8445,7 +8735,10 @@
       "list_url": "https://www.ycombinator.com/companies/darwin/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://darwinrobotics.ai/"
+    "website": "https://darwinrobotics.ai/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Data Intellect",
@@ -8693,7 +8986,10 @@
       "mode": "ashby",
       "ashby_slug": "dedalus-labs"
     },
-    "website": "https://www.dedaluslabs.ai/"
+    "website": "https://www.dedaluslabs.ai/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Deel",
@@ -8708,7 +9004,10 @@
       "include": "https://jobs.deel.com/deel/job-details/",
       "embedded_next_jobs": true,
       "verify_reported_total": true
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "DeepAware AI (Robotics Center of Silicon Valley)",
@@ -8725,7 +9024,10 @@
       "list_url": "https://www.ycombinator.com/companies/deepaware-ai-robotics-center-of-silicon-valley/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.roboticscenter.ai/"
+    "website": "https://www.roboticscenter.ai/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "DeepFin Research",
@@ -8747,7 +9049,10 @@
     "scrape": {
       "mode": "ashby",
       "ashby_slug": "deepgram"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "DeepL",
@@ -8787,7 +9092,10 @@
       "list_url": "https://www.ycombinator.com/companies/deepreach-inc/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.deepreach.ai/join"
+    "website": "https://www.deepreach.ai/join",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Deer Valley Resort",
@@ -8900,7 +9208,10 @@
       "list_url": "https://www.ycombinator.com/companies/denta/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.denta.com/"
+    "website": "https://www.denta.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Denver Health",
@@ -9110,7 +9421,10 @@
       "mode": "ashby",
       "ashby_slug": "DiligenceSquared"
     },
-    "website": "https://www.diligencesquared.com/"
+    "website": "https://www.diligencesquared.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Diligent Robotics",
@@ -9165,7 +9479,10 @@
       "list_url": "https://www.ycombinator.com/companies/discovered-materials/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://discoveredmaterials.com/"
+    "website": "https://discoveredmaterials.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Disney",
@@ -9193,7 +9510,10 @@
       "list_url": "https://www.ycombinator.com/companies/dispatch/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://dispatch.space/"
+    "website": "https://dispatch.space/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Distru",
@@ -9216,7 +9536,10 @@
     "scrape": {
       "mode": "ashby",
       "ashby_slug": "docker"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Docugami",
@@ -9244,7 +9567,10 @@
       "list_url": "https://www.ycombinator.com/companies/docura-health/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://docurahealth.com/"
+    "website": "https://docurahealth.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Dollar General",
@@ -9307,7 +9633,10 @@
       "difficulty": "medium",
       "rounds": "4-5",
       "source": "Public knowledge"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Doppler",
@@ -9317,7 +9646,10 @@
     "scrape": {
       "mode": "ashby",
       "ashby_slug": "doppler"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Dow Inc.",
@@ -9409,7 +9741,8 @@
       "locations": "Mountain View, CA"
     },
     "tags": [
-      "Interview Friendly"
+      "Interview Friendly",
+      "Y Combinator"
     ]
   },
   {
@@ -9471,7 +9804,10 @@
       "difficulty": "hard",
       "rounds": "4-5",
       "source": "Public knowledge"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Druva",
@@ -9733,7 +10069,10 @@
       "list_url": "https://www.ycombinator.com/companies/edexia/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://edexia.com/"
+    "website": "https://edexia.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Edgerun",
@@ -9749,7 +10088,10 @@
       "list_url": "https://www.ycombinator.com/companies/edgerun/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.edgerun.com/"
+    "website": "https://www.edgerun.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Edia",
@@ -9790,7 +10132,10 @@
       "list_url": "https://www.ycombinator.com/companies/edviro/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://edviroenergy.com/"
+    "website": "https://edviroenergy.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Edwards Lifesciences",
@@ -9815,7 +10160,10 @@
       "list_url": "https://www.ycombinator.com/companies/effigov/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.effigov.com/"
+    "website": "https://www.effigov.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Egis Group",
@@ -9847,7 +10195,10 @@
     "scrape": {
       "mode": "ashby",
       "ashby_slug": "eightsleep"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Eikon Therapeutics",
@@ -9997,7 +10348,10 @@
       "mode": "ashby",
       "ashby_slug": "eloquentai"
     },
-    "website": "https://eloquentai.co/"
+    "website": "https://eloquentai.co/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Elroy Air",
@@ -10021,7 +10375,10 @@
       "list_url": "https://www.ycombinator.com/companies/elyra/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.elyrasystems.com/"
+    "website": "https://www.elyrasystems.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "EMCOR",
@@ -10345,7 +10702,10 @@
       "api_url": "https://omnichannel-api.equipmentshare.com/jobs",
       "page_size": 1000
     },
-    "note": "Uses EquipmentShare's first-party public jobs API; prospect/future-interest records are excluded (verified 2026-07-29)"
+    "note": "Uses EquipmentShare's first-party public jobs API; prospect/future-interest records are excluded (verified 2026-07-29)",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Ergo",
@@ -10359,7 +10719,10 @@
       "list_url": "https://www.ycombinator.com/companies/ergo/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://joinergo.com/"
+    "website": "https://joinergo.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Essentia Health",
@@ -10557,7 +10920,10 @@
     "scrape": {
       "ashby_slug": "exa",
       "mode": "ashby"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Exact Sciences",
@@ -10680,7 +11046,10 @@
       "mode": "ashby",
       "ashby_slug": "f2-ai"
     },
-    "website": "https://f2.ai/"
+    "website": "https://f2.ai/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Facile.it",
@@ -10736,7 +11105,10 @@
     "scrape": {
       "mode": "greenhouse",
       "board_token": "faire"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Fairfield",
@@ -10938,7 +11310,10 @@
       "mode": "ashby",
       "ashby_slug": "fernstone"
     },
-    "website": "https://fernstone.com/"
+    "website": "https://fernstone.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "FHLBank Topeka",
@@ -11058,7 +11433,10 @@
       "mode": "ashby",
       "ashby_slug": "finto"
     },
-    "website": "https://www.gofinto.com/"
+    "website": "https://www.gofinto.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Fireblocks",
@@ -11096,7 +11474,10 @@
       "mode": "ashby",
       "ashby_slug": "firstwork"
     },
-    "website": "https://www.firstwork.com/"
+    "website": "https://www.firstwork.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Fiserv",
@@ -11154,7 +11535,10 @@
     "scrape": {
       "mode": "greenhouse",
       "board_token": "fivetran"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Flagright",
@@ -11165,7 +11549,10 @@
     "scrape": {
       "mode": "ashby",
       "ashby_slug": "flagright.com"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Flagstar Bank, N.A",
@@ -11186,7 +11573,10 @@
       "mode": "ashby",
       "ashby_slug": "flai"
     },
-    "website": "https://www.useflai.com/"
+    "website": "https://www.useflai.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Flatiron Health",
@@ -11217,7 +11607,10 @@
     "scrape": {
       "mode": "greenhouse",
       "board_token": "flexport"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Flick",
@@ -11231,7 +11624,10 @@
       "list_url": "https://www.ycombinator.com/companies/flick/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://flick.art/"
+    "website": "https://flick.art/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Flock Safety",
@@ -11249,7 +11645,8 @@
       "source_url": "https://www.flocksafety.com/careers"
     },
     "tags": [
-      "Interview Friendly"
+      "Interview Friendly",
+      "Y Combinator"
     ]
   },
   {
@@ -11281,7 +11678,8 @@
       "locations": "Cambridge, UK / Berlin, Germany / Remote"
     },
     "tags": [
-      "Interview Friendly"
+      "Interview Friendly",
+      "Y Combinator"
     ]
   },
   {
@@ -11296,7 +11694,10 @@
       "list_url": "https://www.ycombinator.com/companies/flowscope/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.flowscope.com/"
+    "website": "https://www.flowscope.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Fluence Energy",
@@ -11458,7 +11859,10 @@
       "list_url": "https://www.ycombinator.com/companies/fort/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://fort.cx/"
+    "website": "https://fort.cx/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Forter",
@@ -11517,7 +11921,10 @@
       "list_url": "https://www.ycombinator.com/companies/foundation-industries/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.foundation-industries.com/"
+    "website": "https://www.foundation-industries.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "FourKites",
@@ -11708,7 +12115,10 @@
       "list_url": "https://www.ycombinator.com/companies/freya/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.freyavoice.ai/"
+    "website": "https://www.freyavoice.ai/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Front",
@@ -11718,7 +12128,10 @@
     "scrape": {
       "mode": "ashby",
       "ashby_slug": "frontcareers"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Frost Bank",
@@ -11853,7 +12266,10 @@
       "list_url": "https://www.ycombinator.com/companies/gale/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://galevisa.com/"
+    "website": "https://galevisa.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Gallagher",
@@ -11898,7 +12314,10 @@
       "mode": "ashby",
       "ashby_slug": "garage"
     },
-    "website": "https://www.shopgarage.com"
+    "website": "https://www.shopgarage.com",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Garmin",
@@ -12040,7 +12459,10 @@
     "scrape": {
       "ashby_slug": "gecko-robotics",
       "mode": "ashby"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Gelber Group",
@@ -12117,7 +12539,10 @@
       "mode": "ashby",
       "ashby_slug": "generalastronautics"
     },
-    "website": "https://generalastro.com/"
+    "website": "https://generalastro.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "General Compute",
@@ -12383,7 +12808,10 @@
       "list_url": "https://www.ycombinator.com/companies/ghosteye/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://ghosteye.ai/"
+    "website": "https://ghosteye.ai/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Giant Spoon",
@@ -12442,7 +12870,10 @@
     "scrape": {
       "mode": "greenhouse",
       "board_token": "ginkgobioworks"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "GitHub",
@@ -12483,7 +12914,8 @@
       "locations": "Remote"
     },
     "tags": [
-      "Interview Friendly"
+      "Interview Friendly",
+      "Y Combinator"
     ]
   },
   {
@@ -12532,7 +12964,10 @@
       "list_url": "https://www.ycombinator.com/companies/glen/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.tryglen.com/"
+    "website": "https://www.tryglen.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Global Payments",
@@ -12630,7 +13065,10 @@
     "scrape": {
       "mode": "greenhouse",
       "board_token": "goatgroup"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "GoDaddy",
@@ -12656,7 +13094,10 @@
       "list_url": "https://www.ycombinator.com/companies/godela/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://godela.ai/"
+    "website": "https://godela.ai/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "GoFundMe",
@@ -12686,7 +13127,8 @@
       "source_url": "https://www.gogograndparent.com/careers"
     },
     "tags": [
-      "Interview Friendly"
+      "Interview Friendly",
+      "Y Combinator"
     ]
   },
   {
@@ -12722,7 +13164,10 @@
       "list_url": "https://www.ycombinator.com/companies/gojiberry-ai/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://gojiberry.ai/"
+    "website": "https://gojiberry.ai/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Goldman Sachs",
@@ -13005,7 +13450,10 @@
     "scrape": {
       "mode": "ashby",
       "ashby_slug": "greatquestion"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Great River Health",
@@ -13075,7 +13523,10 @@
       "list_url": "https://www.ycombinator.com/companies/groundcontrol/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://gndctl.com/"
+    "website": "https://gndctl.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Grow Therapy",
@@ -13099,7 +13550,10 @@
     "scrape": {
       "mode": "greenhouse",
       "board_token": "groww"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Grubhub",
@@ -13230,7 +13684,10 @@
     "scrape": {
       "mode": "greenhouse",
       "board_token": "gusto"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "H&R Block Management, LLC",
@@ -13336,7 +13793,10 @@
       "mode": "ashby",
       "ashby_slug": "halluminate"
     },
-    "website": "https://www.halluminate.ai/"
+    "website": "https://www.halluminate.ai/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Hancock Whitney",
@@ -13371,7 +13831,10 @@
       "list_url": "https://www.ycombinator.com/companies/harbera/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://harbera.com/"
+    "website": "https://harbera.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Hark",
@@ -13453,7 +13916,10 @@
       "mode": "ashby",
       "ashby_slug": "harperinsure"
     },
-    "website": "https://www.harperinsure.com/"
+    "website": "https://www.harperinsure.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Harpeth Valley Utilities District",
@@ -13684,7 +14150,10 @@
       "list_url": "https://www.ycombinator.com/companies/healthkey/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://gethealthkey.com/"
+    "website": "https://gethealthkey.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Healthleap",
@@ -13741,7 +14210,10 @@
       "mode": "ashby",
       "ashby_slug": "hedge"
     },
-    "website": "https://www.hedgespecialty.com/"
+    "website": "https://www.hedgespecialty.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Heidelberg Materials",
@@ -13762,7 +14234,10 @@
     "scrape": {
       "mode": "ashby",
       "ashby_slug": "helion"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Helios Intelligence",
@@ -13777,7 +14252,10 @@
       "list_url": "https://www.ycombinator.com/companies/helios-intelligence/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.heliosinc.ai/"
+    "website": "https://www.heliosinc.ai/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "HelloFresh",
@@ -13823,7 +14301,10 @@
       "list_url": "https://www.ycombinator.com/companies/manufacturingintelligence/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.heraengineering.com/"
+    "website": "https://www.heraengineering.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Hermeus",
@@ -13872,7 +14353,10 @@
       "mode": "ashby",
       "ashby_slug": "herondata"
     },
-    "website": "https://www.herondata.io/"
+    "website": "https://www.herondata.io/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Heron Power",
@@ -14005,7 +14489,10 @@
     "scrape": {
       "mode": "ashby",
       "ashby_slug": "hightouch-inc"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Hilton",
@@ -14343,7 +14830,10 @@
       "list_url": "https://www.ycombinator.com/companies/hub/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://hub.xyz/"
+    "website": "https://hub.xyz/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Hubble",
@@ -14358,7 +14848,10 @@
       "list_url": "https://www.ycombinator.com/companies/hubble-ai/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://hubble.ai/"
+    "website": "https://hubble.ai/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "HubSpot",
@@ -14449,7 +14942,10 @@
     "scrape": {
       "mode": "greenhouse",
       "board_token": "humaninterest"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Humana",
@@ -14500,7 +14996,10 @@
       "list_url": "https://www.ycombinator.com/companies/huscarl/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.huscarl.io/"
+    "website": "https://www.huscarl.io/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Hyperbolic",
@@ -14523,7 +15022,10 @@
       "mode": "ashby",
       "ashby_slug": "hypercubic"
     },
-    "website": "https://www.hypercubic.ai/"
+    "website": "https://www.hypercubic.ai/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Hyphenate",
@@ -14573,7 +15075,10 @@
       "board_token": "icarus",
       "use_hosted_job_urls": true
     },
-    "website": "https://www.icarus.one/"
+    "website": "https://www.icarus.one/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Icon",
@@ -14625,7 +15130,10 @@
       "mode": "ashby",
       "ashby_slug": "idler"
     },
-    "website": "https://idler.ai/"
+    "website": "https://idler.ai/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "IEX",
@@ -14654,7 +15162,10 @@
       "list_url": "https://www.ycombinator.com/companies/ignition-benefits/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.ignitionbenefits.com/"
+    "website": "https://www.ignitionbenefits.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "iHeartMedia",
@@ -14775,7 +15286,10 @@
       "list_url": "https://www.ycombinator.com/companies/impact-drones/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.impact-drones.com/"
+    "website": "https://www.impact-drones.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Imperative Logistics Group",
@@ -14850,7 +15364,10 @@
       "list_url": "https://www.ycombinator.com/companies/infera/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.infera.bio/"
+    "website": "https://www.infera.bio/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Infinitus Systems",
@@ -14871,7 +15388,10 @@
     "scrape": {
       "mode": "ashby",
       "ashby_slug": "infisical"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Inflection Space Systems",
@@ -14887,7 +15407,10 @@
       "list_url": "https://www.ycombinator.com/companies/inflection-space-systems/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://inflection-space.com/"
+    "website": "https://inflection-space.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "InfluxData",
@@ -14898,7 +15421,10 @@
     "scrape": {
       "mode": "ashby",
       "ashby_slug": "influxdata"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Informatica",
@@ -14967,7 +15493,10 @@
       "list_url": "https://www.ycombinator.com/companies/inloop-robotics/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.inloop-robotics.com/"
+    "website": "https://www.inloop-robotics.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Inmar",
@@ -15060,7 +15589,10 @@
       "difficulty": "medium",
       "rounds": "4",
       "source": "Public knowledge"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "InstaLILY",
@@ -15179,7 +15711,10 @@
       "list_url": "https://www.ycombinator.com/companies/intelligence-factory/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.intelligence-factory.com/"
+    "website": "https://www.intelligence-factory.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "IntelligenceBank",
@@ -15272,7 +15807,10 @@
       "list_url": "https://www.ycombinator.com/companies/interfaze/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://interfaze.ai/"
+    "website": "https://interfaze.ai/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Interfere",
@@ -15284,7 +15822,10 @@
       "mode": "ashby",
       "ashby_slug": "interfere"
     },
-    "website": "https://interfere.com/"
+    "website": "https://interfere.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Intrinsic",
@@ -15420,7 +15961,10 @@
     "scrape": {
       "mode": "ashby",
       "ashby_slug": "ironcladhq"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Ironflow AI",
@@ -15445,7 +15989,10 @@
       "list_url": "https://www.ycombinator.com/companies/ironledger-ai/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.ironledger.ai/"
+    "website": "https://www.ironledger.ai/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "iSpot.tv",
@@ -15590,7 +16137,10 @@
       "list_url": "https://www.ycombinator.com/companies/janeen/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.janeen.care/"
+    "website": "https://www.janeen.care/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Jarmin",
@@ -15604,7 +16154,10 @@
       "list_url": "https://www.ycombinator.com/companies/jarmin/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.jarmin.ai/"
+    "website": "https://www.jarmin.ai/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Jasper",
@@ -15616,7 +16169,10 @@
     "scrape": {
       "mode": "ashby",
       "ashby_slug": "Jasper AI"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Jefferies",
@@ -15857,7 +16413,10 @@
       "list_url": "https://www.ycombinator.com/companies/juno-chat/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://junocompanion.com/"
+    "website": "https://junocompanion.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Jupiter Intelligence, Inc.",
@@ -15948,7 +16507,10 @@
       "list_url": "https://www.ycombinator.com/companies/kaizen/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.kaizenautomation.com/"
+    "website": "https://www.kaizenautomation.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Kalpa Labs",
@@ -15962,7 +16524,10 @@
       "list_url": "https://www.ycombinator.com/companies/kalpa-labs/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://kalpalabs.ai/"
+    "website": "https://kalpalabs.ai/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Kalshi",
@@ -15972,7 +16537,10 @@
     "scrape": {
       "mode": "ashby",
       "ashby_slug": "kalshi"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Kaplan, Inc",
@@ -16018,7 +16586,10 @@
       "list_url": "https://www.ycombinator.com/companies/karumi/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://karumi.ai/"
+    "website": "https://karumi.ai/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Karyopharm Therapeutics Inc.",
@@ -16075,7 +16646,10 @@
       "list_url": "https://www.ycombinator.com/companies/kelai/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://kelaitech.com/"
+    "website": "https://kelaitech.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Kellanova",
@@ -16244,7 +16818,10 @@
       "list_url": "https://www.ycombinator.com/companies/kinro/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://kinro.com"
+    "website": "https://kinro.com",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Kinsta",
@@ -16319,7 +16896,10 @@
       "list_url": "https://www.ycombinator.com/companies/klaimee/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.klaimee.ai/"
+    "website": "https://www.klaimee.ai/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Klarify",
@@ -16331,7 +16911,10 @@
       "mode": "ashby",
       "ashby_slug": "klarify"
     },
-    "website": "https://www.klarify.ca/"
+    "website": "https://www.klarify.ca/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Klarity",
@@ -16363,7 +16946,10 @@
       "list_url": "https://www.ycombinator.com/companies/klavis-ai/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.klavis.ai/"
+    "website": "https://www.klavis.ai/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Klaviyo",
@@ -16519,7 +17105,10 @@
       "list_url": "https://www.ycombinator.com/companies/koyal/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://koyal.ai/"
+    "website": "https://koyal.ai/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Kraken",
@@ -16564,7 +17153,10 @@
       "list_url": "https://www.ycombinator.com/companies/kugelaudio/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.kugelaudio.com/en"
+    "website": "https://www.kugelaudio.com/en",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Kuli",
@@ -16579,7 +17171,10 @@
       "list_url": "https://www.ycombinator.com/companies/kuli/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://kuli.one/"
+    "website": "https://kuli.one/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "KUNGFU.AI",
@@ -16637,7 +17232,10 @@
       "list_url": "https://www.ycombinator.com/companies/lab0/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://lab0.ai/"
+    "website": "https://lab0.ai/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Lab49",
@@ -16700,7 +17298,10 @@
       "list_url": "https://www.ycombinator.com/companies/lamb-labs/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://lamb-labs.com/"
+    "website": "https://lamb-labs.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Lambda",
@@ -16722,7 +17323,10 @@
       "mode": "ashby",
       "ashby_slug": "lance"
     },
-    "website": "https://www.lance.live/"
+    "website": "https://www.lance.live/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Lanesurf",
@@ -16737,7 +17341,10 @@
       "list_url": "https://www.ycombinator.com/companies/lanesurf/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.lanesurf.com/"
+    "website": "https://www.lanesurf.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "LangChain",
@@ -16760,7 +17367,10 @@
       "mode": "ashby",
       "ashby_slug": "Lapel"
     },
-    "website": "https://lapel.com/"
+    "website": "https://lapel.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Last Energy",
@@ -16797,7 +17407,10 @@
       "list_url": "https://www.ycombinator.com/companies/lato/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.latolabs.io/"
+    "website": "https://www.latolabs.io/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Lattice",
@@ -16816,7 +17429,8 @@
       "locations": "San Francisco, CA; New York, NY; Remote"
     },
     "tags": [
-      "Interview Friendly"
+      "Interview Friendly",
+      "Y Combinator"
     ]
   },
   {
@@ -16851,7 +17465,10 @@
       "list_url": "https://www.ycombinator.com/companies/laurence/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.laurence.com/"
+    "website": "https://www.laurence.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Layer Health",
@@ -16877,7 +17494,10 @@
       "list_url": "https://www.ycombinator.com/companies/layers/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.layers.bio/"
+    "website": "https://www.layers.bio/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Lazarus AI",
@@ -16924,7 +17544,10 @@
       "list_url": "https://www.ycombinator.com/companies/leaping-ai/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://leapingai.com/"
+    "website": "https://leapingai.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Lear Corporation",
@@ -16963,7 +17586,10 @@
       "list_url": "https://www.ycombinator.com/companies/legalos/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.legalos.ai/"
+    "website": "https://www.legalos.ai/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Legora",
@@ -16975,7 +17601,10 @@
     "scrape": {
       "mode": "ashby",
       "ashby_slug": "legora"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Leidos",
@@ -17002,7 +17631,10 @@
       "list_url": "https://www.ycombinator.com/companies/uselemma/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.uselemma.ai/"
+    "website": "https://www.uselemma.ai/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "LemonLime",
@@ -17017,7 +17649,10 @@
       "list_url": "https://www.ycombinator.com/companies/lemonlime/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://lemonlime.com/"
+    "website": "https://lemonlime.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Lendmark Financial",
@@ -17160,7 +17795,10 @@
       "list_url": "https://www.ycombinator.com/companies/lightsprint/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://lightsprint.ai/"
+    "website": "https://lightsprint.ai/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Lila Sciences",
@@ -17197,7 +17835,10 @@
       "list_url": "https://www.ycombinator.com/companies/limrun/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://limrun.com/"
+    "website": "https://limrun.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Lindy",
@@ -17349,7 +17990,8 @@
       "locations": "San Francisco, CA"
     },
     "tags": [
-      "Interview Friendly"
+      "Interview Friendly",
+      "Y Combinator"
     ]
   },
   {
@@ -17388,7 +18030,10 @@
       "list_url": "https://www.ycombinator.com/companies/logical/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://logical.io/"
+    "website": "https://logical.io/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Loom",
@@ -17501,7 +18146,10 @@
       "list_url": "https://www.ycombinator.com/companies/luca-iq/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://lucaiq.com/"
+    "website": "https://lucaiq.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Lucid Motors",
@@ -17523,7 +18171,10 @@
       "mode": "ashby",
       "ashby_slug": "lucis"
     },
-    "website": "https://www.lucis.life/"
+    "website": "https://www.lucis.life/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Lululemon",
@@ -17552,7 +18203,10 @@
       "list_url": "https://www.ycombinator.com/companies/lumari/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://lumari.ai/"
+    "website": "https://lumari.ai/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Lumentum",
@@ -17579,7 +18233,10 @@
       "list_url": "https://www.ycombinator.com/companies/luminal/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.luminal.com/"
+    "website": "https://www.luminal.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Luminance",
@@ -17702,7 +18359,10 @@
       "mode": "ashby",
       "ashby_slug": "mach9"
     },
-    "website": "https://mach9.ai/"
+    "website": "https://mach9.ai/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Macy's",
@@ -17726,7 +18386,10 @@
       "list_url": "https://www.ycombinator.com/companies/madethis/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.madethis.com/"
+    "website": "https://www.madethis.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "MadHive",
@@ -17913,7 +18576,10 @@
       "list_url": "https://www.ycombinator.com/companies/manicule/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://manicule.com/"
+    "website": "https://manicule.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "ManTech",
@@ -17942,7 +18608,10 @@
       "list_url": "https://www.ycombinator.com/companies/manufact/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://manufact.com/"
+    "website": "https://manufact.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Mapbox",
@@ -18017,7 +18686,10 @@
       "list_url": "https://www.ycombinator.com/companies/joinmarble/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://joinmarble.ai/"
+    "website": "https://joinmarble.ai/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Mariana Minerals",
@@ -18275,7 +18947,8 @@
       "locations": "Remote"
     },
     "tags": [
-      "Interview Friendly"
+      "Interview Friendly",
+      "Y Combinator"
     ]
   },
   {
@@ -18385,7 +19058,10 @@
     "scrape": {
       "mode": "greenhouse",
       "board_token": "maymobility"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Mbodi AI",
@@ -18401,7 +19077,10 @@
       "list_url": "https://www.ycombinator.com/companies/mbodi-ai/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.mbodi.ai/"
+    "website": "https://www.mbodi.ai/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "McDonald's Corporation",
@@ -18520,7 +19199,10 @@
     "scrape": {
       "mode": "lever",
       "lever_slug": "meesho"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Melotech",
@@ -18543,7 +19225,10 @@
       "mode": "ashby",
       "ashby_slug": "memora"
     },
-    "note": "Former Ashby board has no openings and no current authoritative replacement feed was found (verified 2026-08-05)"
+    "note": "Former Ashby board has no openings and no current authoritative replacement feed was found (verified 2026-08-05)",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Memorial Healthcare System",
@@ -18622,7 +19307,10 @@
       "mode": "ashby",
       "ashby_slug": "mercura"
     },
-    "website": "https://mercura.ai/"
+    "website": "https://mercura.ai/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Mercury",
@@ -18681,7 +19369,10 @@
       "list_url": "https://www.ycombinator.com/companies/mesmer/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://mesmer.co/"
+    "website": "https://mesmer.co/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Meta",
@@ -18857,7 +19548,10 @@
       "mode": "ashby",
       "ashby_slug": "middesk"
     },
-    "website": "https://www.middesk.com/"
+    "website": "https://www.middesk.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Midi Health",
@@ -18917,7 +19611,10 @@
     "scrape": {
       "mode": "ashby",
       "ashby_slug": "Mintlify"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Mirage",
@@ -18969,7 +19666,10 @@
       "list_url": "https://www.ycombinator.com/companies/miso-labs/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.misolabs.ai/"
+    "website": "https://www.misolabs.ai/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Mistral AI",
@@ -19040,7 +19740,10 @@
     "scrape": {
       "mode": "greenhouse",
       "board_token": "mixpanel"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Miyagi Labs",
@@ -19055,7 +19758,10 @@
       "list_url": "https://www.ycombinator.com/companies/miyagi-labs/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://miyagilabs.ai/"
+    "website": "https://miyagilabs.ai/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "MKG",
@@ -19092,7 +19798,10 @@
       "list_url": "https://www.ycombinator.com/companies/mochacare/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.mochacare.com/"
+    "website": "https://www.mochacare.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Mochi",
@@ -19106,7 +19815,10 @@
       "list_url": "https://www.ycombinator.com/companies/mochi/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.mochi.tv/"
+    "website": "https://www.mochi.tv/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Modal",
@@ -19141,7 +19853,10 @@
     "scrape": {
       "mode": "greenhouse",
       "board_token": "modernhealth"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Modern Intelligence",
@@ -19162,7 +19877,10 @@
     "scrape": {
       "ashby_slug": "moderntreasury",
       "mode": "ashby"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Moderna",
@@ -19186,7 +19904,10 @@
       "list_url": "https://www.ycombinator.com/companies/molagri/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://molagri.com/"
+    "website": "https://molagri.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Molina Healthcare",
@@ -19217,7 +19938,10 @@
     "scrape": {
       "mode": "greenhouse",
       "board_token": "momentus"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Monday.com",
@@ -19386,7 +20110,10 @@
       "list_url": "https://www.ycombinator.com/companies/moritz/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.moritzlegal.com/"
+    "website": "https://www.moritzlegal.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "MorphoAI",
@@ -19402,7 +20129,10 @@
       "list_url": "https://www.ycombinator.com/companies/morphoai/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://morpho.ai/"
+    "website": "https://morpho.ai/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Mosaic Company (The)",
@@ -19437,7 +20167,10 @@
       "list_url": "https://www.ycombinator.com/companies/moss/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.moss.dev/"
+    "website": "https://www.moss.dev/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "MotherDuck",
@@ -19576,7 +20309,10 @@
       "list_url": "https://www.ycombinator.com/companies/multiplier/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.multiplier.ai/"
+    "website": "https://www.multiplier.ai/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Munters",
@@ -19629,7 +20365,8 @@
       "locations": "San Francisco, CA; London, UK & Remote"
     },
     "tags": [
-      "Interview Friendly"
+      "Interview Friendly",
+      "Y Combinator"
     ]
   },
   {
@@ -19706,7 +20443,10 @@
     "scrape": {
       "mode": "ashby",
       "ashby_slug": "nango"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Nasdaq, Inc.",
@@ -19727,7 +20467,10 @@
     "scrape": {
       "mode": "ashby",
       "ashby_slug": "Nash"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Natera",
@@ -19794,7 +20537,10 @@
       "list_url": "https://www.ycombinator.com/companies/nautilus/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.nautilus.co/"
+    "website": "https://www.nautilus.co/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Navan",
@@ -19820,7 +20566,10 @@
       "list_url": "https://www.ycombinator.com/companies/naive/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://usenaive.ai/"
+    "website": "https://usenaive.ai/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "NBCUniversal",
@@ -19949,7 +20698,10 @@
       "list_url": "https://www.ycombinator.com/companies/nessie/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://nessielabs.com/"
+    "website": "https://nessielabs.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "NetApp",
@@ -20145,7 +20897,10 @@
       "ashby_slug": "newfront"
     },
     "scan_enabled": false,
-    "note": "Ashby board was empty and Newfront was acquired by WTW; the standalone source is retired (verified 2026-07-21)"
+    "note": "Ashby board was empty and Newfront was acquired by WTW; the standalone source is retired (verified 2026-07-21)",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "NewLimit",
@@ -20350,7 +21105,10 @@
       "list_url": "https://www.ycombinator.com/companies/nitrode/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.nitrode.com/"
+    "website": "https://www.nitrode.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Nokia",
@@ -20443,7 +21201,10 @@
       "list_url": "https://www.ycombinator.com/companies/noril1/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.norirobotics.com/"
+    "website": "https://www.norirobotics.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Norm AI",
@@ -20594,7 +21355,10 @@
     "scrape": {
       "mode": "greenhouse",
       "board_token": "usenourish"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "NOV",
@@ -20625,7 +21389,8 @@
       "locations": "San Francisco, CA"
     },
     "tags": [
-      "Interview Friendly"
+      "Interview Friendly",
+      "Y Combinator"
     ]
   },
   {
@@ -20641,7 +21406,10 @@
       "list_url": "https://www.ycombinator.com/companies/novaflow/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.novaflow.ai/"
+    "website": "https://www.novaflow.ai/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Noven Pharmaceuticals, Inc.",
@@ -20663,7 +21431,10 @@
       "mode": "ashby",
       "ashby_slug": "nox-metals"
     },
-    "website": "https://noxmetals.co/"
+    "website": "https://noxmetals.co/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "NRG Energy",
@@ -20738,7 +21509,10 @@
       "list_url": "https://www.ycombinator.com/companies/nucleo/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://nucleoresearch.com/"
+    "website": "https://nucleoresearch.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Numeral",
@@ -20748,7 +21522,10 @@
     "scrape": {
       "mode": "ashby",
       "ashby_slug": "numeral"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Nuna",
@@ -20789,7 +21566,8 @@
       "locations": "San Francisco, CA; Remote"
     },
     "tags": [
-      "Interview Friendly"
+      "Interview Friendly",
+      "Y Combinator"
     ],
     "scan_enabled": false,
     "note": "Thirty Madison greenhouse board (thirtymadison) removed; no public board found (2026-07-18)"
@@ -20920,7 +21698,10 @@
     "scrape": {
       "mode": "greenhouse",
       "board_token": "observeai"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Obsidian Security",
@@ -20991,7 +21772,8 @@
       "locations": "Remote; New York, NY; Dublin, IE"
     },
     "tags": [
-      "Interview Friendly"
+      "Interview Friendly",
+      "Y Combinator"
     ]
   },
   {
@@ -21099,7 +21881,10 @@
     "scrape": {
       "mode": "greenhouse",
       "board_token": "oklo"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Okta",
@@ -21218,7 +22003,10 @@
       "list_url": "https://www.ycombinator.com/companies/ondeck-ai/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.ondeckai.com/"
+    "website": "https://www.ondeckai.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "One80 Intermediaries",
@@ -21279,7 +22067,8 @@
       "locations": "San Mateo, CA"
     },
     "tags": [
-      "Interview Friendly"
+      "Interview Friendly",
+      "Y Combinator"
     ]
   },
   {
@@ -21294,7 +22083,10 @@
       "list_url": "https://www.ycombinator.com/companies/ooak-data/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://ooakdata.com/"
+    "website": "https://ooakdata.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Opalite Health",
@@ -21308,7 +22100,10 @@
       "list_url": "https://www.ycombinator.com/companies/opalite-health/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://opalitehealth.com:443/"
+    "website": "https://opalitehealth.com:443/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "OpenAI",
@@ -21359,7 +22154,10 @@
     "scrape": {
       "mode": "ashby",
       "ashby_slug": "opensea"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "openspace",
@@ -21392,7 +22190,10 @@
     "scrape": {
       "mode": "greenhouse",
       "board_token": "ophelia"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Optiver",
@@ -21436,7 +22237,10 @@
       "list_url": "https://www.ycombinator.com/companies/orange-slice/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.orangeslice.ai/"
+    "website": "https://www.orangeslice.ai/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "OraSure Technologies Inc.",
@@ -21471,7 +22275,10 @@
       "board_token": "orbitaloperations",
       "use_hosted_job_urls": true
     },
-    "website": "https://www.orbitalops.tech/"
+    "website": "https://www.orbitalops.tech/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Orca Aerospace",
@@ -21487,7 +22294,10 @@
       "list_url": "https://www.ycombinator.com/companies/orca-aerospace/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://orcaaerospace.com/"
+    "website": "https://orcaaerospace.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Orca Bio",
@@ -21533,7 +22343,10 @@
       "list_url": "https://www.ycombinator.com/companies/origin-bio/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://origin.bio/"
+    "website": "https://origin.bio/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Orthogonal",
@@ -21547,7 +22360,10 @@
       "list_url": "https://www.ycombinator.com/companies/orthogonal/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.orthogonal.com/"
+    "website": "https://www.orthogonal.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Oscar Health",
@@ -21609,7 +22425,10 @@
     "scrape": {
       "mode": "ashby",
       "ashby_slug": "outschool"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "OutSystems",
@@ -21700,7 +22519,10 @@
       "list_url": "https://www.ycombinator.com/companies/oxus/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.oxus-ai.com/"
+    "website": "https://www.oxus-ai.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Oxylabs",
@@ -21796,7 +22618,8 @@
       "locations": "San Francisco, CA / Toronto, Canada / Atlanta, GA"
     },
     "tags": [
-      "Interview Friendly"
+      "Interview Friendly",
+      "Y Combinator"
     ]
   },
   {
@@ -21859,7 +22682,10 @@
       "list_url": "https://www.ycombinator.com/companies/pango/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://pango.ai/"
+    "website": "https://pango.ai/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Papa",
@@ -21869,7 +22695,10 @@
     "scrape": {
       "mode": "greenhouse",
       "board_token": "papa"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Parabilis Medicines",
@@ -21897,7 +22726,10 @@
       "list_url": "https://www.ycombinator.com/companies/paradev/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://paradev.com/"
+    "website": "https://paradev.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Paradigm",
@@ -21962,7 +22794,10 @@
       "list_url": "https://www.ycombinator.com/companies/parametric/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.parametric.company/"
+    "website": "https://www.parametric.company/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Paramount",
@@ -22023,7 +22858,10 @@
       "list_url": "https://www.ycombinator.com/companies/parsewise/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.parsewise.ai/"
+    "website": "https://www.parsewise.ai/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Parsley Health",
@@ -22158,7 +22996,10 @@
     },
     "interview": {
       "source": "Cloud 100"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Pax Historia",
@@ -22172,7 +23013,10 @@
       "list_url": "https://www.ycombinator.com/companies/pax-historia/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.paxhistoria.co/"
+    "website": "https://www.paxhistoria.co/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "PayPal",
@@ -22201,7 +23045,10 @@
       "list_url": "https://careers.paystack.com/jobs",
       "include": "careers.paystack.com/jobs/",
       "require_job_path": true
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "PCI Pharma Services",
@@ -22337,7 +23184,10 @@
       "list_url": "https://www.ycombinator.com/companies/pennant/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.getpennant.ai/"
+    "website": "https://www.getpennant.ai/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Pentair",
@@ -22384,7 +23234,10 @@
       "list_url": "https://www.ycombinator.com/companies/perfectbit-inc/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://perfectbit.ai/"
+    "website": "https://perfectbit.ai/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Periodic Labs",
@@ -22405,7 +23258,10 @@
     "scrape": {
       "mode": "ashby",
       "ashby_slug": "permitflow"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Perpay",
@@ -22514,7 +23370,10 @@
       "list_url": "https://www.ycombinator.com/companies/pgdog/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://pgdog.dev/"
+    "website": "https://pgdog.dev/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Phantom",
@@ -22572,7 +23431,10 @@
     },
     "interview": {
       "source": "Forbes AI 50"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Physical Intelligence",
@@ -22678,7 +23540,8 @@
       "source_url": "https://www.pineparkhealth.com/careers"
     },
     "tags": [
-      "Interview Friendly"
+      "Interview Friendly",
+      "Y Combinator"
     ]
   },
   {
@@ -22874,7 +23737,10 @@
       "list_url": "https://www.ycombinator.com/companies/plena-health/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.plena.health/"
+    "website": "https://www.plena.health/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Pleo",
@@ -22907,7 +23773,10 @@
       "list_url": "https://www.ycombinator.com/companies/plexe/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://plexe.ai/"
+    "website": "https://plexe.ai/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Pliant",
@@ -22929,7 +23798,10 @@
       "mode": "ashby",
       "ashby_slug": "ployai"
     },
-    "website": "https://ploy.ai/"
+    "website": "https://ploy.ai/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "PlusAI",
@@ -22953,7 +23825,10 @@
       "list_url": "https://www.ycombinator.com/companies/talentpluto/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://talentpluto.com/"
+    "website": "https://talentpluto.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "PNC",
@@ -22974,7 +23849,10 @@
       "mode": "ashby",
       "ashby_slug": "pocket"
     },
-    "website": "https://heypocket.com/pages/now"
+    "website": "https://heypocket.com/pages/now",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Podium",
@@ -22985,7 +23863,10 @@
     "scrape": {
       "mode": "greenhouse",
       "board_token": "podium81"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Podium Automation",
@@ -23039,7 +23920,8 @@
       "locations": "Remote"
     },
     "tags": [
-      "Interview Friendly"
+      "Interview Friendly",
+      "Y Combinator"
     ]
   },
   {
@@ -23072,7 +23954,10 @@
       "mode": "ashby",
       "ashby_slug": "polymath"
     },
-    "website": "https://polymathlabs.ai/"
+    "website": "https://polymathlabs.ai/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Pomelo Care",
@@ -23153,7 +24038,10 @@
     "scrape": {
       "mode": "ashby",
       "ashby_slug": "posthog"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Postman",
@@ -23178,7 +24066,10 @@
     "scrape": {
       "mode": "greenhouse",
       "board_token": "postscript"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Precision Neuroscience",
@@ -23229,7 +24120,10 @@
       "list_url": "https://www.ycombinator.com/companies/prescience-inc/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.getprescience.com/"
+    "website": "https://www.getprescience.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Press Ganey",
@@ -23291,7 +24185,10 @@
       "list_url": "https://www.ycombinator.com/companies/princeps/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.princeps.dev/"
+    "website": "https://www.princeps.dev/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Princeton University",
@@ -23354,7 +24251,10 @@
       "list_url": "https://www.ycombinator.com/companies/proception-inc/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.proception.ai/"
+    "website": "https://www.proception.ai/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Procter & Gamble",
@@ -23497,7 +24397,10 @@
       "list_url": "https://www.ycombinator.com/companies/provenmetal/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://provenmetal.com/"
+    "website": "https://provenmetal.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Proximitty",
@@ -23512,7 +24415,10 @@
       "list_url": "https://www.ycombinator.com/companies/proximitty/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.proximitty.ai/"
+    "website": "https://www.proximitty.ai/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Prudential",
@@ -23604,7 +24510,10 @@
       "board_token": "pulley",
       "allow_empty_full_scan": true
     },
-    "note": "Official Greenhouse board was reachable and empty on 2026-07-21"
+    "note": "Official Greenhouse board was reachable and empty on 2026-07-21",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "PulteGroup",
@@ -23685,7 +24594,10 @@
     "scrape": {
       "mode": "ashby",
       "ashby_slug": "pylon-labs"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Q2",
@@ -23709,7 +24621,10 @@
       "list_url": "https://www.ycombinator.com/companies/qfex/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.qfex.com/"
+    "website": "https://www.qfex.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Qonto",
@@ -23768,7 +24683,10 @@
       "list_url": "https://www.ycombinator.com/companies/qualgent/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.qualgent.ai/"
+    "website": "https://www.qualgent.ai/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Qualitate",
@@ -24008,7 +24926,10 @@
       "list_url": "https://www.ycombinator.com/companies/rainbrand/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.rainbrand.com/"
+    "website": "https://www.rainbrand.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Raine Group",
@@ -24142,7 +25063,10 @@
       "list_url": "https://www.ycombinator.com/companies/rational/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://rational.to/"
+    "website": "https://rational.to/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Raymond James",
@@ -24186,7 +25110,10 @@
       "mode": "ashby",
       "ashby_slug": "reacher"
     },
-    "website": "https://www.reacherapp.com/"
+    "website": "https://www.reacherapp.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Read AI",
@@ -24266,7 +25193,10 @@
       "list_url": "https://www.ycombinator.com/companies/reason-machines/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://reasonmachines.com/"
+    "website": "https://reasonmachines.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Recorded Future",
@@ -24358,7 +25288,10 @@
       "difficulty": "medium",
       "rounds": "4-5",
       "source": "Public knowledge"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Redfin",
@@ -24509,7 +25442,8 @@
       "source_url": "https://www.relativityspace.com/careers"
     },
     "tags": [
-      "Interview Friendly"
+      "Interview Friendly",
+      "Y Combinator"
     ]
   },
   {
@@ -24523,7 +25457,10 @@
       "mode": "ashby",
       "ashby_slug": "Relling"
     },
-    "website": "https://rellingsystems.com/"
+    "website": "https://rellingsystems.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "RELX",
@@ -24626,7 +25563,10 @@
       "list_url": "https://www.ycombinator.com/companies/replicas/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://replicas.dev/"
+    "website": "https://replicas.dev/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Replicate",
@@ -24637,7 +25577,10 @@
       "mode": "html",
       "list_url": "https://replicate.com/careers",
       "include": "replicate.com"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Replit",
@@ -24648,7 +25591,10 @@
     "scrape": {
       "mode": "ashby",
       "ashby_slug": "replit"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Reply",
@@ -24698,7 +25644,10 @@
     "scrape": {
       "mode": "ashby",
       "ashby_slug": "rescale"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "ResMed",
@@ -24719,7 +25668,10 @@
     "scrape": {
       "mode": "ashby",
       "ashby_slug": "retell-ai"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Retool",
@@ -24732,7 +25684,10 @@
       "include": "jobs.gem.com/retool/",
       "embedded_gem_jobs": true
     },
-    "note": "Reads the official Gem listings embedded on Retool's careers page; active openings verified 2026-08-28"
+    "note": "Reads the official Gem listings embedded on Retool's careers page; active openings verified 2026-08-28",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "revel",
@@ -24816,7 +25771,10 @@
       "list_url": "https://www.ycombinator.com/companies/rex-inc/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.rex.inc/"
+    "website": "https://www.rex.inc/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Reynolds Consumer Products",
@@ -24903,7 +25861,10 @@
     "scrape": {
       "mode": "lever",
       "lever_slug": "rigetti"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "RightEye",
@@ -24979,7 +25940,10 @@
       "algolia_hits_per_page": 1000,
       "fetch_experience_details": true,
       "max_desc_details": 250
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "RISA",
@@ -25059,7 +26023,10 @@
       "list_url": "https://www.ycombinator.com/companies/robby/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.tryrobby.com/"
+    "website": "https://www.tryrobby.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Robinhood",
@@ -25252,7 +26219,10 @@
       "list_url": "https://www.ycombinator.com/companies/rovi-health/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.rovi.health/"
+    "website": "https://www.rovi.health/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Royal Caribbean",
@@ -25317,7 +26287,10 @@
       "list_url": "https://www.ycombinator.com/companies/rudus/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.rudus.ai/"
+    "website": "https://www.rudus.ai/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Rula",
@@ -25353,7 +26326,10 @@
       "list_url": "https://www.ycombinator.com/companies/runtime/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.runtm.com/"
+    "website": "https://www.runtm.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Runtime.si",
@@ -25370,7 +26346,10 @@
       "list_url": "https://www.ycombinator.com/companies/runtimesi/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://runtime.si/"
+    "website": "https://runtime.si/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Runway",
@@ -25401,7 +26380,10 @@
     "scrape": {
       "mode": "ashby",
       "ashby_slug": "rutter"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "RWS TrainAI",
@@ -25480,7 +26462,8 @@
       "locations": "San Francisco, CA"
     },
     "tags": [
-      "Interview Friendly"
+      "Interview Friendly",
+      "Y Combinator"
     ]
   },
   {
@@ -25641,7 +26624,10 @@
       "mode": "ashby",
       "ashby_slug": "SalesPatriot"
     },
-    "website": "https://salespatriot.com/"
+    "website": "https://salespatriot.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Salinas Valley Health",
@@ -25667,7 +26653,10 @@
       "list_url": "https://www.ycombinator.com/companies/salus/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.usesalus.ai/"
+    "website": "https://www.usesalus.ai/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Salvo Health",
@@ -25898,7 +26887,10 @@
       "list_url": "https://www.ycombinator.com/companies/sava-trust-company/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://savatrustcompany.com/"
+    "website": "https://savatrustcompany.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Savvy Wealth",
@@ -25947,7 +26939,10 @@
       "difficulty": "hard",
       "rounds": "4",
       "source": "Public knowledge"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Schonfeld",
@@ -26010,7 +27005,10 @@
       "list_url": "https://www.ycombinator.com/companies/screenpipe/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://screenpipe.com/"
+    "website": "https://screenpipe.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Scribe",
@@ -26081,7 +27079,10 @@
       "list_url": "https://www.ycombinator.com/companies/seeing-systems/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.seeing-systems.com/"
+    "website": "https://www.seeing-systems.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Seesaw",
@@ -26310,7 +27311,10 @@
       "list_url": "https://www.ycombinator.com/companies/servo7/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://servo7.com/"
+    "website": "https://servo7.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "SF Tensor",
@@ -26322,7 +27326,10 @@
       "mode": "ashby",
       "ashby_slug": "sf-tensor"
     },
-    "website": "https://sf-tensor.com/"
+    "website": "https://sf-tensor.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Sharp HealthCare",
@@ -26375,7 +27382,10 @@
       "mode": "ashby",
       "ashby_slug": "shepherd"
     },
-    "website": "https://www.shepherdinsurance.com/"
+    "website": "https://www.shepherdinsurance.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Sherwin-Williams",
@@ -26409,7 +27419,10 @@
     "scrape": {
       "mode": "greenhouse",
       "board_token": "shipbobinc"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Shirley",
@@ -26439,7 +27452,8 @@
       "locations": "Remote"
     },
     "tags": [
-      "Interview Friendly"
+      "Interview Friendly",
+      "Y Combinator"
     ]
   },
   {
@@ -26496,7 +27510,10 @@
       "list_url": "https://www.ycombinator.com/companies/shortkit/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.shortkit.dev/"
+    "website": "https://www.shortkit.dev/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "ShyftLabs",
@@ -26554,7 +27571,10 @@
     "scrape": {
       "mode": "ashby",
       "ashby_slug": "sieve"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Sift",
@@ -26565,7 +27585,10 @@
     "scrape": {
       "mode": "ashby",
       "ashby_slug": "sift"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "SIG",
@@ -26638,7 +27661,8 @@
       "locations": "Bangalore, India / Remote"
     },
     "tags": [
-      "Interview Friendly"
+      "Interview Friendly",
+      "Y Combinator"
     ]
   },
   {
@@ -26670,7 +27694,10 @@
       "mode": "ashby",
       "ashby_slug": "sim"
     },
-    "website": "https://www.sim.ai:443/"
+    "website": "https://www.sim.ai:443/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Simile",
@@ -26747,7 +27774,10 @@
     },
     "interview": {
       "source": "Database target list"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Sira",
@@ -26761,7 +27791,10 @@
       "list_url": "https://www.ycombinator.com/companies/sira/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://sira.team/"
+    "website": "https://sira.team/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Sitefire",
@@ -26776,7 +27809,10 @@
       "list_url": "https://www.ycombinator.com/companies/sitefire/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://sitefire.ai/"
+    "website": "https://sitefire.ai/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Sixtyfour",
@@ -26791,7 +27827,10 @@
       "list_url": "https://www.ycombinator.com/companies/sixtyfour/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.sixtyfour.ai/"
+    "website": "https://www.sixtyfour.ai/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Skechers",
@@ -26898,7 +27937,10 @@
     "scrape": {
       "mode": "greenhouse",
       "board_token": "smartasset"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "SmarterDx",
@@ -27048,7 +28090,10 @@
       "list_url": "https://www.ycombinator.com/companies/socratix-ai/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://getsocratix.ai/"
+    "website": "https://getsocratix.ai/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Socure",
@@ -27113,7 +28158,10 @@
       "mode": "ashby",
       "ashby_slug": "solidroad"
     },
-    "website": "https://www.solidroad.com/"
+    "website": "https://www.solidroad.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "SOLV Energy",
@@ -27209,7 +28257,10 @@
       "list_url": "https://www.ycombinator.com/companies/soren/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://soren-ai.com/"
+    "website": "https://soren-ai.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Soria",
@@ -27225,7 +28276,10 @@
       "list_url": "https://www.ycombinator.com/companies/soria/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.soriaanalytics.com/"
+    "website": "https://www.soriaanalytics.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Soter Insure",
@@ -27363,7 +28417,10 @@
     },
     "interview": {
       "source": "Forbes AI 50"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Spear AI",
@@ -27407,7 +28464,10 @@
       "list_url": "https://www.ycombinator.com/companies/speko/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://speko.ai/?utm_source=ycombinator&utm_medium=profile"
+    "website": "https://speko.ai/?utm_source=ycombinator&utm_medium=profile",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Spencer's and Spirit Halloween",
@@ -27456,7 +28516,10 @@
       "list_url": "https://www.ycombinator.com/companies/spine/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.joinspine.ai/"
+    "website": "https://www.joinspine.ai/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Spine Media",
@@ -27496,7 +28559,10 @@
       "list_url": "https://www.ycombinator.com/companies/splash-inc/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://splash9.com/"
+    "website": "https://splash9.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Splice",
@@ -27543,7 +28609,10 @@
       "list_url": "https://www.ycombinator.com/companies/spott/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://spott.io/"
+    "website": "https://spott.io/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Spreedly",
@@ -27732,7 +28801,10 @@
       "list_url": "https://www.ycombinator.com/companies/standout/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://standout.work/"
+    "website": "https://standout.work/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Stanford Medicine Children's Health",
@@ -27837,7 +28909,8 @@
       "source_url": "https://www.starcloud.com/careers"
     },
     "tags": [
-      "Interview Friendly"
+      "Interview Friendly",
+      "Y Combinator"
     ]
   },
   {
@@ -27926,7 +28999,10 @@
       "mode": "ashby",
       "ashby_slug": "stilta"
     },
-    "website": "https://stilta.com/"
+    "website": "https://stilta.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Stitch Fix",
@@ -27953,7 +29029,10 @@
       "list_url": "https://www.ycombinator.com/companies/stoa/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.stoaexchange.com/"
+    "website": "https://www.stoaexchange.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "StockX",
@@ -27973,7 +29052,10 @@
     "scrape": {
       "board_token": "stokespacetechnologies",
       "mode": "greenhouse"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Storm",
@@ -28055,7 +29137,10 @@
       "difficulty": "hard",
       "rounds": "4-5",
       "source": "Public knowledge"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Structured AI",
@@ -28070,7 +29155,10 @@
       "list_url": "https://www.ycombinator.com/companies/structured-ai/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://getstructured.ai/"
+    "website": "https://getstructured.ai/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "STRV",
@@ -28153,7 +29241,10 @@
       "list_url": "https://www.ycombinator.com/companies/subimage/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.subimage.io:443/"
+    "website": "https://www.subimage.io:443/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Subject",
@@ -28186,7 +29277,8 @@
       "source_url": "https://substack.com/jobs"
     },
     "tags": [
-      "Interview Friendly"
+      "Interview Friendly",
+      "Y Combinator"
     ]
   },
   {
@@ -28323,7 +29415,10 @@
       "list_url": "https://www.ycombinator.com/companies/sunflower/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://sunflowerclinic.com/"
+    "website": "https://sunflowerclinic.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Suno",
@@ -28356,7 +29451,10 @@
     "scrape": {
       "ashby_slug": "supabase",
       "mode": "ashby"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Super",
@@ -28384,7 +29482,10 @@
       "list_url": "https://www.ycombinator.com/companies/super-powers-mobility-spm/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://spm.us/"
+    "website": "https://spm.us/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "supercell",
@@ -28450,7 +29551,8 @@
       "locations": "Remote"
     },
     "tags": [
-      "Interview Friendly"
+      "Interview Friendly",
+      "Y Combinator"
     ]
   },
   {
@@ -28519,7 +29621,10 @@
       "mode": "ashby",
       "ashby_slug": "sygaldry-technologies"
     },
-    "website": "https://sygaldry.com/"
+    "website": "https://sygaldry.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Symbotic",
@@ -28544,7 +29649,10 @@
       "list_url": "https://www.ycombinator.com/companies/synapse-semiconductor/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.synapsesemi.org/"
+    "website": "https://www.synapsesemi.org/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Synchrony",
@@ -28658,7 +29766,10 @@
       "list_url": "https://www.ycombinator.com/companies/synthetic-society/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://syntheticsociety.ai/"
+    "website": "https://syntheticsociety.ai/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Sysco",
@@ -28714,7 +29825,10 @@
       "list_url": "https://www.ycombinator.com/companies/taiga/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://taigabilling.com/"
+    "website": "https://taigabilling.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Tailscale",
@@ -28866,7 +29980,10 @@
       "list_url": "https://www.ycombinator.com/companies/tasklet-2/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://tasklet.ai/"
+    "website": "https://tasklet.ai/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Taskrabbit",
@@ -28981,7 +30098,10 @@
     "scrape": {
       "mode": "ashby",
       "ashby_slug": "goteleport"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "TelevisaUnivision",
@@ -29078,7 +30198,10 @@
       "list_url": "https://www.ycombinator.com/companies/tenor/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://heytenor.com/"
+    "website": "https://heytenor.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Tenstorrent",
@@ -29296,7 +30419,10 @@
     "scrape": {
       "mode": "lever",
       "lever_slug": "theathletic"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "The Bradford Group",
@@ -29376,7 +30502,10 @@
       "list_url": "https://www.ycombinator.com/companies/the-prompting-company/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://promptingcompany.com/"
+    "website": "https://promptingcompany.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "The RealReal",
@@ -29509,7 +30638,10 @@
       "list_url": "https://www.ycombinator.com/companies/thirdlayer/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.thirdlayer.inc/"
+    "website": "https://www.thirdlayer.inc/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Thomson Reuters",
@@ -29832,7 +30964,10 @@
       "list_url": "https://www.ycombinator.com/companies/torus/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.usetorus.com/"
+    "website": "https://www.usetorus.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Totalis",
@@ -29846,7 +30981,10 @@
       "list_url": "https://www.ycombinator.com/companies/totalis/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.totalis.trade/"
+    "website": "https://www.totalis.trade/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Tower Research",
@@ -29918,7 +31056,10 @@
       "list_url": "https://www.ycombinator.com/companies/traceroot-ai/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://traceroot.ai/"
+    "website": "https://traceroot.ai/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Tractor Supply",
@@ -29977,7 +31118,10 @@
       "list_url": "https://www.ycombinator.com/companies/trainloop/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.trainloop.ai/"
+    "website": "https://www.trainloop.ai/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Trajectory",
@@ -30044,7 +31188,10 @@
       "list_url": "https://www.ycombinator.com/companies/trata/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.trata.com/"
+    "website": "https://www.trata.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Travelers",
@@ -30149,7 +31296,10 @@
     "scrape": {
       "mode": "ashby",
       "ashby_slug": "trm-labs"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Trove",
@@ -30182,7 +31332,10 @@
     "scrape": {
       "mode": "greenhouse",
       "board_token": "truebill"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "TrueBuilt",
@@ -30228,7 +31381,10 @@
       "board_token": "fuzehealth",
       "region": "eu",
       "try_eu": true
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Truist Financial",
@@ -30288,7 +31444,10 @@
       "list_url": "https://www.ycombinator.com/companies/trynearby/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://trynearby.com/"
+    "website": "https://trynearby.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "TSC",
@@ -30314,7 +31473,10 @@
       "list_url": "https://www.ycombinator.com/companies/tsenta/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://tsenta.com/"
+    "website": "https://tsenta.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "TSMC",
@@ -30443,7 +31605,10 @@
       "difficulty": "medium",
       "rounds": "4",
       "source": "Public knowledge"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Two Sigma",
@@ -31160,7 +32325,10 @@
       "list_url": "https://www.ycombinator.com/companies/uno-wallet/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://myunowallet.com/"
+    "website": "https://myunowallet.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Unstructured",
@@ -31234,7 +32402,10 @@
       "mode": "ashby",
       "ashby_slug": "uplane"
     },
-    "website": "https://uplane.com/"
+    "website": "https://uplane.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Uplift AI",
@@ -31248,7 +32419,10 @@
       "list_url": "https://www.ycombinator.com/companies/uplift-ai/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://upliftai.org/"
+    "website": "https://upliftai.org/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "UPS",
@@ -31440,7 +32614,10 @@
     "scrape": {
       "ashby_slug": "vanta",
       "mode": "ashby"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Vapi",
@@ -31450,7 +32627,10 @@
     "scrape": {
       "mode": "ashby",
       "ashby_slug": "vapi"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Varda Space Industries",
@@ -31546,7 +32726,10 @@
       "list_url": "https://www.ycombinator.com/companies/vela/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://tryvela.ai/"
+    "website": "https://tryvela.ai/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Velir",
@@ -31582,7 +32765,10 @@
       "list_url": "https://www.ycombinator.com/companies/ventura/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://ventura.ai/"
+    "website": "https://ventura.ai/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Veolia",
@@ -31605,7 +32791,10 @@
       "mode": "ashby",
       "ashby_slug": "verahealth"
     },
-    "website": "https://www.verahealth.ai/home"
+    "website": "https://www.verahealth.ai/home",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Veradigm",
@@ -31694,7 +32883,10 @@
       "mode": "ashby",
       "ashby_slug": "veritus"
     },
-    "website": "https://veritus.com/"
+    "website": "https://veritus.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Verizon",
@@ -31731,7 +32923,10 @@
       "list_url": "https://www.ycombinator.com/companies/verne-robotics/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://vernerobotics.com/"
+    "website": "https://vernerobotics.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Vernius Systems, Inc.",
@@ -31746,7 +32941,10 @@
       "list_url": "https://www.ycombinator.com/companies/vernius-systems-inc/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.vernius.systems/"
+    "website": "https://www.vernius.systems/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Vertex Pharmaceuticals",
@@ -31806,7 +33004,10 @@
       "list_url": "https://www.ycombinator.com/companies/vesence/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.vesence.com/"
+    "website": "https://www.vesence.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Vial",
@@ -31930,7 +33131,10 @@
       "list_url": "https://www.ycombinator.com/companies/visibl-semiconductors/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.visiblsemi.com/"
+    "website": "https://www.visiblsemi.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Vistra",
@@ -31999,7 +33203,10 @@
       "list_url": "https://www.ycombinator.com/companies/voiceos/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.voiceos.com/"
+    "website": "https://www.voiceos.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Volaren",
@@ -32014,7 +33221,10 @@
       "list_url": "https://www.ycombinator.com/companies/volaren/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.volaren.ai/"
+    "website": "https://www.volaren.ai/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Voleon",
@@ -32035,7 +33245,10 @@
     "scrape": {
       "mode": "lever",
       "lever_slug": "voltalabs"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Voltair",
@@ -32050,7 +33263,10 @@
       "list_url": "https://www.ycombinator.com/companies/voltair/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.voltairlabs.com/"
+    "website": "https://www.voltairlabs.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Vox Media, LLC",
@@ -32085,7 +33301,10 @@
       "list_url": "https://www.ycombinator.com/companies/voyager/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://voyager.so/"
+    "website": "https://voyager.so/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "VOYGR",
@@ -32099,7 +33318,10 @@
       "list_url": "https://www.ycombinator.com/companies/voygr/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://voygr.tech/"
+    "website": "https://voygr.tech/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Vyra",
@@ -32113,7 +33335,10 @@
       "list_url": "https://www.ycombinator.com/companies/vyra/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.usevyra.com/"
+    "website": "https://www.usevyra.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "VÆRIDION",
@@ -32162,7 +33387,10 @@
       "list_url": "https://www.ycombinator.com/companies/waddle-labs/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.waddlelabs.ai/"
+    "website": "https://www.waddlelabs.ai/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "WaitWhat",
@@ -32208,7 +33436,10 @@
       "list_url": "https://www.ycombinator.com/companies/wardstone/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://wardstone.space"
+    "website": "https://wardstone.space",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Warner Bros. Discovery",
@@ -32228,7 +33459,10 @@
     "scrape": {
       "mode": "ashby",
       "ashby_slug": "warp"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Wasabi Technologies",
@@ -32424,7 +33658,10 @@
     "scrape": {
       "mode": "ashby",
       "ashby_slug": "weave"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Weaviate",
@@ -32453,7 +33690,8 @@
       "locations": "San Francisco, CA & Remote"
     },
     "tags": [
-      "Interview Friendly"
+      "Interview Friendly",
+      "Y Combinator"
     ]
   },
   {
@@ -32480,7 +33718,10 @@
       "list_url": "https://www.ycombinator.com/companies/wedge/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://wedge.health/"
+    "website": "https://wedge.health/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Weedmaps",
@@ -32589,7 +33830,10 @@
     "scrape": {
       "mode": "ashby",
       "ashby_slug": "whatnot"
-    }
+    },
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Wheel",
@@ -32705,7 +33949,10 @@
       "list_url": "https://www.ycombinator.com/companies/wingman-law/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.wingmanlaw.com/"
+    "website": "https://www.wingmanlaw.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Wise",
@@ -33119,7 +34366,10 @@
       "list_url": "https://www.ycombinator.com/companies/youshift/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://youshift.com/"
+    "website": "https://youshift.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Yum Brands",
@@ -33159,7 +34409,10 @@
       "list_url": "https://www.ycombinator.com/companies/zalos/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.zalos.ai/"
+    "website": "https://www.zalos.ai/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Zapier",
@@ -33178,7 +34431,8 @@
       "locations": "Remote"
     },
     "tags": [
-      "Interview Friendly"
+      "Interview Friendly",
+      "Y Combinator"
     ]
   },
   {
@@ -33194,7 +34448,10 @@
       "list_url": "https://www.ycombinator.com/companies/zatanna/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.zatanna.ai/"
+    "website": "https://www.zatanna.ai/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Zealand Pharma",
@@ -33298,7 +34555,8 @@
     },
     "tags": [
       "Interview Friendly",
-      "LinkedIn Top Startups 2025"
+      "LinkedIn Top Startups 2025",
+      "Y Combinator"
     ]
   },
   {
@@ -33382,7 +34640,10 @@
       "list_url": "https://www.ycombinator.com/companies/zolvo/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://zolvo.com/"
+    "website": "https://zolvo.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Zone 5 Technologies",
@@ -33517,7 +34778,10 @@
       "list_url": "https://www.ycombinator.com/companies/zymbly/jobs",
       "allow_empty_full_scan": true
     },
-    "website": "https://www.zymbly.com/"
+    "website": "https://www.zymbly.com/",
+    "tags": [
+      "Y Combinator"
+    ]
   },
   {
     "name": "Zynga",
